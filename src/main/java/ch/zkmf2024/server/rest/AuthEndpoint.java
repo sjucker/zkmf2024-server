@@ -1,13 +1,11 @@
 package ch.zkmf2024.server.rest;
 
+import ch.zkmf2024.server.dto.RegisterRequestDto;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public/auth")
@@ -19,18 +17,18 @@ public class AuthEndpoint {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register() {
-        UserRecord.CreateRequest request = new UserRecord.CreateRequest();
-        request.setEmail("stefan.jucker@gmail.com");
-        request.setPassword("alskdjaslkd jaksldjaslkd j");
+    public ResponseEntity<String> register(@RequestBody RegisterRequestDto request) {
+        UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
+        createRequest.setEmail(request.getEmail());
+        // createRequest.setPassword("alskdjaslkd jaksldjaslkd j");
         try {
-            UserRecord user = FirebaseAuth.getInstance().createUser(request);
+            FirebaseAuth instance = FirebaseAuth.getInstance();
+            UserRecord user = instance.createUser(createRequest);
 
             return ResponseEntity.ok(user.getDisplayName());
 
         } catch (FirebaseAuthException e) {
-
-            return ResponseEntity.badRequest().body(e.getAuthErrorCode().name());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
