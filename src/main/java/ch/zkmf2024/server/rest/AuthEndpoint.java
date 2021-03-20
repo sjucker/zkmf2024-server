@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 public class AuthEndpoint {
 
     @GetMapping
-    public void login(String email, String password) {
-
+    public ResponseEntity<String> login(String email, String password) {
+        return ResponseEntity.ok("hello");
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequestDto request) {
         UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
-        createRequest.setEmail(request.getEmail());
+        createRequest.setEmail(request.email());
         // createRequest.setPassword("alskdjaslkd jaksldjaslkd j");
         try {
             FirebaseAuth instance = FirebaseAuth.getInstance();
