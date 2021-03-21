@@ -22,7 +22,7 @@ public class AuthEndpoint {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequestDto request) {
-        logger.info("/public/auth/register request: {}", request);
+        logger.info("/public/auth/register: {}", request);
         UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
         createRequest.setEmail(request.email());
         // createRequest.setPassword("alskdjaslkd jaksldjaslkd j");
@@ -33,6 +33,7 @@ public class AuthEndpoint {
             return ResponseEntity.ok(user.getDisplayName());
 
         } catch (FirebaseAuthException e) {
+            logger.error("/public/auth/register", e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
