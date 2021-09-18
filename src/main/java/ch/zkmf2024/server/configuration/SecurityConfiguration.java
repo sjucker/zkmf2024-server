@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -40,7 +43,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .httpBasic().disable()
             .csrf().disable()
             .formLogin().disable()
-            .logout().disable();
+            .logout().disable()
+            .cors();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        // allow all Cross Origin Requests
+        var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 
     @Bean

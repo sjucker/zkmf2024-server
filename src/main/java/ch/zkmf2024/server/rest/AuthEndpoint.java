@@ -58,7 +58,7 @@ public class AuthEndpoint {
 
     @PostMapping("/register/helper")
     public ResponseEntity<String> registerHelper(@RequestBody RegisterHelperRequestDto request) {
-        logger.error("request_{}", request);
+        logger.error("request={}", request);
         return ResponseEntity.ok().build();
     }
 }
