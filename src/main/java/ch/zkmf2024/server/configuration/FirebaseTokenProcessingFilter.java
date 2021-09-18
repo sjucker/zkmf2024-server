@@ -18,6 +18,7 @@ public class FirebaseTokenProcessingFilter extends AbstractPreAuthenticatedProce
         }
 
         try {
+            // strip away the leading "Bearer "
             FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(header.substring(7));
             return firebaseToken.getEmail();
         } catch (FirebaseAuthException e) {
