@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <springProperty scope="context" name="smtpuser" source="logging.mail.smtp.user"/>
+    <springProperty scope="context" name="smtppassword" source="logging.mail.smtp.password"/>
 
-    <springProperty name="smtpuser" source="logging.mail.smtp.user"/>
-    <springProperty name="smtppassword" source="logging.mail.smtp.password"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <appender name="emailAppender" class="ch.qos.logback.classic.net.SMTPAppender">
+    <appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+        <evaluator class="ch.qos.logback.classic.boolex.OnErrorEvaluator"/>
         <smtpHost>mail.netzone.ch</smtpHost>
         <smtpPort>587</smtpPort>
         <username>${smtpuser}</username>
         <password>${smtppassword}</password>
+        <asynchronousSending>false</asynchronousSending>
+        <from>${smtpuser}</from>
         <to>stefan.jucker@gmail.com</to>
         <subject>[ZKMF2024]: %logger{20} - %msg</subject>
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -18,12 +24,9 @@
         </layout>
     </appender>
 
-    <root level="ERROR">
-        <appender-ref ref="emailAppender"/>
-    </root>
-
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="EMAIL"/>
     </root>
 
 </configuration>
