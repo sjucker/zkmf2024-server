@@ -2,6 +2,7 @@ package ch.zkmf2024.server.rest;
 
 import ch.zkmf2024.server.domain.User;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDto;
+import ch.zkmf2024.server.dto.RegisterNewsletterRequestDto;
 import ch.zkmf2024.server.dto.RegisterRequestDto;
 import ch.zkmf2024.server.repository.UserRepository;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +59,14 @@ public class AuthEndpoint {
 
     @PostMapping("/register/helper")
     public ResponseEntity<String> registerHelper(@RequestBody RegisterHelperRequestDto request) {
+        // TODO write to DB
+        logger.error("request={}", request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/register/newsletter")
+    public ResponseEntity<String> registerNewsletter(@RequestBody RegisterNewsletterRequestDto request) {
+        // TODO write to DB
         logger.error("request={}", request);
         return ResponseEntity.ok().build();
     }
