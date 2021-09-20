@@ -9,17 +9,20 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedC
 import javax.servlet.http.HttpServletRequest;
 
 public class FirebaseTokenProcessingFilter extends AbstractPreAuthenticatedProcessingFilter {
+
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpServletRequest) {
         var header = httpServletRequest.getHeader("Authorization");
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        if (header == null || !header.startsWith(BEARER_TOKEN_PREFIX)) {
             throw new PreAuthenticatedCredentialsNotFoundException("No JWT token found in request headers");
         }
 
         try {
             // strip away the leading "Bearer "
-            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(header.substring(7));
+            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(header.replace(BEARER_TOKEN_PREFIX, ""));
             return firebaseToken.getEmail();
         } catch (FirebaseAuthException e) {
             throw new PreAuthenticatedCredentialsNotFoundException("firebase token could not be verified", e);

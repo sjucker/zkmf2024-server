@@ -32,7 +32,7 @@ public class AuthEndpoint {
 
     @PostMapping("/register/band")
     public ResponseEntity<String> registerBand(@RequestBody RegisterRequestDto request) {
-        logger.info("/public/auth/register: {}", request);
+        logger.info("/public/auth/register/band: {}", request);
 
         UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
         createRequest.setEmail(request.email());
@@ -52,7 +52,7 @@ public class AuthEndpoint {
             return ResponseEntity.ok().build();
 
         } catch (FirebaseAuthException e) {
-            logger.error("/public/auth/register", e);
+            logger.error("/public/auth/register/band", e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
