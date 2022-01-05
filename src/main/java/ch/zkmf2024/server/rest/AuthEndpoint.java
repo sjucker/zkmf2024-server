@@ -1,9 +1,9 @@
 package ch.zkmf2024.server.rest;
 
 import ch.zkmf2024.server.domain.User;
-import ch.zkmf2024.server.dto.RegisterHelperRequestDto;
-import ch.zkmf2024.server.dto.RegisterNewsletterRequestDto;
-import ch.zkmf2024.server.dto.RegisterRequestDto;
+import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
+import ch.zkmf2024.server.dto.RegisterNewsletterRequestDTO;
+import ch.zkmf2024.server.dto.RegisterRequestDTO;
 import ch.zkmf2024.server.repository.UserRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -31,8 +31,8 @@ public class AuthEndpoint {
     }
 
     @PostMapping("/register/band")
-    public ResponseEntity<String> registerBand(@RequestBody RegisterRequestDto request) {
-        logger.info("/public/auth/register/band: {}", request);
+    public ResponseEntity<String> registerBand(@RequestBody RegisterRequestDTO request) {
+        logger.info("POST /public/auth/register/band: {}", request);
 
         UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
         createRequest.setEmail(request.email());
@@ -58,16 +58,16 @@ public class AuthEndpoint {
     }
 
     @PostMapping("/register/helper")
-    public ResponseEntity<String> registerHelper(@RequestBody RegisterHelperRequestDto request) {
+    public ResponseEntity<String> registerHelper(@RequestBody RegisterHelperRequestDTO request) {
         // TODO write to DB
-        logger.error("request={}", request);
+        logger.info("POST /public/auth/register/helper: {}", request);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register/newsletter")
-    public ResponseEntity<String> registerNewsletter(@RequestBody RegisterNewsletterRequestDto request) {
+    public ResponseEntity<String> registerNewsletter(@RequestBody RegisterNewsletterRequestDTO request) {
         // TODO write to DB
-        logger.error("request={}", request);
+        logger.info("POST /public/auth/register/newsletter: {}", request);
         return ResponseEntity.ok().build();
     }
 }
