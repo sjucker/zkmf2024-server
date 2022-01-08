@@ -20,6 +20,20 @@ export interface RegisterRequestDTO {
     contactLastName: string;
 }
 
+export interface SurveyAnswerDTO {
+    vereinsName: string;
+    besetzung: string;
+    staerkeKlasse: string;
+    anzahlMitglieder: string;
+    kontaktName: string;
+    kontaktEmail: string;
+    kontaktTelefon: string;
+    modulAuswahl: string[];
+    absageKommentar?: string;
+    absageKontaktaufnahme?: string;
+    helfer?: string;
+}
+
 export enum EventDays {
     FRIDAY = "FRIDAY",
     SATURDAY = "SATURDAY",
