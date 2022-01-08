@@ -8,10 +8,8 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
-
-import static javax.persistence.EnumType.STRING;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,20 +17,19 @@ import static javax.persistence.EnumType.STRING;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class NewsletterRecipient {
 
     @Id
     private String email;
 
-    @Enumerated(STRING)
-    @Column(name = "role")
-    private UserRole userRole;
+    @Column(nullable = false)
+    private String name;
 
-    public enum UserRole {
-        BAND,
-        HELPER,
-        PLANER,
-        ADMIN
-    }
+    @Column(nullable = false, name = "subscribed_at")
+    private LocalDateTime subscribedAt;
+
+
+    @Column(name = "unsubscribed_at")
+    private LocalDateTime unsubscribedAt;
 
 }
