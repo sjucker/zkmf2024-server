@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
 import ch.zkmf2024.server.dto.RegisterNewsletterRequestDTO;
 import ch.zkmf2024.server.dto.RegisterRequestDTO;
 import ch.zkmf2024.server.repository.UserRepository;
+import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.NewsletterService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -28,11 +29,14 @@ public class AuthEndpoint {
 
     private final UserRepository userRepository;
     private final NewsletterService newsletterService;
+    private final HelperRegistrationService helperRegistrationService;
 
     public AuthEndpoint(UserRepository userRepository,
-                        NewsletterService newsletterService) {
+                        NewsletterService newsletterService,
+                        HelperRegistrationService helperRegistrationService) {
         this.userRepository = userRepository;
         this.newsletterService = newsletterService;
+        this.helperRegistrationService = helperRegistrationService;
     }
 
     @PostMapping("/register/band")
@@ -64,10 +68,16 @@ public class AuthEndpoint {
     }
 
     @PostMapping("/register/helper")
-    public ResponseEntity<String> registerHelper(@RequestBody RegisterHelperRequestDTO request) {
-        // TODO write to DB
+    public ResponseEntity<String> registerHelper(@Valid @RequestBody RegisterHelperRequestDTO request) {
         log.info("POST /public/auth/register/helper: {}", request);
-        return ResponseEntity.ok().build();
+
+        var result = helperRegistrationService.register(request);
+        log.info("result for request {}: {}", request, result);
+
+        return switch (result) {
+            case INVALID_EMAIL -> ResponseEntity.badRequest().build();
+            case REGISTERED -> ResponseEntity.ok().build();
+        };
     }
 
     @PostMapping("/register/newsletter")
@@ -80,7 +90,7 @@ public class AuthEndpoint {
         return switch (result) {
             case INVALID_EMAIL -> ResponseEntity.badRequest().build();
             case ALREADY_REGISTERED -> ResponseEntity.status(CONFLICT).build();
-            case CREATED -> ResponseEntity.ok().build();
+            case REGISTERED -> ResponseEntity.ok().build();
         };
     }
 }

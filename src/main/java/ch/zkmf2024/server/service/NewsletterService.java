@@ -6,17 +6,14 @@ import ch.zkmf2024.server.repository.NewsletterRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.ALREADY_REGISTERED;
-import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.CREATED;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.INVALID_EMAIL;
+import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.REGISTERED;
+import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
 
 @Service
 public class NewsletterService {
-
-    // simple Email verification, just check for the existence of an @
-    private static final Pattern emailPattern = Pattern.compile("^(.+)@(\\S+)$");
 
     private final NewsletterRepository newsletterRepository;
 
@@ -29,7 +26,7 @@ public class NewsletterService {
             return ALREADY_REGISTERED;
         }
 
-        if (!emailPattern.matcher(dto.email()).matches()) {
+        if (!isValidEmail(dto.email())) {
             return INVALID_EMAIL;
         }
 
@@ -40,12 +37,12 @@ public class NewsletterService {
                 null
         ));
 
-        return CREATED;
+        return REGISTERED;
 
     }
 
     public enum RegisterNewsletterResult {
-        CREATED,
+        REGISTERED,
         ALREADY_REGISTERED,
         INVALID_EMAIL
     }

@@ -4,7 +4,7 @@ export interface RegisterHelperRequestDTO {
     name: string;
     email: string;
     comment: string;
-    checkedDays: Date[];
+    checkedDays: EventDays[];
 }
 
 export interface RegisterNewsletterRequestDTO {
@@ -18,4 +18,10 @@ export interface RegisterRequestDTO {
     name: string;
     contactFirstName: string;
     contactLastName: string;
+}
+
+export enum EventDays {
+    FRIDAY = "FRIDAY",
+    SATURDAY = "SATURDAY",
+    SUNDAY = "SUNDAY",
 }
