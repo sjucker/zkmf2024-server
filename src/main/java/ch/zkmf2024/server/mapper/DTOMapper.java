@@ -1,6 +1,10 @@
 package ch.zkmf2024.server.mapper;
 
+import ch.zkmf2024.server.domain.HelperRegistration;
+import ch.zkmf2024.server.domain.NewsletterRecipient;
 import ch.zkmf2024.server.domain.SurveyAnswer;
+import ch.zkmf2024.server.dto.HelperRegistrationDTO;
+import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.SurveyAnswerDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -29,5 +33,7 @@ public interface DTOMapper {
         return String.join(", ", modulAuswahl);
     }
 
+    NewsletterRecipientDTO toDTO(NewsletterRecipient newsletterRecipient);
 
+    HelperRegistrationDTO toDTO(HelperRegistration helperRegistration);
 }

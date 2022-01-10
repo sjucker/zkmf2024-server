@@ -1,0 +1,44 @@
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<p-table [value]="data"
+         [loading]="loading"
+         styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+        Newsletter
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Name
+                <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="email">Email
+                <p-sortIcon field="email"></p-sortIcon>
+            </th>
+            <th pSortableColumn="availableFriday">21.06.2024
+                <p-sortIcon field="availableFriday"></p-sortIcon>
+            </th>
+            <th pSortableColumn="availableSaturday">22.06.2024
+                <p-sortIcon field="availableSaturday"></p-sortIcon>
+            </th>
+            <th pSortableColumn="availableSunday">23.06.2024
+                <p-sortIcon field="availableSunday"></p-sortIcon>
+            </th>
+            <th pSortableColumn="comment">Kommentar
+                <p-sortIcon field="comment"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-dto>
+        <tr>
+            <td>{{dto.name}}</td>
+            <td>{{dto.email}}</td>
+            <td><i class="pi pi-check" *ngIf="dto.availableFriday"></i></td>
+            <td><i class="pi pi-check" *ngIf="dto.availableSaturday"></i></td>
+            <td><i class="pi pi-check" *ngIf="dto.availableSunday"></i></td>
+            <td>{{dto.comment}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        Total {{data.length}} Antworten
+    </ng-template>
+</p-table>

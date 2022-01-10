@@ -1,5 +1,22 @@
 /* eslint-disable */
 
+export interface HelperRegistrationDTO {
+    id: number;
+    name: string;
+    email: string;
+    availableFriday: boolean;
+    availableSaturday: boolean;
+    availableSunday: boolean;
+    comment?: string;
+}
+
+export interface NewsletterRecipientDTO {
+    name: string;
+    email: string;
+    subscribedAt: Date;
+    unsubscribedAt?: Date;
+}
+
 export interface RegisterHelperRequestDTO {
     name: string;
     email: string;

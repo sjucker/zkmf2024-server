@@ -11,12 +11,16 @@ import {ToastModule} from "primeng/toast";
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {HelferComponent} from './helfer/helfer.component';
+import {NewsletterComponent} from './newsletter/newsletter.component';
 import {UmfrageComponent} from './umfrage/umfrage.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        UmfrageComponent
+        UmfrageComponent,
+        NewsletterComponent,
+        HelferComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,44 @@
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<p-table [value]="data"
+         [loading]="loading"
+         styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+        Newsletter
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Name
+                <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="email">Email
+                <p-sortIcon field="email"></p-sortIcon>
+            </th>
+            <th pSortableColumn="subscribedAt">Angemeldet am
+                <p-sortIcon field="subscribedAt"></p-sortIcon>
+            </th>
+            <th pSortableColumn="unsubscribedAt">Abgemeldet am
+                <p-sortIcon field="unsubscribedAt"></p-sortIcon>
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-dto>
+        <tr>
+            <td>{{dto.name}}</td>
+            <td>{{dto.email}}</td>
+            <td>{{dto.subscribedAt | date: 'dd.MM.yyyy HH:mm'}}</td>
+            <td>{{dto.unsubscribedAt | date: 'dd.MM.yyyy HH:mm'}}</td>
+            <td>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded mr-2"
+                        (click)="delete(dto)"></button>
+                <button pButton pRipple icon="pi pi-ban" class="p-button-rounded"
+                        *ngIf="!dto.unsubscribedAt"
+                        (click)="unsubscribe(dto)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        Total Angemeldete: {{subscribeCount()}}
+    </ng-template>
+</p-table>

@@ -1,9 +1,13 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.domain.HelperRegistration;
+import ch.zkmf2024.server.dto.HelperRegistrationDTO;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
+import ch.zkmf2024.server.mapper.DTOMapper;
 import ch.zkmf2024.server.repository.HelperRegistrationRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static ch.zkmf2024.server.dto.EventDays.FRIDAY;
 import static ch.zkmf2024.server.dto.EventDays.SATURDAY;
@@ -37,6 +41,12 @@ public class HelperRegistrationService {
         ));
 
         return REGISTERED;
+    }
+
+    public List<HelperRegistrationDTO> getAll() {
+        return helperRegistrationRepository.findAll().stream()
+                                           .map(DTOMapper.INSTANCE::toDTO)
+                                           .toList();
     }
 
     public enum RegisterHelperResult {
