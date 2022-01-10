@@ -21,6 +21,7 @@ export interface RegisterRequestDTO {
 }
 
 export interface SurveyAnswerDTO {
+    id?: number;
     vereinsName: string;
     besetzung: string;
     staerkeKlasse: string;

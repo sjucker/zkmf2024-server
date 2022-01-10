@@ -1,0 +1,60 @@
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<p-table [value]="data"
+         [loading]="loading"
+         styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+        Konsultativumfrage: Antworten
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="vereinsName">Name
+                <p-sortIcon field="vereinsName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="besetzung">Besetzung
+                <p-sortIcon field="besetzung"></p-sortIcon>
+            </th>
+            <th pSortableColumn="staerkeKlasse">Stärkeklasse
+                <p-sortIcon field="staerkeKlasse"></p-sortIcon>
+            </th>
+            <th pSortableColumn="anzahlMitglieder">Mitglieder
+                <p-sortIcon field="anzahlMitglieder"></p-sortIcon>
+            </th>
+            <th>Kontakt</th>
+            <th pSortableColumn="modulAuswahl">Modulauswahl
+                <p-sortIcon field="modulAuswahl"></p-sortIcon>
+            </th>
+            <th>Absage</th>
+            <th pSortableColumn="helfer">Helfer
+                <p-sortIcon field="helfer"></p-sortIcon>
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-dto>
+        <tr>
+            <td>{{dto.vereinsName}}</td>
+            <td>{{dto.besetzung}}</td>
+            <td>{{dto.staerkeKlasse}}</td>
+            <td>{{dto.anzahlMitglieder}}</td>
+            <td>
+                {{dto.kontaktName}}<br/>
+                {{dto.kontaktEmail}}<br/>
+                {{dto.kontaktTelefon}}
+            </td>
+            <td>{{dto.modulAuswahl}}</td>
+            <td>
+                Kommentar: {{dto.absageKommentar}}<br/>
+                Kontaktaufnahme: {{dto.absageKontaktaufnahme}}
+            </td>
+            <td>{{dto.helfer}}</td>
+            <td>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded"
+                        (click)="delete(dto)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        Total {{data.length}} Antworten
+    </ng-template>
+</p-table>

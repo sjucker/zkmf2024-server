@@ -1,12 +1,13 @@
 package ch.zkmf2024.server.service;
 
-import ch.zkmf2024.server.domain.SurveyAnswer;
 import ch.zkmf2024.server.dto.SurveyAnswerDTO;
 import ch.zkmf2024.server.repository.SurveyAnswerRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static ch.zkmf2024.server.mapper.DTOMapper.INSTANCE;
 import static ch.zkmf2024.server.service.SurveyService.RegisterSurveyAnswer.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.SurveyService.RegisterSurveyAnswer.REGISTERED;
 import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
@@ -25,24 +26,21 @@ public class SurveyService {
             return INVALID_EMAIL;
         }
 
-        surveyAnswerRepository.save(new SurveyAnswer(
-                null,
-                LocalDateTime.now(),
-                dto.vereinsName(),
-                dto.besetzung(),
-                dto.staerkeKlasse(),
-                dto.anzahlMitglieder(),
-                dto.kontaktName(),
-                dto.kontaktEmail(),
-                dto.kontaktTelefon(),
-                String.join(", ", dto.modulAuswahl()),
-                dto.absageKommentar(),
-                dto.absageKontaktaufnahme(),
-                dto.helfer()
-        ));
+        var surveyAnswer = INSTANCE.fromDTO(dto);
+        surveyAnswer.setTimestamp(LocalDateTime.now());
+        surveyAnswerRepository.save(surveyAnswer);
 
         return REGISTERED;
+    }
 
+    public List<SurveyAnswerDTO> getAll() {
+        return surveyAnswerRepository.findAll().stream()
+                                     .map(INSTANCE::toDTO)
+                                     .toList();
+    }
+
+    public void delete(Long id) {
+        surveyAnswerRepository.deleteById(id);
     }
 
     public enum RegisterSurveyAnswer {

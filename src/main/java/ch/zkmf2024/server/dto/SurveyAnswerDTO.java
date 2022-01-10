@@ -3,7 +3,8 @@ package ch.zkmf2024.server.dto;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public record SurveyAnswerDTO(@NotNull String vereinsName,
+public record SurveyAnswerDTO(Long id,
+                              @NotNull String vereinsName,
                               @NotNull String besetzung,
                               @NotNull String staerkeKlasse,
                               @NotNull String anzahlMitglieder,
