@@ -15,6 +15,6 @@ export class HelperService {
     }
 
     getAll(): Observable<HelperRegistrationDTO[]> {
-        return this.httpClient.get<HelperRegistrationDTO[]>(`${this.baseUrl}/admin/helfer`)
+        return this.httpClient.get<HelperRegistrationDTO[]>(`${this.baseUrl}/secured/admin/helfer`)
     }
 }

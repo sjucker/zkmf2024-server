@@ -15,10 +15,10 @@ export class UmfrageService {
     }
 
     getAll(): Observable<SurveyAnswerDTO[]> {
-        return this.httpClient.get<SurveyAnswerDTO[]>(`${this.baseUrl}/admin/umfrage`)
+        return this.httpClient.get<SurveyAnswerDTO[]>(`${this.baseUrl}/secured/admin/umfrage`)
     }
 
     delete(id: number): Observable<any> {
-        return this.httpClient.delete<any>(`${this.baseUrl}/admin/umfrage/${id}`)
+        return this.httpClient.delete<any>(`${this.baseUrl}/secured/admin/umfrage/${id}`)
     }
 }

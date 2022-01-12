@@ -1,0 +1,23 @@
+<p-toast position="top-center"></p-toast>
+<form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+    <p-panel header="Login">
+        <div>
+            <div class="field grid">
+                <label for="email" class="col-fixed" style="width:100px">Email</label>
+                <div class="col">
+                    <input pInputText type="text" formControlName="email" class="form-control" id="email" name="email">
+                </div>
+            </div>
+
+            <div class="field grid">
+                <label for="password" class="col-fixed" style="width:100px">Passwort</label>
+                <div class="col">
+                    <input pInputText type="password" formControlName="password" class="form-control" id="password"
+                           name="password">
+                </div>
+            </div>
+
+            <button pButton type="submit" label="Login" [disabled]="!loginForm.valid"></button>
+        </div>
+    </p-panel>
+</form>

@@ -15,7 +15,10 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
-!./.idea/codeStyles/
+!.idea/codeStyles/
+!.idea/dataSources.xml
+!.idea/runConfigurations.xml
+!.idea/sqldialects.xml
 *.iws
 *.iml
 *.ipr

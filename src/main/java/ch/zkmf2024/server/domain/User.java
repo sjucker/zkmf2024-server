@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.domain;
 
+import ch.zkmf2024.server.dto.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -24,15 +26,13 @@ public class User {
     @Id
     private String email;
 
-    @Enumerated(STRING)
-    @Column(name = "role")
-    private UserRole userRole;
+    @Column(nullable = false)
+    private String password;
 
-    public enum UserRole {
-        BAND,
-        HELPER,
-        PLANER,
-        ADMIN
-    }
+    private LocalDateTime lastLogin;
+
+    @Enumerated(STRING)
+    @Column(nullable = false, name = "role")
+    private UserRole userRole;
 
 }

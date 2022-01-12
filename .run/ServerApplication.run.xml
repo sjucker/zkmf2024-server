@@ -1,6 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <module name="zkmf2024-server" />
+  <configuration default="false" name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <module name="server" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="ch.zkmf2024.server.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="ch.zkmf2024.server.ServerApplication" />
     <option name="ACTIVE_PROFILES" value="local" />
     <option name="ALTERNATIVE_JRE_PATH" />

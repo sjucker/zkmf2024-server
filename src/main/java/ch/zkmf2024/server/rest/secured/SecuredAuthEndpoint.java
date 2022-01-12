@@ -1,7 +1,7 @@
 package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.domain.User;
-import ch.zkmf2024.server.domain.User.UserRole;
+import ch.zkmf2024.server.dto.UserRole;
 import ch.zkmf2024.server.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

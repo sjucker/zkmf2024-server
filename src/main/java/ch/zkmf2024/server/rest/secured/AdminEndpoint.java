@@ -1,4 +1,4 @@
-package ch.zkmf2024.server.rest;
+package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.HelperRegistrationDTO;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin") // TODO move to /secured
+@RequestMapping("/secured/admin")
 public class AdminEndpoint {
 
     private final SurveyService surveyService;

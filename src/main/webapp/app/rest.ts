@@ -1,5 +1,10 @@
 /* eslint-disable */
 
+export interface ChangePasswordRequestDTO {
+    oldPassword: string;
+    newPassword: string;
+}
+
 export interface HelperRegistrationDTO {
     id: number;
     name: string;
@@ -8,6 +13,17 @@ export interface HelperRegistrationDTO {
     availableSaturday: boolean;
     availableSunday: boolean;
     comment?: string;
+}
+
+export interface LoginRequestDTO {
+    email: string;
+    password: string;
+}
+
+export interface LoginResponseDTO {
+    email: string;
+    role: UserRole;
+    jwt: string;
 }
 
 export interface NewsletterRecipientDTO {
@@ -50,6 +66,13 @@ export interface SurveyAnswerDTO {
     absageKommentar?: string;
     absageKontaktaufnahme?: string;
     helfer?: string;
+}
+
+export enum UserRole {
+    BAND = "BAND",
+    HELPER = "HELPER",
+    PLANER = "PLANER",
+    ADMIN = "ADMIN",
 }
 
 export enum EventDays {

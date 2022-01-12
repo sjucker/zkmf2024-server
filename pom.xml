@@ -22,6 +22,7 @@
         <firebase-admin.version>8.1.0</firebase-admin.version>
         <mail.version>1.4.7</mail.version>
         <activation.version>1.1.1</activation.version>
+        <jjwt.version>0.11.2</jjwt.version>
 
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>2.34.976</typescript-generator-maven-plugin.version>
@@ -72,6 +73,29 @@
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
             <version>${activation.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
 

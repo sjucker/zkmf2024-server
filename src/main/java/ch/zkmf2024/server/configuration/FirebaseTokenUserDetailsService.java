@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import static org.springframework.security.core.userdetails.User.builder;
 
+@Deprecated
 @Service
 public class FirebaseTokenUserDetailsService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
 
