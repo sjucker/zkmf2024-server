@@ -49,6 +49,7 @@ public class SurveyAnswer {
 
     private String modulAuswahl;
 
+    private boolean absage;
     private String absageKommentar;
     private String absageKontaktaufnahme;
 

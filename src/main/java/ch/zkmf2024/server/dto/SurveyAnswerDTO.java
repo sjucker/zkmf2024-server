@@ -5,13 +5,14 @@ import java.util.List;
 
 public record SurveyAnswerDTO(Long id,
                               @NotNull String vereinsName,
-                              @NotNull String besetzung,
+                              @NotNull List<String> besetzung,
                               @NotNull String staerkeKlasse,
                               @NotNull String anzahlMitglieder,
                               @NotNull String kontaktName,
                               @NotNull String kontaktEmail,
                               @NotNull String kontaktTelefon,
                               @NotNull List<String> modulAuswahl,
+                              boolean absage,
                               String absageKommentar,
                               String absageKontaktaufnahme,
                               String helfer) {

@@ -56,13 +56,14 @@ export interface RegisterRequestDTO {
 export interface SurveyAnswerDTO {
     id?: number;
     vereinsName: string;
-    besetzung: string;
+    besetzung: string[];
     staerkeKlasse: string;
     anzahlMitglieder: string;
     kontaktName: string;
     kontaktEmail: string;
     kontaktTelefon: string;
     modulAuswahl: string[];
+    absage: boolean;
     absageKommentar?: string;
     absageKontaktaufnahme?: string;
     helfer?: string;

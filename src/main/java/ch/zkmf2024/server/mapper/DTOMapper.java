@@ -25,12 +25,12 @@ public interface DTOMapper {
     @Mapping(target = "timestamp", ignore = true)
     SurveyAnswer fromDTO(SurveyAnswerDTO dto);
 
-    default List<String> toModulAuswahl(String modulAuswahl) {
-        return List.of(modulAuswahl.split(LIST_DELIMITER));
+    default List<String> toList(String value) {
+        return List.of(value.split(LIST_DELIMITER));
     }
 
-    default String toModulAuswahl(List<String> modulAuswahl) {
-        return String.join(", ", modulAuswahl);
+    default String toString(List<String> list) {
+        return String.join(LIST_DELIMITER, list);
     }
 
     NewsletterRecipientDTO toDTO(NewsletterRecipient newsletterRecipient);

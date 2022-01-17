@@ -44,8 +44,11 @@
             </td>
             <td>{{dto.modulAuswahl}}</td>
             <td>
-                Kommentar: {{dto.absageKommentar}}<br/>
-                Kontaktaufnahme: {{dto.absageKontaktaufnahme}}
+                <div *ngIf="dto.absage">
+                    Absage: <i class="pi pi-check"></i><br/>
+                    Kommentar: {{dto.absageKommentar}}<br/>
+                    Kontaktaufnahme: {{dto.absageKontaktaufnahme}}
+                </div>
             </td>
             <td>{{dto.helfer}}</td>
             <td>
