@@ -48,6 +48,7 @@ public class SurveyAnswer {
     private String kontaktTelefon;
 
     private String modulAuswahl;
+    private String zusageKommentar;
 
     private boolean absage;
     private String absageKommentar;

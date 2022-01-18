@@ -42,11 +42,14 @@
                 {{dto.kontaktEmail}}<br/>
                 {{dto.kontaktTelefon}}
             </td>
-            <td>{{dto.modulAuswahl}}</td>
+            <td>
+                {{dto.modulAuswahl}}<br/>
+                <div *ngIf="dto.zusageKommentar" class="kommentar">Kommentar: {{dto.zusageKommentar}}</div>
+            </td>
             <td>
                 <div *ngIf="dto.absage">
                     Absage: <i class="pi pi-check"></i><br/>
-                    Kommentar: {{dto.absageKommentar}}<br/>
+                    <span class="kommentar">Kommentar: {{dto.absageKommentar}}</span><br/>
                     Kontaktaufnahme: {{dto.absageKontaktaufnahme}}
                 </div>
             </td>

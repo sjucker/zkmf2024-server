@@ -63,6 +63,7 @@ export interface SurveyAnswerDTO {
     kontaktEmail: string;
     kontaktTelefon: string;
     modulAuswahl: string[];
+    zusageKommentar?: string;
     absage: boolean;
     absageKommentar?: string;
     absageKontaktaufnahme?: string;
