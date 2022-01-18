@@ -7,6 +7,7 @@ export interface ChangePasswordRequestDTO {
 
 export interface HelperRegistrationDTO {
     id: number;
+    vorname: string;
     name: string;
     email: string;
     availableFriday: boolean;
@@ -27,6 +28,7 @@ export interface LoginResponseDTO {
 }
 
 export interface NewsletterRecipientDTO {
+    vorname: string;
     name: string;
     email: string;
     subscribedAt: Date;
@@ -34,6 +36,7 @@ export interface NewsletterRecipientDTO {
 }
 
 export interface RegisterHelperRequestDTO {
+    vorname: string;
     name: string;
     email: string;
     comment: string;
@@ -41,6 +44,7 @@ export interface RegisterHelperRequestDTO {
 }
 
 export interface RegisterNewsletterRequestDTO {
+    vorname: string;
     name: string;
     email: string;
 }

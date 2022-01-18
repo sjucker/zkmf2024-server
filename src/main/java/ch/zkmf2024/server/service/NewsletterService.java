@@ -35,6 +35,7 @@ public class NewsletterService {
 
         newsletterRepository.save(new NewsletterRecipient(
                 dto.email(),
+                dto.vorname(),
                 dto.name(),
                 LocalDateTime.now(),
                 null

@@ -8,6 +8,9 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
+            <th pSortableColumn="vorname">Vorname
+                <p-sortIcon field="vorname"></p-sortIcon>
+            </th>
             <th pSortableColumn="name">Name
                 <p-sortIcon field="name"></p-sortIcon>
             </th>
@@ -30,12 +33,13 @@
     </ng-template>
     <ng-template pTemplate="body" let-dto>
         <tr>
+            <td>{{dto.vorname}}</td>
             <td>{{dto.name}}</td>
             <td>{{dto.email}}</td>
             <td><i class="pi pi-check" *ngIf="dto.availableFriday"></i></td>
             <td><i class="pi pi-check" *ngIf="dto.availableSaturday"></i></td>
             <td><i class="pi pi-check" *ngIf="dto.availableSunday"></i></td>
-            <td>{{dto.comment}}</td>
+            <td><span class="comment">{{dto.comment}}</span></td>
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">

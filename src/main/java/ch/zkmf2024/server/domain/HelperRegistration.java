@@ -28,6 +28,9 @@ public class HelperRegistration {
     private Long id;
 
     @Column(nullable = false)
+    private String vorname;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

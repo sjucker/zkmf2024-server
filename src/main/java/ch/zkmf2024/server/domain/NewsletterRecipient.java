@@ -25,6 +25,9 @@ public class NewsletterRecipient {
     private String email;
 
     @Column(nullable = false)
+    private String vorname;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, name = "subscribed_at")

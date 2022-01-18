@@ -32,6 +32,7 @@ public class HelperRegistrationService {
 
         helperRegistrationRepository.save(new HelperRegistration(
                 null,
+                request.vorname(),
                 request.name(),
                 request.email(),
                 request.checkedDays().contains(FRIDAY),
