@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {saveAs} from "file-saver";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {SurveyAnswerDTO} from "../rest";
 import {UmfrageService} from "../service/umfrage.service";
@@ -61,5 +62,21 @@ export class UmfrageComponent implements OnInit {
                 )
             }
         });
+    }
+
+    export() {
+        this.umfrageService.export().subscribe(
+            response => {
+                saveAs(response, "umfrage-export.xlsx");
+            },
+            error => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            }
+        )
     }
 }

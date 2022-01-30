@@ -23,6 +23,7 @@
         <mail.version>1.4.7</mail.version>
         <activation.version>1.1.1</activation.version>
         <jjwt.version>0.11.2</jjwt.version>
+        <poi.version>5.2.0</poi.version>
 
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>2.34.976</typescript-generator-maven-plugin.version>
@@ -51,6 +52,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
         </dependency>
 
         <dependency>
