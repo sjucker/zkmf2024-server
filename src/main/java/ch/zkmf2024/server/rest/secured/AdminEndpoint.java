@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -57,8 +56,8 @@ public class AdminEndpoint {
         try {
             file = surveyService.export();
 
-            Path path = Paths.get(file.getAbsolutePath());
-            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+            var path = Paths.get(file.getAbsolutePath());
+            var resource = new ByteArrayResource(Files.readAllBytes(path));
 
             return ResponseEntity.ok()
                                  .header(CONTENT_TYPE, Files.probeContentType(path))
