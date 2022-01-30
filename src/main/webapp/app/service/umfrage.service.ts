@@ -21,4 +21,10 @@ export class UmfrageService {
     delete(id: number): Observable<any> {
         return this.httpClient.delete<any>(`${this.baseUrl}/secured/admin/umfrage/${id}`)
     }
+
+    export(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/umfrage`, {
+            responseType: 'blob'
+        });
+    }
 }
