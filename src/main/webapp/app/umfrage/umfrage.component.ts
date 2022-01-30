@@ -13,6 +13,7 @@ export class UmfrageComponent implements OnInit {
 
     data: SurveyAnswerDTO[] = [];
     loading = false;
+    exporting = false;
 
     constructor(private umfrageService: UmfrageService,
                 private messageService: MessageService,
@@ -65,6 +66,7 @@ export class UmfrageComponent implements OnInit {
     }
 
     export() {
+        this.exporting = true;
         this.umfrageService.export().subscribe(
             response => {
                 saveAs(response, "umfrage-export.xlsx");
@@ -76,6 +78,9 @@ export class UmfrageComponent implements OnInit {
                     detail: error.statusText,
                     life: 3000
                 });
+            },
+            () => {
+                this.exporting = false;
             }
         )
     }

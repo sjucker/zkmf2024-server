@@ -8,6 +8,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {InputTextModule} from "primeng/inputtext";
 import {MenubarModule} from "primeng/menubar";
 import {PanelModule} from "primeng/panel";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {RippleModule} from "primeng/ripple";
 import {TableModule} from "primeng/table";
 import {ToastModule} from "primeng/toast";
@@ -42,6 +43,7 @@ import {UmfrageComponent} from './umfrage/umfrage.component';
         ReactiveFormsModule,
         PanelModule,
         InputTextModule,
+        ProgressSpinnerModule,
     ],
     providers: [
         MessageService,
