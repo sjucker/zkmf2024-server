@@ -71,11 +71,11 @@ public class SurveyService {
         headerRow.createCell(columnIndex++).setCellValue("Vereinsname");
         headerRow.createCell(columnIndex++).setCellValue("Besetzung");
         headerRow.createCell(columnIndex++).setCellValue("Stärkeklasse");
+        headerRow.createCell(columnIndex++).setCellValue("Modul-Auswahl");
         headerRow.createCell(columnIndex++).setCellValue("Anzahl Mitglieder");
         headerRow.createCell(columnIndex++).setCellValue("Kontakt Name");
         headerRow.createCell(columnIndex++).setCellValue("Kontakt Email");
         headerRow.createCell(columnIndex++).setCellValue("Kontakt Telefon");
-        headerRow.createCell(columnIndex++).setCellValue("Modul-Auswahl");
         headerRow.createCell(columnIndex++).setCellValue("Zusage Kommentar");
         headerRow.createCell(columnIndex++).setCellValue("Absage?");
         headerRow.createCell(columnIndex++).setCellValue("Absage Kommentar");
@@ -95,11 +95,11 @@ public class SurveyService {
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getVereinsName());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getBesetzung());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getStaerkeKlasse());
+            row.createCell(columnIndex++).setCellValue(surveyAnswer.getModulAuswahl());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getAnzahlMitglieder());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getKontaktName());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getKontaktEmail());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getKontaktTelefon());
-            row.createCell(columnIndex++).setCellValue(surveyAnswer.getModulAuswahl());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getZusageKommentar());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.isAbsage());
             row.createCell(columnIndex++).setCellValue(surveyAnswer.getAbsageKommentar());
