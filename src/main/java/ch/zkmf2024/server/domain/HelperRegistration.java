@@ -36,6 +36,8 @@ public class HelperRegistration {
     @Column(nullable = false)
     private String email;
 
+    private String mobile;
+
     @Column(nullable = false, name = "available_friday")
     private boolean availableFriday;
 

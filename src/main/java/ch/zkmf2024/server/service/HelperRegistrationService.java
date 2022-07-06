@@ -35,6 +35,7 @@ public class HelperRegistrationService {
                 request.vorname(),
                 request.name(),
                 request.email(),
+                request.mobile(),
                 request.checkedDays().contains(FRIDAY),
                 request.checkedDays().contains(SATURDAY),
                 request.checkedDays().contains(SUNDAY),

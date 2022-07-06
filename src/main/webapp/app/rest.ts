@@ -39,6 +39,7 @@ export interface RegisterHelperRequestDTO {
     vorname: string;
     name: string;
     email: string;
+    mobile: string;
     comment: string;
     checkedDays: EventDays[];
 }
