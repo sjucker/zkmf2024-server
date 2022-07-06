@@ -10,6 +10,7 @@ export interface HelperRegistrationDTO {
     vorname: string;
     name: string;
     email: string;
+    mobile: string;
     availableFriday: boolean;
     availableSaturday: boolean;
     availableSunday: boolean;

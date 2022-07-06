@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, MessageService} from "primeng/api";
+import {MessageService} from "primeng/api";
 import {HelperRegistrationDTO} from "../rest";
 import {HelperService} from "../service/helper.service";
 
@@ -14,8 +14,7 @@ export class HelferComponent implements OnInit {
     loading = false;
 
     constructor(private helperService: HelperService,
-                private messageService: MessageService,
-                private confirmationService: ConfirmationService) {
+                private messageService: MessageService) {
     }
 
     ngOnInit(): void {
