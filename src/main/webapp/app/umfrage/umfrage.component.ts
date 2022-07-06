@@ -22,17 +22,17 @@ export class UmfrageComponent implements OnInit {
 
     ngOnInit(): void {
         this.loading = true;
-        this.umfrageService.getAll().subscribe(
-            value => {
+        this.umfrageService.getAll().subscribe({
+            next: value => {
                 this.data = value;
             },
-            error => {
+            error: error => {
                 this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText, life: 3000})
             },
-            () => {
+            complete: () => {
                 this.loading = false;
             }
-        )
+        })
     }
 
     delete(dto: SurveyAnswerDTO) {
@@ -42,8 +42,8 @@ export class UmfrageComponent implements OnInit {
             rejectLabel: 'Nein',
             acceptLabel: 'Ja',
             accept: () => {
-                this.umfrageService.delete(dto.id!).subscribe(
-                    _ => {
+                this.umfrageService.delete(dto.id!).subscribe({
+                    next: _ => {
                         this.data = this.data.filter(val => val.id !== dto.id);
                         this.messageService.add({
                             severity: 'success',
@@ -52,7 +52,7 @@ export class UmfrageComponent implements OnInit {
                             life: 2000
                         });
                     },
-                    error => {
+                    error: error => {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Fehler',
@@ -60,18 +60,18 @@ export class UmfrageComponent implements OnInit {
                             life: 3000
                         });
                     }
-                )
+                })
             }
         });
     }
 
     export() {
         this.exporting = true;
-        this.umfrageService.export().subscribe(
-            response => {
+        this.umfrageService.export().subscribe({
+            next: response => {
                 saveAs(response, "umfrage-export.xlsx");
             },
-            error => {
+            error: error => {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Fehler',
@@ -79,9 +79,9 @@ export class UmfrageComponent implements OnInit {
                     life: 3000
                 });
             },
-            () => {
+            complete: () => {
                 this.exporting = false;
             }
-        )
+        })
     }
 }

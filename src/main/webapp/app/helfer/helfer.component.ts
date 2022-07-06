@@ -23,17 +23,22 @@ export class HelferComponent implements OnInit {
 
     private loadData() {
         this.loading = true;
-        this.helperService.getAll().subscribe(
-            value => {
+        this.helperService.getAll().subscribe({
+            next: value => {
                 this.data = value;
             },
-            error => {
-                this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText, life: 3000})
+            error: error => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                })
             },
-            () => {
+            complete: () => {
                 this.loading = false;
             }
-        )
+        })
     }
 
 }

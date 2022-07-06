@@ -24,17 +24,18 @@ export class NewsletterComponent implements OnInit {
 
     private loadData() {
         this.loading = true;
-        this.newsletterService.getAll().subscribe(
-            value => {
+        this.newsletterService.getAll().subscribe({
+            next: value => {
                 this.data = value;
-            },
-            error => {
+            }
+            ,
+            error: error => {
                 this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText, life: 3000})
             },
-            () => {
+            complete: () => {
                 this.loading = false;
             }
-        )
+        })
     }
 
     delete(dto: NewsletterRecipientDTO) {
@@ -44,8 +45,8 @@ export class NewsletterComponent implements OnInit {
             rejectLabel: 'Nein',
             acceptLabel: 'Ja',
             accept: () => {
-                this.newsletterService.delete(dto.email).subscribe(
-                    _ => {
+                this.newsletterService.delete(dto.email).subscribe({
+                    next: _ => {
                         this.data = this.data.filter(val => val.email !== dto.email);
                         this.messageService.add({
                             severity: 'success',
@@ -54,7 +55,7 @@ export class NewsletterComponent implements OnInit {
                             life: 2000
                         });
                     },
-                    error => {
+                    error: error => {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Fehler',
@@ -62,7 +63,7 @@ export class NewsletterComponent implements OnInit {
                             life: 3000
                         });
                     }
-                )
+                })
             }
         });
     }
@@ -74,8 +75,8 @@ export class NewsletterComponent implements OnInit {
             rejectLabel: 'Nein',
             acceptLabel: 'Ja',
             accept: () => {
-                this.newsletterService.unsubscribe(dto.email).subscribe(
-                    _ => {
+                this.newsletterService.unsubscribe(dto.email).subscribe({
+                    next: _ => {
                         this.loadData();
                         this.messageService.add({
                             severity: 'success',
@@ -83,8 +84,9 @@ export class NewsletterComponent implements OnInit {
                             detail: 'Erfolgreich abgemeldet',
                             life: 2000
                         });
-                    },
-                    error => {
+                    }
+                    ,
+                    error: error => {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Fehler',
@@ -92,7 +94,7 @@ export class NewsletterComponent implements OnInit {
                             life: 3000
                         });
                     }
-                )
+                })
             }
         })
     }
