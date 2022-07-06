@@ -17,6 +17,9 @@
             <th pSortableColumn="email">Email
                 <p-sortIcon field="email"></p-sortIcon>
             </th>
+            <th pSortableColumn="mobile">Telefon mobil
+                <p-sortIcon field="mobile"></p-sortIcon>
+            </th>
             <th pSortableColumn="availableFriday">21.06.2024
                 <p-sortIcon field="availableFriday"></p-sortIcon>
             </th>
@@ -36,6 +39,7 @@
             <td>{{dto.vorname}}</td>
             <td>{{dto.name}}</td>
             <td>{{dto.email}}</td>
+            <td>{{dto.mobile}}</td>
             <td><i class="pi pi-check" *ngIf="dto.availableFriday"></i></td>
             <td><i class="pi pi-check" *ngIf="dto.availableSaturday"></i></td>
             <td><i class="pi pi-check" *ngIf="dto.availableSunday"></i></td>
