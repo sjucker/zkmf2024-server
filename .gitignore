@@ -51,6 +51,7 @@ build/
 # dependencies
 node
 node_modules
+.angular
 
 # profiling files
 chrome-profiler-events*.json
