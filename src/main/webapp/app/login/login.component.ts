@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
@@ -9,7 +9,7 @@ import {AuthenticationService} from "../service/authentication.service";
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.sass']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
     authenticationError = false;
 
@@ -25,14 +25,11 @@ export class LoginComponent implements OnInit {
                 private messageService: MessageService) {
     }
 
-    ngOnInit(): void {
-    }
-
     onSubmit(): void {
         if (this.loginForm.valid) {
             this.authenticationError = false;
             const val = this.loginForm.value;
-            this.authenticationService.login(val.email, val.password).subscribe({
+            this.authenticationService.login(val.email!, val.password!).subscribe({
                 next: response => {
                     this.authenticationService.setCredentials(response);
                     this.router.navigate(['/']);
