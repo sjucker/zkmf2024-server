@@ -1,6 +1,5 @@
 package ch.zkmf2024.server.rest;
 
-import ch.zkmf2024.server.domain.User;
 import ch.zkmf2024.server.dto.LoginRequestDTO;
 import ch.zkmf2024.server.dto.LoginResponseDTO;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
@@ -10,9 +9,6 @@ import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.security.JwtService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.NewsletterService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
-import static ch.zkmf2024.server.dto.UserRole.BAND;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -82,28 +77,9 @@ public class AuthEndpoint {
     public ResponseEntity<String> registerBand(@RequestBody RegisterRequestDTO request) {
         log.info("POST /public/auth/register/band: {}", request);
 
-        // TODO move this into service
-        UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest();
-        createRequest.setEmail(request.email());
-        createRequest.setPassword(request.password());
+        // TODO implement this once needed
 
-        try {
-            FirebaseAuth instance = FirebaseAuth.getInstance();
-            UserRecord user = instance.createUser(createRequest);
-
-            userRepository.save(new User(user.getEmail(), "", null, BAND)); // TODO
-
-            // TODO send email verification mail
-            // TODO persist contact info
-
-            log.info("user {} successfully created", user.getEmail());
-
-            return ResponseEntity.ok().build();
-
-        } catch (FirebaseAuthException e) {
-            log.error("/public/auth/register/band", e);
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register/helper")
