@@ -35,6 +35,10 @@ export class AuthenticationService {
         return this.httpClient.post<any>(`${this.baseUrl}/authenticate/change-password`, request); // TODO fix URL
     }
 
+    logout(): void {
+        localStorage.clear();
+    }
+
     setCredentials(dto: LoginResponseDTO): void {
         localStorage.setItem(this.token, dto.jwt);
         localStorage.setItem(this.userId, dto.email);
