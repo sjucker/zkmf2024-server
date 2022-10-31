@@ -1,8 +1,10 @@
 package ch.zkmf2024.server.mapper;
 
+import ch.zkmf2024.server.domain.Band;
 import ch.zkmf2024.server.domain.HelperRegistration;
 import ch.zkmf2024.server.domain.NewsletterRecipient;
 import ch.zkmf2024.server.domain.SurveyAnswer;
+import ch.zkmf2024.server.dto.BandDTO;
 import ch.zkmf2024.server.dto.HelperRegistrationDTO;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.SurveyAnswerDTO;
@@ -36,4 +38,6 @@ public interface DTOMapper {
     NewsletterRecipientDTO toDTO(NewsletterRecipient newsletterRecipient);
 
     HelperRegistrationDTO toDTO(HelperRegistration helperRegistration);
+
+    BandDTO toDTO(Band band);
 }

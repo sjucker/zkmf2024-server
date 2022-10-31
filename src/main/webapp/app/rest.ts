@@ -1,5 +1,13 @@
 /* eslint-disable */
 
+export interface BandDTO {
+    id: number;
+    email: string;
+    name: string;
+    contactFirstName: string;
+    contactLastName: string;
+}
+
 export interface ChangePasswordRequestDTO {
     oldPassword: string;
     newPassword: string;
