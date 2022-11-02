@@ -26,7 +26,6 @@ public class VereinEndpoint {
 
         try {
             vereinService.create(request);
-            // TODO send mail
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
