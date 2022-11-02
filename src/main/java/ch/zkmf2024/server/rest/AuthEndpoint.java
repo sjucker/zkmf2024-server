@@ -4,7 +4,6 @@ import ch.zkmf2024.server.dto.LoginRequestDTO;
 import ch.zkmf2024.server.dto.LoginResponseDTO;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
 import ch.zkmf2024.server.dto.RegisterNewsletterRequestDTO;
-import ch.zkmf2024.server.dto.RegisterRequestDTO;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.security.JwtService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
@@ -71,15 +70,6 @@ public class AuthEndpoint {
         }
 
         return ResponseEntity.status(UNAUTHORIZED).build();
-    }
-
-    @PostMapping("/register/band")
-    public ResponseEntity<String> registerBand(@RequestBody RegisterRequestDTO request) {
-        log.info("POST /public/auth/register/band: {}", request);
-
-        // TODO implement this once needed
-
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register/helper")

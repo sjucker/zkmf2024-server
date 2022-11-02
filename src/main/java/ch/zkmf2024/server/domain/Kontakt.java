@@ -7,7 +7,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
@@ -15,17 +18,19 @@ import javax.persistence.Id;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Band {
+public class Kontakt {
 
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    private String vorname;
+    private String nachname;
+    private String adresse;
+    private Integer plz;
+    private String ort;
     private String email;
-
-    private String name;
-
-    private String contactFirstName;
-
-    private String contactLastName;
+    private String telefonPrivat;
+    private String telefonMobile;
 
 }

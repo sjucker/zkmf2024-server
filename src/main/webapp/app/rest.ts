@@ -1,13 +1,5 @@
 /* eslint-disable */
 
-export interface BandDTO {
-    id: number;
-    email: string;
-    name: string;
-    contactFirstName: string;
-    contactLastName: string;
-}
-
 export interface ChangePasswordRequestDTO {
     oldPassword: string;
     newPassword: string;
@@ -59,12 +51,10 @@ export interface RegisterNewsletterRequestDTO {
     email: string;
 }
 
-export interface RegisterRequestDTO {
+export interface RegisterVereinRequestDTO {
     email: string;
     password: string;
-    name: string;
-    contactFirstName: string;
-    contactLastName: string;
+    vereinsname: string;
 }
 
 export interface SurveyAnswerDTO {
@@ -82,6 +72,12 @@ export interface SurveyAnswerDTO {
     absageKommentar?: string;
     absageKontaktaufnahme?: string;
     helfer?: string;
+}
+
+export interface VereinDTO {
+    id: number;
+    email: string;
+    vereinsname: string;
 }
 
 export enum UserRole {
