@@ -11,6 +11,7 @@ import ch.zkmf2024.server.dto.SurveyAnswerDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -40,6 +41,8 @@ public interface DTOMapper {
 
     HelperRegistrationDTO toDTO(HelperRegistration helperRegistration);
 
-    @Mapping(target = "vereinsname", source = "angaben.vereinsname")
     VereinDTO toDTO(Verein verein);
+
+    @Mapping(target = "email", ignore = true)
+    void update(@MappingTarget Verein domain, VereinDTO dto);
 }

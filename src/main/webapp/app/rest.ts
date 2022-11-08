@@ -17,6 +17,17 @@ export interface HelperRegistrationDTO {
     comment?: string;
 }
 
+export interface KontaktDTO {
+    vorname?: string;
+    nachname?: string;
+    adresse?: string;
+    plz?: number;
+    ort?: string;
+    email?: string;
+    telefonPrivat?: string;
+    telefonMobile?: string;
+}
+
 export interface LoginRequestDTO {
     email: string;
     password: string;
@@ -75,13 +86,28 @@ export interface SurveyAnswerDTO {
 }
 
 export interface VereinDTO {
-    id: number;
     email: string;
-    vereinsname: string;
+    angaben: VereinsangabenDTO;
+    praesident: KontaktDTO;
+    kassier: KontaktDTO;
+    direktion: KontaktDTO;
+    staerkeKlasse?: StaerkeKlasse;
+    anzahlMusikanten?: number;
+    anzahlDirigenten?: number;
+    anzahlTambouren?: number;
+}
+
+export interface VereinsangabenDTO {
+    vereinsname?: string;
+    adresse?: string;
+    plz?: number;
+    ort?: string;
+    homepage?: string;
+    iban?: string;
 }
 
 export enum UserRole {
-    BAND = "BAND",
+    VEREIN = "VEREIN",
     HELPER = "HELPER",
     PLANER = "PLANER",
     ADMIN = "ADMIN",
@@ -91,4 +117,15 @@ export enum EventDays {
     FRIDAY = "FRIDAY",
     SATURDAY = "SATURDAY",
     SUNDAY = "SUNDAY",
+}
+
+export enum StaerkeKlasse {
+    HOECHSTKLASSE = "HOECHSTKLASSE",
+    KLASSE_1 = "KLASSE_1",
+    KLASSE_2 = "KLASSE_2",
+    KLASSE_3 = "KLASSE_3",
+    KLASSE_4 = "KLASSE_4",
+    UNTERSTUFE = "UNTERSTUFE",
+    MITTELSTUFE = "MITTELSTUFE",
+    OBERSTUFE = "OBERSTUFE",
 }

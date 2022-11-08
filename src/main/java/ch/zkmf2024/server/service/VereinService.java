@@ -22,6 +22,8 @@ import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 @Slf4j
 @Service
 public class VereinService {
+    private static final DTOMapper MAPPER = DTOMapper.INSTANCE;
+
     private final UserRepository userRepository;
     private final VereinRepository vereinRepository;
     private final PasswordEncoder passwordEncoder;
@@ -42,7 +44,7 @@ public class VereinService {
 
     public Optional<VereinDTO> find(String email) {
         return vereinRepository.findByEmail(email)
-                               .map(DTOMapper.INSTANCE::toDTO);
+                               .map(MAPPER::toDTO);
     }
 
     @Transactional
@@ -73,5 +75,15 @@ public class VereinService {
                 """.formatted(request.vereinsname(), request.email(), environment.getRequiredProperty("zkmf2024.base-url-vereine")));
 
         mailSender.send(simpleMessage);
+    }
+
+    @Transactional
+    public VereinDTO update(String email, VereinDTO dto) {
+        // TODO verify user is allowed to update
+        var verein = vereinRepository.findByEmail(email).orElseThrow();
+        MAPPER.update(verein, dto);
+
+        verein = vereinRepository.save(verein);
+        return MAPPER.toDTO(verein);
     }
 }
