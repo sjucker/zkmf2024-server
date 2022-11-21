@@ -106,6 +106,11 @@ export interface VereinsangabenDTO {
     iban?: string;
 }
 
+export interface VerifyEmailRequestDTO {
+    email: string;
+    verification: string;
+}
+
 export enum UserRole {
     VEREIN = "VEREIN",
     HELPER = "HELPER",

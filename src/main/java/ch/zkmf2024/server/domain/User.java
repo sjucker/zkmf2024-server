@@ -1,11 +1,7 @@
 package ch.zkmf2024.server.domain;
 
 import ch.zkmf2024.server.dto.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,5 +30,11 @@ public class User {
     @Enumerated(STRING)
     @Column(nullable = false, name = "role")
     private UserRole userRole;
+
+    private LocalDateTime createdAt;
+
+    private String emailVerification;
+
+    private LocalDateTime emailVerifiedAt;
 
 }

@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.rest;
 
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
+import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,14 @@ public class VereinEndpoint {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/verification")
+    public ResponseEntity<?> verifyEmail(@RequestBody VerifyEmailRequestDTO request) {
+        log.info("POST /public/verein/verification: {}", request);
+
+        return vereinService.verifyEmail(request) ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.badRequest().build();
     }
 }

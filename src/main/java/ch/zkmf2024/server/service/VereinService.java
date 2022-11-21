@@ -4,18 +4,19 @@ import ch.zkmf2024.server.domain.User;
 import ch.zkmf2024.server.domain.Verein;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.mapper.DTOMapper;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 
@@ -27,19 +28,16 @@ public class VereinService {
     private final UserRepository userRepository;
     private final VereinRepository vereinRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JavaMailSender mailSender;
-    private final Environment environment;
+    private final MailService mailService;
 
     public VereinService(UserRepository userRepository,
                          VereinRepository vereinRepository,
                          PasswordEncoder passwordEncoder,
-                         JavaMailSender mailSender,
-                         Environment environment) {
+                         MailService mailService) {
         this.userRepository = userRepository;
         this.vereinRepository = vereinRepository;
         this.passwordEncoder = passwordEncoder;
-        this.mailSender = mailSender;
-        this.environment = environment;
+        this.mailService = mailService;
     }
 
     public Optional<VereinDTO> find(String email) {
@@ -58,6 +56,8 @@ public class VereinService {
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setUserRole(VEREIN);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setEmailVerification(UUID.randomUUID().toString());
         userRepository.save(user);
 
         var verein = new Verein();
@@ -65,16 +65,7 @@ public class VereinService {
         verein.getAngaben().setVereinsname(request.vereinsname());
         vereinRepository.save(verein);
 
-        var simpleMessage = new SimpleMailMessage();
-        simpleMessage.setSubject("[ZKMF2024] Vereinsaccount erstellt");
-        simpleMessage.setFrom(environment.getRequiredProperty("spring.mail.username"));
-        simpleMessage.setTo(request.email());
-        simpleMessage.setText("""
-                Der Vereinsaccount für %s wurde erfolgreich erstellt.%n
-                Du kannst dich mit der Email %s hier einloggen: %s
-                """.formatted(request.vereinsname(), request.email(), environment.getRequiredProperty("zkmf2024.base-url-vereine")));
-
-        mailSender.send(simpleMessage);
+        mailService.sendRegistrationEmail(user);
     }
 
     @Transactional
@@ -85,5 +76,19 @@ public class VereinService {
 
         verein = vereinRepository.save(verein);
         return MAPPER.toDTO(verein);
+    }
+
+    @Transactional
+    public boolean verifyEmail(VerifyEmailRequestDTO request) {
+        var user = userRepository.findById(request.email()).orElseThrow();
+        if (StringUtils.equals(user.getEmailVerification(), request.verification())) {
+            user.setEmailVerification(null);
+            user.setEmailVerifiedAt(LocalDateTime.now());
+            userRepository.save(user);
+            return true;
+        } else {
+            // TODO logging?
+            return false;
+        }
     }
 }

@@ -1,0 +1,35 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-all padding="0"/>
+            <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins"/>
+            <mj-section background-color="white"/>
+        </mj-attributes>
+    </mj-head>
+    <mj-body background-color="rgb(242, 244, 246)">
+        <mj-section>
+            <mj-column>
+                <mj-image src="https://www.zkmf2024.ch/email/header.png" alt="ZKMF2024" padding="0"/>
+            </mj-column>
+        </mj-section>
+        <mj-section padding-bottom="50px" padding-top="10px">
+            <mj-column>
+                <mj-text align="center"
+                         font-family="Poppins">
+                    <h1>Vereinsaccount erstellt</h1>
+                    <p>Wir freuen uns sehr euch am 31. Zürcher Kantonalmusikfest dabei zu haben!</p>
+                    <p>Email: <span th:text="${email}">Email</span></p>
+                </mj-text>
+                <mj-spacer height="20px"/>
+                <mj-button background-color="rgb(12, 195, 141)"
+                           color="white"
+                           th:href="${verificationLink}"
+                           font-family="Poppins"
+                           padding="20px 0 0 0"
+                           font-size="16px">
+                    Email bestätigen
+                </mj-button>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

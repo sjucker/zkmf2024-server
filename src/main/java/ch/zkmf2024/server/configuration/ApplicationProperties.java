@@ -11,4 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "zkmf2024")
 public class ApplicationProperties {
     private String jwtSecret;
+    private String mjmlAppId;
+    private String mjmlPrivateKey;
+    private String baseUrlVereine;
 }
