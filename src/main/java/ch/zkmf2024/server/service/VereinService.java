@@ -52,7 +52,18 @@ public class VereinService {
 
     public Optional<VereinDTO> find(String email) {
         return vereinRepository.findByEmail(email)
-                               .map(MAPPER::toDTO);
+                               .map(this::toDTO);
+    }
+
+    private VereinDTO toDTO(Verein verein) {
+        var dto = MAPPER.toDTO(verein);
+        imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO)
+                       .ifPresent(image -> dto.setLogoImgId(image.getId()));
+
+        imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD)
+                       .ifPresent(image -> dto.setBildImgId(image.getId()));
+
+        return dto;
     }
 
     @Transactional
@@ -90,7 +101,8 @@ public class VereinService {
         MAPPER.update(verein, dto);
 
         verein = vereinRepository.save(verein);
-        return MAPPER.toDTO(verein);
+
+        return toDTO(verein);
     }
 
     @Transactional

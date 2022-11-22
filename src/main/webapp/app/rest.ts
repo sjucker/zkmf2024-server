@@ -95,6 +95,8 @@ export interface VereinDTO {
     anzahlMusikanten?: number;
     anzahlDirigenten?: number;
     anzahlTambouren?: number;
+    logoImgId?: number;
+    bildImgId?: number;
 }
 
 export interface VereinsangabenDTO {

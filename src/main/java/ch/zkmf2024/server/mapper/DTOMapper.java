@@ -41,6 +41,8 @@ public interface DTOMapper {
 
     HelperRegistrationDTO toDTO(HelperRegistration helperRegistration);
 
+    @Mapping(target = "logoImgId", ignore = true)
+    @Mapping(target = "bildImgId", ignore = true)
     VereinDTO toDTO(Verein verein);
 
     @Mapping(target = "email", ignore = true)
