@@ -14,7 +14,7 @@ import static javax.persistence.EnumType.STRING;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"password"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

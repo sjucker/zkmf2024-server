@@ -59,9 +59,8 @@ public class MailService {
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            // TODO what now?
-            throw new RuntimeException(e);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send registration mail for created user %s".formatted(user), e);
         }
     }
 

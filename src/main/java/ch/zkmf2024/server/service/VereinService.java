@@ -52,6 +52,11 @@ public class VereinService {
             throw new IllegalArgumentException("there is already a user with email: " + request.email());
         }
 
+        if (vereinRepository.findByEmail(request.email()).isPresent()) {
+            log.error("there is already a verein associated with email '{}' but no corresponding user found", request.email());
+            throw new IllegalStateException();
+        }
+
         var user = new User();
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
@@ -87,7 +92,7 @@ public class VereinService {
             userRepository.save(user);
             return true;
         } else {
-            // TODO logging?
+            log.error("could not verify email: {}", request);
             return false;
         }
     }

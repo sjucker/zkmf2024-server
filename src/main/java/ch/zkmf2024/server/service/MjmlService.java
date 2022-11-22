@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -33,11 +32,7 @@ public class MjmlService {
                                 .body(BodyInserters.fromValue(new Request(mjml)))
                                 .retrieve()
                                 .bodyToMono(Response.class)
-                                .onErrorResume(throwable -> {
-                                    // TODO handle errors
-                                    log.info(throwable.getMessage());
-                                    return Mono.empty();
-                                }).block();
+                                .block();
 
         return response.html();
     }
