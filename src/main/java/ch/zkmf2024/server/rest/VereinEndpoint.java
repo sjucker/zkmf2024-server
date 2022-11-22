@@ -22,7 +22,7 @@ public class VereinEndpoint {
     }
 
     @PostMapping
-    public ResponseEntity<String> registerBand(@RequestBody RegisterVereinRequestDTO request) {
+    public ResponseEntity<?> registerBand(@RequestBody RegisterVereinRequestDTO request) {
         log.info("POST /public/verein: {}, {}", request.vereinsname(), request.email());
 
         try {

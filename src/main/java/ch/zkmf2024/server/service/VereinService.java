@@ -1,23 +1,30 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.domain.Image;
+import ch.zkmf2024.server.domain.Image.ImageType;
 import ch.zkmf2024.server.domain.User;
 import ch.zkmf2024.server.domain.Verein;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.mapper.DTOMapper;
+import ch.zkmf2024.server.repository.ImageRepository;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ch.zkmf2024.server.domain.Image.ImageType.VEREIN_BILD;
+import static ch.zkmf2024.server.domain.Image.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 
 @Slf4j
@@ -27,15 +34,18 @@ public class VereinService {
 
     private final UserRepository userRepository;
     private final VereinRepository vereinRepository;
+    private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
     public VereinService(UserRepository userRepository,
                          VereinRepository vereinRepository,
+                         ImageRepository imageRepository,
                          PasswordEncoder passwordEncoder,
                          MailService mailService) {
         this.userRepository = userRepository;
         this.vereinRepository = vereinRepository;
+        this.imageRepository = imageRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
     }
@@ -94,6 +104,25 @@ public class VereinService {
         } else {
             log.error("could not verify email: {}", request);
             return false;
+        }
+    }
+
+    @Transactional
+    public void updateBilder(String email, MultipartFile logo, MultipartFile bild) throws IOException {
+        var verein = vereinRepository.findByEmail(email).orElseThrow();
+        saveImage(logo, verein.getId(), VEREIN_LOGO);
+        saveImage(bild, verein.getId(), VEREIN_BILD);
+    }
+
+    private void saveImage(MultipartFile file, Long vereinId, ImageType imageType) throws IOException {
+        if (file != null) {
+            var image = imageRepository.findImageByForeignKeyAndType(vereinId, imageType)
+                                       .orElseGet(() -> Image.builder().foreignKey(vereinId).type(imageType).build());
+            image.setName(file.getOriginalFilename());
+            image.setContent(file.getBytes());
+            image.setUploadedAt(LocalDateTime.now());
+
+            imageRepository.save(image);
         }
     }
 }
