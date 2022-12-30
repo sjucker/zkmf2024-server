@@ -8,9 +8,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import java.util.HashMap;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -44,8 +44,8 @@ public class MailService {
             var variables = new HashMap<String, Object>();
             variables.put("email", user.getEmail());
             variables.put("verificationLink", "%s/verification/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),
-                                                                                user.getEmail(),
-                                                                                user.getEmailVerification()));
+                    user.getEmail(),
+                    user.getEmailVerification()));
 
             var mjml = templateEngine.process("registration", new Context(GERMAN, variables));
 
