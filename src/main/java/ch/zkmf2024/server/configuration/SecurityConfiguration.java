@@ -14,7 +14,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -50,10 +49,10 @@ public class SecurityConfiguration {
             .csrf().disable()
             .formLogin().disable()
             .logout().disable()
-            .authorizeRequests()
-            .antMatchers(GET, "/*").permitAll()
-            .antMatchers("/public/**").permitAll()
-            .antMatchers("/secured/**").authenticated()
+            .authorizeHttpRequests()
+            .requestMatchers("/public/**").permitAll()
+            .requestMatchers("/secured/**").authenticated()
+            .anyRequest().permitAll()
             .and().exceptionHandling()
             .and().sessionManagement().sessionCreationPolicy(STATELESS);
 
@@ -61,6 +60,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
 
 }

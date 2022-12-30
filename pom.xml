@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>3.0.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.zkmf2024</groupId>
@@ -18,13 +18,11 @@
 
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-        <mail.version>1.4.7</mail.version>
-        <activation.version>1.1.1</activation.version>
         <jjwt.version>0.11.5</jjwt.version>
         <poi.version>5.2.3</poi.version>
 
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-        <typescript-generator-maven-plugin.version>2.36.1070</typescript-generator-maven-plugin.version>
+        <typescript-generator-maven-plugin.version>3.1.1185</typescript-generator-maven-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     </properties>
     <dependencies>
@@ -88,15 +86,8 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
-            <scope>runtime</scope>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
         </dependency>
 
         <dependency>
@@ -257,7 +248,7 @@
                     <outputFileType>implementationFile</outputFileType>
                     <mapEnum>asEnum</mapEnum>
                     <optionalProperties>useSpecifiedAnnotations</optionalProperties>
-                    <requiredAnnotations>javax.validation.constraints.NotNull</requiredAnnotations>
+                    <requiredAnnotations>jakarta.validation.constraints.NotNull</requiredAnnotations>
                     <primitivePropertiesRequired>true</primitivePropertiesRequired>
                     <nonConstEnums>true</nonConstEnums>
                     <noFileComment>true</noFileComment>
