@@ -4,6 +4,7 @@ import {ErrataComponent} from "./errata/errata.component";
 import {HelferComponent} from "./helfer/helfer.component";
 import {JuryComponent} from "./jury/jury.component";
 import {LoginComponent} from "./login/login.component";
+import {MobileAppComponent} from "./mobile-app/mobile-app.component";
 import {NewsletterComponent} from "./newsletter/newsletter.component";
 import {AuthenticationGuard} from "./service/authentication.guard";
 import {StageSetupComponent} from "./stage-setup/stage-setup.component";
@@ -13,6 +14,7 @@ import {VereineComponent} from "./vereine/vereine.component";
 
 export const LOGIN_ROUTE = 'login';
 export const VEREINE_ROUTE = 'vereine';
+export const APP_ROUTE = 'app';
 export const NEWSLETTER_ROUTE = 'newsletter';
 export const HELFER_ROUTE = 'helfer';
 export const USERS_ROUTE = 'users';
@@ -32,6 +34,11 @@ const routes: Routes = [
     {
         path: VEREINE_ROUTE,
         component: VereineComponent,
+        canActivate: [canActivateFn],
+    },
+    {
+        path: APP_ROUTE,
+        component: MobileAppComponent,
         canActivate: [canActivateFn],
     },
     {

@@ -1,0 +1,21 @@
+POST {{url}}/public/auth
+Content-Type: application/json
+
+{
+"email": "{{email}}",
+"password": "{{password}}"
+}
+
+> {%
+    client.global.set("auth_token", response.body.jwt);
+%}
+
+###
+
+POST {{url}}/secured/admin/messaging
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "route": "/jurymitglieder"
+}

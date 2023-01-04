@@ -1,0 +1,18 @@
+<div class="flex flex-column gap-5">
+    <textarea rows="8" cols="60" pInputTextarea [(ngModel)]="dto.markdown" maxlength="8000"></textarea>
+
+    <span class="p-float-label">
+        <input type="text" id="cloudflare" pInputText [(ngModel)]="dto.cloudflareId" [maxLength]="255" class="w-full">
+        <label for="cloudflare">Cloudflare-ID</label>
+    </span>
+
+    <div class="flex justify-content-end gap-5 align-items-end">
+        <p-button label="Schliessen"
+                  [text]="true"
+                  (onClick)="close()"></p-button>
+        <p-button label="Speichern"
+                  (onClick)="save()"
+                  [loading]="saving()"
+                  [disabled]="dto.markdown.length < 1 || isReadOnly()"></p-button>
+    </div>
+</div>

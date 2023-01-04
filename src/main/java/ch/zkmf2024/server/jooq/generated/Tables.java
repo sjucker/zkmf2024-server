@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated;
 
+import ch.zkmf2024.server.jooq.generated.tables.AppPage;
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
 import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
@@ -38,6 +39,11 @@ import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Tables {
+
+    /**
+     * The table <code>app_page</code>.
+     */
+    public static final AppPage APP_PAGE = AppPage.APP_PAGE;
 
     /**
      * The table <code>errata</code>.

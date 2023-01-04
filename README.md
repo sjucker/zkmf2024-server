@@ -2,6 +2,12 @@
 
 ## Development
 
+### Firebase
+
+* https://console.firebase.google.com/u/0/project/zkmf2024-app/settings/serviceaccounts/adminsdk
+    * Secret is stored in KeePass under `ZKMF2024 App Firebase Admin Private Key`
+    * Add JSON as string to the `FIREBASE_CREDENTIALS` property
+
 ### Commands
 
 * Start DB in Docker container:  

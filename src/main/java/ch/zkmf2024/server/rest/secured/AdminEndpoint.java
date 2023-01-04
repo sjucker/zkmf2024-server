@@ -1,11 +1,13 @@
 package ch.zkmf2024.server.rest.secured;
 
+import ch.zkmf2024.server.dto.AppPageDTO;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.VereinStageSetupDTO;
+import ch.zkmf2024.server.dto.admin.AppPageCreateDTO;
 import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
 import ch.zkmf2024.server.dto.admin.ErrataDTO;
 import ch.zkmf2024.server.dto.admin.ErrataSendDTO;
@@ -13,6 +15,7 @@ import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
+import ch.zkmf2024.server.dto.admin.SendMessageDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.UserCreateDTO;
@@ -21,8 +24,10 @@ import ch.zkmf2024.server.dto.admin.VereinCommentCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
 import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
+import ch.zkmf2024.server.service.AppPageService;
 import ch.zkmf2024.server.service.ErrataService;
 import ch.zkmf2024.server.service.ExportService;
+import ch.zkmf2024.server.service.FirebaseMessagingService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.JudgeService;
 import ch.zkmf2024.server.service.NewsletterService;
@@ -45,6 +50,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -68,6 +74,8 @@ public class AdminEndpoint {
     private final TimetableService timetableService;
     private final ErrataService errataService;
     private final StageService stageService;
+    private final FirebaseMessagingService firebaseMessagingService;
+    private final AppPageService appPageService;
 
     public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService,
@@ -76,7 +84,9 @@ public class AdminEndpoint {
                          JudgeService judgeService,
                          TimetableService timetableService,
                          ErrataService errataService,
-                         StageService stageService) {
+                         StageService stageService,
+                         FirebaseMessagingService firebaseMessagingService,
+                         AppPageService appPageService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.vereinService = vereinService;
@@ -85,6 +95,8 @@ public class AdminEndpoint {
         this.timetableService = timetableService;
         this.errataService = errataService;
         this.stageService = stageService;
+        this.firebaseMessagingService = firebaseMessagingService;
+        this.appPageService = appPageService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -371,6 +383,44 @@ public class AdminEndpoint {
     public ResponseEntity<Void> sendErrataEmail(@RequestBody ErrataSendDTO dto) {
         log.info("POST /secured/admin/errata/send {}", dto);
         errataService.send(dto.modul(), dto.klasse(), dto.besetzung());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/messaging")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> messaging(@RequestBody SendMessageDTO dto) {
+        log.info("POST /secured/admin/messaging {}", dto);
+
+        firebaseMessagingService.sendToEmergencyTopic("Test", "body", dto.route());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/app-page")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<List<AppPageDTO>> getAppPage() {
+        log.info("GET /secured/admin/app-page");
+
+        return ResponseEntity.ok(appPageService.getAll());
+    }
+
+    @PostMapping("/app-page")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> postAppPage(@RequestBody @Valid AppPageCreateDTO dto) {
+        log.info("POST /secured/admin/app-page {}", dto);
+
+        appPageService.insert(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/app-page/{id}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> patchAppPage(@PathVariable Long id, @RequestBody @Valid AppPageDTO dto) {
+        log.info("PATCH /secured/admin/app-page/{} {}", id, dto);
+
+        appPageService.update(id, dto);
+
         return ResponseEntity.ok().build();
     }
 
