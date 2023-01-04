@@ -23,6 +23,7 @@
         <playwright.version>1.42.0</playwright.version>
         <pdfbox.version>3.0.2</pdfbox.version>
         <commons-text.version>1.10.0</commons-text.version>
+        <firebase-admin.version>9.2.0</firebase-admin.version>
 
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>3.2.1263</typescript-generator-maven-plugin.version>
@@ -103,6 +104,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>${firebase-admin.version}</version>
         </dependency>
 
         <dependency>

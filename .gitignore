@@ -85,3 +85,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+/src/main/resources/zkmf2024-app-firebase-adminsdk-4v3g9-1f49224aa2.json
+/src/main/resources/zkmf2024-app-test-firebase-adminsdk-w1bnp-ab67af91fc.json

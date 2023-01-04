@@ -6,6 +6,12 @@ export interface AdhocOrchesterTeilnehmerDTO {
     instrument?: string;
 }
 
+export interface AppPageDTO {
+    id: number;
+    markdown: string;
+    cloudflareId?: string;
+}
+
 export interface CoordinatesDTO {
     latitude: number;
     longitude: number;
@@ -510,6 +516,11 @@ export interface VerifyEmailRequestDTO {
     verification: string;
 }
 
+export interface AppPageCreateDTO {
+    markdown: string;
+    cloudflareId?: string;
+}
+
 export interface BroadcastCreateDTO {
     ids: number[];
     message: string;
@@ -555,6 +566,10 @@ export interface JuryLoginCreateDTO {
 export interface LocationSelectionDTO {
     id: number;
     name: string;
+}
+
+export interface SendMessageDTO {
+    route?: string;
 }
 
 export interface TimetableEntryCreateDTO {
