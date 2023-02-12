@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.zkmf2024</groupId>
@@ -219,8 +219,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v16.18.0</nodeVersion>
-                            <npmVersion>8.19.2</npmVersion>
+                            <nodeVersion>v18.14.0</nodeVersion>
+                            <npmVersion>9.4.2</npmVersion>
                         </configuration>
                     </execution>
 
