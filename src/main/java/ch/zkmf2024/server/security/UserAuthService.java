@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.security;
 
 import ch.zkmf2024.server.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+@Slf4j
 @Service
 public class UserAuthService implements UserDetailsService {
 
@@ -29,6 +31,7 @@ public class UserAuthService implements UserDetailsService {
             return new User(user.get().getEmail(), user.get().getPassword(), authorities);
         }
 
-        throw new UsernameNotFoundException("user not found for: " + user);
+        log.error("user not found for: {}", username);
+        return null;
     }
 }
