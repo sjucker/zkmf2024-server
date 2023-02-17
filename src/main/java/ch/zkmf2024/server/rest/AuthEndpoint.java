@@ -81,6 +81,7 @@ public class AuthEndpoint {
 
         return switch (result) {
             case INVALID_EMAIL -> ResponseEntity.badRequest().build();
+            case ALREADY_REGISTERED -> ResponseEntity.status(CONFLICT).build();
             case REGISTERED -> ResponseEntity.ok().build();
         };
     }

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {saveAs} from "file-saver";
 import {MessageService} from "primeng/api";
 import {HelperRegistrationDTO} from "../rest";
 import {HelperService} from "../service/helper.service";
@@ -12,6 +13,8 @@ export class HelferComponent implements OnInit {
 
     data: HelperRegistrationDTO[] = [];
     loading = false;
+    exporting = false;
+    exportingHelfereinsatz = false;
 
     constructor(private helperService: HelperService,
                 private messageService: MessageService) {
@@ -41,4 +44,45 @@ export class HelferComponent implements OnInit {
         })
     }
 
+    export() {
+        this.exporting = true;
+        this.helperService.export().subscribe({
+            next: response => {
+                saveAs(response, "helfer-export.xlsx");
+            },
+            error: error => {
+                this.exporting = false;
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exporting = false;
+            }
+        })
+    }
+
+    exportForImport() {
+        this.exportingHelfereinsatz = true;
+        this.helperService.exportForImport().subscribe({
+            next: response => {
+                saveAs(response, "helfer-import.xlsx");
+            },
+            error: error => {
+                this.exportingHelfereinsatz = false;
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exportingHelfereinsatz = false;
+            }
+        })
+    }
 }

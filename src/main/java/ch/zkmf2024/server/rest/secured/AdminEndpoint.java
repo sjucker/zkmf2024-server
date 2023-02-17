@@ -50,12 +50,25 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/download/umfrage")
-    public ResponseEntity<Resource> exportUmfrage() {
+    public ResponseEntity<Resource> exportUmfrage() throws IOException {
         log.info("GET /secured/admin/download/umfrage");
-        File file = null;
-        try {
-            file = surveyService.export();
+        return export(surveyService.export());
+    }
 
+    @GetMapping(path = "/download/helfer")
+    public ResponseEntity<Resource> exportHelfer() throws IOException {
+        log.info("GET /secured/admin/download/helfer");
+        return export(helperRegistrationService.export());
+    }
+
+    @GetMapping(path = "/download/helfer-import")
+    public ResponseEntity<Resource> exportHelferImport() throws IOException {
+        log.info("GET /secured/admin/download/helfer-import");
+        return export(helperRegistrationService.exportForImport());
+    }
+
+    private ResponseEntity<Resource> export(File file) {
+        try {
             var path = Paths.get(file.getAbsolutePath());
             var resource = new ByteArrayResource(Files.readAllBytes(path));
 
@@ -66,7 +79,7 @@ public class AdminEndpoint {
                                  .body(resource);
 
         } catch (RuntimeException | IOException e) {
-            log.error("Umfrage export failed", e);
+            log.error("Helfer export failed", e);
             return ResponseEntity.internalServerError().build();
         }
     }

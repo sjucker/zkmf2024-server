@@ -48,12 +48,25 @@ export interface NewsletterRecipientDTO {
 }
 
 export interface RegisterHelperRequestDTO {
-    vorname: string;
-    name: string;
     email: string;
-    mobile: string;
+    name: string;
+    vorname: string;
+    adresse: string;
+    plzOrt: string;
+    geburtsdatum: Date;
+    telefon: string;
+    vereinszugehoerigkeit: string;
+    aufgaben: Aufgaben[];
+    anzahlEinsaetze: string;
+    einsatzMittwoch: Einsatzzeit[];
+    einsatzDonnerstag: Einsatzzeit[];
+    einsatzFreitag: Einsatzzeit[];
+    einsatzSamstag: Einsatzzeit[];
+    einsatzSonntag: Einsatzzeit[];
+    einsatzMontag: Einsatzzeit[];
+    einsatzDienstag: Einsatzzeit[];
+    groesseShirt: string;
     comment: string;
-    checkedDays: EventDays[];
 }
 
 export interface RegisterNewsletterRequestDTO {
@@ -120,10 +133,27 @@ export enum UserRole {
     ADMIN = "ADMIN",
 }
 
-export enum EventDays {
-    FRIDAY = "FRIDAY",
-    SATURDAY = "SATURDAY",
-    SUNDAY = "SUNDAY",
+export enum Aufgaben {
+    EGAL = "EGAL",
+    KOERPERLICH = "KOERPERLICH",
+    MUSIKALISCH = "MUSIKALISCH",
+    SERVICE = "SERVICE",
+    BUFFET = "BUFFET",
+    KUECHE = "KUECHE",
+    NACHSCHUB = "NACHSCHUB",
+    AUSSENSTAND = "AUSSENSTAND",
+    RAHMENPROGRAMM = "RAHMENPROGRAMM",
+    AUFBAU = "AUFBAU",
+    BETREUUNG = "BETREUUNG",
+    AUFSICHT = "AUFSICHT",
+}
+
+export enum Einsatzzeit {
+    MORGEN = "MORGEN",
+    MITTAG = "MITTAG",
+    NACHMITTAG = "NACHMITTAG",
+    ABEND = "ABEND",
+    NACHT = "NACHT",
 }
 
 export enum StaerkeKlasse {

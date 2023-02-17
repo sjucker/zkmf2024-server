@@ -17,4 +17,16 @@ export class HelperService {
     getAll(): Observable<HelperRegistrationDTO[]> {
         return this.httpClient.get<HelperRegistrationDTO[]>(`${this.baseUrl}/secured/admin/helfer`)
     }
+
+    export(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/helfer`, {
+            responseType: 'blob'
+        });
+    }
+
+    exportForImport(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/helfer-import`, {
+            responseType: 'blob'
+        });
+    }
 }
