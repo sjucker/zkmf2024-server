@@ -43,8 +43,8 @@ export interface NewsletterRecipientDTO {
     vorname: string;
     name: string;
     email: string;
-    subscribedAt: Date;
-    unsubscribedAt?: Date;
+    subscribedAt: DateAsString;
+    unsubscribedAt?: DateAsString;
 }
 
 export interface RegisterHelperRequestDTO {
@@ -53,7 +53,7 @@ export interface RegisterHelperRequestDTO {
     vorname: string;
     adresse: string;
     plzOrt: string;
-    geburtsdatum: Date;
+    geburtsdatum: DateAsString;
     telefon: string;
     vereinszugehoerigkeit: string;
     aufgaben: Aufgaben[];
@@ -125,6 +125,8 @@ export interface VerifyEmailRequestDTO {
     email: string;
     verification: string;
 }
+
+export type DateAsString = string;
 
 export enum UserRole {
     VEREIN = "VEREIN",

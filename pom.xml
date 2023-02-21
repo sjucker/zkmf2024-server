@@ -246,6 +246,7 @@
                     <outputFile>src/main/webapp/app/rest.ts</outputFile>
                     <outputKind>module</outputKind>
                     <outputFileType>implementationFile</outputFileType>
+                    <mapDate>asString</mapDate>
                     <mapEnum>asEnum</mapEnum>
                     <optionalProperties>useSpecifiedAnnotations</optionalProperties>
                     <requiredAnnotations>jakarta.validation.constraints.NotNull</requiredAnnotations>
