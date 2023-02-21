@@ -13,7 +13,7 @@ export const HELFER_ROUTE = 'helfer'
 
 const routes: Routes = [
     {
-        path: '', component: UmfrageComponent, canActivate: [AuthenticationGuard], // TODO add landing page after login
+        path: '', component: HelferComponent, canActivate: [AuthenticationGuard], // TODO add landing page after login
     },
     {
         path: UMFRAGE_ROUTE, component: UmfrageComponent, canActivate: [AuthenticationGuard],
