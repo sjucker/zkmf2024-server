@@ -5,19 +5,7 @@ export interface ChangePasswordRequestDTO {
     newPassword: string;
 }
 
-export interface HelperRegistrationDTO {
-    id: number;
-    vorname: string;
-    name: string;
-    email: string;
-    mobile: string;
-    availableFriday: boolean;
-    availableSaturday: boolean;
-    availableSunday: boolean;
-    comment?: string;
-}
-
-export interface KontaktDTO {
+export interface KontaktDTO extends IsValid {
     vorname?: string;
     nachname?: string;
     adresse?: string;
@@ -102,17 +90,12 @@ export interface VereinDTO {
     email: string;
     angaben: VereinsangabenDTO;
     praesident: KontaktDTO;
-    kassier: KontaktDTO;
     direktion: KontaktDTO;
-    staerkeKlasse?: StaerkeKlasse;
-    anzahlMusikanten?: number;
-    anzahlDirigenten?: number;
-    anzahlTambouren?: number;
-    logoImgId?: number;
-    bildImgId?: number;
+    anmeldung: VereinsanmeldungDTO;
+    info: VereinsinfoDTO;
 }
 
-export interface VereinsangabenDTO {
+export interface VereinsangabenDTO extends IsValid {
     vereinsname?: string;
     adresse?: string;
     plz?: number;
@@ -121,9 +104,37 @@ export interface VereinsangabenDTO {
     iban?: string;
 }
 
+export interface VereinsanmeldungDTO extends IsValid {
+    modulA: boolean;
+    modulB: boolean;
+    modulC: boolean;
+    modulD: boolean;
+    modulE: boolean;
+    modulF: boolean;
+    modulG: boolean;
+    modulH: boolean;
+    klasseModulA?: Klasse;
+    klasseModulB?: Klasse;
+    klasseModulH?: Klasse;
+    harmonie: boolean;
+    brassBand: boolean;
+    fanfare: boolean;
+    tambouren: boolean;
+    perkussionsensemble: boolean;
+}
+
+export interface VereinsinfoDTO extends IsValid {
+    logoImgId?: number;
+    bildImgId?: number;
+}
+
 export interface VerifyEmailRequestDTO {
     email: string;
     verification: string;
+}
+
+export interface IsValid {
+    valid: boolean;
 }
 
 export type DateAsString = string;
@@ -158,13 +169,13 @@ export enum Einsatzzeit {
     NACHT = "NACHT",
 }
 
-export enum StaerkeKlasse {
+export enum Klasse {
     HOECHSTKLASSE = "HOECHSTKLASSE",
     KLASSE_1 = "KLASSE_1",
     KLASSE_2 = "KLASSE_2",
     KLASSE_3 = "KLASSE_3",
     KLASSE_4 = "KLASSE_4",
-    UNTERSTUFE = "UNTERSTUFE",
-    MITTELSTUFE = "MITTELSTUFE",
     OBERSTUFE = "OBERSTUFE",
+    MITTELSTUFE = "MITTELSTUFE",
+    UNTERSTUFE = "UNTERSTUFE",
 }
