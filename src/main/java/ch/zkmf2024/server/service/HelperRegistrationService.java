@@ -33,9 +33,12 @@ import static org.springframework.data.domain.Sort.by;
 public class HelperRegistrationService {
 
     private final HelperRegistrationRepository helperRegistrationRepository;
+    private final MailService mailService;
 
-    public HelperRegistrationService(HelperRegistrationRepository helperRegistrationRepository) {
+    public HelperRegistrationService(HelperRegistrationRepository helperRegistrationRepository,
+                                     MailService mailService) {
         this.helperRegistrationRepository = helperRegistrationRepository;
+        this.mailService = mailService;
     }
 
     public RegisterHelperResult register(RegisterHelperRequestDTO request) {
@@ -47,7 +50,9 @@ public class HelperRegistrationService {
             return ALREADY_REGISTERED;
         }
 
-        helperRegistrationRepository.save(HelperRegistrationMapper.INSTANCE.fromDTO(request));
+        var helperRegistration = helperRegistrationRepository.save(HelperRegistrationMapper.INSTANCE.fromDTO(request));
+
+        mailService.sendHelperRegistrationEmail(helperRegistration);
 
         return REGISTERED;
     }

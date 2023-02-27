@@ -14,4 +14,5 @@ public class ApplicationProperties {
     private String mjmlAppId;
     private String mjmlPrivateKey;
     private String baseUrlVereine;
+    private String helferMail;
 }
