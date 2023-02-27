@@ -28,6 +28,8 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 @Service
 public class MailService {
 
+    private static final String BCC_MAIL = "stefan.jucker@gmail.com";
+
     private final JavaMailSender mailSender;
     private final MjmlService mjmlService;
     private final SpringTemplateEngine templateEngine;
@@ -62,6 +64,8 @@ public class MailService {
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
             helper.setTo(user.getEmail());
+            helper.setCc(applicationProperties.getSekretariatMail());
+            helper.setBcc(BCC_MAIL);
             helper.setSubject("[ZKMF2024] Vereinsaccount erstellt");
             helper.setText(mjmlService.render(mjml), true);
 
@@ -103,6 +107,7 @@ public class MailService {
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
             helper.setTo(helperRegistration.getEmail());
             helper.setCc(applicationProperties.getHelferMail());
+            helper.setBcc(BCC_MAIL);
             helper.setSubject("[ZKMF2024] Anmeldung Helfer");
             helper.setText(mjmlService.render(mjml), true);
 

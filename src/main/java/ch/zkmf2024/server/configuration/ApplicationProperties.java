@@ -15,4 +15,5 @@ public class ApplicationProperties {
     private String mjmlPrivateKey;
     private String baseUrlVereine;
     private String helferMail;
+    private String sekretariatMail;
 }
