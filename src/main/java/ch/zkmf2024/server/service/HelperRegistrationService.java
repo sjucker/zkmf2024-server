@@ -2,9 +2,7 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.Aufgaben;
 import ch.zkmf2024.server.dto.Einsatzzeit;
-import ch.zkmf2024.server.dto.HelperRegistrationDTO;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
-import ch.zkmf2024.server.mapper.DTOMapper;
 import ch.zkmf2024.server.mapper.HelperRegistrationMapper;
 import ch.zkmf2024.server.repository.HelperRegistrationRepository;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -55,12 +53,6 @@ public class HelperRegistrationService {
         mailService.sendHelperRegistrationEmail(helperRegistration);
 
         return REGISTERED;
-    }
-
-    public List<HelperRegistrationDTO> getAll() {
-        return helperRegistrationRepository.findAll().stream()
-                                           .map(DTOMapper.INSTANCE::toDTO)
-                                           .toList();
     }
 
     public enum RegisterHelperResult {

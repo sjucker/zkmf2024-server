@@ -1,6 +1,5 @@
 package ch.zkmf2024.server.rest.secured;
 
-import ch.zkmf2024.server.dto.HelperRegistrationDTO;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.SurveyAnswerDTO;
 import ch.zkmf2024.server.service.HelperRegistrationService;
@@ -112,12 +111,6 @@ public class AdminEndpoint {
 
         newsletterService.unsubscribe(email);
         return ResponseEntity.accepted().build();
-    }
-
-    @GetMapping(path = "/helfer")
-    public ResponseEntity<List<HelperRegistrationDTO>> getHelperRegistration() {
-        log.info("GET /secured/admin/helfer");
-        return ResponseEntity.ok(helperRegistrationService.getAll());
     }
 
 }

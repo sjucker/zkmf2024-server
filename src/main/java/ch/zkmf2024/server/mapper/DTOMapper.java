@@ -1,11 +1,8 @@
 package ch.zkmf2024.server.mapper;
 
-
-import ch.zkmf2024.server.domain.HelperRegistration;
 import ch.zkmf2024.server.domain.NewsletterRecipient;
 import ch.zkmf2024.server.domain.SurveyAnswer;
 import ch.zkmf2024.server.domain.Verein;
-import ch.zkmf2024.server.dto.HelperRegistrationDTO;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.SurveyAnswerDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
@@ -39,12 +36,11 @@ public interface DTOMapper {
 
     NewsletterRecipientDTO toDTO(NewsletterRecipient newsletterRecipient);
 
-    HelperRegistrationDTO toDTO(HelperRegistration helperRegistration);
-
-    @Mapping(target = "logoImgId", ignore = true)
-    @Mapping(target = "bildImgId", ignore = true)
+    @Mapping(target = "info", ignore = true)
+    @Mapping(target = "anmeldung", source = "anmeldung")
     VereinDTO toDTO(Verein verein);
 
     @Mapping(target = "email", ignore = true)
+    @Mapping(target = "id", ignore = true)
     void update(@MappingTarget Verein domain, VereinDTO dto);
 }

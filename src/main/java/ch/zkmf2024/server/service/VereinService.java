@@ -6,6 +6,7 @@ import ch.zkmf2024.server.domain.User;
 import ch.zkmf2024.server.domain.Verein;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.mapper.DTOMapper;
 import ch.zkmf2024.server.repository.ImageRepository;
@@ -57,11 +58,17 @@ public class VereinService {
 
     private VereinDTO toDTO(Verein verein) {
         var dto = MAPPER.toDTO(verein);
-        imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO)
-                       .ifPresent(image -> dto.setLogoImgId(image.getId()));
 
-        imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD)
-                       .ifPresent(image -> dto.setBildImgId(image.getId()));
+        var logoImgId = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO)
+                                       .map(Image::getId)
+                                       .orElse(null);
+
+        var bildImgId = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD)
+                                       .map(Image::getId)
+                                       .orElse(null);
+
+        var vereinsinfo = new VereinsinfoDTO(logoImgId, bildImgId);
+        dto.setInfo(vereinsinfo);
 
         return dto;
     }
