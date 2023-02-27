@@ -1,0 +1,104 @@
+<mjml>
+    <mj-head>
+        <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins"/>
+        <mj-attributes>
+            <mj-all padding="0"/>
+            <mj-section background-color="white"/>
+            <mj-text font-family="Poppins"/>
+        </mj-attributes>
+    </mj-head>
+    <mj-body background-color="rgb(242, 244, 246)">
+        <mj-section>
+            <mj-column>
+                <mj-image src="https://www.zkmf2024.ch/email/header-helfer.png" alt="ZKMF2024" padding="0"/>
+            </mj-column>
+        </mj-section>
+        <mj-section padding-bottom="50px">
+            <mj-column padding="10px">
+                <mj-text>
+                    <h4>Liebe / Lieber
+                        <span th:text="${vorname}">Vorname</span>
+                    </h4>
+                    <p>
+                        Vielen Dank für deine Bereitschaft, uns am 31. Zürcher Kantonalmusikfest Urdorf + Schlieren
+                        tatkräftig
+                        zu unterstützen. Wir werden uns frühzeitig wieder bei dir mit allen notwendigen Informationen
+                        melden.
+                    </p>
+                    <p>Für dringende Fragen kontaktiere uns bitte unter: personal@zkmf2024.ch</p>
+                    <p>
+                        Unten siehst du deine soeben getätigten Eingaben:
+                    </p>
+                </mj-text>
+                <mj-text padding-left="20px">
+                    <p>
+                        <b>Email</b>:
+                        <span th:text="${email}">Email</span>
+                        <br/>
+                        <b>Vorname</b>:
+                        <span th:text="${vorname}">Vorname</span>
+                        <br/>
+                        <b>Nachname</b>:
+                        <span th:text="${nachname}">Nachname</span>
+                        <br/>
+                        <b>Adresse</b>:
+                        <span th:text="${adresse}">Adresse</span>
+                        <br/>
+                        <b>PLZ / Ort</b>:
+                        <span th:text="${plzOrt}">PLZ Ort</span>
+                        <br/>
+                        <b>Geburtsdatum</b>:
+                        <span th:text="${geburtsdatum}">Geburtsdatum</span>
+                        <br/>
+                        <b>Telefon</b>:
+                        <span th:text="${telefon}">Telefon</span>
+                    </p>
+                    <p><b>Vereinszugehörigkeit</b>:
+                        <span th:text="${vereinszugehoerigkeit}">Vereinszugehoerigkeit</span>
+                    </p>
+                    <p><b>Aufgaben</b>:
+                        <span th:text="${aufgaben}">Aufgaben</span>
+                    </p>
+                    <p><b>Anzahl möglicher Einsätze</b>:
+                        <span th:text="${anzahl}">Anzahl</span>
+                    </p>
+                    <p><b>Bevorzugte Einsatztage und -zeiten</b>:
+                        <br/>
+                        Mittwoch, 19.06.2024:
+                        <span th:text="${mittwoch}">Mittwoch</span>
+                        <br/>
+                        Donnerstag, 20.06.2024:
+                        <span th:text="${donnerstag}">Donnerstag</span>
+                        <br/>
+                        Freitag, 21.06.2024:
+                        <span th:text="${freitag}">Freitag</span>
+                        <br/>
+                        Samstag, 22.06.2024:
+                        <span th:text="${samstag}">Samstag</span>
+                        <br/>
+                        Sonntag, 23.06.2024:
+                        <span th:text="${sonntag}">Sonntag</span>
+                        <br/>
+                        Montag, 24.06.2024:
+                        <span th:text="${montag}">Montag</span>
+                        <br/>
+                        Dienstag, 25.06.2024:
+                        <span th:text="${dienstag}">Dienstag</span>
+                    </p>
+                    <p><b>Grösse Helfer-T-Shirt</b>:
+                        <span th:text="${shirt}">T-Shirt</span>
+                    </p>
+                    <p><b>Bemerkungen</b>:
+                        <span th:text="${comment}">Bemerkungen</span>
+                    </p>
+                </mj-text>
+                <mj-text>
+                    <p>Musikalische Grüsse
+                        <br/>
+                        Luca Bárdos, Daniela Kolar, Urs Kolar
+                    </p>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>
