@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="typescript-generator:generate" type="MavenRunConfiguration" factoryName="Maven">
+  <configuration default="false" name="rebuild DB" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -10,7 +10,8 @@
           </option>
           <option name="goals">
             <list>
-              <option value="typescript-generator:generate" />
+              <option value="flyway:clean" />
+              <option value="flyway:migrate" />
             </list>
           </option>
           <option name="pomFileName" value="pom.xml" />

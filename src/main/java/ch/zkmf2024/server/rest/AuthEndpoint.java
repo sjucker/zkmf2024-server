@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.LoginRequestDTO;
 import ch.zkmf2024.server.dto.LoginResponseDTO;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
 import ch.zkmf2024.server.dto.RegisterNewsletterRequestDTO;
+import ch.zkmf2024.server.dto.UserRole;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.security.JwtService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
@@ -55,11 +56,11 @@ public class AuthEndpoint {
             if (passwordEncoder.matches(request.password(), user.getPassword())) {
 
                 user.setLastLogin(LocalDateTime.now());
-                userRepository.save(user);
+                userRepository.insert(user);
 
                 return ResponseEntity.ok(new LoginResponseDTO(
                         user.getEmail(),
-                        user.getUserRole(),
+                        UserRole.valueOf(user.getRole()),
                         jwtService.createJwt(user.getEmail())
                 ));
             } else {

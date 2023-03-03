@@ -3,8 +3,10 @@ package ch.zkmf2024.server.service;
 import ch.zkmf2024.server.dto.Aufgaben;
 import ch.zkmf2024.server.dto.Einsatzzeit;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
 import ch.zkmf2024.server.mapper.HelperRegistrationMapper;
 import ch.zkmf2024.server.repository.HelperRegistrationRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -20,12 +22,12 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.zkmf2024.server.mapper.HelperRegistrationMapper.LIST_DELIMITER;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.REGISTERED;
 import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
-import static org.springframework.data.domain.Sort.Order.desc;
-import static org.springframework.data.domain.Sort.by;
+import static java.util.Comparator.comparing;
 
 @Service
 public class HelperRegistrationService {
@@ -39,6 +41,44 @@ public class HelperRegistrationService {
         this.mailService = mailService;
     }
 
+    public static List<Aufgaben> getAufgabenAsList(HelperRegistrationPojo helperRegistration) {
+        return Arrays.stream(StringUtils.split(helperRegistration.getAufgaben(), LIST_DELIMITER))
+                     .map(Aufgaben::valueOf)
+                     .toList();
+    }
+
+    public static List<Einsatzzeit> getEinsatzMittwochAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzMittwoch());
+    }
+
+    public static List<Einsatzzeit> getEinsatzDonnerstagAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzDonnerstag());
+    }
+
+    public static List<Einsatzzeit> getEinsatzFreitagAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzFreitag());
+    }
+
+    public static List<Einsatzzeit> getEinsatzSamstagAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzSamstag());
+    }
+
+    public static List<Einsatzzeit> getEinsatzSonntagAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzSonntag());
+    }
+
+    public static List<Einsatzzeit> getEinsatzMontagAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzMontag());
+    }
+
+    public static List<Einsatzzeit> getEinsatzDienstagAsList(HelperRegistrationPojo helperRegistration) {
+        return getEinsatzzeitAsList(helperRegistration.getEinsatzDienstag());
+    }
+
+    private static List<Einsatzzeit> getEinsatzzeitAsList(String values) {
+        return Arrays.stream(StringUtils.split(values, LIST_DELIMITER)).map(Einsatzzeit::valueOf).toList();
+    }
+
     public RegisterHelperResult register(RegisterHelperRequestDTO request) {
         if (!isValidEmail(request.email())) {
             return INVALID_EMAIL;
@@ -48,7 +88,8 @@ public class HelperRegistrationService {
             return ALREADY_REGISTERED;
         }
 
-        var helperRegistration = helperRegistrationRepository.save(HelperRegistrationMapper.INSTANCE.fromDTO(request));
+        var helperRegistration = HelperRegistrationMapper.INSTANCE.fromDTO(request);
+        helperRegistrationRepository.insert(helperRegistration);
 
         mailService.sendHelperRegistrationEmail(helperRegistration);
 
@@ -83,7 +124,10 @@ public class HelperRegistrationService {
             headerRow.createCell(columnIndex++).setCellValue("T-Shirt");
             headerRow.createCell(columnIndex++).setCellValue("Vereinszugehörigkeit");
 
-            for (var helperRegistration : helperRegistrationRepository.findAll(by(desc("registeredAt")))) {
+            for (var helperRegistration : helperRegistrationRepository.findAll()
+                                                                      .stream()
+                                                                      .sorted(comparing(HelperRegistrationPojo::getRegisteredAt).reversed())
+                                                                      .toList()) {
 
                 var row = sheet.createRow(rowIndex++);
                 columnIndex = 0;
@@ -156,7 +200,10 @@ public class HelperRegistrationService {
             columnIndex = addHeader(sheet, headerRow1, headerRow2, "", List.of("Grösse Helfer-T-Shirt"), columnIndex);
             columnIndex = addHeader(sheet, headerRow1, headerRow2, "", List.of("Bemerkungen"), columnIndex);
 
-            for (var helperRegistration : helperRegistrationRepository.findAll(by(desc("registeredAt")))) {
+            for (var helperRegistration : helperRegistrationRepository.findAll()
+                                                                      .stream()
+                                                                      .sorted(comparing(HelperRegistrationPojo::getRegisteredAt).reversed())
+                                                                      .toList()) {
 
                 var row = sheet.createRow(rowIndex++);
 
@@ -180,20 +227,20 @@ public class HelperRegistrationService {
                 row.createCell(columnIndex++).setCellValue(helperRegistration.getVereinszugehoerigkeit());
                 for (var aufgabe : Aufgaben.values()) {
                     var cell = row.createCell(columnIndex++);
-                    if (helperRegistration.getAufgabenAsList().contains(aufgabe)) {
+                    if (getAufgabenAsList(helperRegistration).contains(aufgabe)) {
                         cell.setCellValue("x");
                     }
                 }
 
                 row.createCell(columnIndex++).setCellValue(helperRegistration.getAnzahlEinsaetze());
 
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzMittwochAsList());
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzDonnerstagAsList());
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzFreitagAsList());
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzSamstagAsList());
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzSonntagAsList());
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzMontagAsList());
-                columnIndex = fillEinssatzzeit(columnIndex, row, helperRegistration.getEinsatzDienstagAsList());
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzMittwochAsList(helperRegistration));
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzDonnerstagAsList(helperRegistration));
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzFreitagAsList(helperRegistration));
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzSamstagAsList(helperRegistration));
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzSonntagAsList(helperRegistration));
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzMontagAsList(helperRegistration));
+                columnIndex = fillEinssatzzeit(columnIndex, row, getEinsatzDienstagAsList(helperRegistration));
 
                 row.createCell(columnIndex++).setCellValue(helperRegistration.getGroesseShirt());
                 row.createCell(columnIndex++).setCellValue(helperRegistration.getComment());

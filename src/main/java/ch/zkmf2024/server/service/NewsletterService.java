@@ -1,10 +1,10 @@
 package ch.zkmf2024.server.service;
 
-import ch.zkmf2024.server.domain.NewsletterRecipient;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.RegisterNewsletterRequestDTO;
-import ch.zkmf2024.server.mapper.DTOMapper;
-import ch.zkmf2024.server.repository.NewsletterRepository;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.NewsletterRecipientPojo;
+import ch.zkmf2024.server.mapper.NewsletterRecipientMapper;
+import ch.zkmf2024.server.repository.NewsletterRecipientRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,14 +18,14 @@ import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
 @Service
 public class NewsletterService {
 
-    private final NewsletterRepository newsletterRepository;
+    private final NewsletterRecipientRepository newsletterRecipientRepository;
 
-    public NewsletterService(NewsletterRepository newsletterRepository) {
-        this.newsletterRepository = newsletterRepository;
+    public NewsletterService(NewsletterRecipientRepository newsletterRecipientRepository) {
+        this.newsletterRecipientRepository = newsletterRecipientRepository;
     }
 
     public RegisterNewsletterResult register(RegisterNewsletterRequestDTO dto) {
-        if (newsletterRepository.existsById(dto.email())) {
+        if (newsletterRecipientRepository.existsById(dto.email())) {
             return ALREADY_REGISTERED;
         }
 
@@ -33,7 +33,7 @@ public class NewsletterService {
             return INVALID_EMAIL;
         }
 
-        newsletterRepository.save(new NewsletterRecipient(
+        newsletterRecipientRepository.insert(new NewsletterRecipientPojo(
                 dto.email(),
                 dto.vorname(),
                 dto.name(),
@@ -42,23 +42,22 @@ public class NewsletterService {
         ));
 
         return REGISTERED;
-
     }
 
     public List<NewsletterRecipientDTO> getAll() {
-        return newsletterRepository.findAll().stream()
-                                   .map(DTOMapper.INSTANCE::toDTO)
-                                   .toList();
+        return newsletterRecipientRepository.findAll().stream()
+                                            .map(NewsletterRecipientMapper.INSTANCE::toDTO)
+                                            .toList();
     }
 
     public void delete(String email) {
-        newsletterRepository.deleteById(email);
+        newsletterRecipientRepository.deleteById(email);
     }
 
     public void unsubscribe(String email) {
-        var newsletterRecipient = newsletterRepository.findById(email).orElseThrow();
+        var newsletterRecipient = newsletterRecipientRepository.findById(email).orElseThrow();
         newsletterRecipient.setUnsubscribedAt(LocalDateTime.now());
-        newsletterRepository.save(newsletterRecipient);
+        newsletterRecipientRepository.update(newsletterRecipient);
     }
 
     public enum RegisterNewsletterResult {

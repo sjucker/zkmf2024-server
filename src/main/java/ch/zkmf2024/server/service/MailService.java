@@ -1,10 +1,10 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.configuration.ApplicationProperties;
-import ch.zkmf2024.server.domain.HelperRegistration;
-import ch.zkmf2024.server.domain.User;
 import ch.zkmf2024.server.dto.Aufgaben;
 import ch.zkmf2024.server.dto.Einsatzzeit;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.UserPojo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -19,6 +19,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
+import static ch.zkmf2024.server.service.HelperRegistrationService.getAufgabenAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzDienstagAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzDonnerstagAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzFreitagAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzMittwochAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzMontagAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzSamstagAsList;
+import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzSonntagAsList;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Locale.GERMAN;
 import static java.util.stream.Collectors.joining;
@@ -48,7 +56,7 @@ public class MailService {
         this.environment = environment;
     }
 
-    public void sendRegistrationEmail(User user) {
+    public void sendRegistrationEmail(UserPojo user) {
         try {
             var variables = new HashMap<String, Object>();
             variables.put("email", user.getEmail());
@@ -75,7 +83,7 @@ public class MailService {
         }
     }
 
-    public void sendHelperRegistrationEmail(HelperRegistration helperRegistration) {
+    public void sendHelperRegistrationEmail(HelperRegistrationPojo helperRegistration) {
         try {
             var variables = new HashMap<String, Object>();
             variables.put("email", helperRegistration.getEmail());
@@ -86,15 +94,15 @@ public class MailService {
             variables.put("geburtsdatum", helperRegistration.getGeburtsdatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             variables.put("telefon", helperRegistration.getTelefon());
             variables.put("vereinszugehoerigkeit", helperRegistration.getVereinszugehoerigkeit());
-            variables.put("aufgaben", helperRegistration.getAufgabenAsList().stream().map(Aufgaben::getDescription).collect(joining(", ")));
+            variables.put("aufgaben", getAufgabenAsList(helperRegistration).stream().map(Aufgaben::getDescription).collect(joining(", ")));
             variables.put("anzahl", helperRegistration.getAnzahlEinsaetze());
-            variables.put("mittwoch", getEinsatzzeit(helperRegistration.getEinsatzMittwochAsList()));
-            variables.put("donnerstag", getEinsatzzeit(helperRegistration.getEinsatzDonnerstagAsList()));
-            variables.put("freitag", getEinsatzzeit(helperRegistration.getEinsatzFreitagAsList()));
-            variables.put("samstag", getEinsatzzeit(helperRegistration.getEinsatzSamstagAsList()));
-            variables.put("sonntag", getEinsatzzeit(helperRegistration.getEinsatzSonntagAsList()));
-            variables.put("montag", getEinsatzzeit(helperRegistration.getEinsatzMontagAsList()));
-            variables.put("dienstag", getEinsatzzeit(helperRegistration.getEinsatzDienstagAsList()));
+            variables.put("mittwoch", getEinsatzzeit(getEinsatzMittwochAsList(helperRegistration)));
+            variables.put("donnerstag", getEinsatzzeit(getEinsatzDonnerstagAsList(helperRegistration)));
+            variables.put("freitag", getEinsatzzeit(getEinsatzFreitagAsList(helperRegistration)));
+            variables.put("samstag", getEinsatzzeit(getEinsatzSamstagAsList(helperRegistration)));
+            variables.put("sonntag", getEinsatzzeit(getEinsatzSonntagAsList(helperRegistration)));
+            variables.put("montag", getEinsatzzeit(getEinsatzMontagAsList(helperRegistration)));
+            variables.put("dienstag", getEinsatzzeit(getEinsatzDienstagAsList(helperRegistration)));
             variables.put("shirt", helperRegistration.getGroesseShirt());
             variables.put("comment", helperRegistration.getComment());
 
