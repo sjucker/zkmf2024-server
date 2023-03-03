@@ -20,10 +20,18 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jjwt.version>0.11.5</jjwt.version>
         <poi.version>5.2.3</poi.version>
+        <jooq.version>3.17.8</jooq.version>
 
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>3.1.1185</typescript-generator-maven-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <flyway-maven-plugin.version>9.15.2</flyway-maven-plugin.version>
+
+        <!-- start local DB using src/main/docker/mysql.yml  -->
+        <db.url>jdbc:mysql://localhost:3306/zkmf2024</db.url>
+        <db.user>zkmf2024</db.user>
+        <db.schema>zkmf2024</db.schema>
+        <db.password>zkmf2024</db.password>
     </properties>
     <dependencies>
         <dependency>
@@ -36,15 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,6 +61,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
 
         <dependency>
@@ -252,7 +256,6 @@
                 </configuration>
             </plugin>
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -291,6 +294,70 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway-maven-plugin.version}</version>
+                <configuration>
+                    <url>${db.url}</url>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
+                    <cleanDisabled>false</cleanDisabled>
+                    <!-- Note that we need to prefix the db/migration path with filesystem: to prevent Flyway from looking for our migration scripts only on the classpath -->
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migration</location>
+                    </locations>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${jooq.version}</version>
+                <configuration>
+                    <jdbc>
+                        <driver>com.mysql.cj.jdbc.Driver</driver>
+                        <url>${db.url}</url>
+                        <user>${db.user}</user>
+                        <password>${db.password}</password>
+                    </jdbc>
+                    <generator>
+                        <database>
+                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <excludes>flyway_schema_history</excludes>
+                            <inputSchema>${db.schema}</inputSchema>
+                            <outputSchemaToDefault>true</outputSchemaToDefault>
+                        </database>
+                        <generate>
+                            <deprecated>false</deprecated>
+                            <pojos>true</pojos>
+                            <daos>true</daos>
+                            <interfaces>true</interfaces>
+                            <routines>false</routines>
+                            <javaTimeTypes>true</javaTimeTypes>
+                        </generate>
+                        <target>
+                            <packageName>ch.zkmf2024.server.jooq.generated</packageName>
+                            <directory>src/main/java</directory>
+                        </target>
+                        <strategy>
+                            <matchers>
+                                <tables>
+                                    <table>
+                                        <pojoClass>
+                                            <transform>PASCAL</transform>
+                                            <expression>$0_pojo</expression>
+                                        </pojoClass>
+                                    </table>
+                                </tables>
+                            </matchers>
+                        </strategy>
+                    </generator>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>

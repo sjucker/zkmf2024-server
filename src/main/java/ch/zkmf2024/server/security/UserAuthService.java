@@ -27,7 +27,7 @@ public class UserAuthService implements UserDetailsService {
         var user = userRepository.findById(username);
         if (user.isPresent()) {
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(user.get().getUserRole().name()));
+            authorities.add(new SimpleGrantedAuthority(user.get().getRole()));
             return new User(user.get().getEmail(), user.get().getPassword(), authorities);
         }
 
