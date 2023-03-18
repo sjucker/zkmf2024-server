@@ -56,7 +56,7 @@ public class AuthEndpoint {
             if (passwordEncoder.matches(request.password(), user.getPassword())) {
 
                 user.setLastLogin(LocalDateTime.now());
-                userRepository.insert(user);
+                userRepository.update(user);
 
                 return ResponseEntity.ok(new LoginResponseDTO(
                         user.getEmail(),
