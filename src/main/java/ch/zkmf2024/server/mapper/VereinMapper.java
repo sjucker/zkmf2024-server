@@ -52,6 +52,7 @@ public interface VereinMapper {
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "direktionKontaktId", ignore = true)
     @Mapping(target = "brassBand", ignore = true)
+    @Mapping(target = "websiteText", ignore = true)
     void updateVereinsangaben(@MappingTarget VereinPojo pojo, VereinsangabenDTO dto);
 
     @Mapping(target = "id", ignore = true)
@@ -78,6 +79,7 @@ public interface VereinMapper {
     @Mapping(target = "modulf", source = "modulF")
     @Mapping(target = "modulg", source = "modulG")
     @Mapping(target = "modulh", source = "modulH")
+    @Mapping(target = "websiteText", ignore = true)
     void updateVereinsanmeldung(@MappingTarget VereinPojo pojo, VereinsanmeldungDTO dto);
 
 }

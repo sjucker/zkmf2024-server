@@ -39,6 +39,7 @@ public class VereinPojo implements IVerein {
     private Boolean fanfare;
     private Boolean tambouren;
     private Boolean perkussionsensemble;
+    private String websiteText;
 
     public VereinPojo() {
     }
@@ -70,6 +71,7 @@ public class VereinPojo implements IVerein {
         this.fanfare = value.getFanfare();
         this.tambouren = value.getTambouren();
         this.perkussionsensemble = value.getPerkussionsensemble();
+        this.websiteText = value.getWebsiteText();
     }
 
     public VereinPojo(
@@ -98,7 +100,8 @@ public class VereinPojo implements IVerein {
             Boolean brassBand,
             Boolean fanfare,
             Boolean tambouren,
-            Boolean perkussionsensemble
+            Boolean perkussionsensemble,
+            String websiteText
     ) {
         this.id = id;
         this.email = email;
@@ -126,6 +129,7 @@ public class VereinPojo implements IVerein {
         this.fanfare = fanfare;
         this.tambouren = tambouren;
         this.perkussionsensemble = perkussionsensemble;
+        this.websiteText = websiteText;
     }
 
     /**
@@ -544,6 +548,22 @@ public class VereinPojo implements IVerein {
         this.perkussionsensemble = perkussionsensemble;
     }
 
+    /**
+     * Getter for <code>verein.website_text</code>.
+     */
+    @Override
+    public String getWebsiteText() {
+        return this.websiteText;
+    }
+
+    /**
+     * Setter for <code>verein.website_text</code>.
+     */
+    @Override
+    public void setWebsiteText(String websiteText) {
+        this.websiteText = websiteText;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -683,6 +703,11 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.perkussionsensemble.equals(other.perkussionsensemble))
             return false;
+        if (this.websiteText == null) {
+            if (other.websiteText != null)
+                return false;
+        } else if (!this.websiteText.equals(other.websiteText))
+            return false;
         return true;
     }
 
@@ -716,6 +741,7 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.fanfare == null) ? 0 : this.fanfare.hashCode());
         result = prime * result + ((this.tambouren == null) ? 0 : this.tambouren.hashCode());
         result = prime * result + ((this.perkussionsensemble == null) ? 0 : this.perkussionsensemble.hashCode());
+        result = prime * result + ((this.websiteText == null) ? 0 : this.websiteText.hashCode());
         return result;
     }
 
@@ -749,6 +775,7 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(fanfare);
         sb.append(", ").append(tambouren);
         sb.append(", ").append(perkussionsensemble);
+        sb.append(", ").append(websiteText);
 
         sb.append(")");
         return sb.toString();
@@ -786,6 +813,7 @@ public class VereinPojo implements IVerein {
         setFanfare(from.getFanfare());
         setTambouren(from.getTambouren());
         setPerkussionsensemble(from.getPerkussionsensemble());
+        setWebsiteText(from.getWebsiteText());
     }
 
     @Override

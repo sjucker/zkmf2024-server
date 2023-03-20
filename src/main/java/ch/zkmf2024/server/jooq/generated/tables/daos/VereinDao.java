@@ -440,4 +440,19 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByPerkussionsensemble(Boolean... values) {
         return fetch(Verein.VEREIN.PERKUSSIONSENSEMBLE, values);
     }
+
+    /**
+     * Fetch records that have <code>website_text BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfWebsiteText(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.WEBSITE_TEXT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>website_text IN (values)</code>
+     */
+    public List<VereinPojo> fetchByWebsiteText(String... values) {
+        return fetch(Verein.VEREIN.WEBSITE_TEXT, values);
+    }
 }

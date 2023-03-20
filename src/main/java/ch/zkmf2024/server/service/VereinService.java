@@ -80,7 +80,7 @@ public class VereinService {
                 MAPPER.toKontaktDTO(praesident),
                 MAPPER.toKontaktDTO(direktion),
                 MAPPER.toVereinsanmeldungDTO(verein),
-                new VereinsinfoDTO(logoImgId, bildImgId)
+                new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText())
         );
     }
 
@@ -132,6 +132,7 @@ public class VereinService {
 
         MAPPER.updateVereinsangaben(verein, dto.angaben());
         MAPPER.updateVereinsanmeldung(verein, dto.anmeldung());
+        verein.setWebsiteText(dto.info().websiteText());
         vereinRepository.update(verein);
 
         var praesident = vereinRepository.findKontaktById(verein.getPraesidentKontaktId());

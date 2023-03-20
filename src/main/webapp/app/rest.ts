@@ -115,6 +115,7 @@ export interface VereinsanmeldungDTO extends IsValid {
 export interface VereinsinfoDTO extends IsValid {
     logoImgId?: number;
     bildImgId?: number;
+    websiteText?: string;
 }
 
 export interface VerifyEmailRequestDTO {

@@ -24,9 +24,17 @@
         </layout>
     </appender>
 
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="EMAIL"/>
-    </root>
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!local">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="EMAIL"/>
+        </root>
+    </springProfile>
 
 </configuration>

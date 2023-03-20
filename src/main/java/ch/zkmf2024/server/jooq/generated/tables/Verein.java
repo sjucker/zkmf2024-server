@@ -174,6 +174,11 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
+    /**
+     * The column <code>verein.website_text</code>.
+     */
+    public final TableField<VereinRecord, String> WEBSITE_TEXT = createField(DSL.name("website_text"), SQLDataType.VARCHAR(4096), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }

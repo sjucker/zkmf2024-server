@@ -271,6 +271,16 @@ public interface IVerein extends Serializable {
      */
     public Boolean getPerkussionsensemble();
 
+    /**
+     * Setter for <code>verein.website_text</code>.
+     */
+    public void setWebsiteText(String value);
+
+    /**
+     * Getter for <code>verein.website_text</code>.
+     */
+    public String getWebsiteText();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -1,12 +1,14 @@
 package ch.zkmf2024.server.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 public record VereinsinfoDTO(
         Long logoImgId,
-        Long bildImgId
+        Long bildImgId,
+        String websiteText
 ) implements IsValid {
     @Override
     public boolean isValid() {
-        // input not necessarily needed
-        return true;
+        return (logoImgId != null || bildImgId != null) && StringUtils.isNotBlank(websiteText);
     }
 }

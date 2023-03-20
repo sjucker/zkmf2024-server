@@ -433,6 +433,22 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         return (Boolean) get(25);
     }
 
+    /**
+     * Setter for <code>verein.website_text</code>.
+     */
+    @Override
+    public void setWebsiteText(String value) {
+        set(26, value);
+    }
+
+    /**
+     * Getter for <code>verein.website_text</code>.
+     */
+    @Override
+    public String getWebsiteText() {
+        return (String) get(26);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -474,6 +490,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setFanfare(from.getFanfare());
         setTambouren(from.getTambouren());
         setPerkussionsensemble(from.getPerkussionsensemble());
+        setWebsiteText(from.getWebsiteText());
     }
 
     @Override
@@ -496,7 +513,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -525,6 +542,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setFanfare(fanfare);
         setTambouren(tambouren);
         setPerkussionsensemble(perkussionsensemble);
+        setWebsiteText(websiteText);
     }
 
     /**
@@ -560,6 +578,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setFanfare(value.getFanfare());
             setTambouren(value.getTambouren());
             setPerkussionsensemble(value.getPerkussionsensemble());
+            setWebsiteText(value.getWebsiteText());
         }
     }
 }
