@@ -22,6 +22,7 @@ public class UserPojo implements IUser {
     private LocalDateTime createdAt;
     private String emailVerification;
     private LocalDateTime emailVerifiedAt;
+    private String passwordResetToken;
 
     public UserPojo() {
     }
@@ -34,6 +35,7 @@ public class UserPojo implements IUser {
         this.createdAt = value.getCreatedAt();
         this.emailVerification = value.getEmailVerification();
         this.emailVerifiedAt = value.getEmailVerifiedAt();
+        this.passwordResetToken = value.getPasswordResetToken();
     }
 
     public UserPojo(
@@ -43,7 +45,8 @@ public class UserPojo implements IUser {
             LocalDateTime lastLogin,
             LocalDateTime createdAt,
             String emailVerification,
-            LocalDateTime emailVerifiedAt
+            LocalDateTime emailVerifiedAt,
+            String passwordResetToken
     ) {
         this.email = email;
         this.role = role;
@@ -52,6 +55,7 @@ public class UserPojo implements IUser {
         this.createdAt = createdAt;
         this.emailVerification = emailVerification;
         this.emailVerifiedAt = emailVerifiedAt;
+        this.passwordResetToken = passwordResetToken;
     }
 
     /**
@@ -166,6 +170,22 @@ public class UserPojo implements IUser {
         this.emailVerifiedAt = emailVerifiedAt;
     }
 
+    /**
+     * Getter for <code>user.password_reset_token</code>.
+     */
+    @Override
+    public String getPasswordResetToken() {
+        return this.passwordResetToken;
+    }
+
+    /**
+     * Setter for <code>user.password_reset_token</code>.
+     */
+    @Override
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -210,6 +230,11 @@ public class UserPojo implements IUser {
                 return false;
         } else if (!this.emailVerifiedAt.equals(other.emailVerifiedAt))
             return false;
+        if (this.passwordResetToken == null) {
+            if (other.passwordResetToken != null)
+                return false;
+        } else if (!this.passwordResetToken.equals(other.passwordResetToken))
+            return false;
         return true;
     }
 
@@ -224,6 +249,7 @@ public class UserPojo implements IUser {
         result = prime * result + ((this.createdAt == null) ? 0 : this.createdAt.hashCode());
         result = prime * result + ((this.emailVerification == null) ? 0 : this.emailVerification.hashCode());
         result = prime * result + ((this.emailVerifiedAt == null) ? 0 : this.emailVerifiedAt.hashCode());
+        result = prime * result + ((this.passwordResetToken == null) ? 0 : this.passwordResetToken.hashCode());
         return result;
     }
 
@@ -238,6 +264,7 @@ public class UserPojo implements IUser {
         sb.append(", ").append(createdAt);
         sb.append(", ").append(emailVerification);
         sb.append(", ").append(emailVerifiedAt);
+        sb.append(", ").append(passwordResetToken);
 
         sb.append(")");
         return sb.toString();
@@ -256,6 +283,7 @@ public class UserPojo implements IUser {
         setCreatedAt(from.getCreatedAt());
         setEmailVerification(from.getEmailVerification());
         setEmailVerifiedAt(from.getEmailVerifiedAt());
+        setPasswordResetToken(from.getPasswordResetToken());
     }
 
     @Override

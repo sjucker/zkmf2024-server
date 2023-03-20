@@ -82,6 +82,16 @@ public interface IUser extends Serializable {
      */
     public LocalDateTime getEmailVerifiedAt();
 
+    /**
+     * Setter for <code>user.password_reset_token</code>.
+     */
+    public void setPasswordResetToken(String value);
+
+    /**
+     * Getter for <code>user.password_reset_token</code>.
+     */
+    public String getPasswordResetToken();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-package ch.zkmf2024.server.domain;
+package ch.zkmf2024.server.dto;
 
 public enum ImageType {
     VEREIN_LOGO,

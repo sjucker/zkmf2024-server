@@ -1,8 +1,7 @@
 /* eslint-disable */
 
-export interface ChangePasswordRequestDTO {
-    oldPassword: string;
-    newPassword: string;
+export interface ForgotPasswordRequestDTO {
+    email: string;
 }
 
 export interface KontaktDTO extends IsValid {
@@ -69,21 +68,10 @@ export interface RegisterVereinRequestDTO {
     vereinsname: string;
 }
 
-export interface SurveyAnswerDTO {
-    id?: number;
-    vereinsName: string;
-    besetzung: string[];
-    staerkeKlasse: string;
-    anzahlMitglieder: string;
-    kontaktName: string;
-    kontaktEmail: string;
-    kontaktTelefon: string;
-    modulAuswahl: string[];
-    zusageKommentar?: string;
-    absage: boolean;
-    absageKommentar?: string;
-    absageKontaktaufnahme?: string;
-    helfer?: string;
+export interface ResetPasswordRequestDTO {
+    email: string;
+    token: string;
+    newPassword: string;
 }
 
 export interface VereinDTO {

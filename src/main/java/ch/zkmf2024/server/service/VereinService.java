@@ -1,6 +1,6 @@
 package ch.zkmf2024.server.service;
 
-import ch.zkmf2024.server.domain.ImageType;
+import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
@@ -25,8 +25,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static ch.zkmf2024.server.domain.ImageType.VEREIN_BILD;
-import static ch.zkmf2024.server.domain.ImageType.VEREIN_LOGO;
+import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
+import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 
 @Slf4j
@@ -178,5 +178,39 @@ public class VereinService {
                 imageRepository.insert(pojo);
             }
         }
+    }
+
+    public void forgotPassword(String email) {
+        userRepository.findByIdAndRole(email, VEREIN).ifPresentOrElse(
+                user -> {
+                    user.setPasswordResetToken(UUID.randomUUID().toString());
+                    userRepository.update(user);
+
+                    mailService.sendResetPasswordEmail(user);
+                },
+                () -> log.warn("forgot password called for unknown user: {}", email)
+        );
+    }
+
+    public boolean resetPassword(String email, String token, String newPassword) {
+        var user = userRepository.findByIdAndRole(email, VEREIN);
+        if (user.isPresent()) {
+            var userPojo = user.get();
+            if (StringUtils.equals(userPojo.getPasswordResetToken(), token)) {
+                userPojo.setPassword(passwordEncoder.encode(newPassword));
+                userPojo.setPasswordResetToken(null);
+                userRepository.update(userPojo);
+
+                log.info("updated password for user {}", email);
+                return true;
+            } else {
+                log.warn("presented password reset-token did not match expected one: {}/{}",
+                        token,
+                        userPojo.getPasswordResetToken());
+            }
+        } else {
+            log.warn("tried to reset password for unknown user: {}, {}", email, token);
+        }
+        return false;
     }
 }

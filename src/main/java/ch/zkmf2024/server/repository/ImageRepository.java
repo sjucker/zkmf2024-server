@@ -1,6 +1,6 @@
 package ch.zkmf2024.server.repository;
 
-import ch.zkmf2024.server.domain.ImageType;
+import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.jooq.generated.tables.daos.ImageDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import org.jooq.DSLContext;

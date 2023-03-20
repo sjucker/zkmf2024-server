@@ -156,4 +156,19 @@ public class UserDao extends DAOImpl<UserRecord, UserPojo, String> {
     public List<UserPojo> fetchByEmailVerifiedAt(LocalDateTime... values) {
         return fetch(User.USER.EMAIL_VERIFIED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>password_reset_token BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<UserPojo> fetchRangeOfPasswordResetToken(String lowerInclusive, String upperInclusive) {
+        return fetchRange(User.USER.PASSWORD_RESET_TOKEN, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>password_reset_token IN (values)</code>
+     */
+    public List<UserPojo> fetchByPasswordResetToken(String... values) {
+        return fetch(User.USER.PASSWORD_RESET_TOKEN, values);
+    }
 }
