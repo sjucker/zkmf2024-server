@@ -83,6 +83,30 @@ public class MailService {
         }
     }
 
+    public void sendResetPasswordEmail(UserPojo user) {
+        try {
+            var variables = new HashMap<String, Object>();
+            variables.put("resetLink", "%s/reset-passwort/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),
+                    user.getEmail(),
+                    user.getPasswordResetToken()));
+
+            var mjml = templateEngine.process("forgot-password", new Context(GERMAN, variables));
+            var mimeMessage = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setTo(user.getEmail());
+            helper.setBcc(BCC_MAIL);
+            helper.setSubject("[ZKMF2024] Passwort wiederherstellen");
+            helper.setText(mjmlService.render(mjml), true);
+
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send reset password mail user %s".formatted(user), e);
+        }
+
+    }
+
     public void sendHelperRegistrationEmail(HelperRegistrationPojo helperRegistration) {
         try {
             var variables = new HashMap<String, Object>();

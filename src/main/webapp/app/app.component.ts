@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem, PrimeNGConfig} from "primeng/api";
-import {HELFER_ROUTE, NEWSLETTER_ROUTE, UMFRAGE_ROUTE} from "./app-routing.module";
+import {HELFER_ROUTE, NEWSLETTER_ROUTE} from "./app-routing.module";
 import {AuthenticationService} from "./service/authentication.service";
 
 @Component({
@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
         this.items = [
             {label: 'Helfer', routerLink: '/' + HELFER_ROUTE},
             {label: 'Newsletter', routerLink: '/' + NEWSLETTER_ROUTE},
-            {label: 'Konsulativumfrage', routerLink: '/' + UMFRAGE_ROUTE}
         ]
     }
 

@@ -1,10 +1,8 @@
 package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
-import ch.zkmf2024.server.dto.SurveyAnswerDTO;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.NewsletterService;
-import ch.zkmf2024.server.service.SurveyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -30,28 +28,13 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 @RequestMapping("/secured/admin")
 public class AdminEndpoint {
 
-    private final SurveyService surveyService;
     private final NewsletterService newsletterService;
     private final HelperRegistrationService helperRegistrationService;
 
-    public AdminEndpoint(SurveyService surveyService,
-                         NewsletterService newsletterService,
+    public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService) {
-        this.surveyService = surveyService;
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
-    }
-
-    @GetMapping(path = "/umfrage")
-    public ResponseEntity<List<SurveyAnswerDTO>> getUmfrage() {
-        log.info("GET /secured/admin/umfrage");
-        return ResponseEntity.ok(surveyService.getAll());
-    }
-
-    @GetMapping(path = "/download/umfrage")
-    public ResponseEntity<Resource> exportUmfrage() throws IOException {
-        log.info("GET /secured/admin/download/umfrage");
-        return export(surveyService.export());
     }
 
     @GetMapping(path = "/download/helfer")
@@ -81,14 +64,6 @@ public class AdminEndpoint {
             log.error("Helfer export failed", e);
             return ResponseEntity.internalServerError().build();
         }
-    }
-
-    @DeleteMapping(path = "/umfrage/{id}")
-    public ResponseEntity<?> deleteUmfrage(@PathVariable Long id) {
-        log.info("DELETE /secured/admin/umfrage/{}", id);
-
-        surveyService.delete(id);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/newsletter")

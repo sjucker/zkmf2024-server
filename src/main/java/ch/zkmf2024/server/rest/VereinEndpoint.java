@@ -1,6 +1,8 @@
 package ch.zkmf2024.server.rest;
 
+import ch.zkmf2024.server.dto.ForgotPasswordRequestDTO;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
+import ch.zkmf2024.server.dto.ResetPasswordRequestDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,26 @@ public class VereinEndpoint {
         log.info("POST /public/verein/verification: {}", request);
 
         return vereinService.verifyEmail(request) ?
+                ResponseEntity.ok().build() :
+                ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDTO request) {
+        log.info("POST /public/verein/forgot-password {}", request.email());
+
+        vereinService.forgotPassword(request.email());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ResetPasswordRequestDTO request) {
+        log.info("POST /public/verein/reset-password {} {}", request.email(), request.token());
+
+        var success = vereinService.resetPassword(request.email(), request.token(), request.newPassword());
+
+        return success ?
                 ResponseEntity.ok().build() :
                 ResponseEntity.badRequest().build();
     }
