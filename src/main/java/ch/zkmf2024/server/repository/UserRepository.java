@@ -1,28 +1,28 @@
 package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.UserRole;
-import ch.zkmf2024.server.jooq.generated.tables.daos.UserDao;
-import ch.zkmf2024.server.jooq.generated.tables.pojos.UserPojo;
+import ch.zkmf2024.server.jooq.generated.tables.daos.Zkmf2024UserDao;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static ch.zkmf2024.server.jooq.generated.Tables.USER;
+import static ch.zkmf2024.server.jooq.generated.Tables.ZKMF2024_USER;
 
 @Repository
 public class UserRepository {
 
     private final DSLContext jooqDsl;
-    private final UserDao userDao;
+    private final Zkmf2024UserDao userDao;
 
     public UserRepository(DSLContext jooqDsl, DefaultConfiguration jooqConfig) {
         this.jooqDsl = jooqDsl;
-        this.userDao = new UserDao(jooqConfig);
+        this.userDao = new Zkmf2024UserDao(jooqConfig);
     }
 
-    public Optional<UserPojo> findById(String email) {
+    public Optional<Zkmf2024UserPojo> findById(String email) {
         return userDao.findOptionalById(email);
     }
 
@@ -30,21 +30,21 @@ public class UserRepository {
         return userDao.existsById(email);
     }
 
-    public Optional<UserPojo> findByIdAndRole(String email, UserRole role) {
+    public Optional<Zkmf2024UserPojo> findByIdAndRole(String email, UserRole role) {
         return jooqDsl
-                .selectFrom(USER)
+                .selectFrom(ZKMF2024_USER)
                 .where(
-                        USER.EMAIL.eq(email),
-                        USER.ROLE.eq(role.toString())
+                        ZKMF2024_USER.EMAIL.eq(email),
+                        ZKMF2024_USER.ROLE.eq(role.toString())
                 )
-                .fetchOptionalInto(UserPojo.class);
+                .fetchOptionalInto(Zkmf2024UserPojo.class);
     }
 
-    public void insert(UserPojo user) {
+    public void insert(Zkmf2024UserPojo user) {
         userDao.insert(user);
     }
 
-    public void update(UserPojo user) {
+    public void update(Zkmf2024UserPojo user) {
         userDao.update(user);
     }
 }

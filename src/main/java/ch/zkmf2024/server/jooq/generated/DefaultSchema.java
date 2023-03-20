@@ -8,9 +8,9 @@ import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
-import ch.zkmf2024.server.jooq.generated.tables.User;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
+import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
@@ -57,11 +57,6 @@ public class DefaultSchema extends SchemaImpl {
     public final SurveyAnswer SURVEY_ANSWER = SurveyAnswer.SURVEY_ANSWER;
 
     /**
-     * The table <code>user</code>.
-     */
-    public final User USER = User.USER;
-
-    /**
      * The table <code>verein</code>.
      */
     public final Verein VEREIN = Verein.VEREIN;
@@ -70,6 +65,11 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>verein_status</code>.
      */
     public final VereinStatus VEREIN_STATUS = VereinStatus.VEREIN_STATUS;
+
+    /**
+     * The table <code>zkmf2024_user</code>.
+     */
+    public final Zkmf2024User ZKMF2024_USER = Zkmf2024User.ZKMF2024_USER;
 
     /**
      * No further instances allowed
@@ -91,9 +91,9 @@ public class DefaultSchema extends SchemaImpl {
                 Kontakt.KONTAKT,
                 NewsletterRecipient.NEWSLETTER_RECIPIENT,
                 SurveyAnswer.SURVEY_ANSWER,
-                User.USER,
                 Verein.VEREIN,
-                VereinStatus.VEREIN_STATUS
+                VereinStatus.VEREIN_STATUS,
+                Zkmf2024User.ZKMF2024_USER
         );
     }
 }

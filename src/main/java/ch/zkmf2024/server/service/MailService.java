@@ -4,7 +4,7 @@ import ch.zkmf2024.server.configuration.ApplicationProperties;
 import ch.zkmf2024.server.dto.Aufgaben;
 import ch.zkmf2024.server.dto.Einsatzzeit;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
-import ch.zkmf2024.server.jooq.generated.tables.pojos.UserPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
@@ -56,7 +56,7 @@ public class MailService {
         this.environment = environment;
     }
 
-    public void sendRegistrationEmail(UserPojo user) {
+    public void sendRegistrationEmail(Zkmf2024UserPojo user) {
         try {
             var variables = new HashMap<String, Object>();
             variables.put("email", user.getEmail());
@@ -83,7 +83,7 @@ public class MailService {
         }
     }
 
-    public void sendResetPasswordEmail(UserPojo user) {
+    public void sendResetPasswordEmail(Zkmf2024UserPojo user) {
         try {
             var variables = new HashMap<String, Object>();
             variables.put("resetLink", "%s/reset-passwort/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),

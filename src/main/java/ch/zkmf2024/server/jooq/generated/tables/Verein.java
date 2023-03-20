@@ -97,42 +97,42 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.modula</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULA = createField(DSL.name("modula"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULA = createField(DSL.name("modula"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.modulb</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULB = createField(DSL.name("modulb"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULB = createField(DSL.name("modulb"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.modulc</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULC = createField(DSL.name("modulc"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULC = createField(DSL.name("modulc"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.moduld</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULD = createField(DSL.name("moduld"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULD = createField(DSL.name("moduld"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.module</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULE = createField(DSL.name("module"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULE = createField(DSL.name("module"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.modulf</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULF = createField(DSL.name("modulf"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULF = createField(DSL.name("modulf"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.modulg</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULG = createField(DSL.name("modulg"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULG = createField(DSL.name("modulg"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.modulh</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULH = createField(DSL.name("modulh"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULH = createField(DSL.name("modulh"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.klasse_modula</code>.
@@ -152,27 +152,27 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.harmonie</code>.
      */
-    public final TableField<VereinRecord, Boolean> HARMONIE = createField(DSL.name("harmonie"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> HARMONIE = createField(DSL.name("harmonie"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.brass_band</code>.
      */
-    public final TableField<VereinRecord, Boolean> BRASS_BAND = createField(DSL.name("brass_band"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> BRASS_BAND = createField(DSL.name("brass_band"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.fanfare</code>.
      */
-    public final TableField<VereinRecord, Boolean> FANFARE = createField(DSL.name("fanfare"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> FANFARE = createField(DSL.name("fanfare"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.tambouren</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN = createField(DSL.name("tambouren"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN = createField(DSL.name("tambouren"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     /**
      * The column <code>verein.perkussionsensemble</code>.
      */
-    public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BIT.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);

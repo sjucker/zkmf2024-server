@@ -8,17 +8,17 @@ import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
-import ch.zkmf2024.server.jooq.generated.tables.User;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
+import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import ch.zkmf2024.server.jooq.generated.tables.records.HelperRegistrationRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ImageRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.KontaktRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.NewsletterRecipientRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.SurveyAnswerRecord;
-import ch.zkmf2024.server.jooq.generated.tables.records.UserRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinStatusRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.Zkmf2024UserRecord;
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -42,9 +42,9 @@ public class Keys {
     public static final UniqueKey<KontaktRecord> KEY_KONTAKT_PRIMARY = Internal.createUniqueKey(Kontakt.KONTAKT, DSL.name("KEY_kontakt_PRIMARY"), new TableField[]{Kontakt.KONTAKT.ID}, true);
     public static final UniqueKey<NewsletterRecipientRecord> KEY_NEWSLETTER_RECIPIENT_PRIMARY = Internal.createUniqueKey(NewsletterRecipient.NEWSLETTER_RECIPIENT, DSL.name("KEY_newsletter_recipient_PRIMARY"), new TableField[]{NewsletterRecipient.NEWSLETTER_RECIPIENT.EMAIL}, true);
     public static final UniqueKey<SurveyAnswerRecord> KEY_SURVEY_ANSWER_PRIMARY = Internal.createUniqueKey(SurveyAnswer.SURVEY_ANSWER, DSL.name("KEY_survey_answer_PRIMARY"), new TableField[]{SurveyAnswer.SURVEY_ANSWER.ID}, true);
-    public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = Internal.createUniqueKey(User.USER, DSL.name("KEY_user_PRIMARY"), new TableField[]{User.USER.EMAIL}, true);
     public static final UniqueKey<VereinRecord> KEY_VEREIN_PRIMARY = Internal.createUniqueKey(Verein.VEREIN, DSL.name("KEY_verein_PRIMARY"), new TableField[]{Verein.VEREIN.ID}, true);
     public static final UniqueKey<VereinStatusRecord> KEY_VEREIN_STATUS_PRIMARY = Internal.createUniqueKey(VereinStatus.VEREIN_STATUS, DSL.name("KEY_verein_status_PRIMARY"), new TableField[]{VereinStatus.VEREIN_STATUS.FK_VEREIN}, true);
+    public static final UniqueKey<Zkmf2024UserRecord> KEY_ZKMF2024_USER_PRIMARY = Internal.createUniqueKey(Zkmf2024User.ZKMF2024_USER, DSL.name("KEY_zkmf2024_user_PRIMARY"), new TableField[]{Zkmf2024User.ZKMF2024_USER.EMAIL}, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
