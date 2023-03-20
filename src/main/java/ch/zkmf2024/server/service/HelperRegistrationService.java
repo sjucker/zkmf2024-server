@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static ch.zkmf2024.server.mapper.HelperRegistrationMapper.LIST_DELIMITER;
+import static ch.zkmf2024.server.service.DateUtil.now;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.REGISTERED;
@@ -89,6 +90,7 @@ public class HelperRegistrationService {
         }
 
         var helperRegistration = HelperRegistrationMapper.INSTANCE.fromDTO(request);
+        helperRegistration.setRegisteredAt(now());
         helperRegistrationRepository.insert(helperRegistration);
 
         mailService.sendHelperRegistrationEmail(helperRegistration);

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import java.time.LocalDateTime;
 
+import static ch.zkmf2024.server.service.DateUtil.now;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -55,7 +55,7 @@ public class AuthEndpoint {
         if (user != null) {
             if (passwordEncoder.matches(request.password(), user.getPassword())) {
 
-                user.setLastLogin(LocalDateTime.now());
+                user.setLastLogin(now());
                 userRepository.update(user);
 
                 return ResponseEntity.ok(new LoginResponseDTO(

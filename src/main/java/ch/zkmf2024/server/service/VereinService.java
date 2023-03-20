@@ -21,13 +21,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
+import static ch.zkmf2024.server.service.DateUtil.now;
 
 @Slf4j
 @Service
@@ -99,7 +99,7 @@ public class VereinService {
             user.setEmail(request.email());
             user.setPassword(passwordEncoder.encode(request.password()));
             user.setRole(VEREIN.toString());
-            user.setCreatedAt(LocalDateTime.now());
+            user.setCreatedAt(now());
             user.setEmailVerification(UUID.randomUUID().toString());
             userRepository.insert(user);
 
@@ -144,7 +144,7 @@ public class VereinService {
         var user = userRepository.findById(request.email()).orElseThrow();
         if (StringUtils.equals(user.getEmailVerification(), request.verification())) {
             user.setEmailVerification(null);
-            user.setEmailVerifiedAt(LocalDateTime.now());
+            user.setEmailVerifiedAt(now());
             userRepository.update(user);
             return true;
         } else {
@@ -166,7 +166,7 @@ public class VereinService {
                 var pojo = image.get();
                 pojo.setName(file.getOriginalFilename());
                 pojo.setContent(file.getBytes());
-                pojo.setUploadedAt(LocalDateTime.now());
+                pojo.setUploadedAt(now());
                 imageRepository.update(pojo);
             } else {
                 var pojo = new ImagePojo();
@@ -174,7 +174,7 @@ public class VereinService {
                 pojo.setType(imageType.toString());
                 pojo.setName(file.getOriginalFilename());
                 pojo.setContent(file.getBytes());
-                pojo.setUploadedAt(LocalDateTime.now());
+                pojo.setUploadedAt(now());
                 imageRepository.insert(pojo);
             }
         }

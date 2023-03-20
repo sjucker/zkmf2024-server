@@ -7,9 +7,9 @@ import ch.zkmf2024.server.mapper.NewsletterRecipientMapper;
 import ch.zkmf2024.server.repository.NewsletterRecipientRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import static ch.zkmf2024.server.service.DateUtil.now;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.REGISTERED;
@@ -37,7 +37,7 @@ public class NewsletterService {
                 dto.email(),
                 dto.vorname(),
                 dto.name(),
-                LocalDateTime.now(),
+                now(),
                 null
         ));
 
@@ -56,7 +56,7 @@ public class NewsletterService {
 
     public void unsubscribe(String email) {
         var newsletterRecipient = newsletterRecipientRepository.findById(email).orElseThrow();
-        newsletterRecipient.setUnsubscribedAt(LocalDateTime.now());
+        newsletterRecipient.setUnsubscribedAt(now());
         newsletterRecipientRepository.update(newsletterRecipient);
     }
 
