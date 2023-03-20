@@ -2,7 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {ChangePasswordRequestDTO, LoginRequestDTO, LoginResponseDTO, UserRole} from "../rest";
+import {LoginRequestDTO, LoginResponseDTO, UserRole} from "../rest";
 
 @Injectable({
     providedIn: 'root'
@@ -25,14 +25,6 @@ export class AuthenticationService {
         };
 
         return this.httpClient.post<LoginResponseDTO>(`${this.baseUrl}/public/auth`, request);
-    }
-
-    changePassword(oldPassword: string, newPassword: string): Observable<any> {
-        const request: ChangePasswordRequestDTO = {
-            oldPassword: oldPassword,
-            newPassword: newPassword
-        }
-        return this.httpClient.post<any>(`${this.baseUrl}/authenticate/change-password`, request); // TODO fix URL
     }
 
     logout(): void {
