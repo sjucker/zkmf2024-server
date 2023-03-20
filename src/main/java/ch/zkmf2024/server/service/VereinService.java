@@ -7,8 +7,8 @@ import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
-import ch.zkmf2024.server.jooq.generated.tables.pojos.UserPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ImageRepository;
 import ch.zkmf2024.server.repository.UserRepository;
@@ -95,7 +95,7 @@ public class VereinService {
         }
 
         jooqDsl.transaction(configuration -> {
-            var user = new UserPojo();
+            var user = new Zkmf2024UserPojo();
             user.setEmail(request.email());
             user.setPassword(passwordEncoder.encode(request.password()));
             user.setRole(VEREIN.toString());

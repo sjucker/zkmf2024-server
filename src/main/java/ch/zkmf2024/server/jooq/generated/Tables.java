@@ -8,9 +8,9 @@ import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
-import ch.zkmf2024.server.jooq.generated.tables.User;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
+import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 
 /**
  * Convenience access to all tables in the default schema.
@@ -44,11 +44,6 @@ public class Tables {
     public static final SurveyAnswer SURVEY_ANSWER = SurveyAnswer.SURVEY_ANSWER;
 
     /**
-     * The table <code>user</code>.
-     */
-    public static final User USER = User.USER;
-
-    /**
      * The table <code>verein</code>.
      */
     public static final Verein VEREIN = Verein.VEREIN;
@@ -57,4 +52,9 @@ public class Tables {
      * The table <code>verein_status</code>.
      */
     public static final VereinStatus VEREIN_STATUS = VereinStatus.VEREIN_STATUS;
+
+    /**
+     * The table <code>zkmf2024_user</code>.
+     */
+    public static final Zkmf2024User ZKMF2024_USER = Zkmf2024User.ZKMF2024_USER;
 }
