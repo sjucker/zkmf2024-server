@@ -2,8 +2,10 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
+import ch.zkmf2024.server.jooq.generated.tables.daos.VereinStatusDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
@@ -18,11 +20,13 @@ public class VereinRepository {
     private final DSLContext jooqDsl;
     private final VereinDao vereinDao;
     private final KontaktDao kontaktDao;
+    private final VereinStatusDao vereinStatusDao;
 
     public VereinRepository(DSLContext jooqDsl, DefaultConfiguration jooqConfig) {
         this.jooqDsl = jooqDsl;
         this.vereinDao = new VereinDao(jooqConfig);
         this.kontaktDao = new KontaktDao(jooqConfig);
+        this.vereinStatusDao = new VereinStatusDao(jooqConfig);
     }
 
     public Optional<VereinPojo> findByEmail(String email) {
@@ -49,5 +53,17 @@ public class VereinRepository {
 
     public void update(KontaktPojo kontakt) {
         kontaktDao.update(kontakt);
+    }
+
+    public void insert(VereinStatusPojo status) {
+        vereinStatusDao.insert(status);
+    }
+
+    public void update(VereinStatusPojo status) {
+        vereinStatusDao.update(status);
+    }
+
+    public VereinStatusPojo findStatusById(Long vereinId) {
+        return vereinStatusDao.fetchOneByFkVerein(vereinId);
     }
 }

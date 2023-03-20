@@ -35,7 +35,7 @@ public class UserRepository {
                 .selectFrom(ZKMF2024_USER)
                 .where(
                         ZKMF2024_USER.EMAIL.eq(email),
-                        ZKMF2024_USER.ROLE.eq(role.toString())
+                        ZKMF2024_USER.ROLE.eq(role.name())
                 )
                 .fetchOptionalInto(Zkmf2024UserPojo.class);
     }

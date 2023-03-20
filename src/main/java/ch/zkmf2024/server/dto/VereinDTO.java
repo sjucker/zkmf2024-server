@@ -10,4 +10,15 @@ public record VereinDTO(
         @NotNull VereinsanmeldungDTO anmeldung,
         @NotNull VereinsinfoDTO info
 ) {
+
+    public PhaseStatus getPhase1Status() {
+        return angaben.isValid() &&
+                praesident.isValid() &&
+                direktion.isValid() &&
+                anmeldung.isValid() &&
+                info.isValid() ?
+                PhaseStatus.DONE :
+                PhaseStatus.IN_PROGRESS;
+    }
+
 }

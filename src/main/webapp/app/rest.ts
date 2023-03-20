@@ -81,6 +81,7 @@ export interface VereinDTO {
     direktion: KontaktDTO;
     anmeldung: VereinsanmeldungDTO;
     info: VereinsinfoDTO;
+    phase1Status?: PhaseStatus;
 }
 
 export interface VereinsangabenDTO extends IsValid {
@@ -155,6 +156,12 @@ export enum Einsatzzeit {
     NACHMITTAG = "NACHMITTAG",
     ABEND = "ABEND",
     NACHT = "NACHT",
+}
+
+export enum PhaseStatus {
+    NEW = "NEW",
+    IN_PROGRESS = "IN_PROGRESS",
+    DONE = "DONE",
 }
 
 export enum Klasse {

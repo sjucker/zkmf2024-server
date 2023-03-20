@@ -8,6 +8,7 @@ import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ImageRepository;
@@ -98,7 +99,7 @@ public class VereinService {
             var user = new Zkmf2024UserPojo();
             user.setEmail(request.email());
             user.setPassword(passwordEncoder.encode(request.password()));
-            user.setRole(VEREIN.toString());
+            user.setRole(VEREIN.name());
             user.setCreatedAt(now());
             user.setEmailVerification(UUID.randomUUID().toString());
             userRepository.insert(user);
@@ -115,6 +116,10 @@ public class VereinService {
             verein.setDirektionKontaktId(kontaktDirektion.getId());
 
             vereinRepository.insert(verein);
+
+            var status = new VereinStatusPojo();
+            status.setFkVerein(verein.getId());
+            vereinRepository.insert(status);
 
             mailService.sendRegistrationEmail(user);
         });
@@ -137,7 +142,12 @@ public class VereinService {
         MAPPER.updateKontakt(direktion, dto.direktion());
         vereinRepository.update(direktion);
 
-        return toDTO(verein);
+        dto = toDTO(verein);
+
+        var status = vereinRepository.findStatusById(verein.getId());
+        status.setPhase1(dto.getPhase1Status().name());
+
+        return dto;
     }
 
     public boolean verifyEmail(VerifyEmailRequestDTO request) {
@@ -171,7 +181,7 @@ public class VereinService {
             } else {
                 var pojo = new ImagePojo();
                 pojo.setForeignKey(vereinId);
-                pojo.setType(imageType.toString());
+                pojo.setType(imageType.name());
                 pojo.setName(file.getOriginalFilename());
                 pojo.setContent(file.getBytes());
                 pojo.setUploadedAt(now());

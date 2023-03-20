@@ -26,7 +26,7 @@ public class ImageRepository {
         return jooqDsl.selectFrom(IMAGE)
                       .where(
                               IMAGE.FOREIGN_KEY.eq(foreignKey),
-                              IMAGE.TYPE.eq(type.toString())
+                              IMAGE.TYPE.eq(type.name())
                       )
                       .fetchOptionalInto(ImagePojo.class);
     }
