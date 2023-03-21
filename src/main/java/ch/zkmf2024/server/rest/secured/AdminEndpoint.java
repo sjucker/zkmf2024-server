@@ -1,8 +1,10 @@
 package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
+import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.NewsletterService;
+import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -30,11 +32,14 @@ public class AdminEndpoint {
 
     private final NewsletterService newsletterService;
     private final HelperRegistrationService helperRegistrationService;
+    private final VereinService vereinService;
 
     public AdminEndpoint(NewsletterService newsletterService,
-                         HelperRegistrationService helperRegistrationService) {
+                         HelperRegistrationService helperRegistrationService,
+                         VereinService vereinService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
+        this.vereinService = vereinService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -86,6 +91,13 @@ public class AdminEndpoint {
 
         newsletterService.unsubscribe(email);
         return ResponseEntity.accepted().build();
+    }
+
+    @GetMapping(path = "/vereine")
+    public ResponseEntity<List<VereinDTO>> vereine() {
+        log.info("GET /secured/admin/vereine");
+        
+        return ResponseEntity.ok(vereinService.findAll());
     }
 
 }

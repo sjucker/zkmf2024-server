@@ -19,13 +19,15 @@ import {HelferComponent} from './helfer/helfer.component';
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor.service";
 import {LoginComponent} from './login/login.component';
 import {NewsletterComponent} from './newsletter/newsletter.component';
+import {VereineComponent} from './vereine/vereine.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NewsletterComponent,
         HelferComponent,
-        LoginComponent
+        LoginComponent,
+        VereineComponent
     ],
     imports: [
         BrowserModule,

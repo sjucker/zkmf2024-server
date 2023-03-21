@@ -1,0 +1,88 @@
+<p-toast position="top-center"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<p-table [value]="data"
+         [loading]="loading"
+         styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+        Vereine
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="vereinsname">Vereinsname
+                <p-sortIcon field="vereinsname"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulA">Modul A
+                <p-sortIcon field="modulA"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulB">Modul B
+                <p-sortIcon field="modulB"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulC">Modul C
+                <p-sortIcon field="modulC"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulD">Modul D
+                <p-sortIcon field="modulD"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulE">Modul E
+                <p-sortIcon field="modulE"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulF">Modul F
+                <p-sortIcon field="modulF"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulG">Modul G
+                <p-sortIcon field="modulG"></p-sortIcon>
+            </th>
+            <th pSortableColumn="modulH">Modul H
+                <p-sortIcon field="modulH"></p-sortIcon>
+            </th>
+            <th pSortableColumn="klasseModulA">Klasse Modul A
+                <p-sortIcon field="klasseModulA"></p-sortIcon>
+            </th>
+            <th pSortableColumn="klasseModulB">Klasse Modul B
+                <p-sortIcon field="klasseModulB"></p-sortIcon>
+            </th>
+            <th pSortableColumn="klasseModulH">Klasse Modul H
+                <p-sortIcon field="klasseModulH"></p-sortIcon>
+            </th>
+            <th pSortableColumn="harmonie">Harmonie
+                <p-sortIcon field="harmonie"></p-sortIcon>
+            </th>
+            <th pSortableColumn="brassBand">Brass Band
+                <p-sortIcon field="brassBand"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fanfare">Fanfare
+                <p-sortIcon field="fanfare"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tambouren">Tambouren
+                <p-sortIcon field="tambouren"></p-sortIcon>
+            </th>
+            <th pSortableColumn="perkussionsensemble">Perk.ens.
+                <p-sortIcon field="perkussionsensemble"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-dto>
+        <tr>
+            <td>{{dto.angaben.vereinsname}}</td>
+            <td>{{dto.anmeldung.modulA}}</td>
+            <td>{{dto.anmeldung.modulB}}</td>
+            <td>{{dto.anmeldung.modulC}}</td>
+            <td>{{dto.anmeldung.modulD}}</td>
+            <td>{{dto.anmeldung.modulE}}</td>
+            <td>{{dto.anmeldung.modulF}}</td>
+            <td>{{dto.anmeldung.modulG}}</td>
+            <td>{{dto.anmeldung.modulH}}</td>
+            <td>{{dto.anmeldung.klasseModulA}}</td>
+            <td>{{dto.anmeldung.klasseModulB}}</td>
+            <td>{{dto.anmeldung.klasseModulH}}</td>
+            <td>{{dto.anmeldung.harmonie}}</td>
+            <td>{{dto.anmeldung.brassBand}}</td>
+            <td>{{dto.anmeldung.fanfare}}</td>
+            <td>{{dto.anmeldung.tambouren}}</td>
+            <td>{{dto.anmeldung.perkussionsensemble}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        Total: {{count()}}
+    </ng-template>
+</p-table>

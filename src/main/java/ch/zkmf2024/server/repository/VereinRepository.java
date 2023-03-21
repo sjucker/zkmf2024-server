@@ -10,6 +10,7 @@ import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
@@ -27,6 +28,10 @@ public class VereinRepository {
         this.vereinDao = new VereinDao(jooqConfig);
         this.kontaktDao = new KontaktDao(jooqConfig);
         this.vereinStatusDao = new VereinStatusDao(jooqConfig);
+    }
+
+    public List<VereinPojo> findAll() {
+        return vereinDao.findAll();
     }
 
     public Optional<VereinPojo> findByEmail(String email) {

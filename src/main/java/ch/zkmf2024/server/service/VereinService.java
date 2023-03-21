@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -60,6 +61,12 @@ public class VereinService {
     public Optional<VereinDTO> find(String email) {
         return vereinRepository.findByEmail(email)
                                .map(this::toDTO);
+    }
+
+    public List<VereinDTO> findAll() {
+        return vereinRepository.findAll().stream()
+                               .map(this::toDTO)
+                               .toList();
     }
 
     private VereinDTO toDTO(VereinPojo verein) {

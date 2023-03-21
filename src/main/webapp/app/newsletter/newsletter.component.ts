@@ -27,8 +27,7 @@ export class NewsletterComponent implements OnInit {
         this.newsletterService.getAll().subscribe({
             next: value => {
                 this.data = value;
-            }
-            ,
+            },
             error: error => {
                 this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText, life: 3000})
             },
