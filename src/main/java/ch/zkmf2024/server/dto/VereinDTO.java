@@ -11,6 +11,7 @@ public record VereinDTO(
         @NotNull VereinsinfoDTO info
 ) {
 
+    @NotNull
     public PhaseStatus getPhase1Status() {
         return angaben.isValid() &&
                 praesident.isValid() &&

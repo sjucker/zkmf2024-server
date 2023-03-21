@@ -81,7 +81,7 @@ export interface VereinDTO {
     direktion: KontaktDTO;
     anmeldung: VereinsanmeldungDTO;
     info: VereinsinfoDTO;
-    phase1Status?: PhaseStatus;
+    phase1Status: PhaseStatus;
 }
 
 export interface VereinsangabenDTO extends IsValid {
