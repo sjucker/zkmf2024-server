@@ -58,28 +58,25 @@ public interface VereinMapper {
     @Mapping(target = "id", ignore = true)
     void updateKontakt(@MappingTarget KontaktPojo pojo, KontaktDTO dto);
 
-    @Mapping(target = "vereinsname", ignore = true)
-    @Mapping(target = "praesidentKontaktId", ignore = true)
-    @Mapping(target = "plz", ignore = true)
-    @Mapping(target = "ort", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "iban", ignore = true)
-    @Mapping(target = "homepage", ignore = true)
-    @Mapping(target = "email", ignore = true)
-    @Mapping(target = "direktionKontaktId", ignore = true)
-    @Mapping(target = "adresse", ignore = true)
-    @Mapping(target = "klasseModula", source = "klasseModulA")
-    @Mapping(target = "klasseModulb", source = "klasseModulB")
-    @Mapping(target = "klasseModulh", source = "klasseModulH")
-    @Mapping(target = "modula", source = "modulA")
-    @Mapping(target = "modulb", source = "modulB")
-    @Mapping(target = "modulc", source = "modulC")
-    @Mapping(target = "moduld", source = "modulD")
-    @Mapping(target = "module", source = "modulE")
-    @Mapping(target = "modulf", source = "modulF")
-    @Mapping(target = "modulg", source = "modulG")
-    @Mapping(target = "modulh", source = "modulH")
-    @Mapping(target = "websiteText", ignore = true)
-    void updateVereinsanmeldung(@MappingTarget VereinPojo pojo, VereinsanmeldungDTO dto);
+    default void updateVereinsanmeldung(@MappingTarget VereinPojo pojo, VereinsanmeldungDTO dto) {
+        pojo.setModula(dto.modulA());
+        pojo.setModulb(dto.modulB());
+        pojo.setModulc(dto.modulC());
+        pojo.setModuld(dto.modulD());
+        pojo.setModule(dto.modulE());
+        pojo.setModulf(dto.modulF());
+        pojo.setModulg(dto.modulG());
+        pojo.setModulh(dto.modulH());
+
+        pojo.setKlasseModula(dto.modulA() ? dto.klasseModulA().name() : null);
+        pojo.setKlasseModulb(dto.modulB() ? dto.klasseModulB().name() : null);
+        pojo.setKlasseModulh(dto.modulH() ? dto.klasseModulH().name() : null);
+
+        pojo.setHarmonie((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.harmonie());
+        pojo.setBrassBand((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.brassBand());
+        pojo.setFanfare((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.fanfare());
+        pojo.setTambouren((dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.tambouren());
+        pojo.setPerkussionsensemble((dto.modulC() || dto.modulH()) && dto.perkussionsensemble());
+    }
 
 }
