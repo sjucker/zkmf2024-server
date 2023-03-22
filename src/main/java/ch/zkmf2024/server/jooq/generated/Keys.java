@@ -7,15 +7,23 @@ import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
+import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
+import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
+import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
+import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
 import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import ch.zkmf2024.server.jooq.generated.tables.records.HelperRegistrationRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ImageRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.KontaktRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.NewsletterRecipientRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.ProgrammVorgabenRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.SurveyAnswerRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.TitelRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammTitelRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinStatusRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.Zkmf2024UserRecord;
@@ -41,8 +49,13 @@ public class Keys {
     public static final UniqueKey<ImageRecord> KEY_IMAGE_PRIMARY = Internal.createUniqueKey(Image.IMAGE, DSL.name("KEY_image_PRIMARY"), new TableField[]{Image.IMAGE.ID}, true);
     public static final UniqueKey<KontaktRecord> KEY_KONTAKT_PRIMARY = Internal.createUniqueKey(Kontakt.KONTAKT, DSL.name("KEY_kontakt_PRIMARY"), new TableField[]{Kontakt.KONTAKT.ID}, true);
     public static final UniqueKey<NewsletterRecipientRecord> KEY_NEWSLETTER_RECIPIENT_PRIMARY = Internal.createUniqueKey(NewsletterRecipient.NEWSLETTER_RECIPIENT, DSL.name("KEY_newsletter_recipient_PRIMARY"), new TableField[]{NewsletterRecipient.NEWSLETTER_RECIPIENT.EMAIL}, true);
+    public static final UniqueKey<ProgrammVorgabenRecord> KEY_PROGRAMM_VORGABEN_PRIMARY = Internal.createUniqueKey(ProgrammVorgaben.PROGRAMM_VORGABEN, DSL.name("KEY_programm_vorgaben_PRIMARY"), new TableField[]{ProgrammVorgaben.PROGRAMM_VORGABEN.MODUL, ProgrammVorgaben.PROGRAMM_VORGABEN.KLASSE, ProgrammVorgaben.PROGRAMM_VORGABEN.BESETZUNG}, true);
     public static final UniqueKey<SurveyAnswerRecord> KEY_SURVEY_ANSWER_PRIMARY = Internal.createUniqueKey(SurveyAnswer.SURVEY_ANSWER, DSL.name("KEY_survey_answer_PRIMARY"), new TableField[]{SurveyAnswer.SURVEY_ANSWER.ID}, true);
+    public static final UniqueKey<TitelRecord> KEY_TITEL_PRIMARY = Internal.createUniqueKey(Titel.TITEL, DSL.name("KEY_titel_PRIMARY"), new TableField[]{Titel.TITEL.ID}, true);
     public static final UniqueKey<VereinRecord> KEY_VEREIN_PRIMARY = Internal.createUniqueKey(Verein.VEREIN, DSL.name("KEY_verein_PRIMARY"), new TableField[]{Verein.VEREIN.ID}, true);
+    public static final UniqueKey<VereinProgrammRecord> KEY_VEREIN_PROGRAMM_PRIMARY = Internal.createUniqueKey(VereinProgramm.VEREIN_PROGRAMM, DSL.name("KEY_verein_programm_PRIMARY"), new TableField[]{VereinProgramm.VEREIN_PROGRAMM.ID}, true);
+    public static final UniqueKey<VereinProgrammTitelRecord> KEY_VEREIN_PROGRAMM_TITEL_PRIMARY = Internal.createUniqueKey(VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, DSL.name("KEY_verein_programm_titel_PRIMARY"), new TableField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_PROGRAMM, VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_TITEL}, true);
+    public static final UniqueKey<VereinProgrammTitelRecord> KEY_VEREIN_PROGRAMM_TITEL_UQ_VEREIN_PROGRAMM_TITEL = Internal.createUniqueKey(VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, DSL.name("KEY_verein_programm_titel_uq_verein_programm_titel"), new TableField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_PROGRAMM, VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_TITEL, VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.POSITION}, true);
     public static final UniqueKey<VereinStatusRecord> KEY_VEREIN_STATUS_PRIMARY = Internal.createUniqueKey(VereinStatus.VEREIN_STATUS, DSL.name("KEY_verein_status_PRIMARY"), new TableField[]{VereinStatus.VEREIN_STATUS.FK_VEREIN}, true);
     public static final UniqueKey<Zkmf2024UserRecord> KEY_ZKMF2024_USER_PRIMARY = Internal.createUniqueKey(Zkmf2024User.ZKMF2024_USER, DSL.name("KEY_zkmf2024_user_PRIMARY"), new TableField[]{Zkmf2024User.ZKMF2024_USER.EMAIL}, true);
 
@@ -50,7 +63,11 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<TitelRecord, VereinRecord> TITEL_IBFK_1 = Internal.createForeignKey(Titel.TITEL, DSL.name("titel_ibfk_1"), new TableField[]{Titel.TITEL.FK_VEREIN}, Keys.KEY_VEREIN_PRIMARY, new TableField[]{Verein.VEREIN.ID}, true);
     public static final ForeignKey<VereinRecord, KontaktRecord> FK_VEREIN_ON_DIREKTION_KONTAKT = Internal.createForeignKey(Verein.VEREIN, DSL.name("FK_VEREIN_ON_DIREKTION_KONTAKT"), new TableField[]{Verein.VEREIN.DIREKTION_KONTAKT_ID}, Keys.KEY_KONTAKT_PRIMARY, new TableField[]{Kontakt.KONTAKT.ID}, true);
     public static final ForeignKey<VereinRecord, KontaktRecord> FK_VEREIN_ON_PRAESIDENT_KONTAKT = Internal.createForeignKey(Verein.VEREIN, DSL.name("FK_VEREIN_ON_PRAESIDENT_KONTAKT"), new TableField[]{Verein.VEREIN.PRAESIDENT_KONTAKT_ID}, Keys.KEY_KONTAKT_PRIMARY, new TableField[]{Kontakt.KONTAKT.ID}, true);
+    public static final ForeignKey<VereinProgrammRecord, VereinRecord> VEREIN_PROGRAMM_IBFK_1 = Internal.createForeignKey(VereinProgramm.VEREIN_PROGRAMM, DSL.name("verein_programm_ibfk_1"), new TableField[]{VereinProgramm.VEREIN_PROGRAMM.FK_VEREIN}, Keys.KEY_VEREIN_PRIMARY, new TableField[]{Verein.VEREIN.ID}, true);
+    public static final ForeignKey<VereinProgrammTitelRecord, VereinProgrammRecord> VEREIN_PROGRAMM_TITEL_IBFK_1 = Internal.createForeignKey(VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, DSL.name("verein_programm_titel_ibfk_1"), new TableField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_PROGRAMM}, Keys.KEY_VEREIN_PROGRAMM_PRIMARY, new TableField[]{VereinProgramm.VEREIN_PROGRAMM.ID}, true);
+    public static final ForeignKey<VereinProgrammTitelRecord, TitelRecord> VEREIN_PROGRAMM_TITEL_IBFK_2 = Internal.createForeignKey(VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, DSL.name("verein_programm_titel_ibfk_2"), new TableField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_TITEL}, Keys.KEY_TITEL_PRIMARY, new TableField[]{Titel.TITEL.ID}, true);
     public static final ForeignKey<VereinStatusRecord, VereinRecord> VEREIN_STATUS_IBFK_1 = Internal.createForeignKey(VereinStatus.VEREIN_STATUS, DSL.name("verein_status_ibfk_1"), new TableField[]{VereinStatus.VEREIN_STATUS.FK_VEREIN}, Keys.KEY_VEREIN_PRIMARY, new TableField[]{Verein.VEREIN.ID}, true);
 }

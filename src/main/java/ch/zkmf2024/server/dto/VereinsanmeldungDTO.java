@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.dto;
 
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public record VereinsanmeldungDTO(
         return !getBesetzungen().isEmpty();
     }
 
-    public List<Modul> getModule() {
+    public @NotNull List<Modul> getModule() {
         var module = new ArrayList<Modul>();
         if (modulA) module.add(Modul.A);
         if (modulB) module.add(Modul.B);
@@ -57,7 +58,7 @@ public record VereinsanmeldungDTO(
         return module;
     }
 
-    public List<Besetzung> getBesetzungen() {
+    public @NotNull List<Besetzung> getBesetzungen() {
         var besetzungen = new ArrayList<Besetzung>();
         if (harmonie) besetzungen.add(Besetzung.HARMONIE);
         if (brassBand) besetzungen.add(Besetzung.BRASS_BAND);

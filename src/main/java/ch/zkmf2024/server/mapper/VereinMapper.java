@@ -1,9 +1,11 @@
 package ch.zkmf2024.server.mapper;
 
 import ch.zkmf2024.server.dto.KontaktDTO;
+import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinsangabenDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,9 +17,17 @@ public interface VereinMapper {
 
     VereinMapper INSTANCE = Mappers.getMapper(VereinMapper.class);
 
-    VereinsangabenDTO toVereinsangabenDTO(VereinPojo pojo);
+    VereinsangabenDTO toDTO(VereinPojo pojo);
 
-    KontaktDTO toKontaktDTO(KontaktPojo pojo);
+    KontaktDTO toDTO(KontaktPojo pojo);
+
+    @Mapping(target = "pflichtStueck", ignore = true)
+    TitelDTO toDTO(TitelPojo pojo);
+
+    @Mapping(target = "modul", ignore = true)
+    @Mapping(target = "klasse", ignore = true)
+    @Mapping(target = "besetzung", ignore = true)
+    TitelPojo toPojo(TitelDTO dto, Long fkVerein);
 
     @Mapping(target = "klasseModulA", source = "klasseModula")
     @Mapping(target = "klasseModulB", source = "klasseModulb")
