@@ -4,6 +4,7 @@ import ch.zkmf2024.server.configuration.ApplicationProperties;
 import ch.zkmf2024.server.dto.Aufgaben;
 import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.Einsatzzeit;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
@@ -64,8 +65,8 @@ public class MailService {
             variables.put("email", user.getEmail());
             variables.put("loginLink", applicationProperties.getBaseUrlVereine());
             variables.put("verificationLink", "%s/verification/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),
-                    user.getEmail(),
-                    user.getEmailVerification()));
+                                                                                user.getEmail(),
+                                                                                user.getEmailVerification()));
 
             var mjml = templateEngine.process("registration", new Context(GERMAN, variables));
 
@@ -92,7 +93,7 @@ public class MailService {
             variables.put("verein", vereinDTO.angaben().vereinsname());
 
             variables.put("modul", vereinDTO.anmeldung().getModule().stream()
-                                            .map(modul -> "%s - %s".formatted(modul.name(), modul.getDescription()))
+                                            .map(Modul::getFullDescription)
                                             .collect(joining(", ")));
 
             variables.put("klasse", getKlassen(vereinDTO.anmeldung()));
@@ -138,8 +139,8 @@ public class MailService {
         try {
             var variables = new HashMap<String, Object>();
             variables.put("resetLink", "%s/reset-passwort/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),
-                    user.getEmail(),
-                    user.getPasswordResetToken()));
+                                                                           user.getEmail(),
+                                                                           user.getPasswordResetToken()));
 
             var mjml = templateEngine.process("forgot-password", new Context(GERMAN, variables));
             var mimeMessage = mailSender.createMimeMessage();

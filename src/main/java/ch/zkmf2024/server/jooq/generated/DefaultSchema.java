@@ -7,8 +7,12 @@ import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
+import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
+import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
+import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
+import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
 import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import org.jooq.Catalog;
@@ -52,14 +56,34 @@ public class DefaultSchema extends SchemaImpl {
     public final NewsletterRecipient NEWSLETTER_RECIPIENT = NewsletterRecipient.NEWSLETTER_RECIPIENT;
 
     /**
+     * The table <code>programm_vorgaben</code>.
+     */
+    public final ProgrammVorgaben PROGRAMM_VORGABEN = ProgrammVorgaben.PROGRAMM_VORGABEN;
+
+    /**
      * The table <code>survey_answer</code>.
      */
     public final SurveyAnswer SURVEY_ANSWER = SurveyAnswer.SURVEY_ANSWER;
 
     /**
+     * The table <code>titel</code>.
+     */
+    public final Titel TITEL = Titel.TITEL;
+
+    /**
      * The table <code>verein</code>.
      */
     public final Verein VEREIN = Verein.VEREIN;
+
+    /**
+     * The table <code>verein_programm</code>.
+     */
+    public final VereinProgramm VEREIN_PROGRAMM = VereinProgramm.VEREIN_PROGRAMM;
+
+    /**
+     * The table <code>verein_programm_titel</code>.
+     */
+    public final VereinProgrammTitel VEREIN_PROGRAMM_TITEL = VereinProgrammTitel.VEREIN_PROGRAMM_TITEL;
 
     /**
      * The table <code>verein_status</code>.
@@ -90,8 +114,12 @@ public class DefaultSchema extends SchemaImpl {
                 Image.IMAGE,
                 Kontakt.KONTAKT,
                 NewsletterRecipient.NEWSLETTER_RECIPIENT,
+                ProgrammVorgaben.PROGRAMM_VORGABEN,
                 SurveyAnswer.SURVEY_ANSWER,
+                Titel.TITEL,
                 Verein.VEREIN,
+                VereinProgramm.VEREIN_PROGRAMM,
+                VereinProgrammTitel.VEREIN_PROGRAMM_TITEL,
                 VereinStatus.VEREIN_STATUS,
                 Zkmf2024User.ZKMF2024_USER
         );
