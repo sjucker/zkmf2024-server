@@ -1,14 +1,19 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.ImageType;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
+import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
@@ -23,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +38,9 @@ import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 import static ch.zkmf2024.server.service.DateUtil.now;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Service
@@ -88,13 +97,25 @@ public class VereinService {
 
         return new VereinDTO(
                 verein.getEmail(),
-                MAPPER.toVereinsangabenDTO(verein),
-                MAPPER.toKontaktDTO(praesident),
-                MAPPER.toKontaktDTO(direktion),
+                MAPPER.toDTO(verein),
+                MAPPER.toDTO(praesident),
+                MAPPER.toDTO(direktion),
                 MAPPER.toVereinsanmeldungDTO(verein),
                 new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
-                verein.getConfirmedAt() != null
+                verein.getConfirmedAt() != null,
+                getTitel(verein.getId()),
+                getProgramme(verein)
         );
+    }
+
+    private List<TitelDTO> getTitel(Long vereinId) {
+        return vereinRepository.findTitelByVereinId(vereinId).stream()
+                               .map(MAPPER::toDTO)
+                               .toList();
+    }
+
+    private List<VereinProgrammDTO> getProgramme(VereinPojo verein) {
+        return vereinRepository.findProgramme(verein);
     }
 
     public void create(RegisterVereinRequestDTO request) {
@@ -158,6 +179,9 @@ public class VereinService {
         MAPPER.updateKontakt(direktion, dto.direktion());
         vereinRepository.update(direktion);
 
+        updateTitel(verein.getId(), dto.titel());
+        updateProgramme(verein.getId(), dto.programme());
+
         dto = toDTO(verein);
 
         var status = vereinRepository.findStatusById(verein.getId());
@@ -171,6 +195,14 @@ public class VereinService {
         var verein = vereinRepository.findByEmail(email).orElseThrow();
         if (verein.getConfirmedAt() == null) {
             verein.setConfirmedAt(now());
+
+            getSelectedModule(verein).forEach(modul -> {
+                var vereinProgramm = new VereinProgrammPojo();
+                vereinProgramm.setFkVerein(verein.getId());
+                vereinProgramm.setModul(modul.name());
+                vereinRepository.insert(vereinProgramm);
+            });
+
             vereinRepository.update(verein);
         } else {
             log.error("user {} tried to confirm registration, but was already confirmed at {}", email, verein.getConfirmedAt());
@@ -180,6 +212,90 @@ public class VereinService {
         mailService.sendRegistrationConfirmationEmail(dto);
 
         return dto;
+    }
+
+    private List<Modul> getSelectedModule(VereinPojo vereinPojo) {
+        var module = new ArrayList<Modul>();
+        if (vereinPojo.getModula()) module.add(Modul.A);
+        if (vereinPojo.getModulb()) module.add(Modul.B);
+        if (vereinPojo.getModulc()) module.add(Modul.C);
+        if (vereinPojo.getModuld()) module.add(Modul.D);
+        if (vereinPojo.getModule()) module.add(Modul.E);
+        if (vereinPojo.getModulf()) module.add(Modul.F);
+        if (vereinPojo.getModulg()) module.add(Modul.G);
+        if (vereinPojo.getModulh()) module.add(Modul.H);
+        return module;
+    }
+
+    private void updateTitel(Long vereinId, List<TitelDTO> titel) {
+        var existingTitel = vereinRepository.findTitelByVereinId(vereinId);
+        var idsToKeep = titel.stream()
+                             .map(TitelDTO::id)
+                             .filter(Objects::nonNull)
+                             .collect(toSet());
+
+        for (var t : titel) {
+            if (t.id() == null) {
+                vereinRepository.insert(MAPPER.toPojo(t, vereinId));
+            }
+        }
+
+        for (var t : existingTitel) {
+            if (!idsToKeep.contains(t.getId())) {
+                vereinRepository.delete(t);
+            }
+        }
+    }
+
+    private void updateProgramme(Long vereinId, List<VereinProgrammDTO> programme) {
+        for (var programm : programme) {
+            var programmPojo = vereinRepository.findVereinProgramm(programm.id()).orElseThrow();
+            if (Objects.equals(vereinId, programmPojo.getFkVerein())) {
+                programmPojo.setTitel(programm.titel());
+                programmPojo.setInfoModeration(programm.infoModeration());
+                programmPojo.setTotalDurationInSeconds(programm.totalDurationInSeconds()); // TODO validate this?
+
+                vereinRepository.update(programmPojo);
+
+                var existingProgrammTitel = vereinRepository.findTitelByProgrammId(programmPojo.getId());
+                var programmTitelPerId = existingProgrammTitel.stream()
+                                                              .collect(toMap(VereinProgrammTitelPojo::getFkTitel, identity()));
+                for (int i = 0; i < programm.ablauf().size(); i++) {
+                    var programmTitel = programm.ablauf().get(i);
+                    var titelId = programmTitel.titel().id();
+                    if (programmTitelPerId.containsKey(titelId)) {
+                        // update
+                        var vereinProgrammTitelPojo = programmTitelPerId.get(titelId);
+                        vereinProgrammTitelPojo.setPosition(i);
+                        vereinProgrammTitelPojo.setApplausInSeconds(programmTitel.applausInSeconds());
+                        vereinRepository.update(vereinProgrammTitelPojo);
+                    } else {
+                        // create new
+                        var vereinProgrammTitelPojo = new VereinProgrammTitelPojo(programmPojo.getId(),
+                                                                                  titelId,
+                                                                                  i,
+                                                                                  programmTitel.titel().durationInSeconds(),
+                                                                                  programmTitel.applausInSeconds());
+                        vereinRepository.insert(vereinProgrammTitelPojo);
+                    }
+                }
+
+                var idsToKeep = programm.ablauf().stream()
+                                        .map(s -> s.titel().id())
+                                        .filter(Objects::nonNull)
+                                        .collect(toSet());
+
+                for (var t : existingProgrammTitel) {
+                    if (!idsToKeep.contains(t.getFkTitel())) {
+                        vereinRepository.delete(t);
+                    }
+                }
+
+            } else {
+                log.error("tried to update Vereinsprogramm {} that does not belong to Vereins-ID {}",
+                          programmPojo, vereinId);
+            }
+        }
     }
 
     public boolean verifyEmail(VerifyEmailRequestDTO request) {
@@ -247,8 +363,8 @@ public class VereinService {
                 return true;
             } else {
                 log.warn("presented password reset-token did not match expected one: {}/{}",
-                        token,
-                        userPojo.getPasswordResetToken());
+                         token,
+                         userPojo.getPasswordResetToken());
             }
         } else {
             log.warn("tried to reset password for unknown user: {}, {}", email, token);

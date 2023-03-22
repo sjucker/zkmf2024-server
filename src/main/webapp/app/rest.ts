@@ -74,6 +74,16 @@ export interface ResetPasswordRequestDTO {
     newPassword: string;
 }
 
+export interface TitelDTO {
+    id?: number;
+    titelName?: string;
+    composer?: string;
+    arrangeur?: string;
+    grad?: number;
+    durationInSeconds: number;
+    pflichtStueck: boolean;
+}
+
 export interface VereinDTO {
     email: string;
     angaben: VereinsangabenDTO;
@@ -82,7 +92,29 @@ export interface VereinDTO {
     anmeldung: VereinsanmeldungDTO;
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
+    titel: TitelDTO[];
+    programme: VereinProgrammDTO[];
     phase1Status: PhaseStatus;
+    phase2Status: PhaseStatus;
+}
+
+export interface VereinProgrammDTO {
+    id: number;
+    modul: string;
+    klasse?: string;
+    besetzung?: string;
+    titel?: string;
+    infoModeration?: string;
+    totalDurationInSeconds?: number;
+    minDurationInSeconds?: number;
+    maxDurationInSeconds?: number;
+    availableTitel: TitelDTO[];
+    ablauf: VereinProgrammTitelDTO[];
+}
+
+export interface VereinProgrammTitelDTO {
+    titel: TitelDTO;
+    applausInSeconds?: number;
 }
 
 export interface VereinsangabenDTO extends IsValid {
@@ -114,8 +146,8 @@ export interface VereinsanmeldungDTO extends IsValid {
     fanfare: boolean;
     tambouren: boolean;
     perkussionsensemble: boolean;
-    module?: Modul[];
-    besetzungen?: Besetzung[];
+    module: Modul[];
+    besetzungen: Besetzung[];
 }
 
 export interface VereinsinfoDTO extends IsValid {
@@ -148,6 +180,7 @@ export interface VereinOverviewDTO {
     fanfare: boolean;
     tambouren: boolean;
     perkussionsensemble: boolean;
+    registrationConfirmed: boolean;
     phase1: PhaseStatus;
     phase2: PhaseStatus;
 }

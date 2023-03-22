@@ -2,6 +2,8 @@ package ch.zkmf2024.server.dto;
 
 import lombok.Getter;
 
+import java.util.Optional;
+
 public enum Klasse {
     // Modul A
     HOECHSTKLASSE("Höchstklasse"),
@@ -10,7 +12,7 @@ public enum Klasse {
     KLASSE_3("3. Klasse"),
     KLASSE_4("4. Klasse"),
 
-    // Modul B
+    // Modul B/H
     OBERSTUFE("Oberstufe"),
     MITTELSTUFE("Mittelstufe"),
     UNTERSTUFE("Unterstufe");
@@ -20,5 +22,13 @@ public enum Klasse {
 
     Klasse(String description) {
         this.description = description;
+    }
+
+    public static Optional<Klasse> fromString(String klasse) {
+        try {
+            return Optional.of(Klasse.valueOf(klasse));
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
     }
 }

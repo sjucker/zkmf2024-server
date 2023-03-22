@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.dto;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 
 public record VereinDTO(
         @NotNull String email,
@@ -9,7 +10,9 @@ public record VereinDTO(
         @NotNull KontaktDTO direktion,
         @NotNull VereinsanmeldungDTO anmeldung,
         @NotNull VereinsinfoDTO info,
-        boolean registrationConfirmed
+        boolean registrationConfirmed,
+        @NotNull List<TitelDTO> titel,
+        @NotNull List<VereinProgrammDTO> programme
 ) {
 
     @NotNull
@@ -21,6 +24,12 @@ public record VereinDTO(
                 info.isValid() ?
                 PhaseStatus.DONE :
                 PhaseStatus.IN_PROGRESS;
+    }
+
+    @NotNull
+    public PhaseStatus getPhase2Status() {
+        // TODO
+        return PhaseStatus.IN_PROGRESS;
     }
 
 }
