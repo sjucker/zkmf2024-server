@@ -72,9 +72,9 @@ public interface VereinMapper {
         pojo.setKlasseModulb(dto.modulB() ? dto.klasseModulB().name() : null);
         pojo.setKlasseModulh(dto.modulH() ? dto.klasseModulH().name() : null);
 
-        pojo.setHarmonie((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.harmonie());
-        pojo.setBrassBand((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.brassBand());
-        pojo.setFanfare((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF() || dto.modulG()) && dto.fanfare());
+        pojo.setHarmonie((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF()) && dto.harmonie());
+        pojo.setBrassBand((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF()) && dto.brassBand());
+        pojo.setFanfare((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF()) && dto.fanfare());
         pojo.setTambouren(dto.modulG() && dto.tambouren());
         pojo.setPerkussionsensemble((dto.modulC() || dto.modulH()) && dto.perkussionsensemble());
     }
