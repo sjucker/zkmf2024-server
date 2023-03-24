@@ -5,7 +5,8 @@ import lombok.Getter;
 public enum Aufgaben {
     EGAL("egal, überall einsetzbar"),
     KOERPERLICH("körperliche Arbeit möglich"),
-    MUSIKALISCH("Mithilfe beim musikalischen Wettbewerb (z.B. Jurysekretariat, Rowdie)"),
+    MUSIKALISCH("Mithilfe beim musikalischen Wettbewerb (z.B. Betreuer, Roadie)"),
+    JURYSEKRETARIAT("Jurysekretariat (für musikaffine Personen)"),
     SERVICE("Festwirtschaft (Aufnahme Bestellung, Service)"),
     BUFFET("Festwirtschaft (Buffet, Ausgabe)"),
     KUECHE("Festwirtschaft (Küche, Grill)"),
@@ -13,7 +14,6 @@ public enum Aufgaben {
     AUSSENSTAND("Festwirtschaft Aussenstand (Getränke, Food, Grill)"),
     RAHMENPROGRAMM("Rahmenprogramm (Auf-/Abbau für Bands)"),
     AUFBAU("Aufbau bzw. Rückbau Zelte und Infrastruktur"),
-    BETREUUNG("Vereinsbetreuung (längerer Einsatz, obligatorischer vorgängiger Infoanlass)"),
     AUFSICHT("Aufsicht, Schicht-Chef");
 
     @Getter
