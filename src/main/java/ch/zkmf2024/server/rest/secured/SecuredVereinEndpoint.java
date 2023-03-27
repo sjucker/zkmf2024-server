@@ -31,7 +31,7 @@ public class SecuredVereinEndpoint {
 
     @GetMapping
     public ResponseEntity<VereinDTO> authorize(@AuthenticationPrincipal UserDetails userDetails) {
-        log.info("GET /secured/verein {}", userDetails);
+        log.info("GET /secured/verein");
 
         return vereinService.find(userDetails.getUsername()).map(ResponseEntity::ok)
                             .orElseGet(() -> ResponseEntity.notFound().build());
@@ -39,7 +39,7 @@ public class SecuredVereinEndpoint {
 
     @PutMapping
     public ResponseEntity<VereinDTO> update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody VereinDTO dto) {
-        log.info("PUT /secured/verein {} {}", dto, userDetails);
+        log.info("PUT /secured/verein {}", dto);
 
         return ResponseEntity.ok(vereinService.update(userDetails.getUsername(), dto));
     }
@@ -48,7 +48,7 @@ public class SecuredVereinEndpoint {
     public ResponseEntity<?> bildUpload(@AuthenticationPrincipal UserDetails userDetails,
                                         @RequestParam(required = false) MultipartFile logo,
                                         @RequestParam(required = false) MultipartFile bild) {
-        log.info("POST /secured/verein/bilder-upload logo={}, bild={}, {}", getFileDescription(logo), getFileDescription(bild), userDetails);
+        log.info("POST /secured/verein/bilder-upload logo={}, bild={}", getFileDescription(logo), getFileDescription(bild));
 
         try {
             vereinService.updateBilder(userDetails.getUsername(), logo, bild);
