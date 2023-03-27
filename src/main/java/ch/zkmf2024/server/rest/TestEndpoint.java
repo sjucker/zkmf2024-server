@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @RestController
 @RequestMapping("/public/test")
@@ -12,7 +14,7 @@ public class TestEndpoint {
 
     @GetMapping
     public String test() {
-        log.error("test");
+        log.error("test %s".formatted(LocalDateTime.now()));
         return "test";
     }
 
