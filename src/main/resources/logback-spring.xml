@@ -18,7 +18,7 @@
         <asynchronousSending>false</asynchronousSending>
         <from>${smtpuser}</from>
         <to>stefan.jucker@gmail.com</to>
-        <subject>[ZKMF2024]: %logger{20} - %msg</subject>
+        <subject>[ZKMF2024 ${spring.profiles.active}]: %logger{20} - %msg</subject>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
         </layout>
