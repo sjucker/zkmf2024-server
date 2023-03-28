@@ -641,6 +641,7 @@ public class SurveyAnswerRecord extends UpdatableRecordImpl<SurveyAnswerRecord> 
         setAbsageKommentar(from.getAbsageKommentar());
         setAbsageKontaktaufnahme(from.getAbsageKontaktaufnahme());
         setHelfer(from.getHelfer());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -681,6 +682,7 @@ public class SurveyAnswerRecord extends UpdatableRecordImpl<SurveyAnswerRecord> 
         setAbsageKommentar(absageKommentar);
         setAbsageKontaktaufnahme(absageKontaktaufnahme);
         setHelfer(helfer);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -705,6 +707,7 @@ public class SurveyAnswerRecord extends UpdatableRecordImpl<SurveyAnswerRecord> 
             setAbsageKommentar(value.getAbsageKommentar());
             setAbsageKontaktaufnahme(value.getAbsageKontaktaufnahme());
             setHelfer(value.getHelfer());
+            resetChangedOnNotNull();
         }
     }
 }

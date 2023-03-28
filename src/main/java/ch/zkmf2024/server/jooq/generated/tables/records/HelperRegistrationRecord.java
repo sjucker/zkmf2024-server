@@ -876,6 +876,7 @@ public class HelperRegistrationRecord extends UpdatableRecordImpl<HelperRegistra
         setEinsatzDienstag(from.getEinsatzDienstag());
         setGroesseShirt(from.getGroesseShirt());
         setRegisteredAt(from.getRegisteredAt());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -922,6 +923,7 @@ public class HelperRegistrationRecord extends UpdatableRecordImpl<HelperRegistra
         setEinsatzDienstag(einsatzDienstag);
         setGroesseShirt(groesseShirt);
         setRegisteredAt(registeredAt);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -952,6 +954,7 @@ public class HelperRegistrationRecord extends UpdatableRecordImpl<HelperRegistra
             setEinsatzDienstag(value.getEinsatzDienstag());
             setGroesseShirt(value.getGroesseShirt());
             setRegisteredAt(value.getRegisteredAt());
+            resetChangedOnNotNull();
         }
     }
 }

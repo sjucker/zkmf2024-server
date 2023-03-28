@@ -491,6 +491,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambouren(from.getTambouren());
         setPerkussionsensemble(from.getPerkussionsensemble());
         setWebsiteText(from.getWebsiteText());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -543,6 +544,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambouren(tambouren);
         setPerkussionsensemble(perkussionsensemble);
         setWebsiteText(websiteText);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -579,6 +581,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setTambouren(value.getTambouren());
             setPerkussionsensemble(value.getPerkussionsensemble());
             setWebsiteText(value.getWebsiteText());
+            resetChangedOnNotNull();
         }
     }
 }

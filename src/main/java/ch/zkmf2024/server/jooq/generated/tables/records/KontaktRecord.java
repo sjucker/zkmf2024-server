@@ -405,6 +405,7 @@ public class KontaktRecord extends UpdatableRecordImpl<KontaktRecord> implements
         setEmail(from.getEmail());
         setTelefonPrivat(from.getTelefonPrivat());
         setTelefonMobile(from.getTelefonMobile());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -439,6 +440,7 @@ public class KontaktRecord extends UpdatableRecordImpl<KontaktRecord> implements
         setEmail(email);
         setTelefonPrivat(telefonPrivat);
         setTelefonMobile(telefonMobile);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -457,6 +459,7 @@ public class KontaktRecord extends UpdatableRecordImpl<KontaktRecord> implements
             setEmail(value.getEmail());
             setTelefonPrivat(value.getTelefonPrivat());
             setTelefonMobile(value.getTelefonMobile());
+            resetChangedOnNotNull();
         }
     }
 }

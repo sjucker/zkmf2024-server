@@ -290,6 +290,7 @@ public class ImageRecord extends UpdatableRecordImpl<ImageRecord> implements Rec
         setName(from.getName());
         setUploadedAt(from.getUploadedAt());
         setType(from.getType());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -321,6 +322,7 @@ public class ImageRecord extends UpdatableRecordImpl<ImageRecord> implements Rec
         setName(name);
         setUploadedAt(uploadedAt);
         setType(type);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -336,6 +338,7 @@ public class ImageRecord extends UpdatableRecordImpl<ImageRecord> implements Rec
             setName(value.getName());
             setUploadedAt(value.getUploadedAt());
             setType(value.getType());
+            resetChangedOnNotNull();
         }
     }
 }

@@ -251,6 +251,7 @@ public class NewsletterRecipientRecord extends UpdatableRecordImpl<NewsletterRec
         setName(from.getName());
         setSubscribedAt(from.getSubscribedAt());
         setUnsubscribedAt(from.getUnsubscribedAt());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -281,6 +282,7 @@ public class NewsletterRecipientRecord extends UpdatableRecordImpl<NewsletterRec
         setName(name);
         setSubscribedAt(subscribedAt);
         setUnsubscribedAt(unsubscribedAt);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -295,6 +297,7 @@ public class NewsletterRecipientRecord extends UpdatableRecordImpl<NewsletterRec
             setName(value.getName());
             setSubscribedAt(value.getSubscribedAt());
             setUnsubscribedAt(value.getUnsubscribedAt());
+            resetChangedOnNotNull();
         }
     }
 }

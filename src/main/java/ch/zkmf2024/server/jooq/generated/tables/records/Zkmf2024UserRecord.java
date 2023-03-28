@@ -368,6 +368,7 @@ public class Zkmf2024UserRecord extends UpdatableRecordImpl<Zkmf2024UserRecord> 
         setEmailVerification(from.getEmailVerification());
         setEmailVerifiedAt(from.getEmailVerifiedAt());
         setPasswordResetToken(from.getPasswordResetToken());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -401,6 +402,7 @@ public class Zkmf2024UserRecord extends UpdatableRecordImpl<Zkmf2024UserRecord> 
         setEmailVerification(emailVerification);
         setEmailVerifiedAt(emailVerifiedAt);
         setPasswordResetToken(passwordResetToken);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -418,6 +420,7 @@ public class Zkmf2024UserRecord extends UpdatableRecordImpl<Zkmf2024UserRecord> 
             setEmailVerification(value.getEmailVerification());
             setEmailVerifiedAt(value.getEmailVerifiedAt());
             setPasswordResetToken(value.getPasswordResetToken());
+            resetChangedOnNotNull();
         }
     }
 }

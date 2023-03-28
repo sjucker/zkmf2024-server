@@ -171,6 +171,7 @@ public class VereinStatusRecord extends UpdatableRecordImpl<VereinStatusRecord> 
         setFkVerein(from.getFkVerein());
         setPhase1(from.getPhase1());
         setPhase2(from.getPhase2());
+        resetChangedOnNotNull();
     }
 
     @Override
@@ -199,6 +200,7 @@ public class VereinStatusRecord extends UpdatableRecordImpl<VereinStatusRecord> 
         setFkVerein(fkVerein);
         setPhase1(phase1);
         setPhase2(phase2);
+        resetChangedOnNotNull();
     }
 
     /**
@@ -211,6 +213,7 @@ public class VereinStatusRecord extends UpdatableRecordImpl<VereinStatusRecord> 
             setFkVerein(value.getFkVerein());
             setPhase1(value.getPhase1());
             setPhase2(value.getPhase2());
+            resetChangedOnNotNull();
         }
     }
 }

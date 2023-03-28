@@ -64,22 +64,22 @@
     <ng-template pTemplate="body" let-dto>
         <tr>
             <td>{{dto.angaben.vereinsname}}</td>
-            <td>{{dto.anmeldung.modulA}}</td>
-            <td>{{dto.anmeldung.modulB}}</td>
-            <td>{{dto.anmeldung.modulC}}</td>
-            <td>{{dto.anmeldung.modulD}}</td>
-            <td>{{dto.anmeldung.modulE}}</td>
-            <td>{{dto.anmeldung.modulF}}</td>
-            <td>{{dto.anmeldung.modulG}}</td>
-            <td>{{dto.anmeldung.modulH}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulA)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulB)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulC)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulD)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulE)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulF)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulG)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.modulH)}}</td>
             <td>{{dto.anmeldung.klasseModulA}}</td>
             <td>{{dto.anmeldung.klasseModulB}}</td>
             <td>{{dto.anmeldung.klasseModulH}}</td>
-            <td>{{dto.anmeldung.harmonie}}</td>
-            <td>{{dto.anmeldung.brassBand}}</td>
-            <td>{{dto.anmeldung.fanfare}}</td>
-            <td>{{dto.anmeldung.tambouren}}</td>
-            <td>{{dto.anmeldung.perkussionsensemble}}</td>
+            <td>{{formatBoolean(dto.anmeldung.harmonie)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.brassBand)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.fanfare)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.tambouren)}}</td>
+            <td>{{formatBoolean(dto.anmeldung.perkussionsensemble)}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">

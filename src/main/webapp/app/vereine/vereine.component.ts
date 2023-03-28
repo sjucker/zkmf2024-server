@@ -39,4 +39,8 @@ export class VereineComponent implements OnInit {
     count(): number {
         return this.data.length;
     }
+
+    formatBoolean(b: boolean): string {
+        return b ? "X" : "";
+    }
 }
