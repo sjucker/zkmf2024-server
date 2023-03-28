@@ -228,6 +228,10 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+
+                        <configuration>
+                            <arguments>install --force</arguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
