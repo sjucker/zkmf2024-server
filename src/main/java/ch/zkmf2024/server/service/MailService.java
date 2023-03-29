@@ -60,6 +60,7 @@ public class MailService {
         try {
             var variables = new HashMap<String, Object>();
             variables.put("email", user.getEmail());
+            variables.put("loginLink", applicationProperties.getBaseUrlVereine());
             variables.put("verificationLink", "%s/verification/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),
                     user.getEmail(),
                     user.getEmailVerification()));
