@@ -91,6 +91,9 @@ export interface VereinsangabenDTO extends IsValid {
     ort?: string;
     homepage?: string;
     iban?: string;
+    direktionDoppeleinsatz: boolean;
+    direktionDoppeleinsatzVerein?: string;
+    mitspielerDoppeleinsatz: boolean;
 }
 
 export interface VereinsanmeldungDTO extends IsValid {

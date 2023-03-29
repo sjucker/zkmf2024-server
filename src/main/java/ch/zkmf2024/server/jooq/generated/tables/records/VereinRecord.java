@@ -449,6 +449,54 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         return (String) get(26);
     }
 
+    /**
+     * Setter for <code>verein.direktion_doppeleinsatz</code>.
+     */
+    @Override
+    public void setDirektionDoppeleinsatz(Boolean value) {
+        set(27, value);
+    }
+
+    /**
+     * Getter for <code>verein.direktion_doppeleinsatz</code>.
+     */
+    @Override
+    public Boolean getDirektionDoppeleinsatz() {
+        return (Boolean) get(27);
+    }
+
+    /**
+     * Setter for <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    @Override
+    public void setDirektionDoppeleinsatzVerein(String value) {
+        set(28, value);
+    }
+
+    /**
+     * Getter for <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    @Override
+    public String getDirektionDoppeleinsatzVerein() {
+        return (String) get(28);
+    }
+
+    /**
+     * Setter for <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    @Override
+    public void setMitspielerDoppeleinsatz(Boolean value) {
+        set(29, value);
+    }
+
+    /**
+     * Getter for <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    @Override
+    public Boolean getMitspielerDoppeleinsatz() {
+        return (Boolean) get(29);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -491,6 +539,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambouren(from.getTambouren());
         setPerkussionsensemble(from.getPerkussionsensemble());
         setWebsiteText(from.getWebsiteText());
+        setDirektionDoppeleinsatz(from.getDirektionDoppeleinsatz());
+        setDirektionDoppeleinsatzVerein(from.getDirektionDoppeleinsatzVerein());
+        setMitspielerDoppeleinsatz(from.getMitspielerDoppeleinsatz());
         resetChangedOnNotNull();
     }
 
@@ -514,7 +565,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -544,6 +595,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambouren(tambouren);
         setPerkussionsensemble(perkussionsensemble);
         setWebsiteText(websiteText);
+        setDirektionDoppeleinsatz(direktionDoppeleinsatz);
+        setDirektionDoppeleinsatzVerein(direktionDoppeleinsatzVerein);
+        setMitspielerDoppeleinsatz(mitspielerDoppeleinsatz);
         resetChangedOnNotNull();
     }
 
@@ -581,6 +635,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setTambouren(value.getTambouren());
             setPerkussionsensemble(value.getPerkussionsensemble());
             setWebsiteText(value.getWebsiteText());
+            setDirektionDoppeleinsatz(value.getDirektionDoppeleinsatz());
+            setDirektionDoppeleinsatzVerein(value.getDirektionDoppeleinsatzVerein());
+            setMitspielerDoppeleinsatz(value.getMitspielerDoppeleinsatz());
             resetChangedOnNotNull();
         }
     }

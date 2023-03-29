@@ -455,4 +455,50 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByWebsiteText(String... values) {
         return fetch(Verein.VEREIN.WEBSITE_TEXT, values);
     }
+
+    /**
+     * Fetch records that have <code>direktion_doppeleinsatz BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfDirektionDoppeleinsatz(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Verein.VEREIN.DIREKTION_DOPPELEINSATZ, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>direktion_doppeleinsatz IN (values)</code>
+     */
+    public List<VereinPojo> fetchByDirektionDoppeleinsatz(Boolean... values) {
+        return fetch(Verein.VEREIN.DIREKTION_DOPPELEINSATZ, values);
+    }
+
+    /**
+     * Fetch records that have <code>direktion_doppeleinsatz_verein BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfDirektionDoppeleinsatzVerein(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>direktion_doppeleinsatz_verein IN
+     * (values)</code>
+     */
+    public List<VereinPojo> fetchByDirektionDoppeleinsatzVerein(String... values) {
+        return fetch(Verein.VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN, values);
+    }
+
+    /**
+     * Fetch records that have <code>mitspieler_doppeleinsatz BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfMitspielerDoppeleinsatz(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Verein.VEREIN.MITSPIELER_DOPPELEINSATZ, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>mitspieler_doppeleinsatz IN (values)</code>
+     */
+    public List<VereinPojo> fetchByMitspielerDoppeleinsatz(Boolean... values) {
+        return fetch(Verein.VEREIN.MITSPIELER_DOPPELEINSATZ, values);
+    }
 }

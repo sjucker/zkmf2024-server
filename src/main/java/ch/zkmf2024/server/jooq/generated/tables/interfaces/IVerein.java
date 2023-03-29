@@ -281,6 +281,36 @@ public interface IVerein extends Serializable {
      */
     public String getWebsiteText();
 
+    /**
+     * Setter for <code>verein.direktion_doppeleinsatz</code>.
+     */
+    public void setDirektionDoppeleinsatz(Boolean value);
+
+    /**
+     * Getter for <code>verein.direktion_doppeleinsatz</code>.
+     */
+    public Boolean getDirektionDoppeleinsatz();
+
+    /**
+     * Setter for <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    public void setDirektionDoppeleinsatzVerein(String value);
+
+    /**
+     * Getter for <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    public String getDirektionDoppeleinsatzVerein();
+
+    /**
+     * Setter for <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    public void setMitspielerDoppeleinsatz(Boolean value);
+
+    /**
+     * Getter for <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    public Boolean getMitspielerDoppeleinsatz();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

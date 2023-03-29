@@ -40,6 +40,9 @@ public class VereinPojo implements IVerein {
     private Boolean tambouren;
     private Boolean perkussionsensemble;
     private String websiteText;
+    private Boolean direktionDoppeleinsatz;
+    private String direktionDoppeleinsatzVerein;
+    private Boolean mitspielerDoppeleinsatz;
 
     public VereinPojo() {
     }
@@ -72,6 +75,9 @@ public class VereinPojo implements IVerein {
         this.tambouren = value.getTambouren();
         this.perkussionsensemble = value.getPerkussionsensemble();
         this.websiteText = value.getWebsiteText();
+        this.direktionDoppeleinsatz = value.getDirektionDoppeleinsatz();
+        this.direktionDoppeleinsatzVerein = value.getDirektionDoppeleinsatzVerein();
+        this.mitspielerDoppeleinsatz = value.getMitspielerDoppeleinsatz();
     }
 
     public VereinPojo(
@@ -101,7 +107,10 @@ public class VereinPojo implements IVerein {
             Boolean fanfare,
             Boolean tambouren,
             Boolean perkussionsensemble,
-            String websiteText
+            String websiteText,
+            Boolean direktionDoppeleinsatz,
+            String direktionDoppeleinsatzVerein,
+            Boolean mitspielerDoppeleinsatz
     ) {
         this.id = id;
         this.email = email;
@@ -130,6 +139,9 @@ public class VereinPojo implements IVerein {
         this.tambouren = tambouren;
         this.perkussionsensemble = perkussionsensemble;
         this.websiteText = websiteText;
+        this.direktionDoppeleinsatz = direktionDoppeleinsatz;
+        this.direktionDoppeleinsatzVerein = direktionDoppeleinsatzVerein;
+        this.mitspielerDoppeleinsatz = mitspielerDoppeleinsatz;
     }
 
     /**
@@ -564,6 +576,54 @@ public class VereinPojo implements IVerein {
         this.websiteText = websiteText;
     }
 
+    /**
+     * Getter for <code>verein.direktion_doppeleinsatz</code>.
+     */
+    @Override
+    public Boolean getDirektionDoppeleinsatz() {
+        return this.direktionDoppeleinsatz;
+    }
+
+    /**
+     * Setter for <code>verein.direktion_doppeleinsatz</code>.
+     */
+    @Override
+    public void setDirektionDoppeleinsatz(Boolean direktionDoppeleinsatz) {
+        this.direktionDoppeleinsatz = direktionDoppeleinsatz;
+    }
+
+    /**
+     * Getter for <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    @Override
+    public String getDirektionDoppeleinsatzVerein() {
+        return this.direktionDoppeleinsatzVerein;
+    }
+
+    /**
+     * Setter for <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    @Override
+    public void setDirektionDoppeleinsatzVerein(String direktionDoppeleinsatzVerein) {
+        this.direktionDoppeleinsatzVerein = direktionDoppeleinsatzVerein;
+    }
+
+    /**
+     * Getter for <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    @Override
+    public Boolean getMitspielerDoppeleinsatz() {
+        return this.mitspielerDoppeleinsatz;
+    }
+
+    /**
+     * Setter for <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    @Override
+    public void setMitspielerDoppeleinsatz(Boolean mitspielerDoppeleinsatz) {
+        this.mitspielerDoppeleinsatz = mitspielerDoppeleinsatz;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -708,6 +768,21 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.websiteText.equals(other.websiteText))
             return false;
+        if (this.direktionDoppeleinsatz == null) {
+            if (other.direktionDoppeleinsatz != null)
+                return false;
+        } else if (!this.direktionDoppeleinsatz.equals(other.direktionDoppeleinsatz))
+            return false;
+        if (this.direktionDoppeleinsatzVerein == null) {
+            if (other.direktionDoppeleinsatzVerein != null)
+                return false;
+        } else if (!this.direktionDoppeleinsatzVerein.equals(other.direktionDoppeleinsatzVerein))
+            return false;
+        if (this.mitspielerDoppeleinsatz == null) {
+            if (other.mitspielerDoppeleinsatz != null)
+                return false;
+        } else if (!this.mitspielerDoppeleinsatz.equals(other.mitspielerDoppeleinsatz))
+            return false;
         return true;
     }
 
@@ -742,6 +817,9 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.tambouren == null) ? 0 : this.tambouren.hashCode());
         result = prime * result + ((this.perkussionsensemble == null) ? 0 : this.perkussionsensemble.hashCode());
         result = prime * result + ((this.websiteText == null) ? 0 : this.websiteText.hashCode());
+        result = prime * result + ((this.direktionDoppeleinsatz == null) ? 0 : this.direktionDoppeleinsatz.hashCode());
+        result = prime * result + ((this.direktionDoppeleinsatzVerein == null) ? 0 : this.direktionDoppeleinsatzVerein.hashCode());
+        result = prime * result + ((this.mitspielerDoppeleinsatz == null) ? 0 : this.mitspielerDoppeleinsatz.hashCode());
         return result;
     }
 
@@ -776,6 +854,9 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(tambouren);
         sb.append(", ").append(perkussionsensemble);
         sb.append(", ").append(websiteText);
+        sb.append(", ").append(direktionDoppeleinsatz);
+        sb.append(", ").append(direktionDoppeleinsatzVerein);
+        sb.append(", ").append(mitspielerDoppeleinsatz);
 
         sb.append(")");
         return sb.toString();
@@ -814,6 +895,9 @@ public class VereinPojo implements IVerein {
         setTambouren(from.getTambouren());
         setPerkussionsensemble(from.getPerkussionsensemble());
         setWebsiteText(from.getWebsiteText());
+        setDirektionDoppeleinsatz(from.getDirektionDoppeleinsatz());
+        setDirektionDoppeleinsatzVerein(from.getDirektionDoppeleinsatzVerein());
+        setMitspielerDoppeleinsatz(from.getMitspielerDoppeleinsatz());
     }
 
     @Override

@@ -179,6 +179,21 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, String> WEBSITE_TEXT = createField(DSL.name("website_text"), SQLDataType.VARCHAR(4096), this, "");
 
+    /**
+     * The column <code>verein.direktion_doppeleinsatz</code>.
+     */
+    public final TableField<VereinRecord, Boolean> DIREKTION_DOPPELEINSATZ = createField(DSL.name("direktion_doppeleinsatz"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein.direktion_doppeleinsatz_verein</code>.
+     */
+    public final TableField<VereinRecord, String> DIREKTION_DOPPELEINSATZ_VEREIN = createField(DSL.name("direktion_doppeleinsatz_verein"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein.mitspieler_doppeleinsatz</code>.
+     */
+    public final TableField<VereinRecord, Boolean> MITSPIELER_DOPPELEINSATZ = createField(DSL.name("mitspieler_doppeleinsatz"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }

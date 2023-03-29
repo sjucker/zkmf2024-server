@@ -9,7 +9,10 @@ public record VereinsangabenDTO(String vereinsname,
                                 Integer plz,
                                 String ort,
                                 String homepage,
-                                String iban) implements IsValid {
+                                String iban,
+                                boolean direktionDoppeleinsatz,
+                                String direktionDoppeleinsatzVerein,
+                                boolean mitspielerDoppeleinsatz) implements IsValid {
     @Override
     public boolean isValid() {
         return StringUtils.isNotBlank(vereinsname) &&
