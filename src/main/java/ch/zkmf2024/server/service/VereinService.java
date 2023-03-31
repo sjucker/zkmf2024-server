@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -230,5 +231,16 @@ public class VereinService {
             log.warn("tried to reset password for unknown user: {}, {}", email, token);
         }
         return false;
+    }
+
+    public void deleteImage(String email, Long id) {
+        var image = imageRepository.findById(id).orElseThrow();
+        var verein = vereinRepository.findByEmail(email).orElseThrow();
+
+        if (Objects.equals(verein.getId(), image.getForeignKey())) {
+            imageRepository.delete(image);
+        } else {
+            log.error("user with email '{}' tried to delete image with id {}, but does not belong to them!", email, id);
+        }
     }
 }

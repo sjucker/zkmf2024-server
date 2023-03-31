@@ -7,7 +7,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +58,15 @@ public class SecuredVereinEndpoint {
         } catch (IOException e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @DeleteMapping("/bilder-upload/{id}")
+    public ResponseEntity<?> deleteBild(@AuthenticationPrincipal UserDetails userDetails,
+                                        @PathVariable Long id) {
+        log.info("DELETE /secured/verein/bilder-upload/{}", id);
+
+        vereinService.deleteImage(userDetails.getUsername(), id);
+        return ResponseEntity.ok().build();
     }
 
     private static Object getFileDescription(MultipartFile file) {

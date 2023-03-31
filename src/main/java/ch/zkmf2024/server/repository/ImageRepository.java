@@ -39,6 +39,10 @@ public class ImageRepository {
         imageDao.update(image);
     }
 
+    public void delete(ImagePojo image) {
+        imageDao.delete(image);
+    }
+
     public Optional<ImagePojo> findById(Long id) {
         return imageDao.findOptionalById(id);
     }
