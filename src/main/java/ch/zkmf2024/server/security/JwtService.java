@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Optional;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
@@ -30,6 +32,8 @@ public class JwtService {
 
         return Jwts.builder()
                    .setClaims(claims)
+                   // 100 days
+                   .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 100)))
                    .signWith(secretKey, signatureAlgorithm)
                    .compact();
     }
