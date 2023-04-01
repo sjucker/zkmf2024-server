@@ -155,6 +155,7 @@ public class VereinService {
 
         var status = vereinRepository.findStatusById(verein.getId());
         status.setPhase1(dto.getPhase1Status().name());
+        vereinRepository.update(status);
 
         return dto;
     }
