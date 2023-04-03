@@ -16,7 +16,6 @@ public record VereinsangabenDTO(String vereinsname,
     @Override
     public boolean isValid() {
         return StringUtils.isNotBlank(vereinsname) &&
-                StringUtils.isNotBlank(adresse) &&
                 Objects.nonNull(plz) &&
                 StringUtils.isNotBlank(ort);
     }
