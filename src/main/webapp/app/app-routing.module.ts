@@ -11,26 +11,26 @@ export const VEREINE_ROUTE = 'vereine'
 export const NEWSLETTER_ROUTE = 'newsletter'
 export const HELFER_ROUTE = 'helfer'
 
-const canActiveFn: CanActivateFn = () => inject(AuthenticationGuard).canActivate();
+const canActivateFn: CanActivateFn = () => inject(AuthenticationGuard).canActivate();
 
 const routes: Routes = [
     {
         path: '',
         component: VereineComponent,
-        canActivate: [canActiveFn],
+        canActivate: [canActivateFn],
     },
     {
         path: VEREINE_ROUTE,
         component: VereineComponent,
-        canActivate: [canActiveFn],
+        canActivate: [canActivateFn],
     },
     {
         path: NEWSLETTER_ROUTE,
         component: NewsletterComponent,
-        canActivate: [canActiveFn],
+        canActivate: [canActivateFn],
     },
     {
-        path: HELFER_ROUTE, component: HelferComponent, canActivate: [canActiveFn],
+        path: HELFER_ROUTE, component: HelferComponent, canActivate: [canActivateFn],
     },
     {
         path: LOGIN_ROUTE, component: LoginComponent,
