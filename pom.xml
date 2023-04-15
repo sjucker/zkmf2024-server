@@ -26,6 +26,7 @@
         <typescript-generator-maven-plugin.version>3.2.1263</typescript-generator-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <flyway-maven-plugin.version>9.16.3</flyway-maven-plugin.version>
+        <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
 
         <nodeVersion>v18.16.0</nodeVersion>
         <npmVersion>9.6.4</npmVersion>
@@ -35,6 +36,10 @@
         <db.user>zkmf2024</db.user>
         <db.schema>zkmf2024</db.schema>
         <db.password>zkmf2024</db.password>
+
+        <sonar.organization>sjucker</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>sjucker_zkmf2024-server</sonar.projectKey>
     </properties>
     <dependencies>
         <dependency>
@@ -365,6 +370,11 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
+            </plugin>
         </plugins>
     </build>
 </project>
