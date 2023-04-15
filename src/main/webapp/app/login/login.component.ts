@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {MessageService} from "primeng/api";
-import {AuthenticationService} from "../service/authentication.service";
+import {FormBuilder, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
+import {AuthenticationService} from '../service/authentication.service';
 
 @Component({
     selector: 'app-login',
@@ -29,20 +29,22 @@ export class LoginComponent {
         if (this.loginForm.valid) {
             this.authenticationError = false;
             const val = this.loginForm.value;
-            this.authenticationService.login(val.email!, val.password!).subscribe({
-                next: response => {
-                    this.authenticationService.setCredentials(response);
-                    this.router.navigate(['/']);
-                },
-                error: error => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Fehler',
-                        detail: "Login fehlgeschlagen",
-                        life: 3000
-                    })
-                }
-            })
+            if (val.email && val.password) {
+                this.authenticationService.login(val.email, val.password).subscribe({
+                    next: response => {
+                        this.authenticationService.setCredentials(response);
+                        this.router.navigate(['/']).then();
+                    },
+                    error: _ => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Fehler',
+                            detail: 'Login fehlgeschlagen',
+                            life: 3000
+                        })
+                    }
+                })
+            }
         }
     }
 
