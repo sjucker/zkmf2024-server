@@ -27,14 +27,18 @@ public class MjmlService {
     public String render(String mjml) {
         var response = webClient.post()
                                 .headers(httpHeaders -> httpHeaders.setBasicAuth(applicationProperties.getMjmlAppId(),
-                                                                                 applicationProperties.getMjmlPrivateKey()))
+                                        applicationProperties.getMjmlPrivateKey()))
                                 .contentType(APPLICATION_JSON)
                                 .body(BodyInserters.fromValue(new Request(mjml)))
                                 .retrieve()
                                 .bodyToMono(Response.class)
                                 .block();
 
-        return response.html();
+        if (response != null) {
+            return response.html();
+        } else {
+            throw new IllegalStateException("received empty result from MJML API");
+        }
     }
 
     private record Request(String mjml) {

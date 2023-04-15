@@ -33,7 +33,7 @@ public class JwtService {
         return Jwts.builder()
                    .setClaims(claims)
                    // 100 days
-                   .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 100)))
+                   .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 100L)))
                    .signWith(secretKey, signatureAlgorithm)
                    .compact();
     }
