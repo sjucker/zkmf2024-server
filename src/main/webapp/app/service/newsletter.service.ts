@@ -18,11 +18,11 @@ export class NewsletterService {
         return this.httpClient.get<NewsletterRecipientDTO[]>(`${this.baseUrl}/secured/admin/newsletter`)
     }
 
-    delete(email: string): Observable<any> {
-        return this.httpClient.delete<any>(`${this.baseUrl}/secured/admin/newsletter/${email}`)
+    delete(email: string): Observable<unknown> {
+        return this.httpClient.delete<unknown>(`${this.baseUrl}/secured/admin/newsletter/${email}`)
     }
 
-    unsubscribe(email: string): Observable<any> {
-        return this.httpClient.post<any>(`${this.baseUrl}/secured/admin/newsletter/unsubscribe/${email}`, {})
+    unsubscribe(email: string): Observable<unknown> {
+        return this.httpClient.post<unknown>(`${this.baseUrl}/secured/admin/newsletter/unsubscribe/${email}`, {})
     }
 }
