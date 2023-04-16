@@ -47,4 +47,8 @@ public class UserRepository {
     public void update(Zkmf2024UserPojo user) {
         userDao.update(user);
     }
+
+    public void deleteAll() {
+        jooqDsl.deleteFrom(ZKMF2024_USER).execute();
+    }
 }
