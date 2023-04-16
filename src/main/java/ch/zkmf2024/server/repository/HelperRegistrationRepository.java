@@ -32,4 +32,8 @@ public class HelperRegistrationRepository {
     public void insert(HelperRegistrationPojo helperRegistration) {
         dao.insert(helperRegistration);
     }
+
+    public void deleteAll() {
+        jooqDsl.deleteFrom(HELPER_REGISTRATION).execute();
+    }
 }
