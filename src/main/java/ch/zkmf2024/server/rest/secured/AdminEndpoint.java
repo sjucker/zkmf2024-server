@@ -2,6 +2,7 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.NewsletterService;
 import ch.zkmf2024.server.service.VereinService;
@@ -94,10 +95,17 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine")
-    public ResponseEntity<List<VereinDTO>> vereine() {
+    public ResponseEntity<List<VereinOverviewDTO>> vereine() {
         log.info("GET /secured/admin/vereine");
-        
+
         return ResponseEntity.ok(vereinService.findAll());
+    }
+
+    @GetMapping(path = "/vereine/{id}")
+    public ResponseEntity<VereinDTO> vereinById(@PathVariable Long id) {
+        log.info("GET /secured/admin/vereine/{}", id);
+
+        return ResponseEntity.ok(vereinService.findById(id).orElseThrow());
     }
 
 }

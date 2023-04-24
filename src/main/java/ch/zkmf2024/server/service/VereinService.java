@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
+import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
@@ -64,10 +65,13 @@ public class VereinService {
                                .map(this::toDTO);
     }
 
-    public List<VereinDTO> findAll() {
-        return vereinRepository.findAll().stream()
-                               .map(this::toDTO)
-                               .toList();
+    public Optional<VereinDTO> findById(Long id) {
+        return vereinRepository.findById(id)
+                               .map(this::toDTO);
+    }
+
+    public List<VereinOverviewDTO> findAll() {
+        return vereinRepository.findAllOverview();
     }
 
     private VereinDTO toDTO(VereinPojo verein) {

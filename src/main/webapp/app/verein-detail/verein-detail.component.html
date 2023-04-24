@@ -1,0 +1,43 @@
+<p-tabView *ngIf="verein">
+    <p-tabPanel header="Vereinsangaben">
+        <div><span class="font-semibold">Email:</span> {{verein.email}}</div>
+        <div><span class="font-semibold">Vereinsname:</span> {{verein.angaben.vereinsname}}</div>
+        <div><span class="font-semibold">Adresse:</span> {{verein.angaben.adresse}}</div>
+        <div><span class="font-semibold">PLZ:</span> {{verein.angaben.plz}}</div>
+        <div><span class="font-semibold">Ort:</span> {{verein.angaben.ort}}</div>
+        <div><span class="font-semibold">Homepage:</span> {{verein.angaben.homepage}}</div>
+        <div><span class="font-semibold">IBAN:</span> {{verein.angaben.iban}}</div>
+        <div *ngIf="verein.angaben.direktionDoppeleinsatz">
+            <span class="font-semibold">Dirigent/in - Doppelteilnahme:</span> ja
+            ({{verein.angaben.direktionDoppeleinsatzVerein}})
+        </div>
+        <div *ngIf="verein.angaben.mitspielerDoppeleinsatz">
+            <span class="font-semibold"> Musikant/innen - Doppelteilnahme:</span> ja
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Kontaktangaben - Präsident/in">
+        <div><span class="font-semibold">Vorname:</span> {{verein.praesident.vorname}}</div>
+        <div><span class="font-semibold">Name:</span> {{verein.praesident.nachname}}</div>
+        <div><span class="font-semibold">Adresse:</span> {{verein.praesident.adresse}}</div>
+        <div><span class="font-semibold">PLZ:</span> {{verein.praesident.plz}}</div>
+        <div><span class="font-semibold">Ort:</span> {{verein.praesident.ort}}</div>
+        <div><span class="font-semibold">Email:</span> {{verein.praesident.email}}</div>
+        <div><span class="font-semibold">Telefon privat:</span> {{verein.praesident.telefonPrivat}}</div>
+        <div><span class="font-semibold">Telefon mobile:</span> {{verein.praesident.telefonMobile}}</div>
+    </p-tabPanel>
+    <p-tabPanel header="Kontaktangaben - Dirigent/in">
+        <div><span class="font-semibold">Vorname:</span> {{verein.direktion.vorname}}</div>
+        <div><span class="font-semibold">Name:</span> {{verein.direktion.nachname}}</div>
+        <div><span class="font-semibold">Adresse:</span> {{verein.direktion.adresse}}</div>
+        <div><span class="font-semibold">PLZ:</span> {{verein.direktion.plz}}</div>
+        <div><span class="font-semibold">Ort:</span> {{verein.direktion.ort}}</div>
+        <div><span class="font-semibold">Email:</span> {{verein.direktion.email}}</div>
+        <div><span class="font-semibold">Telefon privat:</span> {{verein.direktion.telefonPrivat}}</div>
+        <div><span class="font-semibold">Telefon mobile:</span> {{verein.direktion.telefonMobile}}</div>
+    </p-tabPanel>
+    <p-tabPanel header="Vereinsinfo (Website)">
+        <div><span class="font-semibold">Vorstellungstext:</span> {{verein.info.websiteText}}</div>
+    </p-tabPanel>
+</p-tabView>
+<p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
+<p *ngIf="!loading && !verein">Ein Fehler ist aufgetreten...</p>

@@ -1,5 +1,8 @@
 package ch.zkmf2024.server.repository;
 
+import ch.zkmf2024.server.dto.Klasse;
+import ch.zkmf2024.server.dto.PhaseStatus;
+import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinStatusDao;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
+import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
 
 @Repository
 public class VereinRepository {
@@ -34,9 +38,44 @@ public class VereinRepository {
         return vereinDao.findAll();
     }
 
+    public List<VereinOverviewDTO> findAllOverview() {
+        return jooqDsl.select()
+                      .from(VEREIN)
+                      .join(VEREIN_STATUS).on(VEREIN.ID.eq(VEREIN_STATUS.FK_VEREIN))
+                      .orderBy(VEREIN.VEREINSNAME)
+                      .fetch(record -> new VereinOverviewDTO(
+                              record.get(VEREIN.ID),
+                              record.get(VEREIN.VEREINSNAME),
+                              record.get(VEREIN.MODULA),
+                              record.get(VEREIN.MODULB),
+                              record.get(VEREIN.MODULC),
+                              record.get(VEREIN.MODULD),
+                              record.get(VEREIN.MODULE),
+                              record.get(VEREIN.MODULF),
+                              record.get(VEREIN.MODULG),
+                              record.get(VEREIN.MODULH),
+                              record.get(VEREIN.KLASSE_MODULA) != null ? Klasse.valueOf(record.get(VEREIN.KLASSE_MODULA)) : null,
+                              record.get(VEREIN.KLASSE_MODULB) != null ? Klasse.valueOf(record.get(VEREIN.KLASSE_MODULB)) : null,
+                              record.get(VEREIN.KLASSE_MODULH) != null ? Klasse.valueOf(record.get(VEREIN.KLASSE_MODULH)) : null,
+                              record.get(VEREIN.HARMONIE),
+                              record.get(VEREIN.BRASS_BAND),
+                              record.get(VEREIN.FANFARE),
+                              record.get(VEREIN.TAMBOUREN),
+                              record.get(VEREIN.PERKUSSIONSENSEMBLE),
+                              PhaseStatus.valueOf(record.get(VEREIN_STATUS.PHASE1)),
+                              PhaseStatus.valueOf(record.get(VEREIN_STATUS.PHASE2))
+                      ));
+    }
+
     public Optional<VereinPojo> findByEmail(String email) {
         return jooqDsl.selectFrom(VEREIN)
                       .where(VEREIN.EMAIL.equalIgnoreCase(email))
+                      .fetchOptionalInto(VereinPojo.class);
+    }
+
+    public Optional<VereinPojo> findById(Long id) {
+        return jooqDsl.selectFrom(VEREIN)
+                      .where(VEREIN.ID.eq(id))
                       .fetchOptionalInto(VereinPojo.class);
     }
 

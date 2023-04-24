@@ -126,6 +126,29 @@ export interface VerifyEmailRequestDTO {
     verification: string;
 }
 
+export interface VereinOverviewDTO {
+    id: number;
+    vereinsname: string;
+    modulA: boolean;
+    modulB: boolean;
+    modulC: boolean;
+    modulD: boolean;
+    modulE: boolean;
+    modulF: boolean;
+    modulG: boolean;
+    modulH: boolean;
+    klasseModulA?: Klasse;
+    klasseModulB?: Klasse;
+    klasseModulH?: Klasse;
+    harmonie: boolean;
+    brassBand: boolean;
+    fanfare: boolean;
+    tambouren: boolean;
+    perkussionsensemble: boolean;
+    phase1: PhaseStatus;
+    phase2: PhaseStatus;
+}
+
 export interface IsValid {
     valid: boolean;
 }
