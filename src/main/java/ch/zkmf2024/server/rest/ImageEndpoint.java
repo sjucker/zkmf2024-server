@@ -24,6 +24,8 @@ public class ImageEndpoint {
 
     @GetMapping(value = "/{id}", produces = IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getById(@PathVariable Long id) {
+        log.info("GET /public/image/{}", id);
+
         return imageRepository.findById(id)
                               .map(image -> ResponseEntity.ok()
                                                           .contentType(IMAGE_JPEG)

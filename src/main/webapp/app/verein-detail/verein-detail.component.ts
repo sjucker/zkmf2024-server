@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
+import {environment} from "../../environments/environment";
 import {VereinDTO} from "../rest";
 import {VereineService} from "../service/vereine.service";
 
@@ -31,5 +32,13 @@ export class VereinDetailComponent {
                 }
             });
         }
+    }
+
+    get logoImgSrc(): string {
+        return `${environment.baseUrl}/public/image/${this.verein?.info.logoImgId}`;
+    }
+
+    get bildImgSrc(): string {
+        return `${environment.baseUrl}/public/image/${this.verein?.info.bildImgId}`;
     }
 }

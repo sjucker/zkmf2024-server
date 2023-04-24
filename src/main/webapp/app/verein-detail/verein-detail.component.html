@@ -37,6 +37,12 @@
     </p-tabPanel>
     <p-tabPanel header="Vereinsinfo (Website)">
         <div><span class="font-semibold">Vorstellungstext:</span> {{verein.info.websiteText}}</div>
+        <div *ngIf="verein.info.logoImgId">
+            <img [src]="logoImgSrc" alt="Vereinslogo" class="max-w-20rem"/>
+        </div>
+        <div *ngIf="verein.info.bildImgId">
+            <img [src]="bildImgSrc" alt="Vereinsbild" class="max-w-30rem"/>
+        </div>
     </p-tabPanel>
 </p-tabView>
 <p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
