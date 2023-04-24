@@ -71,7 +71,7 @@
     <ng-template pTemplate="body" let-dto>
         <tr>
             <td>
-                <div (click)="openVereinDetail(dto)"><i class="pi pi-eye"></i></div>
+                <div class="cursor-pointer" (click)="openVereinDetail(dto)"><i class="pi pi-eye"></i></div>
             </td>
             <td>{{dto.vereinsname}}</td>
             <td><i [ngClass]="getPhaseStatusIcon(dto.phase1)"></i></td>
