@@ -24,6 +24,7 @@ public record VereinOverviewDTO(
         boolean fanfare,
         boolean tambouren,
         boolean perkussionsensemble,
+        boolean registrationConfirmed,
         @NotNull PhaseStatus phase1,
         @NotNull PhaseStatus phase2
 ) {

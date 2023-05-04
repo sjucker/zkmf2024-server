@@ -12,6 +12,9 @@
             <th pSortableColumn="vereinsname">Vereinsname
                 <p-sortIcon field="vereinsname"></p-sortIcon>
             </th>
+            <th pSortableColumn="registrationConfirmed">Angemeldet
+                <p-sortIcon field="registrationConfirmed"></p-sortIcon>
+            </th>
             <th pSortableColumn="phase1">Phase 1
                 <p-sortIcon field="phase1"></p-sortIcon>
             </th>
@@ -74,6 +77,7 @@
                 <div class="cursor-pointer" (click)="openVereinDetail(dto)"><i class="pi pi-eye"></i></div>
             </td>
             <td>{{dto.vereinsname}}</td>
+            <td><i class="pi pi-star" *ngIf="dto.registrationConfirmed"></i></td>
             <td><i [ngClass]="getPhaseStatusIcon(dto.phase1)"></i></td>
             <td><i [ngClass]="getPhaseStatusIcon(dto.phase2)"></i></td>
             <td>{{formatBoolean(dto.modulA)}}</td>

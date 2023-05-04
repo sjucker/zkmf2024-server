@@ -81,6 +81,7 @@ export interface VereinDTO {
     direktion: KontaktDTO;
     anmeldung: VereinsanmeldungDTO;
     info: VereinsinfoDTO;
+    registrationConfirmed: boolean;
     phase1Status: PhaseStatus;
 }
 
@@ -113,6 +114,8 @@ export interface VereinsanmeldungDTO extends IsValid {
     fanfare: boolean;
     tambouren: boolean;
     perkussionsensemble: boolean;
+    module?: Modul[];
+    besetzungen?: Besetzung[];
 }
 
 export interface VereinsinfoDTO extends IsValid {
@@ -200,4 +203,23 @@ export enum Klasse {
     OBERSTUFE = "OBERSTUFE",
     MITTELSTUFE = "MITTELSTUFE",
     UNTERSTUFE = "UNTERSTUFE",
+}
+
+export enum Modul {
+    A = "A",
+    B = "B",
+    C = "C",
+    D = "D",
+    E = "E",
+    F = "F",
+    G = "G",
+    H = "H",
+}
+
+export enum Besetzung {
+    HARMONIE = "HARMONIE",
+    BRASS_BAND = "BRASS_BAND",
+    FANFARE = "FANFARE",
+    TAMBOUREN = "TAMBOUREN",
+    PERKUSSIONSENSEMBLE = "PERKUSSIONSENSEMBLE",
 }

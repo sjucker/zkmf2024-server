@@ -2,7 +2,10 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.configuration.ApplicationProperties;
 import ch.zkmf2024.server.dto.Aufgaben;
+import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.Einsatzzeit;
+import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import jakarta.mail.MessagingException;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.service.HelperRegistrationService.getAufgabenAsList;
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzDienstagAsList;
@@ -80,6 +84,54 @@ public class MailService {
         } catch (RuntimeException | MessagingException e) {
             log.error("could not send registration mail for created user %s".formatted(user), e);
         }
+    }
+
+    public void sendRegistrationConfirmationEmail(VereinDTO vereinDTO) {
+        try {
+            var variables = new HashMap<String, Object>();
+            variables.put("verein", vereinDTO.angaben().vereinsname());
+
+            variables.put("modul", vereinDTO.anmeldung().getModule().stream()
+                                            .map(modul -> "%s - %s".formatted(modul.name(), modul.getDescription()))
+                                            .collect(joining(", ")));
+
+            variables.put("klasse", getKlassen(vereinDTO.anmeldung()));
+
+            variables.put("besetzung", vereinDTO.anmeldung().getBesetzungen().stream()
+                                                .map(Besetzung::getDescription)
+                                                .collect(joining(", ")));
+
+            var mjml = templateEngine.process("confirmation", new Context(GERMAN, variables));
+
+            var mimeMessage = mailSender.createMimeMessage();
+
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setTo(vereinDTO.email());
+            helper.setCc(new String[]{applicationProperties.getMusikMail(), applicationProperties.getSekretariatMail()});
+            helper.setBcc(applicationProperties.getBccMail());
+            helper.setSubject("[ZKMF2024] Bestätigung Anmeldung");
+            helper.setText(mjmlService.render(mjml), true);
+
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send confirmation mail for created verein %s".formatted(vereinDTO.angaben().vereinsname()), e);
+        }
+    }
+
+    private String getKlassen(VereinsanmeldungDTO anmeldung) {
+        var klasse = new StringJoiner(", ");
+        if (anmeldung.klasseModulA() != null) {
+            klasse.add("Modul A: " + anmeldung.klasseModulA().getDescription());
+        }
+        if (anmeldung.klasseModulB() != null) {
+            klasse.add("Modul B: " + anmeldung.klasseModulB().getDescription());
+        }
+        if (anmeldung.klasseModulH() != null) {
+            klasse.add("Modul H: " + anmeldung.klasseModulH().getDescription());
+        }
+        return klasse.toString();
     }
 
     public void sendResetPasswordEmail(Zkmf2024UserPojo user) {
