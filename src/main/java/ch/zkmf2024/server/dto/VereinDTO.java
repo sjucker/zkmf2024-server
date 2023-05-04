@@ -8,7 +8,8 @@ public record VereinDTO(
         @NotNull KontaktDTO praesident,
         @NotNull KontaktDTO direktion,
         @NotNull VereinsanmeldungDTO anmeldung,
-        @NotNull VereinsinfoDTO info
+        @NotNull VereinsinfoDTO info,
+        boolean registrationConfirmed
 ) {
 
     @NotNull

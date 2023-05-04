@@ -62,6 +62,7 @@ public class VereinRepository {
                               record.get(VEREIN.FANFARE),
                               record.get(VEREIN.TAMBOUREN),
                               record.get(VEREIN.PERKUSSIONSENSEMBLE),
+                              record.get(VEREIN.CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(record.get(VEREIN_STATUS.PHASE1)),
                               PhaseStatus.valueOf(record.get(VEREIN_STATUS.PHASE2))
                       ));

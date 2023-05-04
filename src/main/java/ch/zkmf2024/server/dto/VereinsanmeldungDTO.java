@@ -1,5 +1,8 @@
 package ch.zkmf2024.server.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public record VereinsanmeldungDTO(
         boolean modulA,
         boolean modulB,
@@ -21,7 +24,7 @@ public record VereinsanmeldungDTO(
     @Override
     public boolean isValid() {
         // at least one module selected
-        if (!modulA && !modulB && !modulC && !modulD && !modulE && !modulF && !modulG && !modulH) {
+        if (getModule().isEmpty()) {
             return false;
         }
 
@@ -29,12 +32,38 @@ public record VereinsanmeldungDTO(
             return false;
         }
 
-        if (!harmonie && !brassBand && !fanfare && !tambouren && !perkussionsensemble) {
+        if ((modulA || modulB || modulD || modulE || modulF) && (!harmonie && !brassBand && !fanfare)) {
             return false;
         }
 
-        // TODO more rules?
+        if ((modulG && !tambouren) || (modulH && !perkussionsensemble)) {
+            return false;
+        }
 
-        return true;
+        // at least one Besetzung selected
+        return !getBesetzungen().isEmpty();
+    }
+
+    public List<Modul> getModule() {
+        var module = new ArrayList<Modul>();
+        if (modulA) module.add(Modul.A);
+        if (modulB) module.add(Modul.B);
+        if (modulC) module.add(Modul.C);
+        if (modulD) module.add(Modul.D);
+        if (modulE) module.add(Modul.E);
+        if (modulF) module.add(Modul.F);
+        if (modulG) module.add(Modul.G);
+        if (modulH) module.add(Modul.H);
+        return module;
+    }
+
+    public List<Besetzung> getBesetzungen() {
+        var besetzungen = new ArrayList<Besetzung>();
+        if (harmonie) besetzungen.add(Besetzung.HARMONIE);
+        if (brassBand) besetzungen.add(Besetzung.BRASS_BAND);
+        if (fanfare) besetzungen.add(Besetzung.FANFARE);
+        if (tambouren) besetzungen.add(Besetzung.TAMBOUREN);
+        if (perkussionsensemble) besetzungen.add(Besetzung.PERKUSSIONSENSEMBLE);
+        return besetzungen;
     }
 }
