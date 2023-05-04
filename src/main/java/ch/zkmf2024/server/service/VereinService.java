@@ -92,7 +92,8 @@ public class VereinService {
                 MAPPER.toKontaktDTO(praesident),
                 MAPPER.toKontaktDTO(direktion),
                 MAPPER.toVereinsanmeldungDTO(verein),
-                new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText())
+                new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
+                verein.getConfirmedAt() != null
         );
     }
 
@@ -143,7 +144,9 @@ public class VereinService {
         var verein = vereinRepository.findByEmail(email).orElseThrow();
 
         MAPPER.updateVereinsangaben(verein, dto.angaben());
-        MAPPER.updateVereinsanmeldung(verein, dto.anmeldung());
+        if (verein.getConfirmedAt() == null) {
+            MAPPER.updateVereinsanmeldung(verein, dto.anmeldung());
+        }
         verein.setWebsiteText(dto.info().websiteText());
         vereinRepository.update(verein);
 
@@ -160,6 +163,21 @@ public class VereinService {
         var status = vereinRepository.findStatusById(verein.getId());
         status.setPhase1(dto.getPhase1Status().name());
         vereinRepository.update(status);
+
+        return dto;
+    }
+
+    public VereinDTO confirmRegistration(String email) {
+        var verein = vereinRepository.findByEmail(email).orElseThrow();
+        if (verein.getConfirmedAt() == null) {
+            verein.setConfirmedAt(now());
+            vereinRepository.update(verein);
+        } else {
+            log.error("user {} tried to confirm registration, but was already confirmed at {}", email, verein.getConfirmedAt());
+        }
+
+        var dto = toDTO(verein);
+        mailService.sendRegistrationConfirmationEmail(dto);
 
         return dto;
     }

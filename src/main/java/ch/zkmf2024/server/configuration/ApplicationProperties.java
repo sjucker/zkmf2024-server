@@ -16,5 +16,6 @@ public class ApplicationProperties {
     private String baseUrlVereine;
     private String helferMail;
     private String sekretariatMail;
+    private String musikMail;
     private String bccMail;
 }

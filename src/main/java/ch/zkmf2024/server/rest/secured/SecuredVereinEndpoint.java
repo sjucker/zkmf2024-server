@@ -46,6 +46,13 @@ public class SecuredVereinEndpoint {
         return ResponseEntity.ok(vereinService.update(userDetails.getUsername(), dto));
     }
 
+    @PostMapping("/confirm")
+    public ResponseEntity<VereinDTO> confirmRegistration(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("POST /secured/verein/confirm");
+
+        return ResponseEntity.ok(vereinService.confirmRegistration(userDetails.getUsername()));
+    }
+
     @PostMapping("/bilder-upload")
     public ResponseEntity<?> bildUpload(@AuthenticationPrincipal UserDetails userDetails,
                                         @RequestParam(required = false) MultipartFile logo,

@@ -20,6 +20,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -193,6 +194,11 @@ public class Verein extends TableImpl<VereinRecord> {
      * The column <code>verein.mitspieler_doppeleinsatz</code>.
      */
     public final TableField<VereinRecord, Boolean> MITSPIELER_DOPPELEINSATZ = createField(DSL.name("mitspieler_doppeleinsatz"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein.confirmed_at</code>.
+     */
+    public final TableField<VereinRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(0), this, "");
 
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
