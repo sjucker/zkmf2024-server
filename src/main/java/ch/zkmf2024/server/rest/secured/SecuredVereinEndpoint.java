@@ -32,7 +32,7 @@ public class SecuredVereinEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<VereinDTO> authorize(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<VereinDTO> get(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("GET /secured/verein");
 
         return vereinService.find(userDetails.getUsername()).map(ResponseEntity::ok)

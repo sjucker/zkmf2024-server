@@ -9,13 +9,13 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.TitelRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function10;
+import org.jooq.Function12;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row10;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -90,7 +90,7 @@ public class Titel extends TableImpl<TitelRecord> {
     /**
      * The column <code>titel.modul</code>.
      */
-    public final TableField<TitelRecord, String> MODUL = createField(DSL.name("modul"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<TitelRecord, String> MODUL = createField(DSL.name("modul"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>titel.klasse</code>.
@@ -101,6 +101,16 @@ public class Titel extends TableImpl<TitelRecord> {
      * The column <code>titel.besetzung</code>.
      */
     public final TableField<TitelRecord, String> BESETZUNG = createField(DSL.name("besetzung"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>titel.info_moderation</code>.
+     */
+    public final TableField<TitelRecord, String> INFO_MODERATION = createField(DSL.name("info_moderation"), SQLDataType.VARCHAR(4096), this, "");
+
+    /**
+     * The column <code>titel.schwierigkeitsgrad</code>.
+     */
+    public final TableField<TitelRecord, String> SCHWIERIGKEITSGRAD = createField(DSL.name("schwierigkeitsgrad"), SQLDataType.VARCHAR(255), this, "");
 
     private Titel(Name alias, Table<TitelRecord> aliased) {
         this(alias, aliased, null);
@@ -163,7 +173,7 @@ public class Titel extends TableImpl<TitelRecord> {
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>mvurdorf10.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
@@ -212,18 +222,18 @@ public class Titel extends TableImpl<TitelRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Long, Long, String, String, String, BigDecimal, Integer, String, String, String> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row12<Long, Long, String, String, String, BigDecimal, Integer, String, String, String, String, String> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function10<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super BigDecimal, ? super Integer, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function12<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super BigDecimal, ? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -231,7 +241,7 @@ public class Titel extends TableImpl<TitelRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super BigDecimal, ? super Integer, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function12<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super BigDecimal, ? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

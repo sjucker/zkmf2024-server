@@ -5,10 +5,14 @@ package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
+import ch.zkmf2024.server.jooq.generated.tables.Judge;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReport;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
+import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
+import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
@@ -46,9 +50,24 @@ public class DefaultSchema extends SchemaImpl {
     public final Image IMAGE = Image.IMAGE;
 
     /**
+     * The table <code>judge</code>.
+     */
+    public final Judge JUDGE = Judge.JUDGE;
+
+    /**
+     * The table <code>judge_report</code>.
+     */
+    public final JudgeReport JUDGE_REPORT = JudgeReport.JUDGE_REPORT;
+
+    /**
      * The table <code>kontakt</code>.
      */
     public final Kontakt KONTAKT = Kontakt.KONTAKT;
+
+    /**
+     * The table <code>location</code>.
+     */
+    public final Location LOCATION = Location.LOCATION;
 
     /**
      * The table <code>newsletter_recipient</code>.
@@ -64,6 +83,11 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>survey_answer</code>.
      */
     public final SurveyAnswer SURVEY_ANSWER = SurveyAnswer.SURVEY_ANSWER;
+
+    /**
+     * The table <code>timetable_entry</code>.
+     */
+    public final TimetableEntry TIMETABLE_ENTRY = TimetableEntry.TIMETABLE_ENTRY;
 
     /**
      * The table <code>titel</code>.
@@ -112,10 +136,14 @@ public class DefaultSchema extends SchemaImpl {
         return Arrays.asList(
                 HelperRegistration.HELPER_REGISTRATION,
                 Image.IMAGE,
+                Judge.JUDGE,
+                JudgeReport.JUDGE_REPORT,
                 Kontakt.KONTAKT,
+                Location.LOCATION,
                 NewsletterRecipient.NEWSLETTER_RECIPIENT,
                 ProgrammVorgaben.PROGRAMM_VORGABEN,
                 SurveyAnswer.SURVEY_ANSWER,
+                TimetableEntry.TIMETABLE_ENTRY,
                 Titel.TITEL,
                 Verein.VEREIN,
                 VereinProgramm.VEREIN_PROGRAMM,

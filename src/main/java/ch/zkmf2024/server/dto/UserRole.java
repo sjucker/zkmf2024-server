@@ -5,5 +5,5 @@ public enum UserRole {
     HELPER,
     PLANER,
     ADMIN,
-    JURY
+    JUDGE
 }

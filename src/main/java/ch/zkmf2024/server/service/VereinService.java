@@ -105,15 +105,8 @@ public class VereinService {
                 MAPPER.toVereinsanmeldungDTO(verein),
                 new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
-                getTitel(verein.getId()),
                 getProgramme(verein)
         );
-    }
-
-    private List<TitelDTO> getTitel(Long vereinId) {
-        return vereinRepository.findTitelByVereinId(vereinId).stream()
-                               .map(MAPPER::toDTO)
-                               .toList();
     }
 
     private List<VereinProgrammDTO> getProgramme(VereinPojo verein) {
@@ -181,13 +174,13 @@ public class VereinService {
         MAPPER.updateKontakt(direktion, dto.direktion());
         vereinRepository.update(direktion);
 
-        updateTitel(verein.getId(), dto.titel());
         updateProgramme(verein.getId(), dto.programme());
 
         dto = toDTO(verein);
 
         var status = vereinRepository.findStatusById(verein.getId());
         status.setPhase1(dto.getPhase1Status().name());
+        status.setPhase2(dto.getPhase2Status().name());
         vereinRepository.update(status);
 
         return dto;
@@ -239,26 +232,6 @@ public class VereinService {
         return module;
     }
 
-    private void updateTitel(Long vereinId, List<TitelDTO> titel) {
-        var existingTitel = vereinRepository.findTitelByVereinId(vereinId);
-        var idsToKeep = titel.stream()
-                             .map(TitelDTO::id)
-                             .filter(Objects::nonNull)
-                             .collect(toSet());
-
-        for (var t : titel) {
-            if (t.id() == null) {
-                vereinRepository.insert(MAPPER.toPojo(t, vereinId));
-            }
-        }
-
-        for (var t : existingTitel) {
-            if (!idsToKeep.contains(t.getId())) {
-                vereinRepository.delete(t);
-            }
-        }
-    }
-
     private void updateProgramme(Long vereinId, List<VereinProgrammDTO> programme) {
         for (var programm : programme) {
             var programmPojo = vereinRepository.findVereinProgramm(programm.id()).orElseThrow();
@@ -266,6 +239,30 @@ public class VereinService {
                 programmPojo.setTitel(programm.titel());
                 programmPojo.setInfoModeration(programm.infoModeration());
                 programmPojo.setTotalDurationInSeconds(calculateTotalDurationInSeconds(programm.ablauf()));
+                if (programm.modul() == Modul.B) {
+                    programmPojo.setModulBPa(programm.unterhaltungPA());
+                    programmPojo.setModulBEgitarre(programm.unterhaltungEGitarre());
+                    programmPojo.setModulBEbass(programm.unterhaltungEBass());
+                    programmPojo.setModulBKeyboard(programm.unterhaltungKeyboard());
+                    programmPojo.setModulBGesang(programm.unterhaltungGesang());
+                }
+
+                if (programm.modul() == Modul.D) {
+                    programmPojo.setModulDTitel_1Id(createOrUpdateTitel(vereinId, programm.parademusikTitel1(), programm.modul()));
+                    programmPojo.setModulDTitel_2Id(createOrUpdateTitel(vereinId, programm.parademusikTitel2(), programm.modul()));
+                }
+
+                if (programm.modul() == Modul.G) {
+                    programmPojo.setModulGKatA_1(programm.tambourenKatAGrundlage1() != null ? programm.tambourenKatAGrundlage1().name() : null);
+                    programmPojo.setModulGKatA_2(programm.tambourenKatAGrundlage2() != null ? programm.tambourenKatAGrundlage2().name() : null);
+
+                    programmPojo.setModulGKatATitel_1Id(createOrUpdateTitel(vereinId, programm.tambourenKatATitel1(), programm.modul()));
+                    programmPojo.setModulGKatATitel_2Id(createOrUpdateTitel(vereinId, programm.tambourenKatATitel2(), programm.modul()));
+
+                    programmPojo.setModulGKatBTitelId(createOrUpdateTitel(vereinId, programm.tambourenKatBTitel(), programm.modul()));
+                    programmPojo.setModulGKatCTitelId(createOrUpdateTitel(vereinId, programm.tambourenKatCTitel(), programm.modul()));
+                }
+
                 vereinRepository.update(programmPojo);
 
                 var existingProgrammTitel = vereinRepository.findTitelByProgrammId(programmPojo.getId());
@@ -273,25 +270,39 @@ public class VereinService {
                                                               .collect(toMap(VereinProgrammTitelPojo::getFkTitel, identity()));
                 for (int i = 0; i < programm.ablauf().size(); i++) {
                     var programmTitel = programm.ablauf().get(i);
-                    var titelId = programmTitel.titel().id();
+                    var titel = programmTitel.titel();
+                    var titelId = titel.id();
                     if (programmTitelPerId.containsKey(titelId)) {
                         // update
+                        var titelPojo = vereinRepository.findTitelById(titelId);
+                        if (titelPojo.getFkVerein() != null) {
+                            MAPPER.updatePojo(titelPojo, titel);
+                            vereinRepository.update(titelPojo);
+                        }
+
                         var vereinProgrammTitelPojo = programmTitelPerId.get(titelId);
                         vereinProgrammTitelPojo.setPosition(i);
-                        if (i < programm.ablauf().size() - 1) {
-                            vereinProgrammTitelPojo.setApplausInSeconds(programmTitel.applausInSeconds());
-                        } else {
-                            // there is no applause for last titel
-                            vereinProgrammTitelPojo.setApplausInSeconds(null);
-                        }
+                        // there is no applause for last titel
+                        vereinProgrammTitelPojo.setApplausInSeconds((i < programm.ablauf().size() - 1) ?
+                                                                            programmTitel.applausInSeconds() :
+                                                                            null);
                         vereinRepository.update(vereinProgrammTitelPojo);
                     } else {
                         // create new
+                        if (titelId == null) {
+                            var titelPojo = MAPPER.toPojo(titel, vereinId);
+                            titelPojo.setModul(programm.modul().name());
+                            vereinRepository.insert(titelPojo);
+                            titelId = titelPojo.getId();
+                        }
+
                         var vereinProgrammTitelPojo = new VereinProgrammTitelPojo(programmPojo.getId(),
                                                                                   titelId,
                                                                                   i,
-                                                                                  programmTitel.titel().durationInSeconds(),
-                                                                                  programmTitel.applausInSeconds());
+                                                                                  titel.durationInSeconds(),
+                                                                                  (i < programm.ablauf().size() - 1) ?
+                                                                                          programmTitel.applausInSeconds() :
+                                                                                          null);
                         vereinRepository.insert(vereinProgrammTitelPojo);
                     }
                 }
@@ -307,11 +318,33 @@ public class VereinService {
                     }
                 }
 
+                // TODO delete orphan selbstwahlstück
             } else {
                 log.error("tried to update Vereinsprogramm {} that does not belong to Vereins-ID {}",
                           programmPojo, vereinId);
             }
         }
+    }
+
+    private Long createOrUpdateTitel(Long vereinId, TitelDTO titel, Modul modul) {
+        if (!titel.isValid()) {
+            return null;
+        }
+
+        var titelId = titel.id();
+        if (titelId == null) {
+            var titelPojo = MAPPER.toPojo(titel, vereinId);
+            titelPojo.setModul(modul.name());
+            vereinRepository.insert(titelPojo);
+            titelId = titelPojo.getId();
+        } else {
+            var titelPojo = vereinRepository.findTitelById(titelId);
+            if (titelPojo.getFkVerein() != null) {
+                MAPPER.updatePojo(titelPojo, titel);
+                vereinRepository.update(titelPojo);
+            }
+        }
+        return titelId;
     }
 
     protected static int calculateTotalDurationInSeconds(List<VereinProgrammTitelDTO> ablauf) {

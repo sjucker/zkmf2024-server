@@ -29,6 +29,13 @@ public interface VereinMapper {
     @Mapping(target = "besetzung", ignore = true)
     TitelPojo toPojo(TitelDTO dto, Long fkVerein);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "fkVerein", ignore = true)
+    @Mapping(target = "modul", ignore = true)
+    @Mapping(target = "klasse", ignore = true)
+    @Mapping(target = "besetzung", ignore = true)
+    void updatePojo(@MappingTarget TitelPojo pojo, TitelDTO dto);
+
     @Mapping(target = "klasseModulA", source = "klasseModula")
     @Mapping(target = "klasseModulB", source = "klasseModulb")
     @Mapping(target = "klasseModulH", source = "klasseModulh")

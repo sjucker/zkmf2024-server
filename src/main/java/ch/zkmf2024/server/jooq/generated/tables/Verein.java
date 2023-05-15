@@ -272,7 +272,7 @@ public class Verein extends TableImpl<VereinRecord> {
     private transient Kontakt _fkVereinOnDirektionKontakt;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.kontakt</code> table,
+     * Get the implicit join path to the <code>mvurdorf10.kontakt</code> table,
      * via the <code>FK_VEREIN_ON_PRAESIDENT_KONTAKT</code> key.
      */
     public Kontakt fkVereinOnPraesidentKontakt() {
@@ -283,7 +283,7 @@ public class Verein extends TableImpl<VereinRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.kontakt</code> table,
+     * Get the implicit join path to the <code>mvurdorf10.kontakt</code> table,
      * via the <code>FK_VEREIN_ON_DIREKTION_KONTAKT</code> key.
      */
     public Kontakt fkVereinOnDirektionKontakt() {

@@ -21,6 +21,19 @@ public class VereinProgrammPojo implements IVereinProgramm {
     private String titel;
     private String infoModeration;
     private Integer totalDurationInSeconds;
+    private String modulGKatA_1;
+    private String modulGKatA_2;
+    private Long modulGKatATitel_1Id;
+    private Long modulGKatATitel_2Id;
+    private Long modulGKatBTitelId;
+    private Long modulGKatCTitelId;
+    private Boolean modulBPa;
+    private Boolean modulBEgitarre;
+    private Boolean modulBEbass;
+    private Boolean modulBKeyboard;
+    private Boolean modulBGesang;
+    private Long modulDTitel_1Id;
+    private Long modulDTitel_2Id;
 
     public VereinProgrammPojo() {
     }
@@ -34,6 +47,19 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.titel = value.getTitel();
         this.infoModeration = value.getInfoModeration();
         this.totalDurationInSeconds = value.getTotalDurationInSeconds();
+        this.modulGKatA_1 = value.getModulGKatA_1();
+        this.modulGKatA_2 = value.getModulGKatA_2();
+        this.modulGKatATitel_1Id = value.getModulGKatATitel_1Id();
+        this.modulGKatATitel_2Id = value.getModulGKatATitel_2Id();
+        this.modulGKatBTitelId = value.getModulGKatBTitelId();
+        this.modulGKatCTitelId = value.getModulGKatCTitelId();
+        this.modulBPa = value.getModulBPa();
+        this.modulBEgitarre = value.getModulBEgitarre();
+        this.modulBEbass = value.getModulBEbass();
+        this.modulBKeyboard = value.getModulBKeyboard();
+        this.modulBGesang = value.getModulBGesang();
+        this.modulDTitel_1Id = value.getModulDTitel_1Id();
+        this.modulDTitel_2Id = value.getModulDTitel_2Id();
     }
 
     public VereinProgrammPojo(
@@ -44,7 +70,20 @@ public class VereinProgrammPojo implements IVereinProgramm {
             String besetzung,
             String titel,
             String infoModeration,
-            Integer totalDurationInSeconds
+            Integer totalDurationInSeconds,
+            String modulGKatA_1,
+            String modulGKatA_2,
+            Long modulGKatATitel_1Id,
+            Long modulGKatATitel_2Id,
+            Long modulGKatBTitelId,
+            Long modulGKatCTitelId,
+            Boolean modulBPa,
+            Boolean modulBEgitarre,
+            Boolean modulBEbass,
+            Boolean modulBKeyboard,
+            Boolean modulBGesang,
+            Long modulDTitel_1Id,
+            Long modulDTitel_2Id
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -54,6 +93,19 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.titel = titel;
         this.infoModeration = infoModeration;
         this.totalDurationInSeconds = totalDurationInSeconds;
+        this.modulGKatA_1 = modulGKatA_1;
+        this.modulGKatA_2 = modulGKatA_2;
+        this.modulGKatATitel_1Id = modulGKatATitel_1Id;
+        this.modulGKatATitel_2Id = modulGKatATitel_2Id;
+        this.modulGKatBTitelId = modulGKatBTitelId;
+        this.modulGKatCTitelId = modulGKatCTitelId;
+        this.modulBPa = modulBPa;
+        this.modulBEgitarre = modulBEgitarre;
+        this.modulBEbass = modulBEbass;
+        this.modulBKeyboard = modulBKeyboard;
+        this.modulBGesang = modulBGesang;
+        this.modulDTitel_1Id = modulDTitel_1Id;
+        this.modulDTitel_2Id = modulDTitel_2Id;
     }
 
     /**
@@ -184,6 +236,214 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.totalDurationInSeconds = totalDurationInSeconds;
     }
 
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_1</code>.
+     */
+    @Override
+    public String getModulGKatA_1() {
+        return this.modulGKatA_1;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_1</code>.
+     */
+    @Override
+    public void setModulGKatA_1(String modulGKatA_1) {
+        this.modulGKatA_1 = modulGKatA_1;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_2</code>.
+     */
+    @Override
+    public String getModulGKatA_2() {
+        return this.modulGKatA_2;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_2</code>.
+     */
+    @Override
+    public void setModulGKatA_2(String modulGKatA_2) {
+        this.modulGKatA_2 = modulGKatA_2;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_titel_1_id</code>.
+     */
+    @Override
+    public Long getModulGKatATitel_1Id() {
+        return this.modulGKatATitel_1Id;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_titel_1_id</code>.
+     */
+    @Override
+    public void setModulGKatATitel_1Id(Long modulGKatATitel_1Id) {
+        this.modulGKatATitel_1Id = modulGKatATitel_1Id;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_titel_2_id</code>.
+     */
+    @Override
+    public Long getModulGKatATitel_2Id() {
+        return this.modulGKatATitel_2Id;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_titel_2_id</code>.
+     */
+    @Override
+    public void setModulGKatATitel_2Id(Long modulGKatATitel_2Id) {
+        this.modulGKatATitel_2Id = modulGKatATitel_2Id;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_b_titel_id</code>.
+     */
+    @Override
+    public Long getModulGKatBTitelId() {
+        return this.modulGKatBTitelId;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_b_titel_id</code>.
+     */
+    @Override
+    public void setModulGKatBTitelId(Long modulGKatBTitelId) {
+        this.modulGKatBTitelId = modulGKatBTitelId;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_c_titel_id</code>.
+     */
+    @Override
+    public Long getModulGKatCTitelId() {
+        return this.modulGKatCTitelId;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_c_titel_id</code>.
+     */
+    @Override
+    public void setModulGKatCTitelId(Long modulGKatCTitelId) {
+        this.modulGKatCTitelId = modulGKatCTitelId;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_b_pa</code>.
+     */
+    @Override
+    public Boolean getModulBPa() {
+        return this.modulBPa;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_b_pa</code>.
+     */
+    @Override
+    public void setModulBPa(Boolean modulBPa) {
+        this.modulBPa = modulBPa;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_b_egitarre</code>.
+     */
+    @Override
+    public Boolean getModulBEgitarre() {
+        return this.modulBEgitarre;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_b_egitarre</code>.
+     */
+    @Override
+    public void setModulBEgitarre(Boolean modulBEgitarre) {
+        this.modulBEgitarre = modulBEgitarre;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_b_ebass</code>.
+     */
+    @Override
+    public Boolean getModulBEbass() {
+        return this.modulBEbass;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_b_ebass</code>.
+     */
+    @Override
+    public void setModulBEbass(Boolean modulBEbass) {
+        this.modulBEbass = modulBEbass;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_b_keyboard</code>.
+     */
+    @Override
+    public Boolean getModulBKeyboard() {
+        return this.modulBKeyboard;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_b_keyboard</code>.
+     */
+    @Override
+    public void setModulBKeyboard(Boolean modulBKeyboard) {
+        this.modulBKeyboard = modulBKeyboard;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_b_gesang</code>.
+     */
+    @Override
+    public Boolean getModulBGesang() {
+        return this.modulBGesang;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_b_gesang</code>.
+     */
+    @Override
+    public void setModulBGesang(Boolean modulBGesang) {
+        this.modulBGesang = modulBGesang;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_d_titel_1_id</code>.
+     */
+    @Override
+    public Long getModulDTitel_1Id() {
+        return this.modulDTitel_1Id;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_d_titel_1_id</code>.
+     */
+    @Override
+    public void setModulDTitel_1Id(Long modulDTitel_1Id) {
+        this.modulDTitel_1Id = modulDTitel_1Id;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_d_titel_2_id</code>.
+     */
+    @Override
+    public Long getModulDTitel_2Id() {
+        return this.modulDTitel_2Id;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_d_titel_2_id</code>.
+     */
+    @Override
+    public void setModulDTitel_2Id(Long modulDTitel_2Id) {
+        this.modulDTitel_2Id = modulDTitel_2Id;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -233,6 +493,71 @@ public class VereinProgrammPojo implements IVereinProgramm {
                 return false;
         } else if (!this.totalDurationInSeconds.equals(other.totalDurationInSeconds))
             return false;
+        if (this.modulGKatA_1 == null) {
+            if (other.modulGKatA_1 != null)
+                return false;
+        } else if (!this.modulGKatA_1.equals(other.modulGKatA_1))
+            return false;
+        if (this.modulGKatA_2 == null) {
+            if (other.modulGKatA_2 != null)
+                return false;
+        } else if (!this.modulGKatA_2.equals(other.modulGKatA_2))
+            return false;
+        if (this.modulGKatATitel_1Id == null) {
+            if (other.modulGKatATitel_1Id != null)
+                return false;
+        } else if (!this.modulGKatATitel_1Id.equals(other.modulGKatATitel_1Id))
+            return false;
+        if (this.modulGKatATitel_2Id == null) {
+            if (other.modulGKatATitel_2Id != null)
+                return false;
+        } else if (!this.modulGKatATitel_2Id.equals(other.modulGKatATitel_2Id))
+            return false;
+        if (this.modulGKatBTitelId == null) {
+            if (other.modulGKatBTitelId != null)
+                return false;
+        } else if (!this.modulGKatBTitelId.equals(other.modulGKatBTitelId))
+            return false;
+        if (this.modulGKatCTitelId == null) {
+            if (other.modulGKatCTitelId != null)
+                return false;
+        } else if (!this.modulGKatCTitelId.equals(other.modulGKatCTitelId))
+            return false;
+        if (this.modulBPa == null) {
+            if (other.modulBPa != null)
+                return false;
+        } else if (!this.modulBPa.equals(other.modulBPa))
+            return false;
+        if (this.modulBEgitarre == null) {
+            if (other.modulBEgitarre != null)
+                return false;
+        } else if (!this.modulBEgitarre.equals(other.modulBEgitarre))
+            return false;
+        if (this.modulBEbass == null) {
+            if (other.modulBEbass != null)
+                return false;
+        } else if (!this.modulBEbass.equals(other.modulBEbass))
+            return false;
+        if (this.modulBKeyboard == null) {
+            if (other.modulBKeyboard != null)
+                return false;
+        } else if (!this.modulBKeyboard.equals(other.modulBKeyboard))
+            return false;
+        if (this.modulBGesang == null) {
+            if (other.modulBGesang != null)
+                return false;
+        } else if (!this.modulBGesang.equals(other.modulBGesang))
+            return false;
+        if (this.modulDTitel_1Id == null) {
+            if (other.modulDTitel_1Id != null)
+                return false;
+        } else if (!this.modulDTitel_1Id.equals(other.modulDTitel_1Id))
+            return false;
+        if (this.modulDTitel_2Id == null) {
+            if (other.modulDTitel_2Id != null)
+                return false;
+        } else if (!this.modulDTitel_2Id.equals(other.modulDTitel_2Id))
+            return false;
         return true;
     }
 
@@ -248,6 +573,19 @@ public class VereinProgrammPojo implements IVereinProgramm {
         result = prime * result + ((this.titel == null) ? 0 : this.titel.hashCode());
         result = prime * result + ((this.infoModeration == null) ? 0 : this.infoModeration.hashCode());
         result = prime * result + ((this.totalDurationInSeconds == null) ? 0 : this.totalDurationInSeconds.hashCode());
+        result = prime * result + ((this.modulGKatA_1 == null) ? 0 : this.modulGKatA_1.hashCode());
+        result = prime * result + ((this.modulGKatA_2 == null) ? 0 : this.modulGKatA_2.hashCode());
+        result = prime * result + ((this.modulGKatATitel_1Id == null) ? 0 : this.modulGKatATitel_1Id.hashCode());
+        result = prime * result + ((this.modulGKatATitel_2Id == null) ? 0 : this.modulGKatATitel_2Id.hashCode());
+        result = prime * result + ((this.modulGKatBTitelId == null) ? 0 : this.modulGKatBTitelId.hashCode());
+        result = prime * result + ((this.modulGKatCTitelId == null) ? 0 : this.modulGKatCTitelId.hashCode());
+        result = prime * result + ((this.modulBPa == null) ? 0 : this.modulBPa.hashCode());
+        result = prime * result + ((this.modulBEgitarre == null) ? 0 : this.modulBEgitarre.hashCode());
+        result = prime * result + ((this.modulBEbass == null) ? 0 : this.modulBEbass.hashCode());
+        result = prime * result + ((this.modulBKeyboard == null) ? 0 : this.modulBKeyboard.hashCode());
+        result = prime * result + ((this.modulBGesang == null) ? 0 : this.modulBGesang.hashCode());
+        result = prime * result + ((this.modulDTitel_1Id == null) ? 0 : this.modulDTitel_1Id.hashCode());
+        result = prime * result + ((this.modulDTitel_2Id == null) ? 0 : this.modulDTitel_2Id.hashCode());
         return result;
     }
 
@@ -263,6 +601,19 @@ public class VereinProgrammPojo implements IVereinProgramm {
         sb.append(", ").append(titel);
         sb.append(", ").append(infoModeration);
         sb.append(", ").append(totalDurationInSeconds);
+        sb.append(", ").append(modulGKatA_1);
+        sb.append(", ").append(modulGKatA_2);
+        sb.append(", ").append(modulGKatATitel_1Id);
+        sb.append(", ").append(modulGKatATitel_2Id);
+        sb.append(", ").append(modulGKatBTitelId);
+        sb.append(", ").append(modulGKatCTitelId);
+        sb.append(", ").append(modulBPa);
+        sb.append(", ").append(modulBEgitarre);
+        sb.append(", ").append(modulBEbass);
+        sb.append(", ").append(modulBKeyboard);
+        sb.append(", ").append(modulBGesang);
+        sb.append(", ").append(modulDTitel_1Id);
+        sb.append(", ").append(modulDTitel_2Id);
 
         sb.append(")");
         return sb.toString();
@@ -282,6 +633,19 @@ public class VereinProgrammPojo implements IVereinProgramm {
         setTitel(from.getTitel());
         setInfoModeration(from.getInfoModeration());
         setTotalDurationInSeconds(from.getTotalDurationInSeconds());
+        setModulGKatA_1(from.getModulGKatA_1());
+        setModulGKatA_2(from.getModulGKatA_2());
+        setModulGKatATitel_1Id(from.getModulGKatATitel_1Id());
+        setModulGKatATitel_2Id(from.getModulGKatATitel_2Id());
+        setModulGKatBTitelId(from.getModulGKatBTitelId());
+        setModulGKatCTitelId(from.getModulGKatCTitelId());
+        setModulBPa(from.getModulBPa());
+        setModulBEgitarre(from.getModulBEgitarre());
+        setModulBEbass(from.getModulBEbass());
+        setModulBKeyboard(from.getModulBKeyboard());
+        setModulBGesang(from.getModulBGesang());
+        setModulDTitel_1Id(from.getModulDTitel_1Id());
+        setModulDTitel_2Id(from.getModulDTitel_2Id());
     }
 
     @Override
