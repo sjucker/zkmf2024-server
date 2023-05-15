@@ -201,6 +201,16 @@ public class VereinService {
                 var vereinProgramm = new VereinProgrammPojo();
                 vereinProgramm.setFkVerein(verein.getId());
                 vereinProgramm.setModul(modul.name());
+                vereinProgramm.setKlasse(modul.getRelevantKlasse(verein.getKlasseModula(),
+                                                                 verein.getKlasseModulb(),
+                                                                 verein.getKlasseModulh())
+                                              .map(Enum::name)
+                                              .orElse(null));
+                vereinProgramm.setBesetzung(modul.getRelevantBesetzung(verein.getHarmonie(),
+                                                                       verein.getBrassBand(),
+                                                                       verein.getFanfare())
+                                                 .map(Enum::name)
+                                                 .orElse(null));
                 vereinRepository.insert(vereinProgramm);
             });
 

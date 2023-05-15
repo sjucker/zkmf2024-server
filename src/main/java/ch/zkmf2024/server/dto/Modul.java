@@ -27,11 +27,11 @@ public enum Modul {
         this.description = description;
     }
 
-    public Optional<Klasse> getRelevantKlasse(Klasse klasseA, Klasse klasseB, Klasse klasseH) {
+    public Optional<Klasse> getRelevantKlasse(String klasseA, String klasseB, String klasseH) {
         return switch (this) {
-            case A -> Optional.ofNullable(klasseA);
-            case B -> Optional.ofNullable(klasseB);
-            case H -> Optional.ofNullable(klasseH);
+            case A -> Klasse.fromString(klasseA);
+            case B -> Klasse.fromString(klasseB);
+            case H -> Klasse.fromString(klasseH);
             default -> Optional.empty();
         };
     }

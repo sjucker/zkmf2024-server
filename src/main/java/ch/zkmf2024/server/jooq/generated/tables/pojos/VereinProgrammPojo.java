@@ -16,6 +16,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
     private Long id;
     private Long fkVerein;
     private String modul;
+    private String klasse;
+    private String besetzung;
     private String titel;
     private String infoModeration;
     private Integer totalDurationInSeconds;
@@ -27,6 +29,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.id = value.getId();
         this.fkVerein = value.getFkVerein();
         this.modul = value.getModul();
+        this.klasse = value.getKlasse();
+        this.besetzung = value.getBesetzung();
         this.titel = value.getTitel();
         this.infoModeration = value.getInfoModeration();
         this.totalDurationInSeconds = value.getTotalDurationInSeconds();
@@ -36,6 +40,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
             Long id,
             Long fkVerein,
             String modul,
+            String klasse,
+            String besetzung,
             String titel,
             String infoModeration,
             Integer totalDurationInSeconds
@@ -43,6 +49,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.id = id;
         this.fkVerein = fkVerein;
         this.modul = modul;
+        this.klasse = klasse;
+        this.besetzung = besetzung;
         this.titel = titel;
         this.infoModeration = infoModeration;
         this.totalDurationInSeconds = totalDurationInSeconds;
@@ -94,6 +102,38 @@ public class VereinProgrammPojo implements IVereinProgramm {
     @Override
     public void setModul(String modul) {
         this.modul = modul;
+    }
+
+    /**
+     * Getter for <code>verein_programm.klasse</code>.
+     */
+    @Override
+    public String getKlasse() {
+        return this.klasse;
+    }
+
+    /**
+     * Setter for <code>verein_programm.klasse</code>.
+     */
+    @Override
+    public void setKlasse(String klasse) {
+        this.klasse = klasse;
+    }
+
+    /**
+     * Getter for <code>verein_programm.besetzung</code>.
+     */
+    @Override
+    public String getBesetzung() {
+        return this.besetzung;
+    }
+
+    /**
+     * Setter for <code>verein_programm.besetzung</code>.
+     */
+    @Override
+    public void setBesetzung(String besetzung) {
+        this.besetzung = besetzung;
     }
 
     /**
@@ -168,6 +208,16 @@ public class VereinProgrammPojo implements IVereinProgramm {
                 return false;
         } else if (!this.modul.equals(other.modul))
             return false;
+        if (this.klasse == null) {
+            if (other.klasse != null)
+                return false;
+        } else if (!this.klasse.equals(other.klasse))
+            return false;
+        if (this.besetzung == null) {
+            if (other.besetzung != null)
+                return false;
+        } else if (!this.besetzung.equals(other.besetzung))
+            return false;
         if (this.titel == null) {
             if (other.titel != null)
                 return false;
@@ -193,6 +243,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.fkVerein == null) ? 0 : this.fkVerein.hashCode());
         result = prime * result + ((this.modul == null) ? 0 : this.modul.hashCode());
+        result = prime * result + ((this.klasse == null) ? 0 : this.klasse.hashCode());
+        result = prime * result + ((this.besetzung == null) ? 0 : this.besetzung.hashCode());
         result = prime * result + ((this.titel == null) ? 0 : this.titel.hashCode());
         result = prime * result + ((this.infoModeration == null) ? 0 : this.infoModeration.hashCode());
         result = prime * result + ((this.totalDurationInSeconds == null) ? 0 : this.totalDurationInSeconds.hashCode());
@@ -206,6 +258,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
         sb.append(id);
         sb.append(", ").append(fkVerein);
         sb.append(", ").append(modul);
+        sb.append(", ").append(klasse);
+        sb.append(", ").append(besetzung);
         sb.append(", ").append(titel);
         sb.append(", ").append(infoModeration);
         sb.append(", ").append(totalDurationInSeconds);
@@ -223,6 +277,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
         setId(from.getId());
         setFkVerein(from.getFkVerein());
         setModul(from.getModul());
+        setKlasse(from.getKlasse());
+        setBesetzung(from.getBesetzung());
         setTitel(from.getTitel());
         setInfoModeration(from.getInfoModeration());
         setTotalDurationInSeconds(from.getTotalDurationInSeconds());

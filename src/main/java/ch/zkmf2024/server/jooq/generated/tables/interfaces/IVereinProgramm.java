@@ -42,6 +42,26 @@ public interface IVereinProgramm extends Serializable {
     public String getModul();
 
     /**
+     * Setter for <code>verein_programm.klasse</code>.
+     */
+    public void setKlasse(String value);
+
+    /**
+     * Getter for <code>verein_programm.klasse</code>.
+     */
+    public String getKlasse();
+
+    /**
+     * Setter for <code>verein_programm.besetzung</code>.
+     */
+    public void setBesetzung(String value);
+
+    /**
+     * Getter for <code>verein_programm.besetzung</code>.
+     */
+    public String getBesetzung();
+
+    /**
      * Setter for <code>verein_programm.titel</code>.
      */
     public void setTitel(String value);

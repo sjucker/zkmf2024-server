@@ -9,13 +9,13 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function8;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -65,6 +65,16 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      * The column <code>verein_programm.modul</code>.
      */
     public final TableField<VereinProgrammRecord, String> MODUL = createField(DSL.name("modul"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
+     * The column <code>verein_programm.klasse</code>.
+     */
+    public final TableField<VereinProgrammRecord, String> KLASSE = createField(DSL.name("klasse"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein_programm.besetzung</code>.
+     */
+    public final TableField<VereinProgrammRecord, String> BESETZUNG = createField(DSL.name("besetzung"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>verein_programm.titel</code>.
@@ -191,18 +201,18 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, Long, String, String, String, Integer> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row8<Long, Long, String, String, String, String, String, Integer> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Integer, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -210,7 +220,7 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Integer, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

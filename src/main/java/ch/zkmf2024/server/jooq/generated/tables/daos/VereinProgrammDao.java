@@ -97,6 +97,36 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
     }
 
     /**
+     * Fetch records that have <code>klasse BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfKlasse(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.KLASSE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>klasse IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByKlasse(String... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.KLASSE, values);
+    }
+
+    /**
+     * Fetch records that have <code>besetzung BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfBesetzung(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.BESETZUNG, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>besetzung IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByBesetzung(String... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.BESETZUNG, values);
+    }
+
+    /**
      * Fetch records that have <code>titel BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */

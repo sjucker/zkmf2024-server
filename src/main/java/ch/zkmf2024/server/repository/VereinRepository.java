@@ -185,13 +185,8 @@ public class VereinRepository {
                       .orderBy(VEREIN_PROGRAMM.MODUL.asc())
                       .fetch(record -> {
                           var modul = Modul.valueOf(record.get(VEREIN_PROGRAMM.MODUL));
-                          var klasse = modul.getRelevantKlasse(Klasse.fromString(verein.getKlasseModula()).orElse(null),
-                                                               Klasse.fromString(verein.getKlasseModulb()).orElse(null),
-                                                               Klasse.fromString(verein.getKlasseModulh()).orElse(null))
-                                            .orElse(null);
-
-                          var besetzung = modul.getRelevantBesetzung(verein.getHarmonie(), verein.getBrassBand(), verein.getFanfare())
-                                               .orElse(null);
+                          var klasse = Klasse.fromString(record.get(VEREIN_PROGRAMM.KLASSE)).orElse(null);
+                          var besetzung = Besetzung.fromString(record.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null);
 
                           var minMaxDuration = findMinMaxDuration(modul, klasse, besetzung);
 
@@ -246,25 +241,23 @@ public class VereinRepository {
     }
 
     private List<VereinProgrammTitelDTO> getVereinProgrammTitel(Long programmId) {
-        var titel = jooqDsl.select()
-                           .from(VEREIN_PROGRAMM_TITEL)
-                           .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
-                           .where(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(programmId))
-                           .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
-                           .fetch(record -> new VereinProgrammTitelDTO(
-                                   new TitelDTO(
-                                           record.get(TITEL.ID),
-                                           record.get(TITEL.TITEL_NAME),
-                                           record.get(TITEL.COMPOSER),
-                                           null,
-                                           null,
-                                           record.get(TITEL.DURATION_IN_SECONDS),
-                                           record.get(TITEL.FK_VEREIN) == null
-                                   ),
-                                   record.get(VEREIN_PROGRAMM_TITEL.APPLAUS_IN_SECONDS)
-                           ));
-
-        return titel;
+        return jooqDsl.select()
+                      .from(VEREIN_PROGRAMM_TITEL)
+                      .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
+                      .where(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(programmId))
+                      .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
+                      .fetch(record -> new VereinProgrammTitelDTO(
+                              new TitelDTO(
+                                      record.get(TITEL.ID),
+                                      record.get(TITEL.TITEL_NAME),
+                                      record.get(TITEL.COMPOSER),
+                                      null,
+                                      null,
+                                      record.get(TITEL.DURATION_IN_SECONDS),
+                                      record.get(TITEL.FK_VEREIN) == null
+                              ),
+                              record.get(VEREIN_PROGRAMM_TITEL.APPLAUS_IN_SECONDS)
+                      ));
     }
 
     public void insert(VereinProgrammPojo vereinProgramm) {
