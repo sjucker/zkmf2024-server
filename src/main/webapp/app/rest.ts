@@ -196,6 +196,7 @@ export enum UserRole {
     HELPER = "HELPER",
     PLANER = "PLANER",
     ADMIN = "ADMIN",
+    JURY = "JURY",
 }
 
 export enum Aufgaben {
