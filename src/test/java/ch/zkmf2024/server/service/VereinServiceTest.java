@@ -21,6 +21,6 @@ class VereinServiceTest {
     }
 
     private TitelDTO createTitel(int durationInSeconds) {
-        return new TitelDTO(null, "", "", "", null, durationInSeconds, false);
+        return new TitelDTO(null, null, "", "", "", null, null, durationInSeconds, false, "");
     }
 }

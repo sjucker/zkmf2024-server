@@ -9,13 +9,13 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function21;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row21;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -91,6 +91,71 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      */
     public final TableField<VereinProgrammRecord, Integer> TOTAL_DURATION_IN_SECONDS = createField(DSL.name("total_duration_in_seconds"), SQLDataType.INTEGER, this, "");
 
+    /**
+     * The column <code>verein_programm.modul_g_kat_a_1</code>.
+     */
+    public final TableField<VereinProgrammRecord, String> MODUL_G_KAT_A_1 = createField(DSL.name("modul_g_kat_a_1"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_a_2</code>.
+     */
+    public final TableField<VereinProgrammRecord, String> MODUL_G_KAT_A_2 = createField(DSL.name("modul_g_kat_a_2"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_a_titel_1_id</code>.
+     */
+    public final TableField<VereinProgrammRecord, Long> MODUL_G_KAT_A_TITEL_1_ID = createField(DSL.name("modul_g_kat_a_titel_1_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_a_titel_2_id</code>.
+     */
+    public final TableField<VereinProgrammRecord, Long> MODUL_G_KAT_A_TITEL_2_ID = createField(DSL.name("modul_g_kat_a_titel_2_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_b_titel_id</code>.
+     */
+    public final TableField<VereinProgrammRecord, Long> MODUL_G_KAT_B_TITEL_ID = createField(DSL.name("modul_g_kat_b_titel_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_c_titel_id</code>.
+     */
+    public final TableField<VereinProgrammRecord, Long> MODUL_G_KAT_C_TITEL_ID = createField(DSL.name("modul_g_kat_c_titel_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>verein_programm.modul_b_pa</code>.
+     */
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_PA = createField(DSL.name("modul_b_pa"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_b_egitarre</code>.
+     */
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EGITARRE = createField(DSL.name("modul_b_egitarre"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_b_ebass</code>.
+     */
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EBASS = createField(DSL.name("modul_b_ebass"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_b_keyboard</code>.
+     */
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_KEYBOARD = createField(DSL.name("modul_b_keyboard"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_b_gesang</code>.
+     */
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_GESANG = createField(DSL.name("modul_b_gesang"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_d_titel_1_id</code>.
+     */
+    public final TableField<VereinProgrammRecord, Long> MODUL_D_TITEL_1_ID = createField(DSL.name("modul_d_titel_1_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>verein_programm.modul_d_titel_2_id</code>.
+     */
+    public final TableField<VereinProgrammRecord, Long> MODUL_D_TITEL_2_ID = createField(DSL.name("modul_d_titel_2_id"), SQLDataType.BIGINT, this, "");
+
     private VereinProgramm(Name alias, Table<VereinProgrammRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -152,7 +217,7 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>mvurdorf10.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
@@ -201,18 +266,18 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row21 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Long, String, String, String, String, String, Integer> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row21<Long, Long, String, String, String, String, String, Integer, String, String, Long, Long, Long, Long, Boolean, Boolean, Boolean, Boolean, Boolean, Long, Long> fieldsRow() {
+        return (Row21) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function21<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Long, ? super Boolean, ? super Boolean, ? super Boolean, ? super Boolean, ? super Boolean, ? super Long, ? super Long, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -220,7 +285,7 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function21<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Integer, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Long, ? super Boolean, ? super Boolean, ? super Boolean, ? super Boolean, ? super Boolean, ? super Long, ? super Long, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

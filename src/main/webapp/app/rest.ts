@@ -4,6 +4,21 @@ export interface ForgotPasswordRequestDTO {
     email: string;
 }
 
+export interface JudgeReportDTO {
+}
+
+export interface JudgeReportOverviewDTO {
+    id: number;
+    verein: string;
+    location: string;
+    locationUrl: string;
+    modul: string;
+    klasse?: string;
+    besetzung?: string;
+    start: DateAsString;
+    end: DateAsString;
+}
+
 export interface KontaktDTO extends IsValid {
     vorname?: string;
     nachname?: string;
@@ -76,12 +91,16 @@ export interface ResetPasswordRequestDTO {
 
 export interface TitelDTO {
     id?: number;
+    modul?: Modul;
     titelName?: string;
     composer?: string;
     arrangeur?: string;
     grad?: number;
+    schwierigkeitsgrad?: string;
     durationInSeconds: number;
     pflichtStueck: boolean;
+    infoModeration?: string;
+    valid: boolean;
 }
 
 export interface VereinDTO {
@@ -92,7 +111,6 @@ export interface VereinDTO {
     anmeldung: VereinsanmeldungDTO;
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
-    titel: TitelDTO[];
     programme: VereinProgrammDTO[];
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
@@ -100,7 +118,8 @@ export interface VereinDTO {
 
 export interface VereinProgrammDTO {
     id: number;
-    modul: string;
+    modul: Modul;
+    modulDescription: string;
     klasse?: string;
     besetzung?: string;
     titel?: string;
@@ -108,8 +127,24 @@ export interface VereinProgrammDTO {
     totalDurationInSeconds?: number;
     minDurationInSeconds?: number;
     maxDurationInSeconds?: number;
-    availableTitel: TitelDTO[];
     ablauf: VereinProgrammTitelDTO[];
+    tambourenKatA: boolean;
+    tambourenKatB: boolean;
+    tambourenKatC: boolean;
+    tambourenKatAGrundlage1?: TambourenGrundlage;
+    tambourenKatAGrundlage2?: TambourenGrundlage;
+    tambourenKatATitel1: TitelDTO;
+    tambourenKatATitel2: TitelDTO;
+    tambourenKatBTitel: TitelDTO;
+    tambourenKatCTitel: TitelDTO;
+    unterhaltungPA: boolean;
+    unterhaltungEGitarre: boolean;
+    unterhaltungEBass: boolean;
+    unterhaltungKeyboard: boolean;
+    unterhaltungGesang: boolean;
+    parademusikTitel1: TitelDTO;
+    parademusikTitel2: TitelDTO;
+    valid: boolean;
 }
 
 export interface VereinProgrammTitelDTO {
@@ -210,7 +245,7 @@ export enum UserRole {
     HELPER = "HELPER",
     PLANER = "PLANER",
     ADMIN = "ADMIN",
-    JURY = "JURY",
+    JUDGE = "JUDGE",
 }
 
 export enum Aufgaben {
@@ -243,17 +278,6 @@ export enum PhaseStatus {
     DONE = "DONE",
 }
 
-export enum Klasse {
-    HOECHSTKLASSE = "HOECHSTKLASSE",
-    KLASSE_1 = "KLASSE_1",
-    KLASSE_2 = "KLASSE_2",
-    KLASSE_3 = "KLASSE_3",
-    KLASSE_4 = "KLASSE_4",
-    OBERSTUFE = "OBERSTUFE",
-    MITTELSTUFE = "MITTELSTUFE",
-    UNTERSTUFE = "UNTERSTUFE",
-}
-
 export enum Modul {
     A = "A",
     B = "B",
@@ -263,6 +287,24 @@ export enum Modul {
     F = "F",
     G = "G",
     H = "H",
+}
+
+export enum TambourenGrundlage {
+    WIRBEL = "WIRBEL",
+    RUF = "RUF",
+    BATAFLAFLA = "BATAFLAFLA",
+    DOUBLE = "DOUBLE",
+}
+
+export enum Klasse {
+    HOECHSTKLASSE = "HOECHSTKLASSE",
+    KLASSE_1 = "KLASSE_1",
+    KLASSE_2 = "KLASSE_2",
+    KLASSE_3 = "KLASSE_3",
+    KLASSE_4 = "KLASSE_4",
+    OBERSTUFE = "OBERSTUFE",
+    MITTELSTUFE = "MITTELSTUFE",
+    UNTERSTUFE = "UNTERSTUFE",
 }
 
 export enum Besetzung {

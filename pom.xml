@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.6</version>
+        <version>3.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.zkmf2024</groupId>
@@ -20,20 +20,17 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jjwt.version>0.11.5</jjwt.version>
         <poi.version>5.2.3</poi.version>
-        <jooq.version>3.18.3</jooq.version>
 
-        <testcontainers.version>1.18.0</testcontainers.version>
-
-        <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.13.3</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>3.2.1263</typescript-generator-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <flyway-maven-plugin.version>9.16.3</flyway-maven-plugin.version>
+        <flyway-maven-plugin.version>9.20.0</flyway-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
-        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
+        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 
-        <nodeVersion>v18.16.0</nodeVersion>
-        <npmVersion>9.6.5</npmVersion>
+        <nodeVersion>v18.16.1</nodeVersion>
+        <npmVersion>9.7.2</npmVersion>
 
         <!-- start local DB using src/main/docker/mysql.yml  -->
         <db.url>jdbc:mysql://localhost:3306/zkmf2024</db.url>

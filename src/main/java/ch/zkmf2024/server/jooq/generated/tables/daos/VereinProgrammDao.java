@@ -171,4 +171,199 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
     public List<VereinProgrammPojo> fetchByTotalDurationInSeconds(Integer... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.TOTAL_DURATION_IN_SECONDS, values);
     }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_1 BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatA_1(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_1, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_1 IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatA_1(String... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_1, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_2 BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatA_2(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_2, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_2 IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatA_2(String... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_2, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_titel_1_id BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatATitel_1Id(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_titel_1_id IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatATitel_1Id(Long... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_titel_2_id BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatATitel_2Id(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_titel_2_id IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatATitel_2Id(Long... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_b_titel_id BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatBTitelId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_b_titel_id IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatBTitelId(Long... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_c_titel_id BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatCTitelId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_c_titel_id IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatCTitelId(Long... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_pa BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulBPa(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_PA, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_pa IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulBPa(Boolean... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_PA, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_egitarre BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulBEgitarre(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_EGITARRE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_egitarre IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulBEgitarre(Boolean... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_EGITARRE, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_ebass BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulBEbass(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_EBASS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_ebass IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulBEbass(Boolean... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_EBASS, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_keyboard BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulBKeyboard(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_KEYBOARD, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_keyboard IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulBKeyboard(Boolean... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_KEYBOARD, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_gesang BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulBGesang(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_GESANG, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_b_gesang IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulBGesang(Boolean... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_B_GESANG, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_d_titel_1_id BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulDTitel_1Id(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_d_titel_1_id IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulDTitel_1Id(Long... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_d_titel_2_id BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulDTitel_2Id(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_d_titel_2_id IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulDTitel_2Id(Long... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID, values);
+    }
 }

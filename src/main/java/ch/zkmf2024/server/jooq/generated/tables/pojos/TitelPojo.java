@@ -25,6 +25,8 @@ public class TitelPojo implements ITitel {
     private String modul;
     private String klasse;
     private String besetzung;
+    private String infoModeration;
+    private String schwierigkeitsgrad;
 
     public TitelPojo() {
     }
@@ -40,6 +42,8 @@ public class TitelPojo implements ITitel {
         this.modul = value.getModul();
         this.klasse = value.getKlasse();
         this.besetzung = value.getBesetzung();
+        this.infoModeration = value.getInfoModeration();
+        this.schwierigkeitsgrad = value.getSchwierigkeitsgrad();
     }
 
     public TitelPojo(
@@ -52,7 +56,9 @@ public class TitelPojo implements ITitel {
             Integer durationInSeconds,
             String modul,
             String klasse,
-            String besetzung
+            String besetzung,
+            String infoModeration,
+            String schwierigkeitsgrad
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -64,6 +70,8 @@ public class TitelPojo implements ITitel {
         this.modul = modul;
         this.klasse = klasse;
         this.besetzung = besetzung;
+        this.infoModeration = infoModeration;
+        this.schwierigkeitsgrad = schwierigkeitsgrad;
     }
 
     /**
@@ -226,6 +234,38 @@ public class TitelPojo implements ITitel {
         this.besetzung = besetzung;
     }
 
+    /**
+     * Getter for <code>titel.info_moderation</code>.
+     */
+    @Override
+    public String getInfoModeration() {
+        return this.infoModeration;
+    }
+
+    /**
+     * Setter for <code>titel.info_moderation</code>.
+     */
+    @Override
+    public void setInfoModeration(String infoModeration) {
+        this.infoModeration = infoModeration;
+    }
+
+    /**
+     * Getter for <code>titel.schwierigkeitsgrad</code>.
+     */
+    @Override
+    public String getSchwierigkeitsgrad() {
+        return this.schwierigkeitsgrad;
+    }
+
+    /**
+     * Setter for <code>titel.schwierigkeitsgrad</code>.
+     */
+    @Override
+    public void setSchwierigkeitsgrad(String schwierigkeitsgrad) {
+        this.schwierigkeitsgrad = schwierigkeitsgrad;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -285,6 +325,16 @@ public class TitelPojo implements ITitel {
                 return false;
         } else if (!this.besetzung.equals(other.besetzung))
             return false;
+        if (this.infoModeration == null) {
+            if (other.infoModeration != null)
+                return false;
+        } else if (!this.infoModeration.equals(other.infoModeration))
+            return false;
+        if (this.schwierigkeitsgrad == null) {
+            if (other.schwierigkeitsgrad != null)
+                return false;
+        } else if (!this.schwierigkeitsgrad.equals(other.schwierigkeitsgrad))
+            return false;
         return true;
     }
 
@@ -302,6 +352,8 @@ public class TitelPojo implements ITitel {
         result = prime * result + ((this.modul == null) ? 0 : this.modul.hashCode());
         result = prime * result + ((this.klasse == null) ? 0 : this.klasse.hashCode());
         result = prime * result + ((this.besetzung == null) ? 0 : this.besetzung.hashCode());
+        result = prime * result + ((this.infoModeration == null) ? 0 : this.infoModeration.hashCode());
+        result = prime * result + ((this.schwierigkeitsgrad == null) ? 0 : this.schwierigkeitsgrad.hashCode());
         return result;
     }
 
@@ -319,6 +371,8 @@ public class TitelPojo implements ITitel {
         sb.append(", ").append(modul);
         sb.append(", ").append(klasse);
         sb.append(", ").append(besetzung);
+        sb.append(", ").append(infoModeration);
+        sb.append(", ").append(schwierigkeitsgrad);
 
         sb.append(")");
         return sb.toString();
@@ -340,6 +394,8 @@ public class TitelPojo implements ITitel {
         setModul(from.getModul());
         setKlasse(from.getKlasse());
         setBesetzung(from.getBesetzung());
+        setInfoModeration(from.getInfoModeration());
+        setSchwierigkeitsgrad(from.getSchwierigkeitsgrad());
     }
 
     @Override

@@ -201,4 +201,34 @@ public class TitelDao extends DAOImpl<TitelRecord, TitelPojo, Long> {
     public List<TitelPojo> fetchByBesetzung(String... values) {
         return fetch(Titel.TITEL.BESETZUNG, values);
     }
+
+    /**
+     * Fetch records that have <code>info_moderation BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<TitelPojo> fetchRangeOfInfoModeration(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Titel.TITEL.INFO_MODERATION, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>info_moderation IN (values)</code>
+     */
+    public List<TitelPojo> fetchByInfoModeration(String... values) {
+        return fetch(Titel.TITEL.INFO_MODERATION, values);
+    }
+
+    /**
+     * Fetch records that have <code>schwierigkeitsgrad BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<TitelPojo> fetchRangeOfSchwierigkeitsgrad(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Titel.TITEL.SCHWIERIGKEITSGRAD, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>schwierigkeitsgrad IN (values)</code>
+     */
+    public List<TitelPojo> fetchBySchwierigkeitsgrad(String... values) {
+        return fetch(Titel.TITEL.SCHWIERIGKEITSGRAD, values);
+    }
 }

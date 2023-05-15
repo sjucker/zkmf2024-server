@@ -112,6 +112,26 @@ public interface ITitel extends Serializable {
      */
     public String getBesetzung();
 
+    /**
+     * Setter for <code>titel.info_moderation</code>.
+     */
+    public void setInfoModeration(String value);
+
+    /**
+     * Getter for <code>titel.info_moderation</code>.
+     */
+    public String getInfoModeration();
+
+    /**
+     * Setter for <code>titel.schwierigkeitsgrad</code>.
+     */
+    public void setSchwierigkeitsgrad(String value);
+
+    /**
+     * Getter for <code>titel.schwierigkeitsgrad</code>.
+     */
+    public String getSchwierigkeitsgrad();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

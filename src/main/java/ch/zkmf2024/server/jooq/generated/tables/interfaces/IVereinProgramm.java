@@ -91,6 +91,136 @@ public interface IVereinProgramm extends Serializable {
      */
     public Integer getTotalDurationInSeconds();
 
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_1</code>.
+     */
+    public void setModulGKatA_1(String value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_1</code>.
+     */
+    public String getModulGKatA_1();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_2</code>.
+     */
+    public void setModulGKatA_2(String value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_2</code>.
+     */
+    public String getModulGKatA_2();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_titel_1_id</code>.
+     */
+    public void setModulGKatATitel_1Id(Long value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_titel_1_id</code>.
+     */
+    public Long getModulGKatATitel_1Id();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_titel_2_id</code>.
+     */
+    public void setModulGKatATitel_2Id(Long value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_titel_2_id</code>.
+     */
+    public Long getModulGKatATitel_2Id();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_b_titel_id</code>.
+     */
+    public void setModulGKatBTitelId(Long value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_b_titel_id</code>.
+     */
+    public Long getModulGKatBTitelId();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_c_titel_id</code>.
+     */
+    public void setModulGKatCTitelId(Long value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_c_titel_id</code>.
+     */
+    public Long getModulGKatCTitelId();
+
+    /**
+     * Setter for <code>verein_programm.modul_b_pa</code>.
+     */
+    public void setModulBPa(Boolean value);
+
+    /**
+     * Getter for <code>verein_programm.modul_b_pa</code>.
+     */
+    public Boolean getModulBPa();
+
+    /**
+     * Setter for <code>verein_programm.modul_b_egitarre</code>.
+     */
+    public void setModulBEgitarre(Boolean value);
+
+    /**
+     * Getter for <code>verein_programm.modul_b_egitarre</code>.
+     */
+    public Boolean getModulBEgitarre();
+
+    /**
+     * Setter for <code>verein_programm.modul_b_ebass</code>.
+     */
+    public void setModulBEbass(Boolean value);
+
+    /**
+     * Getter for <code>verein_programm.modul_b_ebass</code>.
+     */
+    public Boolean getModulBEbass();
+
+    /**
+     * Setter for <code>verein_programm.modul_b_keyboard</code>.
+     */
+    public void setModulBKeyboard(Boolean value);
+
+    /**
+     * Getter for <code>verein_programm.modul_b_keyboard</code>.
+     */
+    public Boolean getModulBKeyboard();
+
+    /**
+     * Setter for <code>verein_programm.modul_b_gesang</code>.
+     */
+    public void setModulBGesang(Boolean value);
+
+    /**
+     * Getter for <code>verein_programm.modul_b_gesang</code>.
+     */
+    public Boolean getModulBGesang();
+
+    /**
+     * Setter for <code>verein_programm.modul_d_titel_1_id</code>.
+     */
+    public void setModulDTitel_1Id(Long value);
+
+    /**
+     * Getter for <code>verein_programm.modul_d_titel_1_id</code>.
+     */
+    public Long getModulDTitel_1Id();
+
+    /**
+     * Setter for <code>verein_programm.modul_d_titel_2_id</code>.
+     */
+    public void setModulDTitel_2Id(Long value);
+
+    /**
+     * Getter for <code>verein_programm.modul_d_titel_2_id</code>.
+     */
+    public Long getModulDTitel_2Id();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

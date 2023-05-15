@@ -11,7 +11,6 @@ public record VereinDTO(
         @NotNull VereinsanmeldungDTO anmeldung,
         @NotNull VereinsinfoDTO info,
         boolean registrationConfirmed,
-        @NotNull List<TitelDTO> titel,
         @NotNull List<VereinProgrammDTO> programme
 ) {
 
@@ -28,8 +27,9 @@ public record VereinDTO(
 
     @NotNull
     public PhaseStatus getPhase2Status() {
-        // TODO
-        return PhaseStatus.IN_PROGRESS;
+        return programme.stream().allMatch(VereinProgrammDTO::isValid) ?
+                PhaseStatus.DONE :
+                PhaseStatus.IN_PROGRESS;
     }
 
 }
