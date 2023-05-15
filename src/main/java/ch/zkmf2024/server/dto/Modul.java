@@ -1,7 +1,6 @@
 package ch.zkmf2024.server.dto;
 
 import lombok.Getter;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Optional;
 
@@ -37,22 +36,22 @@ public enum Modul {
         };
     }
 
-    public Besetzung getRelevantBesetzung(boolean harmonie, boolean brassBand, boolean fanfare) {
+    public Optional<Besetzung> getRelevantBesetzung(boolean harmonie, boolean brassBand, boolean fanfare) {
         return switch (this) {
             case A, B, D, E, F -> {
                 if (harmonie) {
-                    yield HARMONIE;
+                    yield Optional.of(HARMONIE);
                 } else if (brassBand) {
-                    yield BRASS_BAND;
+                    yield Optional.of(BRASS_BAND);
                 } else if (fanfare) {
-                    yield FANFARE;
+                    yield Optional.of(FANFARE);
                 } else {
                     throw new IllegalStateException("no matching Besetzung found for Modul: " + this);
                 }
             }
-            case C -> throw new NotImplementedException(); // TODO
-            case G -> TAMBOUREN;
-            case H -> PERKUSSIONSENSEMBLE;
+            case C -> Optional.empty();
+            case G -> Optional.of(TAMBOUREN);
+            case H -> Optional.of(PERKUSSIONSENSEMBLE);
         };
     }
 

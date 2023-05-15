@@ -190,7 +190,8 @@ public class VereinRepository {
                                                                Klasse.fromString(verein.getKlasseModulh()).orElse(null))
                                             .orElse(null);
 
-                          var besetzung = modul.getRelevantBesetzung(verein.getHarmonie(), verein.getBrassBand(), verein.getFanfare());
+                          var besetzung = modul.getRelevantBesetzung(verein.getHarmonie(), verein.getBrassBand(), verein.getFanfare())
+                                               .orElse(null);
 
                           var minMaxDuration = findMinMaxDuration(modul, klasse, besetzung);
 
