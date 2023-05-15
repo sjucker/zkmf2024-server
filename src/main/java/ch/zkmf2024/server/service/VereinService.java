@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
+import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
@@ -253,8 +254,7 @@ public class VereinService {
             if (Objects.equals(vereinId, programmPojo.getFkVerein())) {
                 programmPojo.setTitel(programm.titel());
                 programmPojo.setInfoModeration(programm.infoModeration());
-                programmPojo.setTotalDurationInSeconds(programm.totalDurationInSeconds()); // TODO validate this?
-
+                programmPojo.setTotalDurationInSeconds(calculateTotalDurationInSeconds(programm.ablauf()));
                 vereinRepository.update(programmPojo);
 
                 var existingProgrammTitel = vereinRepository.findTitelByProgrammId(programmPojo.getId());
@@ -267,7 +267,12 @@ public class VereinService {
                         // update
                         var vereinProgrammTitelPojo = programmTitelPerId.get(titelId);
                         vereinProgrammTitelPojo.setPosition(i);
-                        vereinProgrammTitelPojo.setApplausInSeconds(programmTitel.applausInSeconds());
+                        if (i < programm.ablauf().size() - 1) {
+                            vereinProgrammTitelPojo.setApplausInSeconds(programmTitel.applausInSeconds());
+                        } else {
+                            // there is no applause for last titel
+                            vereinProgrammTitelPojo.setApplausInSeconds(null);
+                        }
                         vereinRepository.update(vereinProgrammTitelPojo);
                     } else {
                         // create new
@@ -296,6 +301,19 @@ public class VereinService {
                           programmPojo, vereinId);
             }
         }
+    }
+
+    protected static int calculateTotalDurationInSeconds(List<VereinProgrammTitelDTO> ablauf) {
+        var totalInSeconds = 0;
+        for (int i = 0; i < ablauf.size(); i++) {
+            var programmTitel = ablauf.get(i);
+            totalInSeconds += programmTitel.titel().durationInSeconds();
+            if (i < ablauf.size() - 1 && programmTitel.applausInSeconds() != null) {
+                // last applause does not count to total duration of program
+                totalInSeconds += programmTitel.applausInSeconds();
+            }
+        }
+        return totalInSeconds;
     }
 
     public boolean verifyEmail(VerifyEmailRequestDTO request) {

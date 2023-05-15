@@ -263,9 +263,6 @@ public class VereinRepository {
                                    ),
                                    record.get(VEREIN_PROGRAMM_TITEL.APPLAUS_IN_SECONDS)
                            ));
-        if (titel.isEmpty()) {
-            // TODO add first dummy entry
-        }
 
         return titel;
     }
