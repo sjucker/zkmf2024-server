@@ -18,9 +18,12 @@ import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
 @Service
 public class NewsletterService {
 
+    private final MailchimpService mailchimpService;
     private final NewsletterRecipientRepository newsletterRecipientRepository;
 
-    public NewsletterService(NewsletterRecipientRepository newsletterRecipientRepository) {
+    public NewsletterService(MailchimpService mailchimpService,
+                             NewsletterRecipientRepository newsletterRecipientRepository) {
+        this.mailchimpService = mailchimpService;
         this.newsletterRecipientRepository = newsletterRecipientRepository;
     }
 
@@ -40,6 +43,9 @@ public class NewsletterService {
                 now(),
                 null
         ));
+
+        // TODO make this async?
+        mailchimpService.addNewsletterMember(dto.email(), dto.vorname(), dto.name());
 
         return REGISTERED;
     }

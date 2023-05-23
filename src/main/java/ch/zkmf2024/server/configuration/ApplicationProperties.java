@@ -18,4 +18,6 @@ public class ApplicationProperties {
     private String sekretariatMail;
     private String musikMail;
     private String bccMail;
+    private String mailchimpApiKey;
+    private String mailchimpListId;
 }
