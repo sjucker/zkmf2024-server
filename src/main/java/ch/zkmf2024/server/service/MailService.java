@@ -79,20 +79,12 @@ public class MailService {
             helper.setTo(user.getEmail());
             helper.setCc(applicationProperties.getSekretariatMail());
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("%s Vereinsaccount erstellt".formatted(getSubjectPrefix()));
+            helper.setSubject("[ZKMF2024] Vereinsaccount erstellt");
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
         } catch (RuntimeException | MessagingException e) {
             log.error("could not send registration mail for created user %s".formatted(user), e);
-        }
-    }
-
-    private String getSubjectPrefix() {
-        if (environment.getActiveProfiles().length > 0) {
-            return "[ZKMF2024 %s]".formatted(environment.getActiveProfiles()[0]);
-        } else {
-            return "[ZKMF2024]";
         }
     }
 
@@ -121,7 +113,7 @@ public class MailService {
             helper.setTo(vereinDTO.email());
             helper.setCc(new String[]{applicationProperties.getMusikMail(), applicationProperties.getSekretariatMail()});
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("%s Bestätigung Anmeldung".formatted(getSubjectPrefix()));
+            helper.setSubject("[ZKMF2024] Bestätigung Anmeldung");
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
@@ -158,7 +150,7 @@ public class MailService {
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
             helper.setTo(user.getEmail());
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("%s Passwort wiederherstellen".formatted(getSubjectPrefix()));
+            helper.setSubject("[ZKMF2024] Passwort wiederherstellen");
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
@@ -201,7 +193,7 @@ public class MailService {
             helper.setTo(helperRegistration.getEmail());
             helper.setCc(applicationProperties.getHelferMail());
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("%s Anmeldung Helfer".formatted(getSubjectPrefix()));
+            helper.setSubject("[ZKMF2024] Anmeldung Helfer");
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
