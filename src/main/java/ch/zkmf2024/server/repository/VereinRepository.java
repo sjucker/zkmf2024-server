@@ -7,9 +7,7 @@ import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
-import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
-import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
@@ -30,9 +28,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
-import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
-import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.PROGRAMM_VORGABEN;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
@@ -66,55 +61,33 @@ public class VereinRepository {
         return vereinDao.findAll();
     }
 
-    public List<VereinTeilnahmeDTO> findAllConfirmed() {
-        Image vereinLogo = IMAGE.as("i2");
-        Image vereinBild = IMAGE.as("i1");
-        return jooqDsl.select(
-                              VEREIN.VEREINSNAME,
-                              VEREIN.WEBSITE_TEXT,
-                              vereinLogo.ID,
-                              vereinBild.ID
-                      )
-                      .from(VEREIN)
-                      .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
-                      .leftJoin(vereinBild).on(vereinBild.FOREIGN_KEY.eq(VEREIN.ID).and(vereinBild.TYPE.eq(VEREIN_BILD.name())))
-                      .where(VEREIN.CONFIRMED_AT.isNotNull())
-                      .fetch(it -> new VereinTeilnahmeDTO(
-                              it.get(VEREIN.VEREINSNAME),
-                              it.get(vereinLogo.ID),
-                              it.get(vereinBild.ID),
-                              it.get(VEREIN.WEBSITE_TEXT)
-                      ));
-
-    }
-
     public List<VereinOverviewDTO> findAllOverview() {
         return jooqDsl.select()
                       .from(VEREIN)
                       .join(VEREIN_STATUS).on(VEREIN.ID.eq(VEREIN_STATUS.FK_VEREIN))
                       .orderBy(VEREIN.VEREINSNAME)
-                      .fetch(it -> new VereinOverviewDTO(
-                              it.get(VEREIN.ID),
-                              it.get(VEREIN.VEREINSNAME),
-                              it.get(VEREIN.MODULA),
-                              it.get(VEREIN.MODULB),
-                              it.get(VEREIN.MODULC),
-                              it.get(VEREIN.MODULD),
-                              it.get(VEREIN.MODULE),
-                              it.get(VEREIN.MODULF),
-                              it.get(VEREIN.MODULG),
-                              it.get(VEREIN.MODULH),
-                              Klasse.fromString(it.get(VEREIN.KLASSE_MODULA)).orElse(null),
-                              Klasse.fromString(it.get(VEREIN.KLASSE_MODULB)).orElse(null),
-                              Klasse.fromString(it.get(VEREIN.KLASSE_MODULH)).orElse(null),
-                              it.get(VEREIN.HARMONIE),
-                              it.get(VEREIN.BRASS_BAND),
-                              it.get(VEREIN.FANFARE),
-                              it.get(VEREIN.TAMBOUREN),
-                              it.get(VEREIN.PERKUSSIONSENSEMBLE),
-                              it.get(VEREIN.CONFIRMED_AT) != null,
-                              PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
-                              PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2))
+                      .fetch(record -> new VereinOverviewDTO(
+                              record.get(VEREIN.ID),
+                              record.get(VEREIN.VEREINSNAME),
+                              record.get(VEREIN.MODULA),
+                              record.get(VEREIN.MODULB),
+                              record.get(VEREIN.MODULC),
+                              record.get(VEREIN.MODULD),
+                              record.get(VEREIN.MODULE),
+                              record.get(VEREIN.MODULF),
+                              record.get(VEREIN.MODULG),
+                              record.get(VEREIN.MODULH),
+                              Klasse.fromString(record.get(VEREIN.KLASSE_MODULA)).orElse(null),
+                              Klasse.fromString(record.get(VEREIN.KLASSE_MODULB)).orElse(null),
+                              Klasse.fromString(record.get(VEREIN.KLASSE_MODULH)).orElse(null),
+                              record.get(VEREIN.HARMONIE),
+                              record.get(VEREIN.BRASS_BAND),
+                              record.get(VEREIN.FANFARE),
+                              record.get(VEREIN.TAMBOUREN),
+                              record.get(VEREIN.PERKUSSIONSENSEMBLE),
+                              record.get(VEREIN.CONFIRMED_AT) != null,
+                              PhaseStatus.valueOf(record.get(VEREIN_STATUS.PHASE1)),
+                              PhaseStatus.valueOf(record.get(VEREIN_STATUS.PHASE2))
                       ));
     }
 
