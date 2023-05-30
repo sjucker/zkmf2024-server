@@ -117,6 +117,13 @@ export interface VereinProgrammTitelDTO {
     applausInSeconds?: number;
 }
 
+export interface VereinTeilnahmeDTO {
+    name: string;
+    logoImgId?: number;
+    bildImgId?: number;
+    websiteText?: string;
+}
+
 export interface VereinsangabenDTO extends IsValid {
     vereinsname?: string;
     adresse?: string;

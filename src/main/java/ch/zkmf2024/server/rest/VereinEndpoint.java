@@ -3,14 +3,18 @@ package ch.zkmf2024.server.rest;
 import ch.zkmf2024.server.dto.ForgotPasswordRequestDTO;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.ResetPasswordRequestDTO;
+import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -63,5 +67,12 @@ public class VereinEndpoint {
         return success ?
                 ResponseEntity.ok().build() :
                 ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/overview")
+    public ResponseEntity<List<VereinTeilnahmeDTO>> overview() {
+        log.info("GET /public/verein/overview");
+
+        return ResponseEntity.ok(vereinService.getOverview());
     }
 }
