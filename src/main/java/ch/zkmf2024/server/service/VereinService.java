@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
+import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
@@ -409,5 +410,9 @@ public class VereinService {
         } else {
             log.error("user with email '{}' tried to delete image with id {}, but does not belong to them!", email, id);
         }
+    }
+
+    public List<VereinTeilnahmeDTO> getOverview() {
+        return vereinRepository.findAllConfirmed();
     }
 }
