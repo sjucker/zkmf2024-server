@@ -72,6 +72,7 @@ public class VereinRepository {
         return jooqDsl.select(
                               VEREIN.VEREINSNAME,
                               VEREIN.WEBSITE_TEXT,
+                              VEREIN.HOMEPAGE,
                               vereinLogo.ID,
                               vereinBild.ID
                       )
@@ -84,6 +85,7 @@ public class VereinRepository {
                               it.get(VEREIN.VEREINSNAME),
                               it.get(vereinLogo.ID),
                               it.get(vereinBild.ID),
+                              it.get(VEREIN.HOMEPAGE),
                               it.get(VEREIN.WEBSITE_TEXT)
                       ));
 

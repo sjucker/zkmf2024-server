@@ -121,6 +121,7 @@ export interface VereinTeilnahmeDTO {
     name: string;
     logoImgId?: number;
     bildImgId?: number;
+    homepage?: string;
     websiteText?: string;
 }
 
