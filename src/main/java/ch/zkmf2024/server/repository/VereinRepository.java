@@ -79,6 +79,7 @@ public class VereinRepository {
                       .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
                       .leftJoin(vereinBild).on(vereinBild.FOREIGN_KEY.eq(VEREIN.ID).and(vereinBild.TYPE.eq(VEREIN_BILD.name())))
                       .where(VEREIN.CONFIRMED_AT.isNotNull())
+                      .orderBy(VEREIN.VEREINSNAME.asc())
                       .fetch(it -> new VereinTeilnahmeDTO(
                               it.get(VEREIN.VEREINSNAME),
                               it.get(vereinLogo.ID),
