@@ -46,6 +46,9 @@ public class VereinPojo implements IVerein {
     private String direktionDoppeleinsatzVerein;
     private Boolean mitspielerDoppeleinsatz;
     private LocalDateTime confirmedAt;
+    private Boolean tambourenKatA;
+    private Boolean tambourenKatB;
+    private Boolean tambourenKatC;
 
     public VereinPojo() {
     }
@@ -82,6 +85,9 @@ public class VereinPojo implements IVerein {
         this.direktionDoppeleinsatzVerein = value.getDirektionDoppeleinsatzVerein();
         this.mitspielerDoppeleinsatz = value.getMitspielerDoppeleinsatz();
         this.confirmedAt = value.getConfirmedAt();
+        this.tambourenKatA = value.getTambourenKatA();
+        this.tambourenKatB = value.getTambourenKatB();
+        this.tambourenKatC = value.getTambourenKatC();
     }
 
     public VereinPojo(
@@ -115,7 +121,10 @@ public class VereinPojo implements IVerein {
             Boolean direktionDoppeleinsatz,
             String direktionDoppeleinsatzVerein,
             Boolean mitspielerDoppeleinsatz,
-            LocalDateTime confirmedAt
+            LocalDateTime confirmedAt,
+            Boolean tambourenKatA,
+            Boolean tambourenKatB,
+            Boolean tambourenKatC
     ) {
         this.id = id;
         this.email = email;
@@ -148,6 +157,9 @@ public class VereinPojo implements IVerein {
         this.direktionDoppeleinsatzVerein = direktionDoppeleinsatzVerein;
         this.mitspielerDoppeleinsatz = mitspielerDoppeleinsatz;
         this.confirmedAt = confirmedAt;
+        this.tambourenKatA = tambourenKatA;
+        this.tambourenKatB = tambourenKatB;
+        this.tambourenKatC = tambourenKatC;
     }
 
     /**
@@ -646,6 +658,54 @@ public class VereinPojo implements IVerein {
         this.confirmedAt = confirmedAt;
     }
 
+    /**
+     * Getter for <code>verein.tambouren_kat_a</code>.
+     */
+    @Override
+    public Boolean getTambourenKatA() {
+        return this.tambourenKatA;
+    }
+
+    /**
+     * Setter for <code>verein.tambouren_kat_a</code>.
+     */
+    @Override
+    public void setTambourenKatA(Boolean tambourenKatA) {
+        this.tambourenKatA = tambourenKatA;
+    }
+
+    /**
+     * Getter for <code>verein.tambouren_kat_b</code>.
+     */
+    @Override
+    public Boolean getTambourenKatB() {
+        return this.tambourenKatB;
+    }
+
+    /**
+     * Setter for <code>verein.tambouren_kat_b</code>.
+     */
+    @Override
+    public void setTambourenKatB(Boolean tambourenKatB) {
+        this.tambourenKatB = tambourenKatB;
+    }
+
+    /**
+     * Getter for <code>verein.tambouren_kat_c</code>.
+     */
+    @Override
+    public Boolean getTambourenKatC() {
+        return this.tambourenKatC;
+    }
+
+    /**
+     * Setter for <code>verein.tambouren_kat_c</code>.
+     */
+    @Override
+    public void setTambourenKatC(Boolean tambourenKatC) {
+        this.tambourenKatC = tambourenKatC;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -810,6 +870,21 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.confirmedAt.equals(other.confirmedAt))
             return false;
+        if (this.tambourenKatA == null) {
+            if (other.tambourenKatA != null)
+                return false;
+        } else if (!this.tambourenKatA.equals(other.tambourenKatA))
+            return false;
+        if (this.tambourenKatB == null) {
+            if (other.tambourenKatB != null)
+                return false;
+        } else if (!this.tambourenKatB.equals(other.tambourenKatB))
+            return false;
+        if (this.tambourenKatC == null) {
+            if (other.tambourenKatC != null)
+                return false;
+        } else if (!this.tambourenKatC.equals(other.tambourenKatC))
+            return false;
         return true;
     }
 
@@ -848,6 +923,9 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.direktionDoppeleinsatzVerein == null) ? 0 : this.direktionDoppeleinsatzVerein.hashCode());
         result = prime * result + ((this.mitspielerDoppeleinsatz == null) ? 0 : this.mitspielerDoppeleinsatz.hashCode());
         result = prime * result + ((this.confirmedAt == null) ? 0 : this.confirmedAt.hashCode());
+        result = prime * result + ((this.tambourenKatA == null) ? 0 : this.tambourenKatA.hashCode());
+        result = prime * result + ((this.tambourenKatB == null) ? 0 : this.tambourenKatB.hashCode());
+        result = prime * result + ((this.tambourenKatC == null) ? 0 : this.tambourenKatC.hashCode());
         return result;
     }
 
@@ -886,6 +964,9 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(direktionDoppeleinsatzVerein);
         sb.append(", ").append(mitspielerDoppeleinsatz);
         sb.append(", ").append(confirmedAt);
+        sb.append(", ").append(tambourenKatA);
+        sb.append(", ").append(tambourenKatB);
+        sb.append(", ").append(tambourenKatC);
 
         sb.append(")");
         return sb.toString();
@@ -928,6 +1009,9 @@ public class VereinPojo implements IVerein {
         setDirektionDoppeleinsatzVerein(from.getDirektionDoppeleinsatzVerein());
         setMitspielerDoppeleinsatz(from.getMitspielerDoppeleinsatz());
         setConfirmedAt(from.getConfirmedAt());
+        setTambourenKatA(from.getTambourenKatA());
+        setTambourenKatB(from.getTambourenKatB());
+        setTambourenKatC(from.getTambourenKatC());
     }
 
     @Override

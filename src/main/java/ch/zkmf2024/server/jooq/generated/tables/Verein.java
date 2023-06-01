@@ -200,6 +200,21 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(0), this, "");
 
+    /**
+     * The column <code>verein.tambouren_kat_a</code>.
+     */
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_A = createField(DSL.name("tambouren_kat_a"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein.tambouren_kat_b</code>.
+     */
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_B = createField(DSL.name("tambouren_kat_b"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>verein.tambouren_kat_c</code>.
+     */
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_C = createField(DSL.name("tambouren_kat_c"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }

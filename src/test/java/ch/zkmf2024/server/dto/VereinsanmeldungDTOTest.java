@@ -19,12 +19,13 @@ class VereinsanmeldungDTOTest {
 
     private static Stream<Arguments> isValidArguments() {
         return Stream.of(
-                Arguments.of(new VereinsanmeldungDTO(false, false, false, false, false, false, false, false, null, null, null, false, false, false, false, false), false),
-                Arguments.of(new VereinsanmeldungDTO(false, false, false, false, false, false, false, false, null, null, null, true, false, false, false, false), false),
-                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, false, false, null, null, null, true, false, false, false, false), false),
-                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, false, false, KLASSE_1, null, null, true, false, false, false, false), true),
-                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, true, false, KLASSE_1, null, null, true, false, false, false, false), false),
-                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, true, false, KLASSE_1, null, null, true, false, false, true, false), true)
+                Arguments.of(new VereinsanmeldungDTO(false, false, false, false, false, false, false, false, null, null, null, false, false, false, false, false, false, false, false), false),
+                Arguments.of(new VereinsanmeldungDTO(false, false, false, false, false, false, false, false, null, null, null, false, false, false, true, false, false, false, false), false),
+                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, false, false, null, null, null, false, false, false, true, false, false, false, false), false),
+                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, false, false, KLASSE_1, null, null, false, false, false, true, false, false, false, false), true),
+                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, true, false, KLASSE_1, null, null, false, false, false, true, false, false, false, false), false),
+                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, true, false, KLASSE_1, null, null, false, false, false, true, false, false, true, false), false),
+                Arguments.of(new VereinsanmeldungDTO(true, false, false, false, false, false, true, false, KLASSE_1, null, null, false, true, false, true, false, false, true, false), true)
         );
     }
 

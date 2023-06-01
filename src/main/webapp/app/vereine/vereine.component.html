@@ -54,6 +54,15 @@
             <th pSortableColumn="klasseModulH">Klasse Modul H
                 <p-sortIcon field="klasseModulH"></p-sortIcon>
             </th>
+            <th pSortableColumn="tambourenKatA">Kat. A
+                <p-sortIcon field="tambourenKatA"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tambourenKatB">Kat. B
+                <p-sortIcon field="tambourenKatB"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tambourenKatC">Kat. C
+                <p-sortIcon field="tambourenKatC"></p-sortIcon>
+            </th>
             <th pSortableColumn="harmonie">Harmonie
                 <p-sortIcon field="harmonie"></p-sortIcon>
             </th>
@@ -91,6 +100,9 @@
             <td>{{formatKlasse(dto.klasseModulA)}}</td>
             <td>{{formatKlasse(dto.klasseModulB)}}</td>
             <td>{{formatKlasse(dto.klasseModulH)}}</td>
+            <td>{{formatBoolean(dto.tambourenKatA)}}</td>
+            <td>{{formatBoolean(dto.tambourenKatB)}}</td>
+            <td>{{formatBoolean(dto.tambourenKatC)}}</td>
             <td>{{formatBoolean(dto.harmonie)}}</td>
             <td>{{formatBoolean(dto.brassBand)}}</td>
             <td>{{formatBoolean(dto.fanfare)}}</td>

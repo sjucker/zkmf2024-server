@@ -515,6 +515,54 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         return (LocalDateTime) get(30);
     }
 
+    /**
+     * Setter for <code>verein.tambouren_kat_a</code>.
+     */
+    @Override
+    public void setTambourenKatA(Boolean value) {
+        set(31, value);
+    }
+
+    /**
+     * Getter for <code>verein.tambouren_kat_a</code>.
+     */
+    @Override
+    public Boolean getTambourenKatA() {
+        return (Boolean) get(31);
+    }
+
+    /**
+     * Setter for <code>verein.tambouren_kat_b</code>.
+     */
+    @Override
+    public void setTambourenKatB(Boolean value) {
+        set(32, value);
+    }
+
+    /**
+     * Getter for <code>verein.tambouren_kat_b</code>.
+     */
+    @Override
+    public Boolean getTambourenKatB() {
+        return (Boolean) get(32);
+    }
+
+    /**
+     * Setter for <code>verein.tambouren_kat_c</code>.
+     */
+    @Override
+    public void setTambourenKatC(Boolean value) {
+        set(33, value);
+    }
+
+    /**
+     * Getter for <code>verein.tambouren_kat_c</code>.
+     */
+    @Override
+    public Boolean getTambourenKatC() {
+        return (Boolean) get(33);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -561,6 +609,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setDirektionDoppeleinsatzVerein(from.getDirektionDoppeleinsatzVerein());
         setMitspielerDoppeleinsatz(from.getMitspielerDoppeleinsatz());
         setConfirmedAt(from.getConfirmedAt());
+        setTambourenKatA(from.getTambourenKatA());
+        setTambourenKatB(from.getTambourenKatB());
+        setTambourenKatC(from.getTambourenKatC());
         resetChangedOnNotNull();
     }
 
@@ -584,7 +635,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -618,6 +669,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setDirektionDoppeleinsatzVerein(direktionDoppeleinsatzVerein);
         setMitspielerDoppeleinsatz(mitspielerDoppeleinsatz);
         setConfirmedAt(confirmedAt);
+        setTambourenKatA(tambourenKatA);
+        setTambourenKatB(tambourenKatB);
+        setTambourenKatC(tambourenKatC);
         resetChangedOnNotNull();
     }
 
@@ -659,6 +713,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setDirektionDoppeleinsatzVerein(value.getDirektionDoppeleinsatzVerein());
             setMitspielerDoppeleinsatz(value.getMitspielerDoppeleinsatz());
             setConfirmedAt(value.getConfirmedAt());
+            setTambourenKatA(value.getTambourenKatA());
+            setTambourenKatB(value.getTambourenKatB());
+            setTambourenKatC(value.getTambourenKatC());
             resetChangedOnNotNull();
         }
     }

@@ -87,6 +87,10 @@ public interface VereinMapper {
         pojo.setFanfare((dto.modulA() || dto.modulB() || dto.modulC() || dto.modulD() || dto.modulE() || dto.modulF()) && dto.fanfare());
         pojo.setTambouren(dto.modulG() && dto.tambouren());
         pojo.setPerkussionsensemble((dto.modulC() || dto.modulH()) && dto.perkussionsensemble());
+
+        pojo.setTambourenKatA(dto.modulG() && dto.tambourenKatA());
+        pojo.setTambourenKatB(dto.modulG() && dto.tambourenKatB());
+        pojo.setTambourenKatC(dto.modulG() && dto.tambourenKatC());
     }
 
 }

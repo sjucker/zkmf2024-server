@@ -517,4 +517,49 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByConfirmedAt(LocalDateTime... values) {
         return fetch(Verein.VEREIN.CONFIRMED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>tambouren_kat_a BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfTambourenKatA(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Verein.VEREIN.TAMBOUREN_KAT_A, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>tambouren_kat_a IN (values)</code>
+     */
+    public List<VereinPojo> fetchByTambourenKatA(Boolean... values) {
+        return fetch(Verein.VEREIN.TAMBOUREN_KAT_A, values);
+    }
+
+    /**
+     * Fetch records that have <code>tambouren_kat_b BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfTambourenKatB(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Verein.VEREIN.TAMBOUREN_KAT_B, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>tambouren_kat_b IN (values)</code>
+     */
+    public List<VereinPojo> fetchByTambourenKatB(Boolean... values) {
+        return fetch(Verein.VEREIN.TAMBOUREN_KAT_B, values);
+    }
+
+    /**
+     * Fetch records that have <code>tambouren_kat_c BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfTambourenKatC(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Verein.VEREIN.TAMBOUREN_KAT_C, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>tambouren_kat_c IN (values)</code>
+     */
+    public List<VereinPojo> fetchByTambourenKatC(Boolean... values) {
+        return fetch(Verein.VEREIN.TAMBOUREN_KAT_C, values);
+    }
 }

@@ -322,6 +322,36 @@ public interface IVerein extends Serializable {
      */
     public LocalDateTime getConfirmedAt();
 
+    /**
+     * Setter for <code>verein.tambouren_kat_a</code>.
+     */
+    public void setTambourenKatA(Boolean value);
+
+    /**
+     * Getter for <code>verein.tambouren_kat_a</code>.
+     */
+    public Boolean getTambourenKatA();
+
+    /**
+     * Setter for <code>verein.tambouren_kat_b</code>.
+     */
+    public void setTambourenKatB(Boolean value);
+
+    /**
+     * Getter for <code>verein.tambouren_kat_b</code>.
+     */
+    public Boolean getTambourenKatB();
+
+    /**
+     * Setter for <code>verein.tambouren_kat_c</code>.
+     */
+    public void setTambourenKatC(Boolean value);
+
+    /**
+     * Getter for <code>verein.tambouren_kat_c</code>.
+     */
+    public Boolean getTambourenKatC();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

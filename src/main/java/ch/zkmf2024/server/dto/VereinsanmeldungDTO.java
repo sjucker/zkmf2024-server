@@ -16,6 +16,9 @@ public record VereinsanmeldungDTO(
         Klasse klasseModulA,
         Klasse klasseModulB,
         Klasse klasseModulH,
+        boolean tambourenKatA,
+        boolean tambourenKatB,
+        boolean tambourenKatC,
         boolean harmonie,
         boolean brassBand,
         boolean fanfare,
@@ -38,6 +41,10 @@ public record VereinsanmeldungDTO(
         }
 
         if ((modulG && !tambouren) || (modulH && !perkussionsensemble)) {
+            return false;
+        }
+
+        if (modulG && (!tambourenKatA && !tambourenKatB && !tambourenKatC)) {
             return false;
         }
 
