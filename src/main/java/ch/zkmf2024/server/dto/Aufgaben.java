@@ -6,6 +6,7 @@ public enum Aufgaben {
     EGAL("egal, überall einsetzbar"),
     KOERPERLICH("körperliche Arbeit möglich"),
     MUSIKALISCH("Mithilfe beim musikalischen Wettbewerb (z.B. Betreuer, Roadie)"),
+    MODERATION("Moderation der Wettspiele (für sprachgewandte Personen)"),
     JURYSEKRETARIAT("Jurysekretariat (für musikaffine Personen)"),
     SERVICE("Festwirtschaft (Aufnahme Bestellung, Service)"),
     BUFFET("Festwirtschaft (Buffet, Ausgabe)"),
