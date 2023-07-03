@@ -2,13 +2,18 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.Klasse;
+import ch.zkmf2024.server.dto.KontaktDTO;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.TambourenGrundlage;
 import ch.zkmf2024.server.dto.TitelDTO;
+import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
+import ch.zkmf2024.server.dto.VereinsangabenDTO;
+import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
+import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
@@ -34,6 +39,7 @@ import java.util.Optional;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
+import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.PROGRAMM_VORGABEN;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
@@ -119,6 +125,74 @@ public class VereinRepository {
                               it.get(VEREIN.CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2))
+                      ));
+    }
+
+    public List<VereinDTO> findAllForExport() {
+        var praesident = KONTAKT.as("praesident");
+        var direktion = KONTAKT.as("direktion");
+        return jooqDsl.select()
+                      .from(VEREIN)
+                      .join(praesident).on(VEREIN.PRAESIDENT_KONTAKT_ID.eq(praesident.ID))
+                      .join(direktion).on(VEREIN.DIREKTION_KONTAKT_ID.eq(direktion.ID))
+                      .orderBy(VEREIN.VEREINSNAME)
+                      .fetch(it -> new VereinDTO(
+                              it.get(VEREIN.EMAIL),
+                              new VereinsangabenDTO(
+                                      it.get(VEREIN.VEREINSNAME),
+                                      it.get(VEREIN.ADRESSE),
+                                      it.get(VEREIN.PLZ),
+                                      it.get(VEREIN.ORT),
+                                      it.get(VEREIN.HOMEPAGE),
+                                      it.get(VEREIN.IBAN),
+                                      it.get(VEREIN.DIREKTION_DOPPELEINSATZ),
+                                      it.get(VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN),
+                                      it.get(VEREIN.MITSPIELER_DOPPELEINSATZ)
+                              ),
+                              new KontaktDTO(
+                                      it.get(praesident.VORNAME),
+                                      it.get(praesident.NACHNAME),
+                                      it.get(praesident.ADRESSE),
+                                      it.get(praesident.PLZ),
+                                      it.get(praesident.ORT),
+                                      it.get(praesident.EMAIL),
+                                      it.get(praesident.TELEFON_PRIVAT),
+                                      it.get(praesident.TELEFON_MOBILE)
+                              ),
+                              new KontaktDTO(
+                                      it.get(direktion.VORNAME),
+                                      it.get(direktion.NACHNAME),
+                                      it.get(direktion.ADRESSE),
+                                      it.get(direktion.PLZ),
+                                      it.get(direktion.ORT),
+                                      it.get(direktion.EMAIL),
+                                      it.get(direktion.TELEFON_PRIVAT),
+                                      it.get(direktion.TELEFON_MOBILE)
+                              ),
+                              new VereinsanmeldungDTO(
+                                      it.get(VEREIN.MODULA),
+                                      it.get(VEREIN.MODULB),
+                                      it.get(VEREIN.MODULC),
+                                      it.get(VEREIN.MODULD),
+                                      it.get(VEREIN.MODULE),
+                                      it.get(VEREIN.MODULF),
+                                      it.get(VEREIN.MODULG),
+                                      it.get(VEREIN.MODULH),
+                                      Klasse.fromString(it.get(VEREIN.KLASSE_MODULA)).orElse(null),
+                                      Klasse.fromString(it.get(VEREIN.KLASSE_MODULB)).orElse(null),
+                                      Klasse.fromString(it.get(VEREIN.KLASSE_MODULH)).orElse(null),
+                                      it.get(VEREIN.TAMBOUREN_KAT_A),
+                                      it.get(VEREIN.TAMBOUREN_KAT_B),
+                                      it.get(VEREIN.TAMBOUREN_KAT_C),
+                                      it.get(VEREIN.HARMONIE),
+                                      it.get(VEREIN.BRASS_BAND),
+                                      it.get(VEREIN.FANFARE),
+                                      it.get(VEREIN.TAMBOUREN),
+                                      it.get(VEREIN.PERKUSSIONSENSEMBLE)
+                              ),
+                              new VereinsinfoDTO(null, null, ""),
+                              it.get(VEREIN.CONFIRMED_AT) != null,
+                              List.of()
                       ));
     }
 
