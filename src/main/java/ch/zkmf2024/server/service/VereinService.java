@@ -40,6 +40,7 @@ import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 import static ch.zkmf2024.server.service.DateUtil.now;
+import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -85,13 +86,18 @@ public class VereinService {
         return vereinRepository.findAllOverview();
     }
 
-    public List<VereinDTO> findAllFull() {
+    public List<VereinDTO> findAllForExport() {
         return vereinRepository.findAll().stream()
-                               .map(this::toDTO)
+                               .map(verein -> toDTO(verein, false))
+                               .sorted(comparing(verein -> verein.angaben().vereinsname()))
                                .toList();
     }
 
     private VereinDTO toDTO(VereinPojo verein) {
+        return toDTO(verein, true);
+    }
+
+    private VereinDTO toDTO(VereinPojo verein, boolean loadProgramm) {
         var praesident = vereinRepository.findKontaktById(verein.getPraesidentKontaktId());
         var direktion = vereinRepository.findKontaktById(verein.getDirektionKontaktId());
 
@@ -111,7 +117,7 @@ public class VereinService {
                 MAPPER.toVereinsanmeldungDTO(verein),
                 new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
-                getProgramme(verein)
+                loadProgramm ? getProgramme(verein) : List.of()
         );
     }
 

@@ -81,7 +81,7 @@ public class ExportService {
             headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. B");
             headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. C");
 
-            for (var vereinDTO : vereinService.findAllFull()) {
+            for (var vereinDTO : vereinService.findAllForExport()) {
                 var row = sheet.createRow(rowIndex++);
                 columnIndex = 0;
 
