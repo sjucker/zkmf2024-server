@@ -21,4 +21,10 @@ export class VereineService {
     get(id: number): Observable<VereinDTO> {
         return this.httpClient.get<VereinDTO>(`${this.baseUrl}/secured/admin/vereine/${id}`)
     }
+
+    export() {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/vereine`, {
+            responseType: 'blob'
+        });
+    }
 }

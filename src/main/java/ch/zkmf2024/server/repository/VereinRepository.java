@@ -134,6 +134,10 @@ public class VereinRepository {
                       .fetchOptionalInto(VereinPojo.class);
     }
 
+    public List<VereinPojo> findAll() {
+        return vereinDao.findAll();
+    }
+
     public void insert(VereinPojo verein) {
         vereinDao.insert(verein);
     }

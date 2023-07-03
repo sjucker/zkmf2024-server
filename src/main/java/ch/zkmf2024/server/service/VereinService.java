@@ -85,6 +85,12 @@ public class VereinService {
         return vereinRepository.findAllOverview();
     }
 
+    public List<VereinDTO> findAllFull() {
+        return vereinRepository.findAll().stream()
+                               .map(this::toDTO)
+                               .toList();
+    }
+
     private VereinDTO toDTO(VereinPojo verein) {
         var praesident = vereinRepository.findKontaktById(verein.getPraesidentKontaktId());
         var direktion = vereinRepository.findKontaktById(verein.getDirektionKontaktId());
