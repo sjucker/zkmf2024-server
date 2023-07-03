@@ -1,5 +1,9 @@
 <p-toast position="top-center"></p-toast>
 <p-confirmDialog></p-confirmDialog>
+<div class="m-2 flex justify-content-end">
+    <p-button iconPos="right" icon="pi pi-download" [loading]="exporting" label="Export"
+              (onClick)="export()"></p-button>
+</div>
 <p-table [value]="data"
          [loading]="loading"
          styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">

@@ -3,6 +3,7 @@ package ch.zkmf2024.server.rest.secured;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
+import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.NewsletterService;
 import ch.zkmf2024.server.service.VereinService;
@@ -34,13 +35,16 @@ public class AdminEndpoint {
     private final NewsletterService newsletterService;
     private final HelperRegistrationService helperRegistrationService;
     private final VereinService vereinService;
+    private final ExportService exportService;
 
     public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService,
-                         VereinService vereinService) {
+                         VereinService vereinService,
+                         ExportService exportService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.vereinService = vereinService;
+        this.exportService = exportService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -53,6 +57,12 @@ public class AdminEndpoint {
     public ResponseEntity<Resource> exportHelferImport() throws IOException {
         log.info("GET /secured/admin/download/helfer-import");
         return export(helperRegistrationService.exportForImport());
+    }
+
+    @GetMapping(path = "/download/vereine")
+    public ResponseEntity<Resource> exportVereine() throws IOException {
+        log.info("GET /secured/admin/download/vereine");
+        return export(exportService.exportVereine());
     }
 
     private ResponseEntity<Resource> export(File file) {

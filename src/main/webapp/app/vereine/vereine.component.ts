@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {saveAs} from "file-saver";
 import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {Klasse, PhaseStatus, VereinOverviewDTO} from "../rest";
@@ -13,6 +14,7 @@ import {VereinDetailComponent, VereinDetailInput} from "../verein-detail/verein-
 export class VereineComponent implements OnInit {
     data: VereinOverviewDTO[] = [];
     loading = false;
+    exporting = false;
 
     ref?: DynamicDialogRef;
 
@@ -93,6 +95,27 @@ export class VereineComponent implements OnInit {
             height: '90%',
             maximizable: true,
             data: input
+        });
+    }
+
+    export() {
+        this.exporting = true;
+        this.vereineService.export().subscribe({
+            next: response => {
+                saveAs(response, "vereine-export.xlsx");
+            },
+            error: error => {
+                this.exporting = false;
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exporting = false;
+            }
         });
     }
 }
