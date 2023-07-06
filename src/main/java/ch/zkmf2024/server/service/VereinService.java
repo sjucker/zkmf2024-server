@@ -351,7 +351,7 @@ public class VereinService {
         return titelId;
     }
 
-    protected static int calculateTotalDurationInSeconds(List<VereinProgrammTitelDTO> ablauf) {
+    public static int calculateTotalDurationInSeconds(List<VereinProgrammTitelDTO> ablauf) {
         var totalInSeconds = 0;
         for (int i = 0; i < ablauf.size(); i++) {
             var programmTitel = ablauf.get(i);
