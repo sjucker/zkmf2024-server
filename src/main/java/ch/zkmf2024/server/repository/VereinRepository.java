@@ -46,6 +46,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
+import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
 
 @Repository
 public class VereinRepository {
@@ -301,6 +302,7 @@ public class VereinRepository {
                           var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null);
 
                           var minMaxDuration = findMinMaxDuration(modul, klasse, besetzung);
+                          var ablauf = getVereinProgrammTitel(it.get(VEREIN_PROGRAMM.ID), modul, klasse, besetzung);
 
                           return new VereinProgrammDTO(
                                   it.get(VEREIN_PROGRAMM.ID),
@@ -310,10 +312,10 @@ public class VereinRepository {
                                   besetzung != null ? besetzung.getDescription() : null,
                                   it.get(VEREIN_PROGRAMM.TITEL),
                                   it.get(VEREIN_PROGRAMM.INFO_MODERATION),
-                                  it.get(VEREIN_PROGRAMM.TOTAL_DURATION_IN_SECONDS),
+                                  calculateTotalDurationInSeconds(ablauf),
                                   minMaxDuration.map(MinMaxDuration::minDurationInSeconds).orElse(null),
                                   minMaxDuration.map(MinMaxDuration::maxDurationInSeconds).orElse(null),
-                                  getVereinProgrammTitel(it.get(VEREIN_PROGRAMM.ID), modul, klasse, besetzung),
+                                  ablauf,
                                   modul == Modul.G && it.get(VEREIN.TAMBOUREN_KAT_A),
                                   modul == Modul.G && it.get(VEREIN.TAMBOUREN_KAT_B),
                                   modul == Modul.G && it.get(VEREIN.TAMBOUREN_KAT_C),
