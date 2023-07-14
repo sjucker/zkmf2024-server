@@ -2,6 +2,7 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
@@ -29,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,14 @@ public class VereinService {
 
     public List<VereinDTO> findAllForExport() {
         return vereinRepository.findAllForExport();
+    }
+
+    public List<Long> findAllVereinIds() {
+        return vereinRepository.findAllVereinIds();
+    }
+
+    public VereinStatusPojo findStatus(Long vereinId) {
+        return vereinRepository.findStatusById(vereinId);
     }
 
     private VereinDTO toDTO(VereinPojo verein) {
@@ -182,12 +192,16 @@ public class VereinService {
 
         dto = toDTO(verein);
 
-        var status = vereinRepository.findStatusById(verein.getId());
-        status.setPhase1(dto.getPhase1Status().name());
-        status.setPhase2(dto.getPhase2Status().name());
-        vereinRepository.update(status);
+        updateStatus(verein.getId(), dto.getPhase1Status(), dto.getPhase2Status());
 
         return dto;
+    }
+
+    public void updateStatus(Long vereinId, @NotNull PhaseStatus phase1Status, @NotNull PhaseStatus phase2Status) {
+        var status = vereinRepository.findStatusById(vereinId);
+        status.setPhase1(phase1Status.name());
+        status.setPhase2(phase2Status.name());
+        vereinRepository.update(status);
     }
 
     public VereinDTO confirmRegistration(String email) {
