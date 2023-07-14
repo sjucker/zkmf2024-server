@@ -34,5 +34,7 @@ public class StatusUpdateJob {
                 vereinService.updateStatus(id, verein.getPhase1Status(), verein.getPhase2Status());
             }
         }
+
+        log.info("status update job finished");
     }
 }
