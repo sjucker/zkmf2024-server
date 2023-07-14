@@ -13,8 +13,9 @@ public record TitelDTO(Long id,
                        String schwierigkeitsgrad,
                        @NotNull Integer durationInSeconds,
                        boolean pflichtStueck,
-                       String infoModeration) {
+                       String infoModeration) implements IsValid {
 
+    @Override
     public boolean isValid() {
         if (modul == null) {
             return false;

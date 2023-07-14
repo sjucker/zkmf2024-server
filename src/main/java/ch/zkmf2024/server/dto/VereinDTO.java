@@ -3,6 +3,8 @@ package ch.zkmf2024.server.dto;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
+import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
+
 public record VereinDTO(
         @NotNull String email,
         @NotNull VereinsangabenDTO angaben,
@@ -16,7 +18,8 @@ public record VereinDTO(
 
     @NotNull
     public PhaseStatus getPhase1Status() {
-        return angaben.isValid() &&
+        return isValidEmail(email) &&
+                angaben.isValid() &&
                 praesident.isValid() &&
                 direktion.isValid() &&
                 anmeldung.isValid() &&

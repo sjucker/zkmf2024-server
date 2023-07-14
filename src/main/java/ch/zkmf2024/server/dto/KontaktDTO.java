@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
+import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
+
 public record KontaktDTO(String vorname,
                          String nachname,
                          String adresse,
@@ -19,6 +21,6 @@ public record KontaktDTO(String vorname,
                 StringUtils.isNotBlank(adresse) &&
                 Objects.nonNull(plz) &&
                 StringUtils.isNotBlank(ort) &&
-                StringUtils.isNotBlank(email);
+                isValidEmail(email);
     }
 }

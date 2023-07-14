@@ -31,8 +31,9 @@ public record VereinProgrammDTO(long id,
                                 boolean unterhaltungKeyboard,
                                 boolean unterhaltungGesang,
                                 @NotNull TitelDTO parademusikTitel1,
-                                @NotNull TitelDTO parademusikTitel2) {
+                                @NotNull TitelDTO parademusikTitel2) implements IsValid {
 
+    @Override
     public boolean isValid() {
         return switch (modul) {
             case A, B -> isNotBlank(titel) &&
