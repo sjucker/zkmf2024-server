@@ -30,11 +30,9 @@ public record VereinDTO(
 
     @NotNull
     public PhaseStatus getPhase2Status() {
-        return PhaseStatus.NEW;
-//        TODO add this once phase 2 is active
-//        return programme.stream().allMatch(VereinProgrammDTO::isValid) ?
-//                PhaseStatus.DONE :
-//                PhaseStatus.IN_PROGRESS;
+        return programme.stream().allMatch(VereinProgrammDTO::isValid) ?
+                PhaseStatus.DONE :
+                PhaseStatus.IN_PROGRESS;
     }
 
 }
