@@ -197,6 +197,12 @@ public class VereinRepository {
                       ));
     }
 
+    public List<Long> findAllVereinIds() {
+        return jooqDsl.select()
+                      .from(VEREIN)
+                      .fetch(VEREIN.ID);
+    }
+
     public Optional<VereinPojo> findByEmail(String email) {
         return jooqDsl.selectFrom(VEREIN)
                       .where(VEREIN.EMAIL.equalIgnoreCase(email))
