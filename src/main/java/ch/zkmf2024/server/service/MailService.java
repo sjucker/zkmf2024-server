@@ -20,6 +20,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import jakarta.mail.MessagingException;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
@@ -79,7 +80,7 @@ public class MailService {
             helper.setTo(user.getEmail());
             helper.setCc(applicationProperties.getSekretariatMail());
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("[ZKMF2024] Vereinsaccount erstellt");
+            helper.setSubject("[%s] Vereinsaccount erstellt".formatted(getSubjectPrefix()));
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
@@ -113,7 +114,7 @@ public class MailService {
             helper.setTo(vereinDTO.email());
             helper.setCc(new String[]{applicationProperties.getMusikMail(), applicationProperties.getSekretariatMail()});
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("[ZKMF2024] Bestätigung Anmeldung");
+            helper.setSubject("[%s] Bestätigung Anmeldung".formatted(getSubjectPrefix()));
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
@@ -150,7 +151,7 @@ public class MailService {
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
             helper.setTo(user.getEmail());
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("[ZKMF2024] Passwort wiederherstellen");
+            helper.setSubject("[%s] Passwort wiederherstellen".formatted(getSubjectPrefix()));
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
@@ -193,7 +194,7 @@ public class MailService {
             helper.setTo(helperRegistration.getEmail());
             helper.setCc(applicationProperties.getHelferMail());
             helper.setBcc(applicationProperties.getBccMail());
-            helper.setSubject("[ZKMF2024] Anmeldung Helfer");
+            helper.setSubject("[%s] Anmeldung Helfer".formatted(getSubjectPrefix()));
             helper.setText(mjmlService.render(mjml), true);
 
             mailSender.send(mimeMessage);
@@ -204,5 +205,13 @@ public class MailService {
 
     private static String getEinsatzzeit(List<Einsatzzeit> values) {
         return StringUtils.defaultIfBlank(values.stream().map(Einsatzzeit::getDescription).collect(joining(", ")), "-");
+    }
+
+    private String getSubjectPrefix() {
+        var subject = "ZKMF2024";
+        if (!environment.matchesProfiles("prod")) {
+            subject += " " + Arrays.toString(environment.getActiveProfiles());
+        }
+        return subject;
     }
 }
