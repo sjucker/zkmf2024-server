@@ -30,6 +30,21 @@ export interface KontaktDTO extends IsValid {
     telefonMobile?: string;
 }
 
+export interface LocationDTO {
+    name: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+    googleMapsAddress: string;
+    googleMapsCoordinates: string;
+    type: LocationType;
+    capacity: string;
+    modules: string;
+    einspiellokal?: LocationDTO;
+    instrumentendepot?: LocationDTO;
+    juryfeedback?: LocationDTO;
+}
+
 export interface LoginRequestDTO {
     email: string;
     password: string;
@@ -89,7 +104,7 @@ export interface ResetPasswordRequestDTO {
     newPassword: string;
 }
 
-export interface TitelDTO {
+export interface TitelDTO extends IsValid {
     id?: number;
     modul?: Modul;
     titelName?: string;
@@ -100,7 +115,6 @@ export interface TitelDTO {
     durationInSeconds: number;
     pflichtStueck: boolean;
     infoModeration?: string;
-    valid: boolean;
 }
 
 export interface VereinDTO {
@@ -112,11 +126,11 @@ export interface VereinDTO {
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
     programme: VereinProgrammDTO[];
-    phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
+    phase1Status: PhaseStatus;
 }
 
-export interface VereinProgrammDTO {
+export interface VereinProgrammDTO extends IsValid {
     id: number;
     modul: Modul;
     modulDescription: string;
@@ -144,7 +158,6 @@ export interface VereinProgrammDTO {
     unterhaltungGesang: boolean;
     parademusikTitel1: TitelDTO;
     parademusikTitel2: TitelDTO;
-    valid: boolean;
 }
 
 export interface VereinProgrammTitelDTO {
@@ -240,6 +253,14 @@ export interface IsValid {
 
 export type DateAsString = string;
 
+export enum LocationType {
+    PARADEMUSIK = "PARADEMUSIK",
+    EINSPIELLOKAL = "EINSPIELLOKAL",
+    INSTRUMENTENDEPOT = "INSTRUMENTENDEPOT",
+    WETTSPIELLOKAL = "WETTSPIELLOKAL",
+    JURYFEEDBACK = "JURYFEEDBACK",
+}
+
 export enum UserRole {
     VEREIN = "VEREIN",
     HELPER = "HELPER",
@@ -272,12 +293,6 @@ export enum Einsatzzeit {
     NACHT = "NACHT",
 }
 
-export enum PhaseStatus {
-    NEW = "NEW",
-    IN_PROGRESS = "IN_PROGRESS",
-    DONE = "DONE",
-}
-
 export enum Modul {
     A = "A",
     B = "B",
@@ -287,6 +302,12 @@ export enum Modul {
     F = "F",
     G = "G",
     H = "H",
+}
+
+export enum PhaseStatus {
+    NEW = "NEW",
+    IN_PROGRESS = "IN_PROGRESS",
+    DONE = "DONE",
 }
 
 export enum TambourenGrundlage {

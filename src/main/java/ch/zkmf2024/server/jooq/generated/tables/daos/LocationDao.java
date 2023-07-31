@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.daos;
 
+import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.LocationPojo;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
@@ -125,5 +126,95 @@ public class LocationDao extends DAOImpl<LocationRecord, LocationPojo, Long> {
      */
     public List<LocationPojo> fetchByLongitude(BigDecimal... values) {
         return fetch(Location.LOCATION.LONGITUDE, values);
+    }
+
+    /**
+     * Fetch records that have <code>location_type BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfLocationType(LocationLocationType lowerInclusive, LocationLocationType upperInclusive) {
+        return fetchRange(Location.LOCATION.LOCATION_TYPE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>location_type IN (values)</code>
+     */
+    public List<LocationPojo> fetchByLocationType(LocationLocationType... values) {
+        return fetch(Location.LOCATION.LOCATION_TYPE, values);
+    }
+
+    /**
+     * Fetch records that have <code>capacity BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfCapacity(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Location.LOCATION.CAPACITY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>capacity IN (values)</code>
+     */
+    public List<LocationPojo> fetchByCapacity(String... values) {
+        return fetch(Location.LOCATION.CAPACITY, values);
+    }
+
+    /**
+     * Fetch records that have <code>modules BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfModules(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Location.LOCATION.MODULES, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modules IN (values)</code>
+     */
+    public List<LocationPojo> fetchByModules(String... values) {
+        return fetch(Location.LOCATION.MODULES, values);
+    }
+
+    /**
+     * Fetch records that have <code>einspiellokal_id BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfEinspiellokalId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Location.LOCATION.EINSPIELLOKAL_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>einspiellokal_id IN (values)</code>
+     */
+    public List<LocationPojo> fetchByEinspiellokalId(Long... values) {
+        return fetch(Location.LOCATION.EINSPIELLOKAL_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>instrumentendepot_id BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfInstrumentendepotId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Location.LOCATION.INSTRUMENTENDEPOT_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>instrumentendepot_id IN (values)</code>
+     */
+    public List<LocationPojo> fetchByInstrumentendepotId(Long... values) {
+        return fetch(Location.LOCATION.INSTRUMENTENDEPOT_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>juryfeedback_id BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfJuryfeedbackId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Location.LOCATION.JURYFEEDBACK_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>juryfeedback_id IN (values)</code>
+     */
+    public List<LocationPojo> fetchByJuryfeedbackId(Long... values) {
+        return fetch(Location.LOCATION.JURYFEEDBACK_ID, values);
     }
 }

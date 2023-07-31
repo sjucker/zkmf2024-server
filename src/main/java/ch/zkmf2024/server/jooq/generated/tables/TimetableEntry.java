@@ -158,7 +158,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     private transient Location _location;
 
     /**
-     * Get the implicit join path to the <code>mvurdorf10.verein</code> table.
+     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
@@ -168,7 +168,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>mvurdorf10.location</code> table.
+     * Get the implicit join path to the <code>zkmf2024.location</code> table.
      */
     public Location location() {
         if (_location == null)

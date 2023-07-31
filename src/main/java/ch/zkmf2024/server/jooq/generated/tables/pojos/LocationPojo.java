@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.pojos;
 
+import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.ILocation;
 
 import java.math.BigDecimal;
@@ -20,6 +21,12 @@ public class LocationPojo implements ILocation {
     private String address;
     private BigDecimal latitude;
     private BigDecimal longitude;
+    private LocationLocationType locationType;
+    private String capacity;
+    private String modules;
+    private Long einspiellokalId;
+    private Long instrumentendepotId;
+    private Long juryfeedbackId;
 
     public LocationPojo() {
     }
@@ -30,6 +37,12 @@ public class LocationPojo implements ILocation {
         this.address = value.getAddress();
         this.latitude = value.getLatitude();
         this.longitude = value.getLongitude();
+        this.locationType = value.getLocationType();
+        this.capacity = value.getCapacity();
+        this.modules = value.getModules();
+        this.einspiellokalId = value.getEinspiellokalId();
+        this.instrumentendepotId = value.getInstrumentendepotId();
+        this.juryfeedbackId = value.getJuryfeedbackId();
     }
 
     public LocationPojo(
@@ -37,13 +50,25 @@ public class LocationPojo implements ILocation {
             String name,
             String address,
             BigDecimal latitude,
-            BigDecimal longitude
+            BigDecimal longitude,
+            LocationLocationType locationType,
+            String capacity,
+            String modules,
+            Long einspiellokalId,
+            Long instrumentendepotId,
+            Long juryfeedbackId
     ) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.locationType = locationType;
+        this.capacity = capacity;
+        this.modules = modules;
+        this.einspiellokalId = einspiellokalId;
+        this.instrumentendepotId = instrumentendepotId;
+        this.juryfeedbackId = juryfeedbackId;
     }
 
     /**
@@ -126,6 +151,102 @@ public class LocationPojo implements ILocation {
         this.longitude = longitude;
     }
 
+    /**
+     * Getter for <code>location.location_type</code>.
+     */
+    @Override
+    public LocationLocationType getLocationType() {
+        return this.locationType;
+    }
+
+    /**
+     * Setter for <code>location.location_type</code>.
+     */
+    @Override
+    public void setLocationType(LocationLocationType locationType) {
+        this.locationType = locationType;
+    }
+
+    /**
+     * Getter for <code>location.capacity</code>.
+     */
+    @Override
+    public String getCapacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Setter for <code>location.capacity</code>.
+     */
+    @Override
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
+    }
+
+    /**
+     * Getter for <code>location.modules</code>.
+     */
+    @Override
+    public String getModules() {
+        return this.modules;
+    }
+
+    /**
+     * Setter for <code>location.modules</code>.
+     */
+    @Override
+    public void setModules(String modules) {
+        this.modules = modules;
+    }
+
+    /**
+     * Getter for <code>location.einspiellokal_id</code>.
+     */
+    @Override
+    public Long getEinspiellokalId() {
+        return this.einspiellokalId;
+    }
+
+    /**
+     * Setter for <code>location.einspiellokal_id</code>.
+     */
+    @Override
+    public void setEinspiellokalId(Long einspiellokalId) {
+        this.einspiellokalId = einspiellokalId;
+    }
+
+    /**
+     * Getter for <code>location.instrumentendepot_id</code>.
+     */
+    @Override
+    public Long getInstrumentendepotId() {
+        return this.instrumentendepotId;
+    }
+
+    /**
+     * Setter for <code>location.instrumentendepot_id</code>.
+     */
+    @Override
+    public void setInstrumentendepotId(Long instrumentendepotId) {
+        this.instrumentendepotId = instrumentendepotId;
+    }
+
+    /**
+     * Getter for <code>location.juryfeedback_id</code>.
+     */
+    @Override
+    public Long getJuryfeedbackId() {
+        return this.juryfeedbackId;
+    }
+
+    /**
+     * Setter for <code>location.juryfeedback_id</code>.
+     */
+    @Override
+    public void setJuryfeedbackId(Long juryfeedbackId) {
+        this.juryfeedbackId = juryfeedbackId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -160,6 +281,36 @@ public class LocationPojo implements ILocation {
                 return false;
         } else if (!this.longitude.equals(other.longitude))
             return false;
+        if (this.locationType == null) {
+            if (other.locationType != null)
+                return false;
+        } else if (!this.locationType.equals(other.locationType))
+            return false;
+        if (this.capacity == null) {
+            if (other.capacity != null)
+                return false;
+        } else if (!this.capacity.equals(other.capacity))
+            return false;
+        if (this.modules == null) {
+            if (other.modules != null)
+                return false;
+        } else if (!this.modules.equals(other.modules))
+            return false;
+        if (this.einspiellokalId == null) {
+            if (other.einspiellokalId != null)
+                return false;
+        } else if (!this.einspiellokalId.equals(other.einspiellokalId))
+            return false;
+        if (this.instrumentendepotId == null) {
+            if (other.instrumentendepotId != null)
+                return false;
+        } else if (!this.instrumentendepotId.equals(other.instrumentendepotId))
+            return false;
+        if (this.juryfeedbackId == null) {
+            if (other.juryfeedbackId != null)
+                return false;
+        } else if (!this.juryfeedbackId.equals(other.juryfeedbackId))
+            return false;
         return true;
     }
 
@@ -172,6 +323,12 @@ public class LocationPojo implements ILocation {
         result = prime * result + ((this.address == null) ? 0 : this.address.hashCode());
         result = prime * result + ((this.latitude == null) ? 0 : this.latitude.hashCode());
         result = prime * result + ((this.longitude == null) ? 0 : this.longitude.hashCode());
+        result = prime * result + ((this.locationType == null) ? 0 : this.locationType.hashCode());
+        result = prime * result + ((this.capacity == null) ? 0 : this.capacity.hashCode());
+        result = prime * result + ((this.modules == null) ? 0 : this.modules.hashCode());
+        result = prime * result + ((this.einspiellokalId == null) ? 0 : this.einspiellokalId.hashCode());
+        result = prime * result + ((this.instrumentendepotId == null) ? 0 : this.instrumentendepotId.hashCode());
+        result = prime * result + ((this.juryfeedbackId == null) ? 0 : this.juryfeedbackId.hashCode());
         return result;
     }
 
@@ -184,6 +341,12 @@ public class LocationPojo implements ILocation {
         sb.append(", ").append(address);
         sb.append(", ").append(latitude);
         sb.append(", ").append(longitude);
+        sb.append(", ").append(locationType);
+        sb.append(", ").append(capacity);
+        sb.append(", ").append(modules);
+        sb.append(", ").append(einspiellokalId);
+        sb.append(", ").append(instrumentendepotId);
+        sb.append(", ").append(juryfeedbackId);
 
         sb.append(")");
         return sb.toString();
@@ -200,6 +363,12 @@ public class LocationPojo implements ILocation {
         setAddress(from.getAddress());
         setLatitude(from.getLatitude());
         setLongitude(from.getLongitude());
+        setLocationType(from.getLocationType());
+        setCapacity(from.getCapacity());
+        setModules(from.getModules());
+        setEinspiellokalId(from.getEinspiellokalId());
+        setInstrumentendepotId(from.getInstrumentendepotId());
+        setJuryfeedbackId(from.getJuryfeedbackId());
     }
 
     @Override
