@@ -5,15 +5,16 @@ package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Keys;
+import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function5;
+import org.jooq.Function11;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row5;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -25,6 +26,8 @@ import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -72,6 +75,36 @@ public class Location extends TableImpl<LocationRecord> {
      * The column <code>location.longitude</code>.
      */
     public final TableField<LocationRecord, BigDecimal> LONGITUDE = createField(DSL.name("longitude"), SQLDataType.DECIMAL(16, 12).nullable(false), this, "");
+
+    /**
+     * The column <code>location.location_type</code>.
+     */
+    public final TableField<LocationRecord, LocationLocationType> LOCATION_TYPE = createField(DSL.name("location_type"), SQLDataType.VARCHAR(17).asEnumDataType(ch.zkmf2024.server.jooq.generated.enums.LocationLocationType.class), this, "");
+
+    /**
+     * The column <code>location.capacity</code>.
+     */
+    public final TableField<LocationRecord, String> CAPACITY = createField(DSL.name("capacity"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>location.modules</code>.
+     */
+    public final TableField<LocationRecord, String> MODULES = createField(DSL.name("modules"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>location.einspiellokal_id</code>.
+     */
+    public final TableField<LocationRecord, Long> EINSPIELLOKAL_ID = createField(DSL.name("einspiellokal_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>location.instrumentendepot_id</code>.
+     */
+    public final TableField<LocationRecord, Long> INSTRUMENTENDEPOT_ID = createField(DSL.name("instrumentendepot_id"), SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>location.juryfeedback_id</code>.
+     */
+    public final TableField<LocationRecord, Long> JURYFEEDBACK_ID = createField(DSL.name("juryfeedback_id"), SQLDataType.BIGINT, this, "");
 
     private Location(Name alias, Table<LocationRecord> aliased) {
         this(alias, aliased, null);
@@ -122,6 +155,48 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     @Override
+    public List<ForeignKey<LocationRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.FK_LOCATION_EINSPIELLOKAL, Keys.FK_LOCATION_INSTRUMENTENDEPOT, Keys.FK_LOCATION_JURYFEEDBACK);
+    }
+
+    private transient Location _fkLocationEinspiellokal;
+    private transient Location _fkLocationInstrumentendepot;
+    private transient Location _fkLocationJuryfeedback;
+
+    /**
+     * Get the implicit join path to the <code>zkmf2024.location</code> table,
+     * via the <code>FK_LOCATION_EINSPIELLOKAL</code> key.
+     */
+    public Location fkLocationEinspiellokal() {
+        if (_fkLocationEinspiellokal == null)
+            _fkLocationEinspiellokal = new Location(this, Keys.FK_LOCATION_EINSPIELLOKAL);
+
+        return _fkLocationEinspiellokal;
+    }
+
+    /**
+     * Get the implicit join path to the <code>zkmf2024.location</code> table,
+     * via the <code>FK_LOCATION_INSTRUMENTENDEPOT</code> key.
+     */
+    public Location fkLocationInstrumentendepot() {
+        if (_fkLocationInstrumentendepot == null)
+            _fkLocationInstrumentendepot = new Location(this, Keys.FK_LOCATION_INSTRUMENTENDEPOT);
+
+        return _fkLocationInstrumentendepot;
+    }
+
+    /**
+     * Get the implicit join path to the <code>zkmf2024.location</code> table,
+     * via the <code>FK_LOCATION_JURYFEEDBACK</code> key.
+     */
+    public Location fkLocationJuryfeedback() {
+        if (_fkLocationJuryfeedback == null)
+            _fkLocationJuryfeedback = new Location(this, Keys.FK_LOCATION_JURYFEEDBACK);
+
+        return _fkLocationJuryfeedback;
+    }
+
+    @Override
     public Location as(String alias) {
         return new Location(DSL.name(alias), this);
     }
@@ -161,18 +236,18 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, String, String, BigDecimal, BigDecimal> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row11<Long, String, String, BigDecimal, BigDecimal, LocationLocationType, String, String, Long, Long, Long> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function5<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -180,7 +255,7 @@ public class Location extends TableImpl<LocationRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

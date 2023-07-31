@@ -3,6 +3,8 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.interfaces;
 
+import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -61,6 +63,66 @@ public interface ILocation extends Serializable {
      * Getter for <code>location.longitude</code>.
      */
     public BigDecimal getLongitude();
+
+    /**
+     * Setter for <code>location.location_type</code>.
+     */
+    public void setLocationType(LocationLocationType value);
+
+    /**
+     * Getter for <code>location.location_type</code>.
+     */
+    public LocationLocationType getLocationType();
+
+    /**
+     * Setter for <code>location.capacity</code>.
+     */
+    public void setCapacity(String value);
+
+    /**
+     * Getter for <code>location.capacity</code>.
+     */
+    public String getCapacity();
+
+    /**
+     * Setter for <code>location.modules</code>.
+     */
+    public void setModules(String value);
+
+    /**
+     * Getter for <code>location.modules</code>.
+     */
+    public String getModules();
+
+    /**
+     * Setter for <code>location.einspiellokal_id</code>.
+     */
+    public void setEinspiellokalId(Long value);
+
+    /**
+     * Getter for <code>location.einspiellokal_id</code>.
+     */
+    public Long getEinspiellokalId();
+
+    /**
+     * Setter for <code>location.instrumentendepot_id</code>.
+     */
+    public void setInstrumentendepotId(Long value);
+
+    /**
+     * Getter for <code>location.instrumentendepot_id</code>.
+     */
+    public Long getInstrumentendepotId();
+
+    /**
+     * Setter for <code>location.juryfeedback_id</code>.
+     */
+    public void setJuryfeedbackId(Long value);
+
+    /**
+     * Getter for <code>location.juryfeedback_id</code>.
+     */
+    public Long getJuryfeedbackId();
 
     // -------------------------------------------------------------------------
     // FROM and INTO
