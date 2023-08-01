@@ -1,0 +1,7 @@
+GET https://us20.api.mailchimp.com/3.0/lists/{{list-id}}/tag-search
+Authorization: Bearer {{api-key}}
+
+###
+
+GET https://us20.api.mailchimp.com/3.0/lists/{{list-id}}/members
+Authorization: Bearer {{api-key}}
