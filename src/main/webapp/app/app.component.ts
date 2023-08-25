@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
             {label: 'Vereine', routerLink: '/' + VEREINE_ROUTE},
             {label: 'Helfer', routerLink: '/' + HELFER_ROUTE},
             {label: 'Newsletter', routerLink: '/' + NEWSLETTER_ROUTE},
+            // {label: 'Users', routerLink: '/' + USERS_ROUTE},
         ]
     }
 

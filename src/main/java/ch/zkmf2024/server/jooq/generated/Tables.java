@@ -15,6 +15,7 @@ import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
+import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
@@ -85,6 +86,11 @@ public class Tables {
      * The table <code>verein</code>.
      */
     public static final Verein VEREIN = Verein.VEREIN;
+
+    /**
+     * The table <code>verein_comment</code>.
+     */
+    public static final VereinComment VEREIN_COMMENT = VereinComment.VEREIN_COMMENT;
 
     /**
      * The table <code>verein_programm</code>.

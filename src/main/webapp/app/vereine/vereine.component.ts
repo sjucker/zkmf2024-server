@@ -4,6 +4,7 @@ import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {Klasse, PhaseStatus, VereinOverviewDTO} from "../rest";
 import {VereineService} from "../service/vereine.service";
+import {VereinCommentsComponent, VereinCommentsInput} from "../verein-comments/verein-comments.component";
 import {VereinDetailComponent, VereinDetailInput} from "../verein-detail/verein-detail.component";
 
 @Component({
@@ -85,11 +86,24 @@ export class VereineComponent implements OnInit {
         }
     }
 
-    openVereinDetail(dto: VereinOverviewDTO) {
+    openVereinDetail(dto: VereinOverviewDTO): void {
         const input: VereinDetailInput = {
             id: dto.id,
         }
         this.ref = this.dialogService.open(VereinDetailComponent, {
+            header: dto.vereinsname,
+            width: '90%',
+            height: '90%',
+            maximizable: true,
+            data: input
+        });
+    }
+
+    openVereinComments(dto: VereinOverviewDTO): void {
+        const input: VereinCommentsInput = {
+            id: dto.id,
+        }
+        this.ref = this.dialogService.open(VereinCommentsComponent, {
             header: dto.vereinsname,
             width: '90%',
             height: '90%',

@@ -30,6 +30,10 @@ public record VereinDTO(
 
     @NotNull
     public PhaseStatus getPhase2Status() {
+        // if no title added, consider it not yet started
+        if (programme.stream().noneMatch(VereinProgrammDTO::hasAddedTitel)) {
+            return PhaseStatus.NEW;
+        }
         return programme.stream().allMatch(VereinProgrammDTO::isValid) ?
                 PhaseStatus.DONE :
                 PhaseStatus.IN_PROGRESS;

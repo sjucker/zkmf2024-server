@@ -126,8 +126,8 @@ export interface VereinDTO {
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
     programme: VereinProgrammDTO[];
-    phase2Status: PhaseStatus;
     phase1Status: PhaseStatus;
+    phase2Status: PhaseStatus;
 }
 
 export interface VereinProgrammDTO extends IsValid {
@@ -218,6 +218,28 @@ export interface VereinsinfoDTO extends IsValid {
 export interface VerifyEmailRequestDTO {
     email: string;
     verification: string;
+}
+
+export interface UserCreateDTO {
+    email: string;
+    role: UserRole;
+    password: string;
+}
+
+export interface UserDTO {
+    email: string;
+    role: UserRole;
+    lastLogin?: DateAsString;
+}
+
+export interface VereinCommentCreateDTO {
+    comment: string;
+}
+
+export interface VereinCommentDTO {
+    comment: string;
+    createdAt: DateAsString;
+    createdBy: string;
 }
 
 export interface VereinOverviewDTO {

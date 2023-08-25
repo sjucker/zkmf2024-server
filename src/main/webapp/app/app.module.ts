@@ -8,6 +8,8 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogModule} from "primeng/dialog";
 import {DialogService, DynamicDialogModule} from "primeng/dynamicdialog";
 import {InputTextModule} from "primeng/inputtext";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {ListboxModule} from "primeng/listbox";
 import {MenubarModule} from "primeng/menubar";
 import {PanelModule} from "primeng/panel";
 import {ProgressBarModule} from "primeng/progressbar";
@@ -23,6 +25,9 @@ import {HelferComponent} from './helfer/helfer.component';
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor.service";
 import {LoginComponent} from './login/login.component';
 import {NewsletterComponent} from './newsletter/newsletter.component';
+import {UserCreateComponent} from './user-create/user-create.component';
+import {UsersComponent} from './users/users.component';
+import {VereinCommentsComponent} from './verein-comments/verein-comments.component';
 import {VereinDetailComponent} from './verein-detail/verein-detail.component';
 import {VereineComponent} from './vereine/vereine.component';
 
@@ -33,7 +38,10 @@ import {VereineComponent} from './vereine/vereine.component';
         HelferComponent,
         LoginComponent,
         VereineComponent,
-        VereinDetailComponent
+        VereinDetailComponent,
+        UsersComponent,
+        UserCreateComponent,
+        VereinCommentsComponent
     ],
     imports: [
         BrowserModule,
@@ -53,7 +61,9 @@ import {VereineComponent} from './vereine/vereine.component';
         DialogModule,
         DynamicDialogModule,
         TabViewModule,
-        ProgressBarModule
+        ProgressBarModule,
+        ListboxModule,
+        InputTextareaModule
     ],
     providers: [
         MessageService,

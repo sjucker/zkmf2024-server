@@ -6,6 +6,7 @@ package ch.zkmf2024.server.jooq.generated.tables.records;
 import ch.zkmf2024.server.jooq.generated.tables.JudgeReport;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IJudgeReport;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
+
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record4;

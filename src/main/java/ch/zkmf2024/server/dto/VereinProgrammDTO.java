@@ -64,4 +64,8 @@ public record VereinProgrammDTO(long id,
             }
         };
     }
+
+    public boolean hasAddedTitel() {
+        return ablauf.stream().anyMatch(programmTitel -> !programmTitel.titel().pflichtStueck());
+    }
 }

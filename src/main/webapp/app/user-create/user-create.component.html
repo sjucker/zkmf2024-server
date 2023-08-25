@@ -1,0 +1,18 @@
+<div>
+    <span class="p-float-label">
+      <input pInputText id="email" [(ngModel)]="user.email"/>
+      <label htmlFor="email">Email</label>
+    </span>
+
+    <span class="p-float-label">
+      <p-listbox [options]="roles" [(ngModel)]="user.role"
+                 [style]="{'width':'15rem'}"></p-listbox>
+    </span>
+
+    <span class="p-float-label">
+      <input pInputText id="password" [(ngModel)]="user.password"/>
+      <label htmlFor="password">Passwort</label>
+    </span>
+
+    <p-button (onClick)="create()">Erstellen</p-button>
+</div>
