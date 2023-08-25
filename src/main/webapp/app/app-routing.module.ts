@@ -4,12 +4,14 @@ import {HelferComponent} from "./helfer/helfer.component";
 import {LoginComponent} from "./login/login.component";
 import {NewsletterComponent} from "./newsletter/newsletter.component";
 import {AuthenticationGuard} from "./service/authentication.guard";
+import {UsersComponent} from "./users/users.component";
 import {VereineComponent} from "./vereine/vereine.component";
 
 export const LOGIN_ROUTE = 'login'
 export const VEREINE_ROUTE = 'vereine'
 export const NEWSLETTER_ROUTE = 'newsletter'
 export const HELFER_ROUTE = 'helfer'
+export const USERS_ROUTE = 'users'
 
 const canActivateFn: CanActivateFn = () => inject(AuthenticationGuard).canActivate();
 
@@ -30,7 +32,14 @@ const routes: Routes = [
         canActivate: [canActivateFn],
     },
     {
-        path: HELFER_ROUTE, component: HelferComponent, canActivate: [canActivateFn],
+        path: HELFER_ROUTE,
+        component: HelferComponent,
+        canActivate: [canActivateFn],
+    },
+    {
+        path: USERS_ROUTE,
+        component: UsersComponent,
+        canActivate: [canActivateFn],
     },
     {
         path: LOGIN_ROUTE, component: LoginComponent,

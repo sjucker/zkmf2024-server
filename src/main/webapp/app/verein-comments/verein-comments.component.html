@@ -1,0 +1,14 @@
+<div class="flex justify-content-start gap-5 align-items-end">
+    <textarea rows="5" cols="60" pInputTextarea [(ngModel)]="comment" maxlength="8000"></textarea>
+    <p-button label="Speichern"
+              (onClick)="saveComment()"
+              [loading]="saving"
+              [disabled]="comment.length < 1"></p-button>
+</div>
+
+<div>
+    <div *ngFor="let c of comments; let last = last;">
+        <h3>{{c.createdAt | date: 'dd.MM.yyyy HH:mm'}} - {{c.createdBy}}</h3>
+        <p style="white-space: pre;">{{c.comment}}</p>
+    </div>
+</div>

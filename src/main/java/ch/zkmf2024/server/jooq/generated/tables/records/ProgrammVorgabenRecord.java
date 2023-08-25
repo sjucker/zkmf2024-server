@@ -6,6 +6,7 @@ package ch.zkmf2024.server.jooq.generated.tables.records;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ProgrammVorgabenPojo;
+
 import org.jooq.Field;
 import org.jooq.Record3;
 import org.jooq.Record5;

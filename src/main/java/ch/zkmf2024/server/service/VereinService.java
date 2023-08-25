@@ -11,9 +11,11 @@ import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
+import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
@@ -32,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +45,7 @@ import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 import static ch.zkmf2024.server.service.DateUtil.now;
+import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -81,6 +85,14 @@ public class VereinService {
     public Optional<VereinDTO> findById(Long id) {
         return vereinRepository.findById(id)
                                .map(this::toDTO);
+    }
+
+    public List<VereinCommentDTO> findCommentsByVereinId(Long id) {
+        return vereinRepository.findCommentByVereinId(id).stream()
+                               .map(pojo -> new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy()))
+                               // newest first
+                               .sorted(comparing(VereinCommentDTO::createdAt).reversed())
+                               .toList();
     }
 
     public List<VereinOverviewDTO> findAll() {
@@ -465,5 +477,11 @@ public class VereinService {
 
     public List<VereinTeilnahmeDTO> getOverview() {
         return vereinRepository.findAllConfirmed();
+    }
+
+    public VereinCommentDTO saveComment(String username, Long vereinId, String comment) {
+        var pojo = new VereinCommentPojo(null, vereinId, comment, LocalDateTime.now(), username);
+        vereinRepository.insert(pojo);
+        return new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy());
     }
 }

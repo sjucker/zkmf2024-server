@@ -1,4 +1,119 @@
 <p-tabView *ngIf="verein">
+    <p-tabPanel header="Wettspielprogramm">
+        <div *ngFor="let programm of verein.programme; let last = last;">
+            <h3>{{programm.modulDescription}} {{programm.klasse}} {{programm.besetzung}}</h3>
+            <div *ngIf="hasVorgabeDauer(programm)"><b>Vorgabe Dauer</b>:
+                {{formatDuration(programm.minDurationInSeconds)}} - {{formatDuration(programm.maxDurationInSeconds)}}
+            </div>
+
+            <div *ngIf="isModulAB(programm)">
+                <div><b>Programmtitel</b>: {{programm.titel}}</div>
+                <div><b>Erläuterungen zum Selbstwahlprogramm</b>: {{programm.infoModeration}}</div>
+            </div>
+
+            <div *ngIf="isModulB(programm)">
+                <div><b>Weitere Angaben</b></div>
+                <div *ngIf="programm.unterhaltungPA">PA wird benötigt</div>
+                <div *ngIf="programm.unterhaltungEGitarre">E-Gitarre</div>
+                <div *ngIf="programm.unterhaltungEBass">E-Bass</div>
+                <div *ngIf="programm.unterhaltungKeyboard">Keyboard</div>
+                <div *ngIf="programm.unterhaltungGesang">Gesang</div>
+            </div>
+
+            <div *ngIf="!isModulD(programm) && !isModulG(programm)" class="pt-5">
+                <div><b>Ablauf</b></div>
+                <table>
+                    <tr>
+                        <th>Nr.</th>
+                        <th>Musikstück</th>
+                        <th *ngIf="!isModulC(programm)">Dauer Stück</th>
+                        <th *ngIf="isModulAB(programm) || isModulH(programm)">Dauer Applaus</th>
+                    </tr>
+                    <tr *ngFor="let entry of programm.ablauf; let i = index; let first = first; let last = last;">
+                        <td>{{i + 1}}</td>
+                        <td>
+                            {{entry.titel.titelName}} ({{entry.titel.composer}})<span *ngIf="entry.titel.pflichtStueck">*</span>
+                        </td>
+                        <td *ngIf="!isModulC(programm)">{{formatDuration(entry.titel.durationInSeconds)}}</td>
+                        <td *ngIf="isModulAB(programm) || isModulH(programm)">{{entry.applausInSeconds ?? ''}}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td *ngIf="hasVorgabeDauer(programm) && !this.isModulC(programm) && programm.ablauf.length > 0">
+                            <b>{{formatDuration(programm.totalDurationInSeconds)}}</b>
+                        </td>
+                        <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div *ngIf="isModulAB(programm)">
+                <div *ngFor="let titel of selbstwahlTitel(programm)" class="pt-3">
+                    <div><b>Infos für die Moderation: {{titel.titelName}}</b></div>
+                    <div>{{titel.infoModeration}}</div>
+                </div>
+            </div>
+
+            <div *ngIf="isModulD(programm)">
+                <div><b>Komposition 1 (Schweizer Marsch)</b></div>
+                <div>{{programm.parademusikTitel1.titelName}}</div>
+                <div>{{programm.parademusikTitel1.composer}}</div>
+                <div>{{programm.parademusikTitel1.arrangeur}}</div>
+                <div>{{formatDuration(programm.parademusikTitel1.durationInSeconds)}}</div>
+
+                <div class="pt-3"><b>Komposition 2</b></div>
+                <div>{{programm.parademusikTitel2.titelName}}</div>
+                <div>{{programm.parademusikTitel2.composer}}</div>
+                <div>{{programm.parademusikTitel2.arrangeur}}</div>
+                <div>{{formatDuration(programm.parademusikTitel2.durationInSeconds)}}</div>
+            </div>
+
+            <div *ngIf="isModulG(programm)">
+                <div *ngIf="programm.tambourenKatA">
+                    <div><b>Kategorie A</b></div>
+                    <div>Grundlage 1: {{programm.tambourenKatAGrundlage1}}</div>
+                    <div>Grundlage 2: {{programm.tambourenKatAGrundlage2}}</div>
+
+                    <div class="pt-3"><b>Frei gewählter Baslermarsch (BM) oder Marsch (M)</b></div>
+                    <div>{{programm.tambourenKatATitel1.titelName}}</div>
+                    <div>{{programm.tambourenKatATitel1.composer}}</div>
+                    <div>{{programm.tambourenKatATitel1.arrangeur}}</div>
+                    <div>{{formatDuration(programm.tambourenKatATitel1.durationInSeconds)}}</div>
+
+                    <div class="pt-3"><b>Frei gewählte Komposition</b></div>
+                    <div>{{programm.tambourenKatATitel2.titelName}}</div>
+                    <div>{{programm.tambourenKatATitel2.composer}}</div>
+                    <div>{{programm.tambourenKatATitel2.arrangeur}}</div>
+                    <div>{{formatDuration(programm.tambourenKatATitel2.durationInSeconds)}}</div>
+                </div>
+
+                <div *ngIf="programm.tambourenKatB">
+                    <div><b>Kategorie B</b></div>
+                    <div><b>Komposition</b></div>
+                    <div>{{programm.tambourenKatBTitel.titelName}}</div>
+                    <div>{{programm.tambourenKatBTitel.composer}}</div>
+                    <div>{{programm.tambourenKatBTitel.arrangeur}}</div>
+                    <div>{{formatDuration(programm.tambourenKatBTitel.durationInSeconds)}}</div>
+                </div>
+
+                <div *ngIf="programm.tambourenKatC">
+                    <div><b>Kategorie C</b></div>
+                    <div><b>Komposition</b></div>
+                    <div>{{programm.tambourenKatCTitel.titelName}}</div>
+                    <div>{{programm.tambourenKatCTitel.composer}}</div>
+                    <div>{{programm.tambourenKatCTitel.arrangeur}}</div>
+                    <div>{{formatDuration(programm.tambourenKatCTitel.durationInSeconds)}}</div>
+                </div>
+            </div>
+
+            <div *ngIf="isModulC(programm)">
+                <div><b>Kommentar:</b> {{programm.infoModeration}}</div>
+            </div>
+
+            <hr *ngIf="!last"/>
+        </div>
+    </p-tabPanel>
     <p-tabPanel header="Vereinsangaben">
         <div><span class="font-semibold">Email:</span> {{verein.email}}</div>
         <div><span class="font-semibold">Vereinsname:</span> {{verein.angaben.vereinsname}}</div>

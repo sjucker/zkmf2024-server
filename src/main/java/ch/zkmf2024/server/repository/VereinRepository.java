@@ -18,12 +18,14 @@ import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
+import ch.zkmf2024.server.jooq.generated.tables.daos.VereinCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammTitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinStatusDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
@@ -60,6 +62,7 @@ public class VereinRepository {
     private final TitelDao titelDao;
     private final VereinProgrammDao vereinProgrammDao;
     private final VereinProgrammTitelDao vereinProgrammTitelDao;
+    private final VereinCommentDao vereinCommentDao;
 
     public VereinRepository(DSLContext jooqDsl, DefaultConfiguration jooqConfig) {
         this.jooqDsl = jooqDsl;
@@ -69,6 +72,7 @@ public class VereinRepository {
         this.titelDao = new TitelDao(jooqConfig);
         this.vereinProgrammDao = new VereinProgrammDao(jooqConfig);
         this.vereinProgrammTitelDao = new VereinProgrammTitelDao(jooqConfig);
+        this.vereinCommentDao = new VereinCommentDao(jooqConfig);
     }
 
     public List<VereinTeilnahmeDTO> findAllConfirmed() {
@@ -259,6 +263,10 @@ public class VereinRepository {
         titelDao.update(titel);
     }
 
+    public void insert(VereinCommentPojo vereinComment) {
+        vereinCommentDao.insert(vereinComment);
+    }
+
     public TitelPojo findTitelById(Long id) {
         return titelDao.findById(id);
     }
@@ -426,6 +434,10 @@ public class VereinRepository {
 
     public void delete(VereinProgrammTitelPojo pojo) {
         vereinProgrammTitelDao.delete(pojo);
+    }
+
+    public List<VereinCommentPojo> findCommentByVereinId(Long vereinId) {
+        return vereinCommentDao.fetchByFkVerein(vereinId);
     }
 
     private record MinMaxDuration(Integer minDurationInSeconds, Integer maxDurationInSeconds) {

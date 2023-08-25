@@ -13,6 +13,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th></th>
+            <th></th>
             <th pSortableColumn="vereinsname">Vereinsname
                 <p-sortIcon field="vereinsname"></p-sortIcon>
             </th>
@@ -88,6 +89,9 @@
         <tr>
             <td>
                 <div class="cursor-pointer" (click)="openVereinDetail(dto)"><i class="pi pi-eye"></i></div>
+            </td>
+            <td>
+                <div class="cursor-pointer" (click)="openVereinComments(dto)"><i class="pi pi-comments"></i></div>
             </td>
             <td>{{dto.vereinsname}}</td>
             <td><i class="pi pi-star" *ngIf="dto.registrationConfirmed"></i></td>
