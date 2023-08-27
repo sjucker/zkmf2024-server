@@ -9,6 +9,6 @@
 <div>
     <div *ngFor="let c of comments; let last = last;">
         <h3>{{c.createdAt | date: 'dd.MM.yyyy HH:mm'}} - {{c.createdBy}}</h3>
-        <p style="white-space: pre;">{{c.comment}}</p>
+        <p style="white-space: pre-wrap;">{{c.comment}}</p>
     </div>
 </div>
