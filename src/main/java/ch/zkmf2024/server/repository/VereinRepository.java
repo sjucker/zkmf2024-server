@@ -44,11 +44,14 @@ import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.PROGRAMM_VORGABEN;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
 import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.selectCount;
 
 @Repository
 public class VereinRepository {
@@ -101,7 +104,12 @@ public class VereinRepository {
     }
 
     public List<VereinOverviewDTO> findAllOverview() {
-        return jooqDsl.select()
+        return jooqDsl.select(
+                              VEREIN.asterisk(),
+                              VEREIN_STATUS.PHASE1,
+                              VEREIN_STATUS.PHASE2,
+                              field(selectCount().from(VEREIN_COMMENT).where(VEREIN_COMMENT.FK_VEREIN.eq(VEREIN.ID))).as("COMMENT_COUNT")
+                      )
                       .from(VEREIN)
                       .join(VEREIN_STATUS).on(VEREIN.ID.eq(VEREIN_STATUS.FK_VEREIN))
                       .orderBy(VEREIN.VEREINSNAME)
@@ -129,7 +137,8 @@ public class VereinRepository {
                               it.get(VEREIN.PERKUSSIONSENSEMBLE),
                               it.get(VEREIN.CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
-                              PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2))
+                              PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)),
+                              it.get("COMMENT_COUNT", Integer.class) > 0
                       ));
     }
 
