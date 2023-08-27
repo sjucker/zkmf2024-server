@@ -91,7 +91,9 @@
                 <div class="cursor-pointer" (click)="openVereinDetail(dto)"><i class="pi pi-eye"></i></div>
             </td>
             <td>
-                <div class="cursor-pointer" (click)="openVereinComments(dto)"><i class="pi pi-comments"></i></div>
+                <div class="cursor-pointer" (click)="openVereinComments(dto)">
+                    <i class="pi pi-comments" [ngStyle]="{'color': dto.hasComments ? '' : 'lightgrey' }"></i>
+                </div>
             </td>
             <td>{{dto.vereinsname}}</td>
             <td><i class="pi pi-star" *ngIf="dto.registrationConfirmed"></i></td>

@@ -267,6 +267,7 @@ export interface VereinOverviewDTO {
     registrationConfirmed: boolean;
     phase1: PhaseStatus;
     phase2: PhaseStatus;
+    hasComments: boolean;
 }
 
 export interface IsValid {
