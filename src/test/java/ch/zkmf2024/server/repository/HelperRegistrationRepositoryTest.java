@@ -2,6 +2,7 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.AbstractIntegrationTest;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
+import ch.zkmf2024.server.service.DateUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
 
 import static ch.zkmf2024.server.dto.Aufgaben.EGAL;
 import static ch.zkmf2024.server.dto.Einsatzzeit.MITTAG;
-import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HelperRegistrationRepositoryTest extends AbstractIntegrationTest {
@@ -40,7 +40,7 @@ class HelperRegistrationRepositoryTest extends AbstractIntegrationTest {
         pojo.setEinsatzMontag("");
         pojo.setEinsatzDienstag("");
         pojo.setGroesseShirt("XL");
-        pojo.setRegisteredAt(now());
+        pojo.setRegisteredAt(DateUtil.now());
         repository.insert(new HelperRegistrationPojo(pojo));
     }
 

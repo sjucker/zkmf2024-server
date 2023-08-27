@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.LoginResponseDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.security.JwtService;
+import ch.zkmf2024.server.service.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static ch.zkmf2024.server.dto.UserRole.ADMIN;
-import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -44,7 +44,7 @@ class AuthEndpointTest extends AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.insert(new Zkmf2024UserPojo("email", ADMIN.name(), "{noop}pass1234", null, now(), null, null, null));
+        userRepository.insert(new Zkmf2024UserPojo("email", ADMIN.name(), "{noop}pass1234", null, DateUtil.now(), null, null, null));
     }
 
     @AfterEach
@@ -57,8 +57,8 @@ class AuthEndpointTest extends AbstractIntegrationTest {
         var request = new LoginRequestDTO("email", "pass1234");
 
         var mvcResult = mockMvc.perform(post("/public/auth")
-                                       .contentType(APPLICATION_JSON_VALUE)
-                                       .content(objectMapper.writeValueAsString(request)))
+                                                .contentType(APPLICATION_JSON_VALUE)
+                                                .content(objectMapper.writeValueAsString(request)))
                                .andDo(print())
                                .andExpect(status().isOk())
                                .andExpect(content().contentType(APPLICATION_JSON_VALUE))
@@ -77,8 +77,8 @@ class AuthEndpointTest extends AbstractIntegrationTest {
         var request = new LoginRequestDTO("email", "pass123");
 
         mockMvc.perform(post("/public/auth")
-                       .contentType(APPLICATION_JSON_VALUE)
-                       .content(objectMapper.writeValueAsString(request)))
+                                .contentType(APPLICATION_JSON_VALUE)
+                                .content(objectMapper.writeValueAsString(request)))
                .andDo(print())
                .andExpect(status().isUnauthorized());
 

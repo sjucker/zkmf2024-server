@@ -34,7 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -480,7 +479,7 @@ public class VereinService {
     }
 
     public VereinCommentDTO saveComment(String username, Long vereinId, String comment) {
-        var pojo = new VereinCommentPojo(null, vereinId, comment, LocalDateTime.now(), username);
+        var pojo = new VereinCommentPojo(null, vereinId, comment, DateUtil.now(), username);
         vereinRepository.insert(pojo);
         return new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy());
     }
