@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.Besetzung;
+import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.KontaktDTO;
 import ch.zkmf2024.server.dto.Modul;
@@ -10,6 +11,7 @@ import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
+import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinsangabenDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
@@ -20,12 +22,14 @@ import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
+import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDoppeleinsatzDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammTitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinStatusDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
@@ -45,6 +49,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.PROGRAMM_VORGABEN;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_DOPPELEINSATZ;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
@@ -66,6 +71,7 @@ public class VereinRepository {
     private final VereinProgrammDao vereinProgrammDao;
     private final VereinProgrammTitelDao vereinProgrammTitelDao;
     private final VereinCommentDao vereinCommentDao;
+    private final VereinDoppeleinsatzDao vereinDoppeleinsatzDao;
 
     public VereinRepository(DSLContext jooqDsl, DefaultConfiguration jooqConfig) {
         this.jooqDsl = jooqDsl;
@@ -76,6 +82,7 @@ public class VereinRepository {
         this.vereinProgrammDao = new VereinProgrammDao(jooqConfig);
         this.vereinProgrammTitelDao = new VereinProgrammTitelDao(jooqConfig);
         this.vereinCommentDao = new VereinCommentDao(jooqConfig);
+        this.vereinDoppeleinsatzDao = new VereinDoppeleinsatzDao(jooqConfig);
     }
 
     public List<VereinTeilnahmeDTO> findAllConfirmed() {
@@ -140,6 +147,13 @@ public class VereinRepository {
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)),
                               it.get("COMMENT_COUNT", Integer.class) > 0
                       ));
+    }
+
+    public List<VereinSelectionDTO> findAllForSelection() {
+        return jooqDsl.selectFrom(VEREIN)
+                      .where(VEREIN.CONFIRMED_AT.isNotNull())
+                      .orderBy(VEREIN.VEREINSNAME)
+                      .fetch(it -> new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)));
     }
 
     public List<VereinDTO> findAllForExport() {
@@ -277,6 +291,10 @@ public class VereinRepository {
         vereinCommentDao.insert(vereinComment);
     }
 
+    public void insert(VereinDoppeleinsatzPojo doppeleinsatz) {
+        vereinDoppeleinsatzDao.insert(doppeleinsatz);
+    }
+
     public TitelPojo findTitelById(Long id) {
         return titelDao.findById(id);
     }
@@ -314,11 +332,11 @@ public class VereinRepository {
         return vereinProgrammDao.findOptionalById(id);
     }
 
-    public List<VereinProgrammDTO> findProgramme(VereinPojo verein) {
+    public List<VereinProgrammDTO> findProgramme(Long vereinId) {
         return jooqDsl.select()
                       .from(VEREIN_PROGRAMM)
                       .join(VEREIN).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
-                      .where(VEREIN_PROGRAMM.FK_VEREIN.eq(verein.getId()))
+                      .where(VEREIN_PROGRAMM.FK_VEREIN.eq(vereinId))
                       .orderBy(VEREIN_PROGRAMM.MODUL.asc())
                       .fetch(it -> {
                           var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
@@ -448,6 +466,26 @@ public class VereinRepository {
 
     public List<VereinCommentPojo> findCommentByVereinId(Long vereinId) {
         return vereinCommentDao.fetchByFkVerein(vereinId);
+    }
+
+    public void deleteDoppeleinsatzByVereinId(Long vereinId) {
+        jooqDsl.deleteFrom(VEREIN_DOPPELEINSATZ)
+               .where(VEREIN_DOPPELEINSATZ.FK_VEREIN.eq(vereinId))
+               .execute();
+    }
+
+    public List<DoppelEinsatzDTO> findDoppeleinsatz(Long vereinId) {
+        return jooqDsl.select()
+                      .from(VEREIN_DOPPELEINSATZ)
+                      .join(VEREIN).on(VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN.eq(VEREIN.ID))
+                      .where(VEREIN_DOPPELEINSATZ.FK_VEREIN.eq(vereinId))
+                      .fetch(it -> new DoppelEinsatzDTO(
+                              new VereinSelectionDTO(
+                                      it.get(VEREIN.ID),
+                                      it.get(VEREIN.VEREINSNAME)
+                              ),
+                              it.get(VEREIN_DOPPELEINSATZ.NAME)
+                      ));
     }
 
     private record MinMaxDuration(Integer minDurationInSeconds, Integer maxDurationInSeconds) {
