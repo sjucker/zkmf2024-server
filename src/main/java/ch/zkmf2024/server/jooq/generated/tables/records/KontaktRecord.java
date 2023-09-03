@@ -6,7 +6,6 @@ package ch.zkmf2024.server.jooq.generated.tables.records;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IKontakt;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
-
 import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.Record9;

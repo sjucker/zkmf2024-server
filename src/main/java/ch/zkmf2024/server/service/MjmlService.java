@@ -26,8 +26,8 @@ public class MjmlService {
 
     public String render(String mjml) {
         var response = webClient.post()
-                                .headers(httpHeaders -> httpHeaders.setBasicAuth(applicationProperties.getMjmlAppId(),
-                                        applicationProperties.getMjmlPrivateKey()))
+                                .headers(headers -> headers.setBasicAuth(applicationProperties.getMjmlAppId(),
+                                                                         applicationProperties.getMjmlPrivateKey()))
                                 .contentType(APPLICATION_JSON)
                                 .body(BodyInserters.fromValue(new Request(mjml)))
                                 .retrieve()

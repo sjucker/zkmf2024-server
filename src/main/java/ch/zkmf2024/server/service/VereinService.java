@@ -125,6 +125,7 @@ public class VereinService {
         return new VereinDTO(
                 verein.getEmail(),
                 MAPPER.toDTO(verein),
+                List.of(), // TODO
                 MAPPER.toDTO(praesident),
                 MAPPER.toDTO(direktion),
                 MAPPER.toVereinsanmeldungDTO(verein),

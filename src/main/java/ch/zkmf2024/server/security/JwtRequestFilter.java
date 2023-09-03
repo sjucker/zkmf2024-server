@@ -40,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 var email = jwt.get().getSubject();
                 UserDetails userDetails = userAuthService.loadUserByUsername(email);
 
-                if (userDetails != null ) {
+                if (userDetails != null) {
                     var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);

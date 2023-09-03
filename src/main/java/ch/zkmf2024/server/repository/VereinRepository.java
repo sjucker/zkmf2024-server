@@ -163,6 +163,7 @@ public class VereinRepository {
                                       it.get(VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN),
                                       it.get(VEREIN.MITSPIELER_DOPPELEINSATZ)
                               ),
+                              List.of(), // TODO needed?
                               new KontaktDTO(
                                       it.get(praesident.VORNAME),
                                       it.get(praesident.NACHNAME),

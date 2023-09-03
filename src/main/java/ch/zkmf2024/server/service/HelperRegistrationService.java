@@ -187,7 +187,7 @@ public class HelperRegistrationService {
             columnIndex = addHeader(sheet, headerRow1, headerRow2, "", List.of("Telefon-Nummer"), columnIndex);
             columnIndex = addHeader(sheet, headerRow1, headerRow2, "", List.of("Vereinszugehörigkeit"), columnIndex);
             columnIndex = addHeader(sheet, headerRow1, headerRow2, "Welche Aufgaben möchten Sie übernehmen?",
-                    Arrays.stream(Aufgaben.values()).map(Aufgaben::getDescription).toList(), columnIndex);
+                                    Arrays.stream(Aufgaben.values()).map(Aufgaben::getDescription).toList(), columnIndex);
             columnIndex = addHeader(sheet, headerRow1, headerRow2, "", List.of("Anzahl möglicher Einsätze"), columnIndex);
 
             var einsatzzeiten = Arrays.stream(Einsatzzeit.values()).map(Einsatzzeit::getDescription).toList();

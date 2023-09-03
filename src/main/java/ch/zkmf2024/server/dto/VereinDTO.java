@@ -8,6 +8,7 @@ import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
 public record VereinDTO(
         @NotNull String email,
         @NotNull VereinsangabenDTO angaben,
+        @NotNull List<DoppelEinsatzDTO> doppelEinsatz,
         @NotNull KontaktDTO praesident,
         @NotNull KontaktDTO direktion,
         @NotNull VereinsanmeldungDTO anmeldung,

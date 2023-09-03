@@ -70,6 +70,10 @@ public interface VereinMapper {
     @Mapping(target = "direktionKontaktId", ignore = true)
     @Mapping(target = "brassBand", ignore = true)
     @Mapping(target = "websiteText", ignore = true)
+    @Mapping(target = "confirmedAt", ignore = true)
+    @Mapping(target = "tambourenKatA", ignore = true)
+    @Mapping(target = "tambourenKatB", ignore = true)
+    @Mapping(target = "tambourenKatC", ignore = true)
     void updateVereinsangaben(@MappingTarget VereinPojo pojo, VereinsangabenDTO dto);
 
     @Mapping(target = "id", ignore = true)
