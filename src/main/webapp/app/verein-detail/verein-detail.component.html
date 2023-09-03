@@ -128,6 +128,10 @@
         </div>
         <div *ngIf="verein.angaben.mitspielerDoppeleinsatz">
             <span class="font-semibold"> Musikant/innen - Doppelteilnahme:</span> ja
+
+            <div *ngFor="let doppeleinsatz of verein.doppelEinsatz">
+                {{doppeleinsatz.mitspielerName}}, {{doppeleinsatz.otherVerein.name}}
+            </div>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Kontaktangaben - Präsident/in">
