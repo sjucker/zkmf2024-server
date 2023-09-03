@@ -14,7 +14,7 @@ export class AuthenticationGuard {
     }
 
     canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        if (this.authenticationService.isLoggedIn()) {
+        if (this.authenticationService.isAdmin()) {
             return true;
         } else {
             return this.router.parseUrl(LOGIN_ROUTE);
