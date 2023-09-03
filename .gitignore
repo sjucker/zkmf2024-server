@@ -19,6 +19,7 @@ target/
 !.idea/dataSources.xml
 !.idea/runConfigurations.xml
 !.idea/sqldialects.xml
+!.idea/encodings.xml
 *.iws
 *.iml
 *.ipr
