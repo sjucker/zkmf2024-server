@@ -1,5 +1,10 @@
 /* eslint-disable */
 
+export interface DoppelEinsatzDTO {
+    otherVerein: VereinSelectionDTO;
+    mitspielerName: string;
+}
+
 export interface ForgotPasswordRequestDTO {
     email: string;
 }
@@ -120,6 +125,7 @@ export interface TitelDTO extends IsValid {
 export interface VereinDTO {
     email: string;
     angaben: VereinsangabenDTO;
+    doppelEinsatz: DoppelEinsatzDTO[];
     praesident: KontaktDTO;
     direktion: KontaktDTO;
     anmeldung: VereinsanmeldungDTO;
@@ -163,6 +169,11 @@ export interface VereinProgrammDTO extends IsValid {
 export interface VereinProgrammTitelDTO {
     titel: TitelDTO;
     applausInSeconds?: number;
+}
+
+export interface VereinSelectionDTO {
+    id: number;
+    name: string;
 }
 
 export interface VereinTeilnahmeDTO {

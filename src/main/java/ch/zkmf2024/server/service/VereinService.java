@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
 import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.PhaseStatus;
@@ -8,6 +9,7 @@ import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
+import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
@@ -16,6 +18,7 @@ import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
@@ -98,6 +101,10 @@ public class VereinService {
         return vereinRepository.findAllOverview();
     }
 
+    public List<VereinSelectionDTO> findAllForSelection() {
+        return vereinRepository.findAllForSelection();
+    }
+
     public List<VereinDTO> findAllForExport() {
         return vereinRepository.findAllForExport();
     }
@@ -125,18 +132,22 @@ public class VereinService {
         return new VereinDTO(
                 verein.getEmail(),
                 MAPPER.toDTO(verein),
-                List.of(), // TODO
+                getDoppeleinsatz(verein.getId()),
                 MAPPER.toDTO(praesident),
                 MAPPER.toDTO(direktion),
                 MAPPER.toVereinsanmeldungDTO(verein),
                 new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
-                getProgramme(verein)
+                getProgramme(verein.getId())
         );
     }
 
-    private List<VereinProgrammDTO> getProgramme(VereinPojo verein) {
-        return vereinRepository.findProgramme(verein);
+    private List<DoppelEinsatzDTO> getDoppeleinsatz(Long vereinId) {
+        return vereinRepository.findDoppeleinsatz(vereinId);
+    }
+
+    private List<VereinProgrammDTO> getProgramme(Long vereinId) {
+        return vereinRepository.findProgramme(vereinId);
     }
 
     public void create(RegisterVereinRequestDTO request) {
@@ -201,12 +212,25 @@ public class VereinService {
         vereinRepository.update(direktion);
 
         updateProgramme(verein.getId(), dto.programme());
+        updateDoppeleinsatz(verein.getId(), dto.doppelEinsatz(), dto.angaben().mitspielerDoppeleinsatz());
 
         dto = toDTO(verein);
 
         updateStatus(verein.getId(), dto.getPhase1Status(), dto.getPhase2Status());
 
         return dto;
+    }
+
+    private void updateDoppeleinsatz(Long vereinId, List<DoppelEinsatzDTO> doppeleinsatz, boolean mitspielerDoppeleinsatz) {
+        vereinRepository.deleteDoppeleinsatzByVereinId(vereinId);
+        if (mitspielerDoppeleinsatz) {
+            for (var doppelEinsatzDTO : doppeleinsatz) {
+                vereinRepository.insert(new VereinDoppeleinsatzPojo(null,
+                                                                    vereinId,
+                                                                    doppelEinsatzDTO.otherVerein().id(),
+                                                                    doppelEinsatzDTO.mitspielerName()));
+            }
+        }
     }
 
     public void updateStatus(Long vereinId, @NotNull PhaseStatus phase1Status, @NotNull PhaseStatus phase2Status) {
