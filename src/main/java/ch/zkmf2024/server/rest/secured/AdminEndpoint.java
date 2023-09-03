@@ -56,18 +56,21 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/download/helfer")
+    @Secured({"ADMIN"})
     public ResponseEntity<Resource> exportHelfer() throws IOException {
         log.info("GET /secured/admin/download/helfer");
         return export(helperRegistrationService.export());
     }
 
     @GetMapping(path = "/download/helfer-import")
+    @Secured({"ADMIN"})
     public ResponseEntity<Resource> exportHelferImport() throws IOException {
         log.info("GET /secured/admin/download/helfer-import");
         return export(helperRegistrationService.exportForImport());
     }
 
     @GetMapping(path = "/download/vereine")
+    @Secured({"ADMIN"})
     public ResponseEntity<Resource> exportVereine() throws IOException {
         log.info("GET /secured/admin/download/vereine");
         return export(exportService.exportVereine());
@@ -91,12 +94,14 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/newsletter")
+    @Secured({"ADMIN"})
     public ResponseEntity<List<NewsletterRecipientDTO>> getNewsletter() {
         log.info("GET /secured/admin/newsletter");
         return ResponseEntity.ok(newsletterService.getAll());
     }
 
     @DeleteMapping(path = "/newsletter/{email}")
+    @Secured({"ADMIN"})
     public ResponseEntity<?> deleteNewsletter(@PathVariable String email) {
         log.info("DELETE /secured/admin/newsletter/{}", email);
 
@@ -105,6 +110,7 @@ public class AdminEndpoint {
     }
 
     @PostMapping(path = "/newsletter/unsubscribe/{email}")
+    @Secured({"ADMIN"})
     public ResponseEntity<?> unsubscribeNewsletter(@PathVariable String email) {
         log.info("POST /secured/admin/newsletter/unsubscribe/{}", email);
 
@@ -113,6 +119,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine")
+    @Secured({"ADMIN"})
     public ResponseEntity<List<VereinOverviewDTO>> vereine() {
         log.info("GET /secured/admin/vereine");
 
@@ -120,6 +127,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine/{id}")
+    @Secured({"ADMIN"})
     public ResponseEntity<VereinDTO> vereinById(@PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}", id);
 
@@ -127,6 +135,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine/{id}/comments")
+    @Secured({"ADMIN"})
     public ResponseEntity<List<VereinCommentDTO>> vereinComments(@PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}/comments", id);
 
