@@ -7,6 +7,8 @@ import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
 import ch.zkmf2024.server.jooq.generated.tables.JudgeReport;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReportComment;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReportRating;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
@@ -47,6 +49,16 @@ public class Tables {
      * The table <code>judge_report</code>.
      */
     public static final JudgeReport JUDGE_REPORT = JudgeReport.JUDGE_REPORT;
+
+    /**
+     * The table <code>judge_report_comment</code>.
+     */
+    public static final JudgeReportComment JUDGE_REPORT_COMMENT = JudgeReportComment.JUDGE_REPORT_COMMENT;
+
+    /**
+     * The table <code>judge_report_rating</code>.
+     */
+    public static final JudgeReportRating JUDGE_REPORT_RATING = JudgeReportRating.JUDGE_REPORT_RATING;
 
     /**
      * The table <code>kontakt</code>.

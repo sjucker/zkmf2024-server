@@ -18,9 +18,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
 
     private Long id;
     private Long fkVerein;
-    private String modul;
-    private String klasse;
-    private String besetzung;
+    private Long fkVereinProgramm;
     private Long fkLocation;
     private LocalDate date;
     private LocalTime startTime;
@@ -32,9 +30,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
     public TimetableEntryPojo(ITimetableEntry value) {
         this.id = value.getId();
         this.fkVerein = value.getFkVerein();
-        this.modul = value.getModul();
-        this.klasse = value.getKlasse();
-        this.besetzung = value.getBesetzung();
+        this.fkVereinProgramm = value.getFkVereinProgramm();
         this.fkLocation = value.getFkLocation();
         this.date = value.getDate();
         this.startTime = value.getStartTime();
@@ -44,9 +40,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
     public TimetableEntryPojo(
             Long id,
             Long fkVerein,
-            String modul,
-            String klasse,
-            String besetzung,
+            Long fkVereinProgramm,
             Long fkLocation,
             LocalDate date,
             LocalTime startTime,
@@ -54,9 +48,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
-        this.modul = modul;
-        this.klasse = klasse;
-        this.besetzung = besetzung;
+        this.fkVereinProgramm = fkVereinProgramm;
         this.fkLocation = fkLocation;
         this.date = date;
         this.startTime = startTime;
@@ -96,51 +88,19 @@ public class TimetableEntryPojo implements ITimetableEntry {
     }
 
     /**
-     * Getter for <code>timetable_entry.modul</code>.
+     * Getter for <code>timetable_entry.fk_verein_programm</code>.
      */
     @Override
-    public String getModul() {
-        return this.modul;
+    public Long getFkVereinProgramm() {
+        return this.fkVereinProgramm;
     }
 
     /**
-     * Setter for <code>timetable_entry.modul</code>.
+     * Setter for <code>timetable_entry.fk_verein_programm</code>.
      */
     @Override
-    public void setModul(String modul) {
-        this.modul = modul;
-    }
-
-    /**
-     * Getter for <code>timetable_entry.klasse</code>.
-     */
-    @Override
-    public String getKlasse() {
-        return this.klasse;
-    }
-
-    /**
-     * Setter for <code>timetable_entry.klasse</code>.
-     */
-    @Override
-    public void setKlasse(String klasse) {
-        this.klasse = klasse;
-    }
-
-    /**
-     * Getter for <code>timetable_entry.besetzung</code>.
-     */
-    @Override
-    public String getBesetzung() {
-        return this.besetzung;
-    }
-
-    /**
-     * Setter for <code>timetable_entry.besetzung</code>.
-     */
-    @Override
-    public void setBesetzung(String besetzung) {
-        this.besetzung = besetzung;
+    public void setFkVereinProgramm(Long fkVereinProgramm) {
+        this.fkVereinProgramm = fkVereinProgramm;
     }
 
     /**
@@ -226,20 +186,10 @@ public class TimetableEntryPojo implements ITimetableEntry {
                 return false;
         } else if (!this.fkVerein.equals(other.fkVerein))
             return false;
-        if (this.modul == null) {
-            if (other.modul != null)
+        if (this.fkVereinProgramm == null) {
+            if (other.fkVereinProgramm != null)
                 return false;
-        } else if (!this.modul.equals(other.modul))
-            return false;
-        if (this.klasse == null) {
-            if (other.klasse != null)
-                return false;
-        } else if (!this.klasse.equals(other.klasse))
-            return false;
-        if (this.besetzung == null) {
-            if (other.besetzung != null)
-                return false;
-        } else if (!this.besetzung.equals(other.besetzung))
+        } else if (!this.fkVereinProgramm.equals(other.fkVereinProgramm))
             return false;
         if (this.fkLocation == null) {
             if (other.fkLocation != null)
@@ -270,9 +220,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
         int result = 1;
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.fkVerein == null) ? 0 : this.fkVerein.hashCode());
-        result = prime * result + ((this.modul == null) ? 0 : this.modul.hashCode());
-        result = prime * result + ((this.klasse == null) ? 0 : this.klasse.hashCode());
-        result = prime * result + ((this.besetzung == null) ? 0 : this.besetzung.hashCode());
+        result = prime * result + ((this.fkVereinProgramm == null) ? 0 : this.fkVereinProgramm.hashCode());
         result = prime * result + ((this.fkLocation == null) ? 0 : this.fkLocation.hashCode());
         result = prime * result + ((this.date == null) ? 0 : this.date.hashCode());
         result = prime * result + ((this.startTime == null) ? 0 : this.startTime.hashCode());
@@ -286,9 +234,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
 
         sb.append(id);
         sb.append(", ").append(fkVerein);
-        sb.append(", ").append(modul);
-        sb.append(", ").append(klasse);
-        sb.append(", ").append(besetzung);
+        sb.append(", ").append(fkVereinProgramm);
         sb.append(", ").append(fkLocation);
         sb.append(", ").append(date);
         sb.append(", ").append(startTime);
@@ -306,9 +252,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
     public void from(ITimetableEntry from) {
         setId(from.getId());
         setFkVerein(from.getFkVerein());
-        setModul(from.getModul());
-        setKlasse(from.getKlasse());
-        setBesetzung(from.getBesetzung());
+        setFkVereinProgramm(from.getFkVereinProgramm());
         setFkLocation(from.getFkLocation());
         setDate(from.getDate());
         setStartTime(from.getStartTime());

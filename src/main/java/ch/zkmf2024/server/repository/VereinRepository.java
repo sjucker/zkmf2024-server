@@ -35,6 +35,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
+import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
 import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,6 @@ import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
-import static ch.zkmf2024.server.jooq.generated.Tables.PROGRAMM_VORGABEN;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_DOPPELEINSATZ;
@@ -63,6 +63,7 @@ public class VereinRepository {
 
     private static final VereinMapper MAPPER = VereinMapper.INSTANCE;
 
+    private final ProgrammVorgabenRepository programmVorgabenRepository;
     private final DSLContext jooqDsl;
     private final VereinDao vereinDao;
     private final KontaktDao kontaktDao;
@@ -73,7 +74,10 @@ public class VereinRepository {
     private final VereinCommentDao vereinCommentDao;
     private final VereinDoppeleinsatzDao vereinDoppeleinsatzDao;
 
-    public VereinRepository(DSLContext jooqDsl, DefaultConfiguration jooqConfig) {
+    public VereinRepository(ProgrammVorgabenRepository programmVorgabenRepository,
+                            DSLContext jooqDsl,
+                            DefaultConfiguration jooqConfig) {
+        this.programmVorgabenRepository = programmVorgabenRepository;
         this.jooqDsl = jooqDsl;
         this.vereinDao = new VereinDao(jooqConfig);
         this.kontaktDao = new KontaktDao(jooqConfig);
@@ -343,7 +347,7 @@ public class VereinRepository {
                           var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).orElse(null);
                           var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null);
 
-                          var minMaxDuration = findMinMaxDuration(modul, klasse, besetzung);
+                          var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(modul, klasse, besetzung);
                           var ablauf = getVereinProgrammTitel(it.get(VEREIN_PROGRAMM.ID), modul, klasse, besetzung);
 
                           return new VereinProgrammDTO(
@@ -382,27 +386,6 @@ public class VereinRepository {
         return titelDao.findOptionalById(titelId)
                        .map(MAPPER::toDTO)
                        .orElse(new TitelDTO(null, modul, null, null, null, null, null, 0, false, null));
-    }
-
-    private Optional<MinMaxDuration> findMinMaxDuration(Modul modul, Klasse klasse, Besetzung besetzung) {
-        if (klasse != null && besetzung != null) {
-            return jooqDsl.selectFrom(PROGRAMM_VORGABEN)
-                          .where(
-                                  PROGRAMM_VORGABEN.MODUL.eq(modul.name()),
-                                  PROGRAMM_VORGABEN.KLASSE.eq(klasse.name()),
-                                  PROGRAMM_VORGABEN.BESETZUNG.eq(besetzung.name())
-                          )
-                          .fetchOptional()
-                          .map(it -> new MinMaxDuration(it.get(PROGRAMM_VORGABEN.MIN_DURATION_IN_SECONDS),
-                                                        it.get(PROGRAMM_VORGABEN.MAX_DURATION_IN_SECONDS)));
-        } else {
-            return switch (modul) {
-                case C -> Optional.of(new MinMaxDuration(30 * 60, 45 * 60));
-                case E, F -> Optional.of(new MinMaxDuration(8 * 60, 10 * 60));
-                default -> Optional.empty();
-            };
-        }
-
     }
 
     private List<VereinProgrammTitelDTO> getVereinProgrammTitel(Long programmId, Modul modul, Klasse klasse, Besetzung besetzung) {
@@ -488,6 +471,4 @@ public class VereinRepository {
                       ));
     }
 
-    private record MinMaxDuration(Integer minDurationInSeconds, Integer maxDurationInSeconds) {
-    }
 }

@@ -7,6 +7,8 @@ import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
 import ch.zkmf2024.server.jooq.generated.tables.JudgeReport;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReportComment;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReportRating;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
@@ -60,6 +62,16 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>judge_report</code>.
      */
     public final JudgeReport JUDGE_REPORT = JudgeReport.JUDGE_REPORT;
+
+    /**
+     * The table <code>judge_report_comment</code>.
+     */
+    public final JudgeReportComment JUDGE_REPORT_COMMENT = JudgeReportComment.JUDGE_REPORT_COMMENT;
+
+    /**
+     * The table <code>judge_report_rating</code>.
+     */
+    public final JudgeReportRating JUDGE_REPORT_RATING = JudgeReportRating.JUDGE_REPORT_RATING;
 
     /**
      * The table <code>kontakt</code>.
@@ -150,6 +162,8 @@ public class DefaultSchema extends SchemaImpl {
                 Image.IMAGE,
                 Judge.JUDGE,
                 JudgeReport.JUDGE_REPORT,
+                JudgeReportComment.JUDGE_REPORT_COMMENT,
+                JudgeReportRating.JUDGE_REPORT_RATING,
                 Kontakt.KONTAKT,
                 Location.LOCATION,
                 NewsletterRecipient.NEWSLETTER_RECIPIENT,

@@ -8,12 +8,12 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function9;
+import org.jooq.Function7;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row9;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -62,19 +62,9 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     public final TableField<TimetableEntryRecord, Long> FK_VEREIN = createField(DSL.name("fk_verein"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>timetable_entry.modul</code>.
+     * The column <code>timetable_entry.fk_verein_programm</code>.
      */
-    public final TableField<TimetableEntryRecord, String> MODUL = createField(DSL.name("modul"), SQLDataType.VARCHAR(255).nullable(false), this, "");
-
-    /**
-     * The column <code>timetable_entry.klasse</code>.
-     */
-    public final TableField<TimetableEntryRecord, String> KLASSE = createField(DSL.name("klasse"), SQLDataType.VARCHAR(255), this, "");
-
-    /**
-     * The column <code>timetable_entry.besetzung</code>.
-     */
-    public final TableField<TimetableEntryRecord, String> BESETZUNG = createField(DSL.name("besetzung"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<TimetableEntryRecord, Long> FK_VEREIN_PROGRAMM = createField(DSL.name("fk_verein_programm"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>timetable_entry.fk_location</code>.
@@ -151,10 +141,11 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
 
     @Override
     public List<ForeignKey<TimetableEntryRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_TIMETABLE_VEREIN, Keys.FK_TIMETABLE_LOCATION);
+        return Arrays.asList(Keys.FK_TIMETABLE_VEREIN, Keys.FK_TIMETABLE_PROGRAMM, Keys.FK_TIMETABLE_LOCATION);
     }
 
     private transient Verein _verein;
+    private transient VereinProgramm _vereinProgramm;
     private transient Location _location;
 
     /**
@@ -165,6 +156,17 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
             _verein = new Verein(this, Keys.FK_TIMETABLE_VEREIN);
 
         return _verein;
+    }
+
+    /**
+     * Get the implicit join path to the <code>zkmf2024.verein_programm</code>
+     * table.
+     */
+    public VereinProgramm vereinProgramm() {
+        if (_vereinProgramm == null)
+            _vereinProgramm = new VereinProgramm(this, Keys.FK_TIMETABLE_PROGRAMM);
+
+        return _vereinProgramm;
     }
 
     /**
@@ -217,18 +219,18 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, Long, String, String, String, Long, LocalDate, LocalTime, LocalTime> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row7<Long, Long, Long, Long, LocalDate, LocalTime, LocalTime> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function9<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Long, ? super Long, ? super Long, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -236,7 +238,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super Long, ? super String, ? super String, ? super String, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Long, ? super Long, ? super Long, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

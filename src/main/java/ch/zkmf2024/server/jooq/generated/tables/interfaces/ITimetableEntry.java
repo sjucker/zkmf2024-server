@@ -34,34 +34,14 @@ public interface ITimetableEntry extends Serializable {
     public Long getFkVerein();
 
     /**
-     * Setter for <code>timetable_entry.modul</code>.
+     * Setter for <code>timetable_entry.fk_verein_programm</code>.
      */
-    public void setModul(String value);
+    public void setFkVereinProgramm(Long value);
 
     /**
-     * Getter for <code>timetable_entry.modul</code>.
+     * Getter for <code>timetable_entry.fk_verein_programm</code>.
      */
-    public String getModul();
-
-    /**
-     * Setter for <code>timetable_entry.klasse</code>.
-     */
-    public void setKlasse(String value);
-
-    /**
-     * Getter for <code>timetable_entry.klasse</code>.
-     */
-    public String getKlasse();
-
-    /**
-     * Setter for <code>timetable_entry.besetzung</code>.
-     */
-    public void setBesetzung(String value);
-
-    /**
-     * Getter for <code>timetable_entry.besetzung</code>.
-     */
-    public String getBesetzung();
+    public Long getFkVereinProgramm();
 
     /**
      * Setter for <code>timetable_entry.fk_location</code>.

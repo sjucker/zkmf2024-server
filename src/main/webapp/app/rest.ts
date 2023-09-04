@@ -10,6 +10,19 @@ export interface ForgotPasswordRequestDTO {
 }
 
 export interface JudgeReportDTO {
+    id: number;
+    modul: string;
+    klasse?: string;
+    besetzung?: string;
+    location: string;
+    verein: string;
+    dirigent: string;
+    programmTitel?: string;
+    programmInfo?: string;
+    minDurationInSeconds?: number;
+    maxDurationInSeconds?: number;
+    score?: number;
+    titles: JudgeReportTitleDTO[];
 }
 
 export interface JudgeReportOverviewDTO {
@@ -22,6 +35,19 @@ export interface JudgeReportOverviewDTO {
     besetzung?: string;
     start: DateAsString;
     end: DateAsString;
+}
+
+export interface JudgeReportRatingDTO {
+    category: JudgeReportCategory;
+    categoryDescription: string;
+    comment?: string;
+    rating: JudgeReportCategoryRating;
+}
+
+export interface JudgeReportTitleDTO {
+    titel: TitelDTO;
+    comment?: string;
+    ratings: JudgeReportRatingDTO[];
 }
 
 export interface KontaktDTO extends IsValid {
@@ -286,6 +312,21 @@ export interface IsValid {
 }
 
 export type DateAsString = string;
+
+export enum JudgeReportCategory {
+    STIMMUNG_INTONATION = "STIMMUNG_INTONATION",
+    RHYTHMUS_METRUM = "RHYTHMUS_METRUM",
+    DYNAMIK_KLANGAUSGLEICH = "DYNAMIK_KLANGAUSGLEICH",
+    TONKULTUR_TECHNIK_ARTIKULATION = "TONKULTUR_TECHNIK_ARTIKULATION",
+    MUSIKALISCHER_AUSDRUCK = "MUSIKALISCHER_AUSDRUCK",
+    INTERPRETATION = "INTERPRETATION",
+}
+
+export enum JudgeReportCategoryRating {
+    NEGATIVE = "NEGATIVE",
+    NEUTRAL = "NEUTRAL",
+    POSITIVE = "POSITIVE",
+}
 
 export enum LocationType {
     PARADEMUSIK = "PARADEMUSIK",
