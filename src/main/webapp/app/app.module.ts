@@ -12,6 +12,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {ListboxModule} from "primeng/listbox";
 import {MenubarModule} from "primeng/menubar";
 import {PanelModule} from "primeng/panel";
+import {PasswordModule} from "primeng/password";
 import {ProgressBarModule} from "primeng/progressbar";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {RippleModule} from "primeng/ripple";
@@ -23,6 +24,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HelferComponent} from './helfer/helfer.component';
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor.service";
+import {JuryLoginCreateComponent} from './jury-login-create/jury-login-create.component';
+import {JuryComponent} from './jury/jury.component';
 import {LoginComponent} from './login/login.component';
 import {NewsletterComponent} from './newsletter/newsletter.component';
 import {UserCreateComponent} from './user-create/user-create.component';
@@ -41,7 +44,9 @@ import {VereineComponent} from './vereine/vereine.component';
         VereinDetailComponent,
         UsersComponent,
         UserCreateComponent,
-        VereinCommentsComponent
+        VereinCommentsComponent,
+        JuryComponent,
+        JuryLoginCreateComponent
     ],
     imports: [
         BrowserModule,
@@ -63,7 +68,8 @@ import {VereineComponent} from './vereine/vereine.component';
         TabViewModule,
         ProgressBarModule,
         ListboxModule,
-        InputTextareaModule
+        InputTextareaModule,
+        PasswordModule
     ],
     providers: [
         MessageService,

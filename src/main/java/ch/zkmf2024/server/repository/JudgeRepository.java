@@ -10,6 +10,7 @@ import ch.zkmf2024.server.dto.JudgeReportTitleDTO;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TitelDTO;
+import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeReportCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeReportDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeReportRatingDao;
@@ -47,6 +48,7 @@ public class JudgeRepository {
 
     private final ProgrammVorgabenRepository programmVorgabenRepository;
     private final DSLContext jooqDsl;
+    private final JudgeDao judgeDao;
     private final JudgeReportDao judgeReportDao;
     private final JudgeReportCommentDao judgeReportCommentDao;
     private final JudgeReportRatingDao judgeReportRatingDao;
@@ -56,6 +58,7 @@ public class JudgeRepository {
                            DefaultConfiguration jooqConfig) {
         this.programmVorgabenRepository = programmVorgabenRepository;
         this.jooqDsl = jooqDsl;
+        this.judgeDao = new JudgeDao(jooqConfig);
         this.judgeReportDao = new JudgeReportDao(jooqConfig);
         this.judgeReportCommentDao = new JudgeReportCommentDao(jooqConfig);
         this.judgeReportRatingDao = new JudgeReportRatingDao(jooqConfig);
@@ -237,5 +240,9 @@ public class JudgeRepository {
 
     public void insert(JudgeReportRatingPojo rating) {
         judgeReportRatingDao.insert(rating);
+    }
+
+    public void insert(JudgePojo judge) {
+        judgeDao.insert(judge);
     }
 }

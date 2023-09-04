@@ -257,6 +257,12 @@ export interface VerifyEmailRequestDTO {
     verification: string;
 }
 
+export interface JuryLoginCreateDTO {
+    name: string;
+    email: string;
+    password: string;
+}
+
 export interface UserCreateDTO {
     email: string;
     role: UserRole;
