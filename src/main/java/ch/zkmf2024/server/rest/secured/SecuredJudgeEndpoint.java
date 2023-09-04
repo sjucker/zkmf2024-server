@@ -9,6 +9,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,10 +36,23 @@ public class SecuredJudgeEndpoint {
     @GetMapping("/{id}")
     public ResponseEntity<JudgeReportDTO> get(@AuthenticationPrincipal UserDetails userDetails,
                                               @PathVariable Long id) {
-        // TODO check that judge is allowed to open report
-        // TODO actually load the report
+
         log.info("GET /secured/judge/" + id);
-        return ResponseEntity.ok(new JudgeReportDTO());
+
+        return judgeService.getReport(userDetails.getUsername(), id)
+                           .map(ResponseEntity::ok)
+                           .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<JudgeReportDTO> update(@AuthenticationPrincipal UserDetails userDetails,
+                                                 @PathVariable Long id,
+                                                 @RequestBody JudgeReportDTO dto) {
+        log.info("PUT /secured/judge/{} {}", id, dto);
+
+        judgeService.update(userDetails.getUsername(), id, dto);
+
+        return ResponseEntity.ok(dto);
     }
 
 }

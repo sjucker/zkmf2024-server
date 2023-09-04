@@ -84,48 +84,32 @@ public class TimetableEntryDao extends DAOImpl<TimetableEntryRecord, TimetableEn
     }
 
     /**
-     * Fetch records that have <code>modul BETWEEN lowerInclusive AND
-     * upperInclusive</code>
+     * Fetch a unique record that has <code>fk_verein = value</code>
      */
-    public List<TimetableEntryPojo> fetchRangeOfModul(String lowerInclusive, String upperInclusive) {
-        return fetchRange(TimetableEntry.TIMETABLE_ENTRY.MODUL, lowerInclusive, upperInclusive);
+    public TimetableEntryPojo fetchOneByFkVerein(Long value) {
+        return fetchOne(TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN, value);
     }
 
     /**
-     * Fetch records that have <code>modul IN (values)</code>
+     * Fetch a unique record that has <code>fk_verein = value</code>
      */
-    public List<TimetableEntryPojo> fetchByModul(String... values) {
-        return fetch(TimetableEntry.TIMETABLE_ENTRY.MODUL, values);
+    public Optional<TimetableEntryPojo> fetchOptionalByFkVerein(Long value) {
+        return fetchOptional(TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN, value);
     }
 
     /**
-     * Fetch records that have <code>klasse BETWEEN lowerInclusive AND
-     * upperInclusive</code>
+     * Fetch records that have <code>fk_verein_programm BETWEEN lowerInclusive
+     * AND upperInclusive</code>
      */
-    public List<TimetableEntryPojo> fetchRangeOfKlasse(String lowerInclusive, String upperInclusive) {
-        return fetchRange(TimetableEntry.TIMETABLE_ENTRY.KLASSE, lowerInclusive, upperInclusive);
+    public List<TimetableEntryPojo> fetchRangeOfFkVereinProgramm(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM, lowerInclusive, upperInclusive);
     }
 
     /**
-     * Fetch records that have <code>klasse IN (values)</code>
+     * Fetch records that have <code>fk_verein_programm IN (values)</code>
      */
-    public List<TimetableEntryPojo> fetchByKlasse(String... values) {
-        return fetch(TimetableEntry.TIMETABLE_ENTRY.KLASSE, values);
-    }
-
-    /**
-     * Fetch records that have <code>besetzung BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    public List<TimetableEntryPojo> fetchRangeOfBesetzung(String lowerInclusive, String upperInclusive) {
-        return fetchRange(TimetableEntry.TIMETABLE_ENTRY.BESETZUNG, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>besetzung IN (values)</code>
-     */
-    public List<TimetableEntryPojo> fetchByBesetzung(String... values) {
-        return fetch(TimetableEntry.TIMETABLE_ENTRY.BESETZUNG, values);
+    public List<TimetableEntryPojo> fetchByFkVereinProgramm(Long... values) {
+        return fetch(TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM, values);
     }
 
     /**
