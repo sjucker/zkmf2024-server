@@ -1,6 +1,7 @@
 import {inject, NgModule} from '@angular/core';
 import {CanActivateFn, RouterModule, Routes} from '@angular/router';
 import {HelferComponent} from "./helfer/helfer.component";
+import {JuryComponent} from "./jury/jury.component";
 import {LoginComponent} from "./login/login.component";
 import {NewsletterComponent} from "./newsletter/newsletter.component";
 import {AuthenticationGuard} from "./service/authentication.guard";
@@ -12,6 +13,7 @@ export const VEREINE_ROUTE = 'vereine'
 export const NEWSLETTER_ROUTE = 'newsletter'
 export const HELFER_ROUTE = 'helfer'
 export const USERS_ROUTE = 'users'
+export const JURY_ROUTE = 'jury'
 
 const canActivateFn: CanActivateFn = () => inject(AuthenticationGuard).canActivate();
 
@@ -39,6 +41,11 @@ const routes: Routes = [
     {
         path: USERS_ROUTE,
         component: UsersComponent,
+        canActivate: [canActivateFn],
+    },
+    {
+        path: JURY_ROUTE,
+        component: JuryComponent,
         canActivate: [canActivateFn],
     },
     {

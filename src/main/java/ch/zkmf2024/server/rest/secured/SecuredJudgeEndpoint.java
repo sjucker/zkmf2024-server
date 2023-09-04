@@ -2,13 +2,16 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
+import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.service.JudgeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +56,21 @@ public class SecuredJudgeEndpoint {
         judgeService.update(userDetails.getUsername(), id, dto);
 
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/login")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> create(@RequestBody JuryLoginCreateDTO dto) {
+
+        log.info("POST /secured/judge/login {} {}", dto.name(), dto.email());
+
+        try {
+            judgeService.createLogin(dto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Login konnte nicht erstellt werden.");
+        }
+
     }
 
 }

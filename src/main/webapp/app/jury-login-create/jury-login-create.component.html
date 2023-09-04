@@ -1,0 +1,20 @@
+<div class="card flex flex-column gap-2 justify-content-between h-full">
+    <div class="flex flex-column gap-2">
+        <label htmlFor="name">Name</label>
+        <input id="name" type="text" pInputText [(ngModel)]="dto.name"/>
+    </div>
+    <div class="flex flex-column gap-2">
+        <label htmlFor="email">Email</label>
+        <input id="email" type="email" pInputText [(ngModel)]="dto.email"/>
+    </div>
+    <div class="flex flex-column gap-2">
+        <label htmlFor="password">Passwort</label>
+        <p-password id="password" [(ngModel)]="dto.password" [toggleMask]="true" [feedback]="false"></p-password>
+    </div>
+    <div class="flex justify-content-end">
+        <p-button (onClick)="create()"
+                  [disabled]="!valid">
+            Erstellen
+        </p-button>
+    </div>
+</div>
