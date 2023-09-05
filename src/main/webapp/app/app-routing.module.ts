@@ -5,15 +5,17 @@ import {JuryComponent} from "./jury/jury.component";
 import {LoginComponent} from "./login/login.component";
 import {NewsletterComponent} from "./newsletter/newsletter.component";
 import {AuthenticationGuard} from "./service/authentication.guard";
+import {TimetableComponent} from "./timetable/timetable.component";
 import {UsersComponent} from "./users/users.component";
 import {VereineComponent} from "./vereine/vereine.component";
 
-export const LOGIN_ROUTE = 'login'
-export const VEREINE_ROUTE = 'vereine'
-export const NEWSLETTER_ROUTE = 'newsletter'
-export const HELFER_ROUTE = 'helfer'
-export const USERS_ROUTE = 'users'
-export const JURY_ROUTE = 'jury'
+export const LOGIN_ROUTE = 'login';
+export const VEREINE_ROUTE = 'vereine';
+export const NEWSLETTER_ROUTE = 'newsletter';
+export const HELFER_ROUTE = 'helfer';
+export const USERS_ROUTE = 'users';
+export const JURY_ROUTE = 'jury';
+export const TIMETABLE_ROUTE = 'zeitplan';
 
 const canActivateFn: CanActivateFn = () => inject(AuthenticationGuard).canActivate();
 
@@ -46,6 +48,11 @@ const routes: Routes = [
     {
         path: JURY_ROUTE,
         component: JuryComponent,
+        canActivate: [canActivateFn],
+    },
+    {
+        path: TIMETABLE_ROUTE,
+        component: TimetableComponent,
         canActivate: [canActivateFn],
     },
     {

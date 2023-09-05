@@ -249,4 +249,8 @@ public class JudgeRepository {
     public void insert(JudgePojo judge) {
         judgeDao.insert(judge);
     }
+
+    public List<JudgePojo> findAll() {
+        return judgeDao.findAll();
+    }
 }

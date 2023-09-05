@@ -2,6 +2,7 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.LocationDTO;
 import ch.zkmf2024.server.dto.LocationType;
+import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.daos.LocationDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.LocationPojo;
@@ -26,9 +27,19 @@ public class LocationRepository {
         this.locationDao = new LocationDao(jooqConfig);
     }
 
+    public List<LocationSelectionDTO> findAllSelectionByType(LocationType type) {
+        return locationDao.fetchByLocationType(LocationLocationType.lookupLiteral(type.name())).stream()
+                          .map(pojo -> new LocationSelectionDTO(
+                                  pojo.getId(),
+                                  pojo.getName()
+                          ))
+                          .toList();
+    }
+
     public List<LocationDTO> findAllByType(LocationType type) {
         return locationDao.fetchByLocationType(LocationLocationType.lookupLiteral(type.name())).stream()
                           .map(pojo -> new LocationDTO(
+                                  pojo.getId(),
                                   pojo.getName(),
                                   pojo.getAddress(),
                                   pojo.getLatitude(),
@@ -52,6 +63,7 @@ public class LocationRepository {
 
         return locationDao.findOptionalById(locationId)
                           .map(pojo -> new LocationDTO(
+                                  pojo.getId(),
                                   pojo.getName(),
                                   pojo.getAddress(),
                                   pojo.getLatitude(),

@@ -3,7 +3,8 @@ package ch.zkmf2024.server.dto;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public record LocationDTO(@NotNull String name,
+public record LocationDTO(@NotNull Long id,
+                          @NotNull String name,
                           @NotNull String address,
                           @NotNull BigDecimal latitude,
                           @NotNull BigDecimal longitude,

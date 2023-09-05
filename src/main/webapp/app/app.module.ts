@@ -4,13 +4,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ConfirmationService, MessageService} from "primeng/api";
+import {CalendarModule} from "primeng/calendar";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogModule} from "primeng/dialog";
+import {DropdownModule} from "primeng/dropdown";
 import {DialogService, DynamicDialogModule} from "primeng/dynamicdialog";
 import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ListboxModule} from "primeng/listbox";
 import {MenubarModule} from "primeng/menubar";
+import {OrderListModule} from "primeng/orderlist";
 import {PanelModule} from "primeng/panel";
 import {PasswordModule} from "primeng/password";
 import {ProgressBarModule} from "primeng/progressbar";
@@ -28,6 +31,7 @@ import {JuryLoginCreateComponent} from './jury-login-create/jury-login-create.co
 import {JuryComponent} from './jury/jury.component';
 import {LoginComponent} from './login/login.component';
 import {NewsletterComponent} from './newsletter/newsletter.component';
+import {TimetableComponent} from './timetable/timetable.component';
 import {UserCreateComponent} from './user-create/user-create.component';
 import {UsersComponent} from './users/users.component';
 import {VereinCommentsComponent} from './verein-comments/verein-comments.component';
@@ -46,7 +50,8 @@ import {VereineComponent} from './vereine/vereine.component';
         UserCreateComponent,
         VereinCommentsComponent,
         JuryComponent,
-        JuryLoginCreateComponent
+        JuryLoginCreateComponent,
+        TimetableComponent,
     ],
     imports: [
         BrowserModule,
@@ -69,7 +74,10 @@ import {VereineComponent} from './vereine/vereine.component';
         ProgressBarModule,
         ListboxModule,
         InputTextareaModule,
-        PasswordModule
+        PasswordModule,
+        OrderListModule,
+        CalendarModule,
+        DropdownModule
     ],
     providers: [
         MessageService,

@@ -17,6 +17,7 @@ import ch.zkmf2024.server.dto.VereinsangabenDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
+import ch.zkmf2024.server.dto.admin.VereinProgrammSelectionDTO;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
@@ -334,6 +336,23 @@ public class VereinRepository {
 
     public Optional<VereinProgrammPojo> findVereinProgramm(Long id) {
         return vereinProgrammDao.findOptionalById(id);
+    }
+
+    public List<VereinProgrammSelectionDTO> findProgrammeSelection(Long vereinId) {
+        return jooqDsl.select()
+                      .from(VEREIN_PROGRAMM)
+                      .where(VEREIN_PROGRAMM.FK_VEREIN.eq(vereinId))
+                      .fetch(it -> {
+                          var stringJoiner = new StringJoiner(" ");
+                          stringJoiner.add(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription());
+                          Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).ifPresent(stringJoiner::add);
+                          Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).ifPresent(stringJoiner::add);
+
+                          return new VereinProgrammSelectionDTO(
+                                  it.get(VEREIN_PROGRAMM.ID),
+                                  stringJoiner.toString()
+                          );
+                      });
     }
 
     public List<VereinProgrammDTO> findProgramme(Long vereinId) {
