@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.JudgeReportCategoryRating;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
+import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportTitleDTO;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
@@ -81,7 +82,8 @@ public class JudgeRepository {
                               VEREIN_PROGRAMM.BESETZUNG,
                               TIMETABLE_ENTRY.DATE,
                               TIMETABLE_ENTRY.START_TIME,
-                              TIMETABLE_ENTRY.END_TIME
+                              TIMETABLE_ENTRY.END_TIME,
+                              JUDGE_REPORT.STATUS
                       )
                       .from(JUDGE_REPORT)
                       .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
@@ -90,16 +92,17 @@ public class JudgeRepository {
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .where(JUDGE_REPORT.FK_JUDGE.eq(id))
                       .orderBy(TIMETABLE_ENTRY.DATE.asc(), TIMETABLE_ENTRY.START_TIME.asc())
-                      .fetch(r -> new JudgeReportOverviewDTO(
-                              r.get(JUDGE_REPORT.ID),
-                              r.get(VEREIN.VEREINSNAME),
-                              r.get(LOCATION.NAME),
-                              toGoogleMapsUrl(r.get(LOCATION.ADDRESS)),
-                              Modul.valueOf(r.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
-                              Klasse.fromString(r.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
-                              Besetzung.fromString(r.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
-                              LocalDateTime.of(r.get(TIMETABLE_ENTRY.DATE), r.get(TIMETABLE_ENTRY.START_TIME)),
-                              LocalDateTime.of(r.get(TIMETABLE_ENTRY.DATE), r.get(TIMETABLE_ENTRY.END_TIME))
+                      .fetch(it -> new JudgeReportOverviewDTO(
+                              it.get(JUDGE_REPORT.ID),
+                              it.get(VEREIN.VEREINSNAME),
+                              it.get(LOCATION.NAME),
+                              toGoogleMapsUrl(it.get(LOCATION.ADDRESS)),
+                              Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
+                              Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                              Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                              LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)),
+                              LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)),
+                              JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS))
                       ));
 
     }
@@ -138,6 +141,7 @@ public class JudgeRepository {
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::maxDurationInSeconds).orElse(null),
                                   it.get(JUDGE_REPORT.SCORE),
+                                  JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
                                   findTitles(judgeId, reportId)
                           );
                       });

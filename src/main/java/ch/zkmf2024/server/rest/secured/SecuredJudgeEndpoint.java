@@ -58,6 +58,16 @@ public class SecuredJudgeEndpoint {
         return ResponseEntity.ok(dto);
     }
 
+    @PostMapping("/{id}/finish")
+    public ResponseEntity<?> finish(@AuthenticationPrincipal UserDetails userDetails,
+                                    @PathVariable Long id) {
+        log.info("POST /secured/judge/{}/finish", id);
+
+        judgeService.finish(userDetails.getUsername(), id);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/login")
     @Secured({"ADMIN"})
     public ResponseEntity<?> create(@RequestBody JuryLoginCreateDTO dto) {

@@ -2,6 +2,7 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
+import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
+import static ch.zkmf2024.server.dto.JudgeReportStatus.IN_PROGRESS;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
+import static ch.zkmf2024.server.service.DateUtil.now;
 
 @Slf4j
 @Service
@@ -53,6 +57,7 @@ public class JudgeService {
 
         var reportPojo = judgeRepository.findReportById(reportId);
         reportPojo.setScore(dto.score());
+        reportPojo.setStatus(IN_PROGRESS.name());
         judgeRepository.update(reportPojo);
 
         judgeRepository.deleteReportCommentsByReportId(reportId);
@@ -77,13 +82,28 @@ public class JudgeService {
         }
     }
 
+    public void finish(String username, Long reportId) {
+        if (!judgeRepository.exists(username, reportId)) {
+            throw new IllegalArgumentException("no report exists for %s and id %d".formatted(username, reportId));
+        }
+
+        var reportPojo = judgeRepository.findReportById(reportId);
+        if (JudgeReportStatus.valueOf(reportPojo.getStatus()) == DONE) {
+            throw new IllegalArgumentException("tried to finish report with id %d that was already done".formatted(reportId));
+        }
+
+        reportPojo.setStatus(DONE.name());
+        reportPojo.setFinishedAt(now());
+        judgeRepository.update(reportPojo);
+    }
+
     public void createLogin(JuryLoginCreateDTO dto) {
         judgeRepository.insert(new JudgePojo(null, dto.email(), dto.name()));
         userRepository.insert(new Zkmf2024UserPojo(dto.email(),
                                                    JUDGE.name(),
                                                    passwordEncoder.encode(dto.password()),
                                                    null,
-                                                   DateUtil.now(),
+                                                   now(),
                                                    null,
                                                    null,
                                                    null));
