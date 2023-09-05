@@ -12,9 +12,7 @@ public record JudgeReportOverviewDTO(
         String klasse,
         String besetzung,
         @NotNull LocalDateTime start,
-        @NotNull LocalDateTime end
-        // TODO titel?
-        // TODO Kurzbericht
-        // TODO musikalische Faktoren
+        @NotNull LocalDateTime end,
+        @NotNull JudgeReportStatus status
 ) {
 }

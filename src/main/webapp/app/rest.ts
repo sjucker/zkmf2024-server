@@ -22,6 +22,7 @@ export interface JudgeReportDTO {
     minDurationInSeconds?: number;
     maxDurationInSeconds?: number;
     score?: number;
+    status: JudgeReportStatus;
     titles: JudgeReportTitleDTO[];
 }
 
@@ -35,6 +36,7 @@ export interface JudgeReportOverviewDTO {
     besetzung?: string;
     start: DateAsString;
     end: DateAsString;
+    status: JudgeReportStatus;
 }
 
 export interface JudgeReportRatingDTO {
@@ -158,8 +160,8 @@ export interface VereinDTO {
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
     programme: VereinProgrammDTO[];
-    phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
+    phase1Status: PhaseStatus;
 }
 
 export interface VereinProgrammDTO extends IsValid {
@@ -318,6 +320,12 @@ export interface IsValid {
 }
 
 export type DateAsString = string;
+
+export enum JudgeReportStatus {
+    NEW = "NEW",
+    IN_PROGRESS = "IN_PROGRESS",
+    DONE = "DONE",
+}
 
 export enum JudgeReportCategory {
     STIMMUNG_INTONATION = "STIMMUNG_INTONATION",
