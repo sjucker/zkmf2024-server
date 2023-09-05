@@ -3,6 +3,7 @@ package ch.zkmf2024.server.service;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
+import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
@@ -107,5 +108,11 @@ public class JudgeService {
                                                    null,
                                                    null,
                                                    null));
+    }
+
+    public List<JudgeDTO> findAll() {
+        return judgeRepository.findAll().stream()
+                              .map(it -> new JudgeDTO(it.getName(), it.getEmail()))
+                              .toList();
     }
 }

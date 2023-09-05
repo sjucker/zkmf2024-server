@@ -64,6 +64,7 @@ export interface KontaktDTO extends IsValid {
 }
 
 export interface LocationDTO {
+    id: number;
     name: string;
     address: string;
     latitude: number;
@@ -259,10 +260,41 @@ export interface VerifyEmailRequestDTO {
     verification: string;
 }
 
+export interface JudgeDTO {
+    name: string;
+    email: string;
+}
+
 export interface JuryLoginCreateDTO {
     name: string;
     email: string;
     password: string;
+}
+
+export interface LocationSelectionDTO {
+    id: number;
+    name: string;
+}
+
+export interface TimetableEntryCreateDTO {
+    vereinId: number;
+    vereinProgrammId: number;
+    locationId: number;
+    date: DateAsString;
+    start: DateAsString;
+    end: DateAsString;
+}
+
+export interface TimetableEntryDTO {
+    id: number;
+    modul: string;
+    klasse?: string;
+    besetzung?: string;
+    location: string;
+    verein: string;
+    date: DateAsString;
+    start: DateAsString;
+    end: DateAsString;
 }
 
 export interface UserCreateDTO {
@@ -313,6 +345,11 @@ export interface VereinOverviewDTO {
     phase1: PhaseStatus;
     phase2: PhaseStatus;
     hasComments: boolean;
+}
+
+export interface VereinProgrammSelectionDTO {
+    id: number;
+    name: string;
 }
 
 export interface IsValid {

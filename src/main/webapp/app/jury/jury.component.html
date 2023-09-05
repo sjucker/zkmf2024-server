@@ -4,3 +4,22 @@
     <p-button label="Login erstellen"
               (onClick)="openCreateJuryUser()"></p-button>
 </div>
+
+<p-table [value]="jury"
+         styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+        Jury-Mitglieder
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Email/Login</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-judge>
+        <tr>
+            <td>{{judge.name}}</td>
+            <td>{{judge.email}}</td>
+        </tr>
+    </ng-template>
+</p-table>

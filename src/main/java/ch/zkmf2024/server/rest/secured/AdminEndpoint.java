@@ -2,14 +2,22 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.admin.JudgeDTO;
+import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
+import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
+import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.UserCreateDTO;
 import ch.zkmf2024.server.dto.admin.UserDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
+import ch.zkmf2024.server.dto.admin.VereinProgrammSelectionDTO;
 import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
+import ch.zkmf2024.server.service.JudgeService;
 import ch.zkmf2024.server.service.NewsletterService;
+import ch.zkmf2024.server.service.TimetableService;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -44,15 +52,21 @@ public class AdminEndpoint {
     private final HelperRegistrationService helperRegistrationService;
     private final VereinService vereinService;
     private final ExportService exportService;
+    private final JudgeService judgeService;
+    private final TimetableService timetableService;
 
     public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService,
                          VereinService vereinService,
-                         ExportService exportService) {
+                         ExportService exportService,
+                         JudgeService judgeService,
+                         TimetableService timetableService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.vereinService = vereinService;
         this.exportService = exportService;
+        this.judgeService = judgeService;
+        this.timetableService = timetableService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -126,6 +140,22 @@ public class AdminEndpoint {
         return ResponseEntity.ok(vereinService.findAll());
     }
 
+    @GetMapping(path = "/vereine-selection")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<VereinSelectionDTO>> vereineSelection() {
+        log.info("GET /secured/admin/vereine-selection");
+
+        return ResponseEntity.ok(timetableService.findVereine());
+    }
+
+    @GetMapping(path = "/vereine/{id}/programme")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<VereinProgrammSelectionDTO>> vereinProgrammeSelection(@PathVariable Long id) {
+        log.info("GET /secured/admin/vereine/{}/programme", id);
+
+        return ResponseEntity.ok(timetableService.findProgrammeByVerein(id));
+    }
+
     @GetMapping(path = "/vereine/{id}")
     @Secured({"ADMIN"})
     public ResponseEntity<VereinDTO> vereinById(@PathVariable Long id) {
@@ -157,7 +187,46 @@ public class AdminEndpoint {
     public ResponseEntity<UserDTO> createUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserCreateDTO dto) {
         log.info("POST /user {}", dto);
 
+        // TODO
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/jury/login")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> create(@RequestBody JuryLoginCreateDTO dto) {
+
+        log.info("POST /secured/admin/jury/login {} {}", dto.name(), dto.email());
+
+        try {
+            judgeService.createLogin(dto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Login konnte nicht erstellt werden.");
+        }
+    }
+
+    @GetMapping("/jury")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<JudgeDTO>> getJury() {
+        log.info("GET /secured/admin/jury");
+
+        return ResponseEntity.ok(judgeService.findAll());
+    }
+
+    @GetMapping("/timetable")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<TimetableEntryDTO>> getTimetable() {
+        log.info("GET /secured/admin/timetable");
+
+        return ResponseEntity.ok(timetableService.findAll());
+    }
+
+    @GetMapping("/location")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<LocationSelectionDTO>> getLocations() {
+        log.info("GET /secured/admin/location");
+
+        return ResponseEntity.ok(timetableService.findWettspiellokale());
     }
 
 }

@@ -1,0 +1,78 @@
+<p-toast position="top-center"></p-toast>
+<div class="card flex flex-row gap-2 justify-content-between h-full">
+    <div class="flex flex-column gap-2">
+        <label htmlFor="date">Datum (yyyy-mm-dd)</label>
+        <input id="date" type="text" pInputText [(ngModel)]="newEntry.date"/>
+    </div>
+    <div class="flex flex-column gap-2">
+        <label htmlFor="start">Start (hh:mm:ss)</label>
+        <input id="start" type="text" pInputText [(ngModel)]="newEntry.start"/>
+    </div>
+    <div class="flex flex-column gap-2">
+        <label htmlFor="end">Stop (hh:mm:ss)</label>
+        <input id="end" type="text" pInputText [(ngModel)]="newEntry.end"/>
+    </div>
+
+    <div>
+        <p-dropdown [options]="availableLocations"
+                    optionValue="id"
+                    optionLabel="name"
+                    [(ngModel)]="newEntry.locationId"></p-dropdown>
+    </div>
+    <div>
+        <p-dropdown [options]="availableVereine"
+                    optionValue="id"
+                    optionLabel="name"
+                    [(ngModel)]="newEntry.vereinId"
+                    (onChange)="vereinSelectionChanged()"></p-dropdown>
+    </div>
+    <div>
+        <p-dropdown [options]="availableProgramme"
+                    optionValue="id"
+                    optionLabel="name"
+                    [(ngModel)]="newEntry.vereinProgrammId"></p-dropdown>
+    </div>
+    <div class="flex justify-content-end">
+        <p-button (onClick)="create()"
+                  [disabled]="!valid">
+            Erstellen
+        </p-button>
+    </div>
+</div>
+
+<div *ngFor="let location of locations">
+    <p-table [value]="getEntriesForLocation(location)"
+             styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+        <ng-template pTemplate="caption">{{location}}</ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Datum</th>
+                <th>Start</th>
+                <th>Ende</th>
+                <th>Modul</th>
+                <th>Klasse</th>
+                <th>Besetzung</th>
+                <th>Verein</th>
+                <th>Jury 1</th>
+                <th>Jury 2</th>
+                <th>Jury 3</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-dto>
+            <tr>
+                <td>{{dto.date | date: 'dd.MM.yyyy'}}</td>
+                <td>{{dto.start}}</td>
+                <td>{{dto.end}}</td>
+                <td>{{dto.modul}}</td>
+                <td>{{dto.klasse}}</td>
+                <td>{{dto.besetzung}}</td>
+                <td>{{dto.verein}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
