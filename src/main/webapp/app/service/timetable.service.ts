@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {
+    JudgeDTO,
     LocationSelectionDTO,
     TimetableEntryCreateDTO,
     TimetableEntryDTO,
@@ -38,5 +39,9 @@ export class TimetableService {
 
     vereinProgramme(vereinId: number): Observable<VereinProgrammSelectionDTO[]> {
         return this.httpClient.get<VereinProgrammSelectionDTO[]>(`${this.baseUrl}/secured/admin/vereine/${vereinId}/programme`)
+    }
+
+    judges(): Observable<JudgeDTO[]> {
+        return this.httpClient.get<JudgeDTO[]>(`${this.baseUrl}/secured/admin/jury`)
     }
 }

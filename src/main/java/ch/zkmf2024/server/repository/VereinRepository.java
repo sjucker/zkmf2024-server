@@ -43,7 +43,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
@@ -342,17 +341,10 @@ public class VereinRepository {
         return jooqDsl.select()
                       .from(VEREIN_PROGRAMM)
                       .where(VEREIN_PROGRAMM.FK_VEREIN.eq(vereinId))
-                      .fetch(it -> {
-                          var stringJoiner = new StringJoiner(" ");
-                          stringJoiner.add(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription());
-                          Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).ifPresent(stringJoiner::add);
-                          Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).ifPresent(stringJoiner::add);
-
-                          return new VereinProgrammSelectionDTO(
-                                  it.get(VEREIN_PROGRAMM.ID),
-                                  stringJoiner.toString()
-                          );
-                      });
+                      .fetch(it -> new VereinProgrammSelectionDTO(
+                              it.get(VEREIN_PROGRAMM.ID),
+                              Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription()
+                      ));
     }
 
     public List<VereinProgrammDTO> findProgramme(Long vereinId) {

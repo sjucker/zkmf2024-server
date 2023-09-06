@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {
+    JudgeDTO,
     LocationSelectionDTO,
     TimetableEntryCreateDTO,
     TimetableEntryDTO,
@@ -18,17 +19,21 @@ import {TimetableService} from "../service/timetable.service";
 export class TimetableComponent implements OnInit {
 
     newEntry: TimetableEntryCreateDTO = {
-        date: '',
-        start: '',
-        end: '',
+        date: '2024-06-22',
+        start: '12:00:00',
+        end: '13:00:00',
         locationId: 0,
         vereinId: 0,
         vereinProgrammId: 0,
+        judge1Id: 0,
+        judge2Id: 0,
+        judge3Id: 0
     };
 
     availableLocations: LocationSelectionDTO[] = [];
     availableVereine: VereinSelectionDTO[] = [];
     availableProgramme: VereinProgrammSelectionDTO[] = [];
+    availableJudges: JudgeDTO[] = [];
 
     ref?: DynamicDialogRef;
 
@@ -53,6 +58,12 @@ export class TimetableComponent implements OnInit {
                 this.availableVereine = value;
             }
         });
+
+        this.service.judges().subscribe({
+            next: value => {
+                this.availableJudges = value;
+            }
+        })
     }
 
     private load() {
@@ -83,12 +94,40 @@ export class TimetableComponent implements OnInit {
     }
 
     create() {
-        // TODO
-        console.log(this.newEntry);
+        this.service.create(this.newEntry).subscribe({
+            next: _ => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Erfolgreich erstellt',
+                    life: 2000
+                });
+                this.load();
+            },
+            error: err => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: err.error,
+                    life: 3000
+                });
+            }
+        })
     }
 
     get valid(): boolean {
-        return true;
+        return this.newEntry.judge1Id > 0 &&
+            this.newEntry.judge2Id > 0 &&
+            this.newEntry.judge3Id > 0 &&
+            this.newEntry.judge1Id !== this.newEntry.judge2Id &&
+            this.newEntry.judge1Id !== this.newEntry.judge3Id &&
+            this.newEntry.judge2Id !== this.newEntry.judge3Id &&
+            this.newEntry.vereinProgrammId > 0 &&
+            this.newEntry.vereinId > 0 &&
+            this.newEntry.locationId > 0 &&
+            // TODO validate date formats
+            this.newEntry.end.length > 0 &&
+            this.newEntry.start.length > 0 &&
+            this.newEntry.date.length > 0;
     }
 
     vereinSelectionChanged() {
