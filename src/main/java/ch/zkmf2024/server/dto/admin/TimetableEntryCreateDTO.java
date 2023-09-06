@@ -9,6 +9,8 @@ public record TimetableEntryCreateDTO(@NotNull Long vereinId,
                                       @NotNull Long locationId,
                                       @NotNull LocalDate date,
                                       @NotNull LocalTime start,
-                                      @NotNull LocalTime end) {
-    // TODO jury members
+                                      @NotNull LocalTime end,
+                                      @NotNull Long judge1Id,
+                                      @NotNull Long judge2Id,
+                                      @NotNull Long judge3Id) {
 }

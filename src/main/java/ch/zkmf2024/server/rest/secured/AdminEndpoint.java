@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
+import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.UserCreateDTO;
 import ch.zkmf2024.server.dto.admin.UserDTO;
@@ -201,6 +202,7 @@ public class AdminEndpoint {
             judgeService.createLogin(dto);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            log.error("unexpected error occurred", e);
             return ResponseEntity.badRequest().body("Login konnte nicht erstellt werden.");
         }
     }
@@ -219,6 +221,19 @@ public class AdminEndpoint {
         log.info("GET /secured/admin/timetable");
 
         return ResponseEntity.ok(timetableService.findAll());
+    }
+
+    @PostMapping("/timetable")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> getTimetable(@RequestBody TimetableEntryCreateDTO dto) {
+        log.info("POST /secured/admin/timetable {}", dto);
+        try {
+            timetableService.create(dto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("unexpected error occurred", e);
+            return ResponseEntity.badRequest().body("Eintrag konnte nicht erstellt werden.");
+        }
     }
 
     @GetMapping("/location")

@@ -12,5 +12,8 @@ public record TimetableEntryDTO(@NotNull Long id,
                                 @NotNull String verein,
                                 @NotNull LocalDate date,
                                 @NotNull LocalTime start,
-                                @NotNull LocalTime end) {
+                                @NotNull LocalTime end,
+                                @NotNull String judge1,
+                                @NotNull String judge2,
+                                @NotNull String judge3) {
 }

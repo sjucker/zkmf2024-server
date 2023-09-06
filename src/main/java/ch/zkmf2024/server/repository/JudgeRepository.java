@@ -253,4 +253,8 @@ public class JudgeRepository {
     public List<JudgePojo> findAll() {
         return judgeDao.findAll();
     }
+
+    public void insert(JudgeReportPojo report) {
+        judgeReportDao.insert(report);
+    }
 }

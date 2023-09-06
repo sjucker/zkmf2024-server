@@ -161,8 +161,8 @@ export interface VereinDTO {
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
     programme: VereinProgrammDTO[];
-    phase2Status: PhaseStatus;
     phase1Status: PhaseStatus;
+    phase2Status: PhaseStatus;
 }
 
 export interface VereinProgrammDTO extends IsValid {
@@ -261,6 +261,7 @@ export interface VerifyEmailRequestDTO {
 }
 
 export interface JudgeDTO {
+    id: number;
     name: string;
     email: string;
 }
@@ -283,6 +284,9 @@ export interface TimetableEntryCreateDTO {
     date: DateAsString;
     start: DateAsString;
     end: DateAsString;
+    judge1Id: number;
+    judge2Id: number;
+    judge3Id: number;
 }
 
 export interface TimetableEntryDTO {
@@ -295,6 +299,9 @@ export interface TimetableEntryDTO {
     date: DateAsString;
     start: DateAsString;
     end: DateAsString;
+    judge1: string;
+    judge2: string;
+    judge3: string;
 }
 
 export interface UserCreateDTO {

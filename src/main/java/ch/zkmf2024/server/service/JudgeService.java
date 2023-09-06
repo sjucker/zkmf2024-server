@@ -112,7 +112,7 @@ public class JudgeService {
 
     public List<JudgeDTO> findAll() {
         return judgeRepository.findAll().stream()
-                              .map(it -> new JudgeDTO(it.getName(), it.getEmail()))
+                              .map(it -> new JudgeDTO(it.getId(), it.getName(), it.getEmail()))
                               .toList();
     }
 }
