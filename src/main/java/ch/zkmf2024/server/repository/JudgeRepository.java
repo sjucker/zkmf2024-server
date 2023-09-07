@@ -43,6 +43,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Repository
 public class JudgeRepository {
@@ -135,7 +136,7 @@ public class JudgeRepository {
                                   besetzung.map(Besetzung::getDescription).orElse(null),
                                   it.get(LOCATION.NAME),
                                   it.get(VEREIN.VEREINSNAME),
-                                  "%s %s".formatted(it.get(KONTAKT.VORNAME), it.get(KONTAKT.NACHNAME)),
+                                  "%s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
                                   it.get(VEREIN_PROGRAMM.TITEL),
                                   it.get(VEREIN_PROGRAMM.INFO_MODERATION),
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
