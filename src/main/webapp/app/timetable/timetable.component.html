@@ -1,77 +1,102 @@
 <p-toast position="top-center"></p-toast>
 <div class="card">
-    <div class="flex flex-row gap-2 justify-content-between align-items-end h-full">
-        <div class="flex flex-column gap-2 flex-1">
-            <label htmlFor="date">Datum (yyyy-mm-dd)</label>
-            <input id="date" type="text" pInputText [(ngModel)]="newEntry.date"/>
-        </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label htmlFor="start">Start (hh:mm:ss)</label>
-            <input id="start" type="text" pInputText [(ngModel)]="newEntry.start"/>
-        </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label htmlFor="end">Stop (hh:mm:ss)</label>
-            <input id="end" type="text" pInputText [(ngModel)]="newEntry.end"/>
+    <div class="p-fluid grid">
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+                <input type="text" id="date" pInputText [(ngModel)]="newEntry.date">
+                <label for="date">Datum (yyyy-mm-dd)</label>
+            </span>
         </div>
 
-        <div class="flex flex-column gap-2 flex-1">
-            <label htmlFor="locations">Wettspiellokal</label>
-            <p-dropdown [options]="availableLocations"
-                        optionValue="id"
-                        optionLabel="name"
-                        id="locations"
-                        [(ngModel)]="newEntry.locationId"></p-dropdown>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+                <input type="text" id="start" pInputText [(ngModel)]="newEntry.start">
+                <label for="start">Start (hh:mm:ss)</label>
+            </span>
         </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label htmlFor="vereine">Verein</label>
-            <p-dropdown [options]="availableVereine"
+
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+                <input type="text" id="end" pInputText [(ngModel)]="newEntry.end">
+                <label for="end">Stop (hh:mm:ss)</label>
+            </span>
+        </div>
+    </div>
+    <div class="p-fluid grid">
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+            <p-dropdown id="locations"
+                        [autoDisplayFirst]="false"
+                        [options]="availableLocations"
+                        [(ngModel)]="newEntry.locationId"
+                        optionValue="id"
+                        optionLabel="name"></p-dropdown>
+            <label for="locations">Wettspiellokal</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+            <p-dropdown id="vereine"
+                        [autoDisplayFirst]="false"
+                        [options]="availableVereine"
+                        [(ngModel)]="newEntry.vereinId"
                         optionValue="id"
                         optionLabel="name"
-                        [(ngModel)]="newEntry.vereinId"
-                        id="vereine"
                         (onChange)="vereinSelectionChanged()"
                         [filter]="true"></p-dropdown>
+            <label for="vereine">Verein</label>
+            </span>
         </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label htmlFor="programme">Modul</label>
+
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
             <p-dropdown [options]="availableProgramme"
                         optionValue="id"
                         optionLabel="name"
                         id="programme"
-                        [(ngModel)]="newEntry.vereinProgrammId"></p-dropdown>
-        </div>
-        <div class="flex justify-content-end">
-            <p-button (onClick)="create()"
-                      [disabled]="!valid">
-                Erstellen
-            </p-button>
+                        [(ngModel)]="newEntry.vereinProgrammId"
+                        [disabled]="!newEntry.vereinId"></p-dropdown>
+                    <label for="programme">Modul</label>
+            </span>
         </div>
     </div>
-    <div class="card flex flex-row gap-2 justify-content-start align-items-end">
-        <div class="flex flex-column gap-2 w-20rem">
-            <label htmlFor="judge1">Jury 1</label>
+    <div class="p-fluid grid">
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
             <p-dropdown [options]="availableJudges"
                         optionValue="id"
                         optionLabel="name"
                         id="judge1"
                         [(ngModel)]="newEntry.judge1Id"></p-dropdown>
+               <label for="judge1">Jury 1</label>
+            </span>
         </div>
-        <div class="flex flex-column gap-2 w-20rem">
-            <label htmlFor="judge2">Jury 2</label>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
             <p-dropdown [options]="availableJudges"
                         optionValue="id"
                         optionLabel="name"
                         id="judge2"
                         [(ngModel)]="newEntry.judge2Id"></p-dropdown>
+                <label for="judge2">Jury 2</label>
+            </span>
         </div>
-        <div class="flex flex-column gap-2 w-20rem">
-            <label htmlFor="judge3" class="">Jury 3</label>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
             <p-dropdown [options]="availableJudges"
                         optionValue="id"
                         optionLabel="name"
                         id="judge3"
                         [(ngModel)]="newEntry.judge3Id"></p-dropdown>
+                <label for="judge3">Jury 3</label>
+            </span>
         </div>
+    </div>
+    <div class="flex flex lg:justify-content-end">
+        <p-button (onClick)="create()"
+                  [disabled]="!valid">
+            Erstellen
+        </p-button>
     </div>
 </div>
 
