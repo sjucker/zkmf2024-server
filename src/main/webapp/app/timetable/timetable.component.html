@@ -29,7 +29,8 @@
                         optionLabel="name"
                         [(ngModel)]="newEntry.vereinId"
                         id="vereine"
-                        (onChange)="vereinSelectionChanged()"></p-dropdown>
+                        (onChange)="vereinSelectionChanged()"
+                        [filter]="true"></p-dropdown>
         </div>
         <div class="flex flex-column gap-2 flex-1">
             <label htmlFor="programme">Modul</label>
