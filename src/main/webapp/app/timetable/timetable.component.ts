@@ -102,6 +102,7 @@ export class TimetableComponent implements OnInit {
                     life: 2000
                 });
                 this.load();
+                this.vereinSelectionChanged();
             },
             error: err => {
                 this.messageService.add({

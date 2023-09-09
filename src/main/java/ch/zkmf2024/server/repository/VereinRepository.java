@@ -46,8 +46,10 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
+import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
+import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_DOPPELEINSATZ;
@@ -57,7 +59,9 @@ import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
 import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
 import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.notExists;
 import static org.jooq.impl.DSL.selectCount;
+import static org.jooq.impl.DSL.selectOne;
 
 @Repository
 public class VereinRepository {
@@ -155,8 +159,11 @@ public class VereinRepository {
     }
 
     public List<VereinSelectionDTO> findAllForSelection() {
-        return jooqDsl.selectFrom(VEREIN)
-                      .where(VEREIN.CONFIRMED_AT.isNotNull())
+        return jooqDsl.select()
+                      .from(VEREIN)
+                      .join(VEREIN_STATUS).on(VEREIN_STATUS.FK_VEREIN.eq(VEREIN.ID))
+                      .where(VEREIN.CONFIRMED_AT.isNotNull(),
+                             VEREIN_STATUS.PHASE2.eq(DONE.name()))
                       .orderBy(VEREIN.VEREINSNAME)
                       .fetch(it -> new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)));
     }
@@ -341,6 +348,7 @@ public class VereinRepository {
         return jooqDsl.select()
                       .from(VEREIN_PROGRAMM)
                       .where(VEREIN_PROGRAMM.FK_VEREIN.eq(vereinId))
+                      .and(notExists(selectOne().from(TIMETABLE_ENTRY).where(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))))
                       .fetch(it -> new VereinProgrammSelectionDTO(
                               it.get(VEREIN_PROGRAMM.ID),
                               Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription()
