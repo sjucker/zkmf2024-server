@@ -6,7 +6,9 @@ import ch.zkmf2024.server.dto.JudgeReportCategoryRating;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
+import ch.zkmf2024.server.dto.JudgeReportScoreDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
+import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportTitleDTO;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
@@ -20,6 +22,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.JudgeReportCategoryRating.NEUTRAL;
+import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT_COMMENT;
@@ -42,6 +46,8 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Repository
@@ -283,5 +289,59 @@ public class JudgeRepository {
 
     public void insert(JudgeReportPojo report) {
         judgeReportDao.insert(report);
+    }
+
+    public List<JudgeReportSummaryDTO> findSummaries() {
+        return jooqDsl.select()
+                      .from(JUDGE_REPORT)
+                      .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
+                      .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                      .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
+                      .orderBy(JUDGE_REPORT.ID)
+                      .stream()
+                      .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
+                      .values().stream()
+                      .map(values -> {
+                          var record1 = values.get(0);
+                          var record2 = values.get(1);
+                          var record3 = values.get(2);
+
+                          return new JudgeReportSummaryDTO(
+                                  Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
+                                  Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                                  Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                                  record1.get(VEREIN.VEREINSNAME),
+                                  overallScore(record1, record2, record3),
+                                  values.stream()
+                                        .map(it -> new JudgeReportScoreDTO(
+                                                it.get(JUDGE_REPORT.ID),
+                                                it.get(JUDGE.NAME),
+                                                it.get(JUDGE_REPORT.SCORE),
+                                                JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS))
+                                        ))
+                                        .toList(),
+                                  isDone(record1, record2, record3)
+
+                          );
+                      })
+                      .toList();
+
+    }
+
+    private boolean isDone(Record record1, Record record2, Record record3) {
+        return JudgeReportStatus.valueOf(record1.get(JUDGE_REPORT.STATUS)) == DONE &&
+                JudgeReportStatus.valueOf(record2.get(JUDGE_REPORT.STATUS)) == DONE &&
+                JudgeReportStatus.valueOf(record3.get(JUDGE_REPORT.STATUS)) == DONE;
+    }
+
+    private Integer overallScore(Record record1, Record record2, Record record3) {
+        var score1 = record1.get(JUDGE_REPORT.SCORE);
+        var score2 = record2.get(JUDGE_REPORT.SCORE);
+        var score3 = record3.get(JUDGE_REPORT.SCORE);
+        if (score1 != null && score2 != null && score3 != null) {
+            return (score1 + score2 + score3) / 3;
+        }
+        return null;
     }
 }

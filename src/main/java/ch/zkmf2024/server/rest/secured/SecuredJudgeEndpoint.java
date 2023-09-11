@@ -2,6 +2,7 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
+import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.service.JudgeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,12 @@ public class SecuredJudgeEndpoint {
         judgeService.finish(userDetails.getUsername(), id);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<List<JudgeReportSummaryDTO>> summaries() {
+        log.info("GET /secured/judge/summary");
+        return ResponseEntity.ok(judgeService.findSummaries());
     }
 
 }
