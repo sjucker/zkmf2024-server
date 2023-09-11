@@ -223,7 +223,7 @@ public class VereinService {
 
     private void updateDoppeleinsatz(Long vereinId, List<DoppelEinsatzDTO> doppeleinsatz, boolean mitspielerDoppeleinsatz) {
         vereinRepository.deleteDoppeleinsatzByVereinId(vereinId);
-        if (mitspielerDoppeleinsatz) {
+        if (mitspielerDoppeleinsatz && doppeleinsatz != null) {
             for (var doppelEinsatzDTO : doppeleinsatz) {
                 vereinRepository.insert(new VereinDoppeleinsatzPojo(null,
                                                                     vereinId,
