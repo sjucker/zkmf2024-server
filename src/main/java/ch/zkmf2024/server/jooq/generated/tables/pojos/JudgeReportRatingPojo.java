@@ -13,6 +13,7 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
 
     private static final long serialVersionUID = 1L;
 
+    private Long id;
     private Long fkJudgeReport;
     private Long fkTitel;
     private String category;
@@ -23,6 +24,7 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
     }
 
     public JudgeReportRatingPojo(IJudgeReportRating value) {
+        this.id = value.getId();
         this.fkJudgeReport = value.getFkJudgeReport();
         this.fkTitel = value.getFkTitel();
         this.category = value.getCategory();
@@ -31,17 +33,35 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
     }
 
     public JudgeReportRatingPojo(
+            Long id,
             Long fkJudgeReport,
             Long fkTitel,
             String category,
             String rating,
             String comment
     ) {
+        this.id = id;
         this.fkJudgeReport = fkJudgeReport;
         this.fkTitel = fkTitel;
         this.category = category;
         this.rating = rating;
         this.comment = comment;
+    }
+
+    /**
+     * Getter for <code>judge_report_rating.id</code>.
+     */
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    /**
+     * Setter for <code>judge_report_rating.id</code>.
+     */
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -133,6 +153,11 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
         if (getClass() != obj.getClass())
             return false;
         final JudgeReportRatingPojo other = (JudgeReportRatingPojo) obj;
+        if (this.id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!this.id.equals(other.id))
+            return false;
         if (this.fkJudgeReport == null) {
             if (other.fkJudgeReport != null)
                 return false;
@@ -165,6 +190,7 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.fkJudgeReport == null) ? 0 : this.fkJudgeReport.hashCode());
         result = prime * result + ((this.fkTitel == null) ? 0 : this.fkTitel.hashCode());
         result = prime * result + ((this.category == null) ? 0 : this.category.hashCode());
@@ -177,7 +203,8 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
     public String toString() {
         StringBuilder sb = new StringBuilder("JudgeReportRatingPojo (");
 
-        sb.append(fkJudgeReport);
+        sb.append(id);
+        sb.append(", ").append(fkJudgeReport);
         sb.append(", ").append(fkTitel);
         sb.append(", ").append(category);
         sb.append(", ").append(rating);
@@ -193,6 +220,7 @@ public class JudgeReportRatingPojo implements IJudgeReportRating {
 
     @Override
     public void from(IJudgeReportRating from) {
+        setId(from.getId());
         setFkJudgeReport(from.getFkJudgeReport());
         setFkTitel(from.getFkTitel());
         setCategory(from.getCategory());

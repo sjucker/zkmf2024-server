@@ -12,6 +12,16 @@ import java.io.Serializable;
 public interface IJudgeReportRating extends Serializable {
 
     /**
+     * Setter for <code>judge_report_rating.id</code>.
+     */
+    public void setId(Long value);
+
+    /**
+     * Getter for <code>judge_report_rating.id</code>.
+     */
+    public Long getId();
+
+    /**
      * Setter for <code>judge_report_rating.fk_judge_report</code>.
      */
     public void setFkJudgeReport(Long value);

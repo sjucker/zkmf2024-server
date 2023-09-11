@@ -84,20 +84,6 @@ public class TimetableEntryDao extends DAOImpl<TimetableEntryRecord, TimetableEn
     }
 
     /**
-     * Fetch a unique record that has <code>fk_verein = value</code>
-     */
-    public TimetableEntryPojo fetchOneByFkVerein(Long value) {
-        return fetchOne(TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN, value);
-    }
-
-    /**
-     * Fetch a unique record that has <code>fk_verein = value</code>
-     */
-    public Optional<TimetableEntryPojo> fetchOptionalByFkVerein(Long value) {
-        return fetchOptional(TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN, value);
-    }
-
-    /**
      * Fetch records that have <code>fk_verein_programm BETWEEN lowerInclusive
      * AND upperInclusive</code>
      */

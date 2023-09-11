@@ -8,11 +8,12 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRatingRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function5;
+import org.jooq.Function6;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -49,6 +50,11 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
     }
 
     /**
+     * The column <code>judge_report_rating.id</code>.
+     */
+    public final TableField<JudgeReportRatingRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+
+    /**
      * The column <code>judge_report_rating.fk_judge_report</code>.
      */
     public final TableField<JudgeReportRatingRecord, Long> FK_JUDGE_REPORT = createField(DSL.name("fk_judge_report"), SQLDataType.BIGINT.nullable(false), this, "");
@@ -56,7 +62,7 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
     /**
      * The column <code>judge_report_rating.fk_titel</code>.
      */
-    public final TableField<JudgeReportRatingRecord, Long> FK_TITEL = createField(DSL.name("fk_titel"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<JudgeReportRatingRecord, Long> FK_TITEL = createField(DSL.name("fk_titel"), SQLDataType.BIGINT, this, "");
 
     /**
      * The column <code>judge_report_rating.category</code>.
@@ -112,8 +118,18 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
     }
 
     @Override
+    public Identity<JudgeReportRatingRecord, Long> getIdentity() {
+        return (Identity<JudgeReportRatingRecord, Long>) super.getIdentity();
+    }
+
+    @Override
     public UniqueKey<JudgeReportRatingRecord> getPrimaryKey() {
         return Keys.KEY_JUDGE_REPORT_RATING_PRIMARY;
+    }
+
+    @Override
+    public List<UniqueKey<JudgeReportRatingRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.KEY_JUDGE_REPORT_RATING_UQ_JUDGE_REPORT_RATING);
     }
 
     @Override
@@ -185,18 +201,18 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, String, String, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Long, Long, Long, String, String, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function5<? super Long, ? super Long, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super Long, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -204,7 +220,7 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super Long, ? super Long, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super Long, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

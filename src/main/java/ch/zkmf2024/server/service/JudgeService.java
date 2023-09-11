@@ -2,6 +2,7 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
+import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
@@ -68,18 +69,24 @@ public class JudgeService {
             judgeRepository.insert(
                     new JudgeReportCommentPojo(reportId, reportTitle.titel().id(), reportTitle.comment())
             );
+            updateRatings(reportTitle.ratings(), reportId, reportTitle.titel().id());
+        }
 
-            for (var rating : reportTitle.ratings()) {
-                judgeRepository.insert(
-                        new JudgeReportRatingPojo(
-                                reportId,
-                                reportTitle.titel().id(),
-                                rating.category().name(),
-                                rating.rating().name(),
-                                rating.comment()
-                        )
-                );
-            }
+        updateRatings(dto.overallRatings(), reportId, null);
+    }
+
+    private void updateRatings(List<JudgeReportRatingDTO> reportTitle, Long reportId, Long titleId) {
+        for (var rating : reportTitle) {
+            judgeRepository.insert(
+                    new JudgeReportRatingPojo(
+                            null,
+                            reportId,
+                            titleId,
+                            rating.category().name(),
+                            rating.rating().name(),
+                            rating.comment()
+                    )
+            );
         }
     }
 
