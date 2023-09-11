@@ -37,7 +37,6 @@ public class TimetableRepository {
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
                       .fetch(it -> {
-                          // TODO efficient?
                           var judgeNames = jooqDsl.select()
                                                   .from(JUDGE_REPORT)
                                                   .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
@@ -54,7 +53,6 @@ public class TimetableRepository {
                                   it.get(TIMETABLE_ENTRY.DATE),
                                   it.get(TIMETABLE_ENTRY.START_TIME),
                                   it.get(TIMETABLE_ENTRY.END_TIME),
-                                  // TODO always safe that all 3 set?
                                   judgeNames.get(0),
                                   judgeNames.get(1),
                                   judgeNames.get(2)
