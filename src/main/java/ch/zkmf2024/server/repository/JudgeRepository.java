@@ -25,7 +25,6 @@ import org.springframework.stereotype.Repository;
 
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -143,7 +142,8 @@ public class JudgeRepository {
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::maxDurationInSeconds).orElse(null),
                                   it.get(JUDGE_REPORT.SCORE),
                                   JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
-                                  findTitles(judgeId, reportId)
+                                  findTitles(judgeId, reportId),
+                                  findOverallRatings(reportId, modul)
                           );
                       });
     }
@@ -160,52 +160,78 @@ public class JudgeRepository {
                       .where(JUDGE_REPORT.FK_JUDGE.eq(judgeId),
                              JUDGE_REPORT.ID.eq(reportId))
                       .orderBy(VEREIN_PROGRAMM_TITEL.POSITION)
-                      .fetch(it -> new JudgeReportTitleDTO(
-                              new TitelDTO(
-                                      it.get(TITEL.ID),
-                                      Modul.valueOf(it.get(TITEL.MODUL)),
-                                      it.get(TITEL.TITEL_NAME),
-                                      it.get(TITEL.COMPOSER),
-                                      it.get(TITEL.ARRANGEUR),
-                                      it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
-                                      it.get(TITEL.SCHWIERIGKEITSGRAD),
-                                      it.get(TITEL.DURATION_IN_SECONDS),
-                                      it.get(TITEL.FK_VEREIN) == null,
-                                      it.get(TITEL.INFO_MODERATION)
-                              ),
-                              it.get(JUDGE_REPORT_COMMENT.COMMENT),
-                              findRatings(it.get(JUDGE_REPORT.ID), it.get(TITEL.ID))
-                      ));
+                      .fetch(it -> {
+                          var modul = Modul.valueOf(it.get(TITEL.MODUL));
+                          return new JudgeReportTitleDTO(
+                                  new TitelDTO(
+                                          it.get(TITEL.ID),
+                                          modul,
+                                          it.get(TITEL.TITEL_NAME),
+                                          it.get(TITEL.COMPOSER),
+                                          it.get(TITEL.ARRANGEUR),
+                                          it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
+                                          it.get(TITEL.SCHWIERIGKEITSGRAD),
+                                          it.get(TITEL.DURATION_IN_SECONDS),
+                                          it.get(TITEL.FK_VEREIN) == null,
+                                          it.get(TITEL.INFO_MODERATION)
+                                  ),
+                                  it.get(JUDGE_REPORT_COMMENT.COMMENT),
+                                  findTitelRatings(it.get(JUDGE_REPORT.ID), it.get(TITEL.ID), modul)
+                          );
+                      });
 
     }
 
-    private List<JudgeReportRatingDTO> findRatings(Long reportId, Long titelId) {
+    private List<JudgeReportRatingDTO> findOverallRatings(Long reportId, Modul modul) {
         var ratings = jooqDsl.select()
                              .from(JUDGE_REPORT_RATING)
                              .where(JUDGE_REPORT_RATING.FK_JUDGE_REPORT.eq(reportId),
-                                    JUDGE_REPORT_RATING.FK_TITEL.eq(titelId))
-                             .fetch(it -> {
-                                 var category = JudgeReportCategory.fromString(it.get(JUDGE_REPORT_RATING.CATEGORY));
-                                 return new JudgeReportRatingDTO(
-                                         category.orElseThrow(),
-                                         category.map(JudgeReportCategory::getDescription).orElseThrow(),
-                                         it.get(JUDGE_REPORT_RATING.COMMENT),
-                                         JudgeReportCategoryRating.fromString(it.get(JUDGE_REPORT_RATING.RATING)).orElseThrow()
-                                 );
-                             }).stream()
+                                    JUDGE_REPORT_RATING.FK_TITEL.isNull())
+                             .fetch(this::toJudgeReportRatingDTO).stream()
                              .sorted(comparing(JudgeReportRatingDTO::category))
                              .toList();
 
         if (ratings.isEmpty()) {
-            // TODO load according to Modul
-            ratings = Arrays.stream(JudgeReportCategory.values())
-                            .map(cateogry -> new JudgeReportRatingDTO(
-                                    cateogry,
-                                    cateogry.getDescription(),
-                                    null,
-                                    NEUTRAL
-                            ))
-                            .toList();
+            ratings = JudgeReportCategory.get(modul, true).stream()
+                                         .map(this::toJudgeReportRatingDTO)
+                                         .toList();
+        }
+
+        return ratings;
+    }
+
+    private JudgeReportRatingDTO toJudgeReportRatingDTO(JudgeReportCategory cateogry) {
+        return new JudgeReportRatingDTO(
+                cateogry,
+                cateogry.getDescription(),
+                null,
+                NEUTRAL
+        );
+    }
+
+    private JudgeReportRatingDTO toJudgeReportRatingDTO(org.jooq.Record it) {
+        var category = JudgeReportCategory.fromString(it.get(JUDGE_REPORT_RATING.CATEGORY));
+        return new JudgeReportRatingDTO(
+                category.orElseThrow(),
+                category.map(JudgeReportCategory::getDescription).orElseThrow(),
+                it.get(JUDGE_REPORT_RATING.COMMENT),
+                JudgeReportCategoryRating.fromString(it.get(JUDGE_REPORT_RATING.RATING)).orElseThrow()
+        );
+    }
+
+    private List<JudgeReportRatingDTO> findTitelRatings(Long reportId, Long titelId, Modul modul) {
+        var ratings = jooqDsl.select()
+                             .from(JUDGE_REPORT_RATING)
+                             .where(JUDGE_REPORT_RATING.FK_JUDGE_REPORT.eq(reportId),
+                                    JUDGE_REPORT_RATING.FK_TITEL.eq(titelId))
+                             .fetch(this::toJudgeReportRatingDTO).stream()
+                             .sorted(comparing(JudgeReportRatingDTO::category))
+                             .toList();
+
+        if (ratings.isEmpty()) {
+            ratings = JudgeReportCategory.get(modul, false).stream()
+                                         .map(this::toJudgeReportRatingDTO)
+                                         .toList();
         }
 
         return ratings;
