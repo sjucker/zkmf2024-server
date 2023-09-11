@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
+import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
@@ -58,6 +59,10 @@ public class JudgeService {
         }
 
         var reportPojo = judgeRepository.findReportById(reportId);
+        if (JudgeReportStatus.valueOf(reportPojo.getStatus()) == DONE) {
+            throw new IllegalArgumentException("tried to update report with id %d that was already done".formatted(reportId));
+        }
+
         reportPojo.setScore(dto.score());
         reportPojo.setStatus(IN_PROGRESS.name());
         judgeRepository.update(reportPojo);
@@ -121,5 +126,9 @@ public class JudgeService {
         return judgeRepository.findAll().stream()
                               .map(it -> new JudgeDTO(it.getId(), it.getName(), it.getEmail()))
                               .toList();
+    }
+
+    public List<JudgeReportSummaryDTO> findSummaries() {
+        return judgeRepository.findSummaries();
     }
 }

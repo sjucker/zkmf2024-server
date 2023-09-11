@@ -38,6 +38,7 @@ export class TimetableComponent implements OnInit {
     ref?: DynamicDialogRef;
 
     timetable: Map<string, TimetableEntryDTO[]> = new Map();
+    locations: string[] = [];
 
     constructor(private service: TimetableService,
                 public dialogService: DialogService,
@@ -80,12 +81,10 @@ export class TimetableComponent implements OnInit {
                         this.timetable.set(dto.location, [dto]);
                     }
                 }
+
+                this.locations = [...this.timetable.keys()];
             }
         });
-    }
-
-    get locations(): IterableIterator<string> {
-        return this.timetable.keys();
     }
 
     getEntriesForLocation(location: string): TimetableEntryDTO[] {
