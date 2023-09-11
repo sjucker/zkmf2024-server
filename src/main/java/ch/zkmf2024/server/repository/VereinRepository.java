@@ -46,7 +46,6 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
-import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
@@ -161,9 +160,7 @@ public class VereinRepository {
     public List<VereinSelectionDTO> findAllForSelection() {
         return jooqDsl.select()
                       .from(VEREIN)
-                      .join(VEREIN_STATUS).on(VEREIN_STATUS.FK_VEREIN.eq(VEREIN.ID))
-                      .where(VEREIN.CONFIRMED_AT.isNotNull(),
-                             VEREIN_STATUS.PHASE2.eq(DONE.name()))
+                      .where(VEREIN.CONFIRMED_AT.isNotNull())
                       .orderBy(VEREIN.VEREINSNAME)
                       .fetch(it -> new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)));
     }
