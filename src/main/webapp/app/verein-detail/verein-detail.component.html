@@ -24,25 +24,50 @@
                 <div><b>Ablauf</b></div>
                 <table>
                     <tr>
-                        <th>Nr.</th>
-                        <th>Musikstück</th>
-                        <th *ngIf="!isModulC(programm)">Dauer Stück</th>
-                        <th *ngIf="isModulAB(programm) || isModulH(programm)">Dauer Applaus</th>
+                        <th class="pl-2 pr-2 text-left">Nr.</th>
+                        <th class="pl-2 pr-2 text-left">Musikstück</th>
+                        <th class="pl-2 pr-2 text-left"
+                            *ngIf="!isModulC(programm)">
+                            Dauer Stück
+                        </th>
+                        <th class="pl-2 pr-2 text-left"
+                            *ngIf="isModulAB(programm) || isModulH(programm)">
+                            Dauer Applaus
+                        </th>
+                        <th class="pl-2 pr-2 text-left"
+                            *ngIf="isModulAB(programm) || isModulH(programm)">
+                            Grad
+                        </th>
                     </tr>
                     <tr *ngFor="let entry of programm.ablauf; let i = index; let first = first; let last = last;">
-                        <td>{{i + 1}}</td>
-                        <td>
+                        <td class="pl-2 pr-2">{{i + 1}}</td>
+                        <td class="pl-2 pr-2">
                             {{entry.titel.titelName}} ({{entry.titel.composer}})<span *ngIf="entry.titel.pflichtStueck">*</span>
                         </td>
-                        <td *ngIf="!isModulC(programm)">{{formatDuration(entry.titel.durationInSeconds)}}</td>
-                        <td *ngIf="isModulAB(programm) || isModulH(programm)">{{entry.applausInSeconds ?? ''}}</td>
+                        <td class="pl-2 pr-2"
+                            *ngIf="!isModulC(programm)">
+                            {{formatDuration(entry.titel.durationInSeconds)}}
+                        </td>
+                        <td class="pl-2 pr-2"
+                            *ngIf="isModulAB(programm) || isModulH(programm)">
+                            {{formatDuration(entry.applausInSeconds)}}
+                        </td>
+                        <td class="pl-2 pr-2" *ngIf="isModulAB(programm)">
+                            {{entry.titel.grad}}
+                        </td>
+                        <td class="pl-2 pr-2"
+                            *ngIf="isModulH(programm)">
+                            {{entry.titel.schwierigkeitsgrad}}
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
-                        <td *ngIf="hasVorgabeDauer(programm) && !this.isModulC(programm) && programm.ablauf.length > 0">
+                        <td class="pl-2 pr-2"
+                            *ngIf="hasVorgabeDauer(programm) && !this.isModulC(programm) && programm.ablauf.length > 0">
                             <b>{{formatDuration(programm.totalDurationInSeconds)}}</b>
                         </td>
+                        <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
                         <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
                     </tr>
                 </table>
@@ -128,10 +153,6 @@
         </div>
         <div *ngIf="verein.angaben.mitspielerDoppeleinsatz">
             <span class="font-semibold"> Musikant/innen - Doppelteilnahme:</span> ja
-
-            <div *ngFor="let doppeleinsatz of verein.doppelEinsatz">
-                {{doppeleinsatz.mitspielerName}}, {{doppeleinsatz.otherVerein.name}}
-            </div>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Kontaktangaben - Präsident/in">
