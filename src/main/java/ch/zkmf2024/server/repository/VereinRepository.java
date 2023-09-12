@@ -230,7 +230,8 @@ public class VereinRepository {
                               ),
                               new VereinsinfoDTO(null, null, ""),
                               it.get(VEREIN.CONFIRMED_AT) != null,
-                              findProgramme(it.get(VEREIN.ID))
+//                              findProgramme(it.get(VEREIN.ID))
+                              List.of()
                       ));
     }
 
