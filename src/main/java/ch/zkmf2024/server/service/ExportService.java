@@ -1,7 +1,9 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.Klasse;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -10,8 +12,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsLast;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ExportService {
@@ -28,11 +40,103 @@ public class ExportService {
 
             fillVereineSheet(wb, dtos);
             fillDoppeleinsatzSheet(wb, dtos);
+            fillProgramme(wb, dtos);
 
             var temp = Files.createTempFile(null, ".xlsx");
             try (var fileOut = new FileOutputStream(temp.toFile())) {
                 wb.write(fileOut);
                 return temp.toFile();
+            }
+        }
+    }
+
+    private void fillProgramme(XSSFWorkbook wb, List<VereinDTO> vereine) {
+        Map<Modul, List<VereinProgrammDTO>> perModul = vereine.stream()
+                                                              .flatMap(vereinDTO -> vereinDTO.programme().stream())
+                                                              .collect(groupingBy(vereinProgrammDTO -> vereinProgrammDTO.modul(), toList()));
+
+        Map<Long, String> toVereine = new HashMap<>();
+        for (var vereinDTO : vereine) {
+            for (var vereinProgrammDTO : vereinDTO.programme()) {
+                toVereine.put(vereinProgrammDTO.id(), vereinDTO.angaben().vereinsname());
+            }
+        }
+
+        int sheetIndex = 2;
+        for (var modul : Modul.values()) {
+            var sheet = wb.createSheet();
+            wb.setSheetName(sheetIndex++, "Modul %s".formatted(modul.name()));
+
+            var programme = perModul.getOrDefault(modul, new ArrayList<>());
+            var maxTitel = programme.stream()
+                                    .mapToInt(vereinProgrammDTO -> vereinProgrammDTO.ablauf().size())
+                                    .max()
+                                    .orElse(0);
+
+            int rowIndex = 1;
+            addModulHeader(modul, sheet.createRow(0), maxTitel);
+            for (var vereinProgrammDTO : programme.stream()
+                                                  .sorted(comparing(VereinProgrammDTO::klasse, nullsLast(naturalOrder()))
+                                                                  .thenComparing(VereinProgrammDTO::besetzung, nullsLast(naturalOrder()))
+                                                                  .thenComparing(VereinProgrammDTO::id))
+                                                  .toList()) {
+                var row = sheet.createRow(rowIndex++);
+                addModulData(modul, wb, row, vereinProgrammDTO, toVereine.get(vereinProgrammDTO.id()));
+            }
+
+            int columnIndex = switch (modul) {
+                case A -> 3 + (4 * maxTitel);
+                default -> 0;
+            };
+
+            for (int i = 0; i < columnIndex; i++) {
+                sheet.autoSizeColumn(i);
+            }
+        }
+    }
+
+    private void addModulData(Modul modul, XSSFWorkbook wb, XSSFRow row, VereinProgrammDTO vereinProgrammDTO, String vereinsname) {
+        var columnIndex = 0;
+        columnIndex = setCellValue(columnIndex, row, vereinsname, wb);
+
+        var ablauf = vereinProgrammDTO.ablauf();
+
+        switch (modul) {
+            case A -> {
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.klasse(), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.besetzung(), wb);
+                for (var programmTitelDTO : ablauf) {
+                    columnIndex = setCellValue(columnIndex, row, "%s (%s)".formatted(programmTitelDTO.titel().titelName(),
+                                                                                     programmTitelDTO.titel().composer()),
+                                               wb);
+                    columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().grad(), wb);
+                    columnIndex = setCellValue(columnIndex, row, getDuration(programmTitelDTO.titel().durationInSeconds()), wb);
+                    columnIndex = setCellValue(columnIndex, row, programmTitelDTO.applausInSeconds(), wb);
+                }
+            }
+        }
+    }
+
+    private Duration getDuration(Integer seconds) {
+        if (seconds != null) {
+            return Duration.ofSeconds(seconds);
+        }
+        return Duration.ZERO;
+    }
+
+    private void addModulHeader(Modul modul, XSSFRow headerRow, int maxTitel) {
+        var columnIndex = 0;
+        headerRow.createCell(columnIndex++).setCellValue("Vereinsname");
+        switch (modul) {
+            case A -> {
+                headerRow.createCell(columnIndex++).setCellValue("Klasse");
+                headerRow.createCell(columnIndex++).setCellValue("Besetzung");
+                for (var i = 0; i < maxTitel; i++) {
+                    headerRow.createCell(columnIndex++).setCellValue("Musikstück");
+                    headerRow.createCell(columnIndex++).setCellValue("Grad");
+                    headerRow.createCell(columnIndex++).setCellValue("Dauer Stück");
+                    headerRow.createCell(columnIndex++).setCellValue("Dauer Applaus");
+                }
             }
         }
     }
@@ -165,12 +269,12 @@ public class ExportService {
         for (var vereinDTO : vereine) {
             if (!vereinDTO.doppelEinsatz().isEmpty()) {
                 var row = sheet.createRow(rowIndex++);
-                setCellValue(0, row, vereinDTO.angaben().vereinsname());
+                setCellValue(0, row, vereinDTO.angaben().vereinsname(), wb);
 
                 for (var doppelEinsatzDTO : vereinDTO.doppelEinsatz()) {
                     row = sheet.createRow(rowIndex++);
-                    setCellValue(1, row, doppelEinsatzDTO.otherVerein().name());
-                    setCellValue(2, row, doppelEinsatzDTO.mitspielerName());
+                    setCellValue(1, row, doppelEinsatzDTO.otherVerein().name(), wb);
+                    setCellValue(2, row, doppelEinsatzDTO.mitspielerName(), wb);
                 }
             }
 
@@ -182,10 +286,10 @@ public class ExportService {
     }
 
     private <T> int setCellValue(int columnIndex, VereinDTO vereinDTO, XSSFRow row, Function<VereinDTO, T> getter) {
-        return setCellValue(columnIndex, row, getter.apply(vereinDTO));
+        return setCellValue(columnIndex, row, getter.apply(vereinDTO), null);
     }
 
-    private <T> int setCellValue(int columnIndex, XSSFRow row, T value) {
+    private <T> int setCellValue(int columnIndex, XSSFRow row, T value, XSSFWorkbook wb) {
         var cell = row.createCell(columnIndex++);
         if (value != null) {
             if (value instanceof String stringValue) {
@@ -194,10 +298,20 @@ public class ExportService {
                 cell.setCellValue(numberValue);
             } else if (value instanceof Integer integerValue) {
                 cell.setCellValue(integerValue);
+            } else if (value instanceof Float floatValue) {
+                cell.setCellValue(floatValue);
             } else if (value instanceof Boolean booleanValue) {
                 cell.setCellValue(booleanValue ? "x" : "");
             } else if (value instanceof Klasse klasseValue) {
                 cell.setCellValue(klasseValue.getDescription());
+            } else if (value instanceof Duration durationValue) {
+                var durationCellStyle = wb.createCellStyle();
+                var creationHelper = wb.getCreationHelper();
+                durationCellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("mm:ss"));
+
+                var seconds = durationValue.getSeconds();
+                cell.setCellValue("%02d:%02d".formatted(seconds / 60, seconds % 60));
+                cell.setCellStyle(durationCellStyle);
             }
         }
         return columnIndex;
