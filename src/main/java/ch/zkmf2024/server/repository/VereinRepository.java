@@ -64,6 +64,7 @@ import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
 import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static org.jooq.impl.DSL.field;
@@ -177,6 +178,7 @@ public class VereinRepository {
     public List<VereinDTO> findAllForExport() {
         var stopWatch = new StopWatch();
         var programmePerVereinId = findProgrammePerVereinId();
+        var doppeleinsatzPerVereinId = findDoppeleinsatzPerVereinId();
 
         stopWatch.splitInfo("findProgrammePerVereinId");
 
@@ -200,7 +202,7 @@ public class VereinRepository {
                                             it.get(VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN),
                                             it.get(VEREIN.MITSPIELER_DOPPELEINSATZ)
                                     ),
-                                    findDoppeleinsatz(it.get(VEREIN.ID)),
+                                    doppeleinsatzPerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>()),
                                     new KontaktDTO(
                                             it.get(praesident.VORNAME),
                                             it.get(praesident.NACHNAME),
@@ -251,6 +253,18 @@ public class VereinRepository {
         return result;
     }
 
+    private Map<Long, List<DoppelEinsatzDTO>> findDoppeleinsatzPerVereinId() {
+        return jooqDsl.select()
+                      .from(VEREIN_DOPPELEINSATZ)
+                      .join(VEREIN).on(VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN.eq(VEREIN.ID))
+                      .stream()
+                      .collect(groupingBy(it -> it.get(VEREIN.ID),
+                                          mapping(it -> new DoppelEinsatzDTO(
+                                                  new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)),
+                                                  it.get(VEREIN_DOPPELEINSATZ.NAME)
+                                          ), toList())));
+    }
+
     public Map<Long, List<VereinProgrammDTO>> findProgrammePerVereinId() {
         Map<Long, Map<Modul, List<Record>>> rows = jooqDsl.select()
                                                           .from(VEREIN)
@@ -262,14 +276,12 @@ public class VereinRepository {
                                                                               groupingBy(it -> Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
                                                                                          toList())));
 
-        Map<Long, Map<Modul, VereinProgrammDTO>> result = new HashMap<>();
-
+        var result = new HashMap<Long, Map<Modul, VereinProgrammDTO>>();
         for (var entry : rows.entrySet()) {
             var vereinId = entry.getKey();
             var value = entry.getValue();
 
             var programmPerModul = result.computeIfAbsent(vereinId, key -> new HashMap<>());
-
             for (var recordEntry : value.entrySet()) {
                 var records = recordEntry.getValue();
 
@@ -294,7 +306,6 @@ public class VereinRepository {
                                 modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_C),
                                 TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).orElse(null),
                                 TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).orElse(null),
-                                // TODO efficient?
                                 getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID), modul),
                                 getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID), modul),
                                 getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID), modul),
