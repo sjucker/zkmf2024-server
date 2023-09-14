@@ -94,15 +94,16 @@ public class ExportService {
                 var row = sheet.createRow(rowIndex++);
                 addModulData(modul, wb, row, vereinProgrammDTO, toVereine.get(vereinProgrammDTO.id()));
             }
+// TODO skip the info cell with long texts
+//            int columnIndex = switch (modul) {
+//                case A -> 5 + (5 * maxTitel);
+//                default -> 0;
+//            };
 
-            int columnIndex = switch (modul) {
-                case A -> 3 + (4 * maxTitel);
-                default -> 0;
-            };
+//            for (int i = 0; i < columnIndex; i++) {
 
-            for (int i = 0; i < columnIndex; i++) {
-                sheet.autoSizeColumn(i);
-            }
+//                sheet.autoSizeColumn(i);
+//            }
         }
     }
 
@@ -116,6 +117,8 @@ public class ExportService {
             case A -> {
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.klasse(), wb);
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.besetzung(), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.titel(), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.infoModeration(), wb);
                 for (var programmTitelDTO : ablauf) {
                     columnIndex = setCellValue(columnIndex, row, "%s (%s)".formatted(programmTitelDTO.titel().titelName(),
                                                                                      programmTitelDTO.titel().composer()),
@@ -123,6 +126,7 @@ public class ExportService {
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().grad(), wb);
                     columnIndex = setCellValue(columnIndex, row, getDuration(programmTitelDTO.titel().durationInSeconds()), wb);
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.applausInSeconds(), wb);
+                    columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().infoModeration(), wb);
                 }
             }
         }
@@ -142,11 +146,14 @@ public class ExportService {
             case A -> {
                 headerRow.createCell(columnIndex++).setCellValue("Klasse");
                 headerRow.createCell(columnIndex++).setCellValue("Besetzung");
+                headerRow.createCell(columnIndex++).setCellValue("Programmtitel");
+                headerRow.createCell(columnIndex++).setCellValue("Erläuterungen zum Selbstwahlprogramm");
                 for (var i = 0; i < maxTitel; i++) {
                     headerRow.createCell(columnIndex++).setCellValue("Musikstück");
                     headerRow.createCell(columnIndex++).setCellValue("Grad");
                     headerRow.createCell(columnIndex++).setCellValue("Dauer Stück");
                     headerRow.createCell(columnIndex++).setCellValue("Dauer Applaus");
+                    headerRow.createCell(columnIndex++).setCellValue("Info");
                 }
             }
         }
