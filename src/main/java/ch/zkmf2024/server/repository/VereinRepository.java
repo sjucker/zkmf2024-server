@@ -295,17 +295,17 @@ public class VereinRepository {
                                 TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).orElse(null),
                                 TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).orElse(null),
                                 // TODO efficient?
-                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
-                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
-                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
-                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID), modul),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_PA),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_EGITARRE),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_EBASS),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_KEYBOARD),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_GESANG),
-                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
-                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null)
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID), modul)
                         );
                     });
 
@@ -504,9 +504,12 @@ public class VereinRepository {
     }
 
     private TitelDTO getTitelOrEmpty(Long titelId, Modul modul) {
+        if (titelId == null) {
+            return TitelDTO.empty(modul);
+        }
         return titelDao.findOptionalById(titelId)
                        .map(MAPPER::toDTO)
-                       .orElse(new TitelDTO(null, modul, null, null, null, null, null, 0, false, null));
+                       .orElse(TitelDTO.empty(modul));
     }
 
     private List<VereinProgrammTitelDTO> getVereinProgrammTitel(Long programmId, Modul modul, Klasse klasse, Besetzung besetzung) {

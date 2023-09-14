@@ -32,4 +32,8 @@ public record TitelDTO(Long id,
         };
     }
 
+    public static TitelDTO empty(Modul modul) {
+        return new TitelDTO(null, modul, null, null, null, null, null, 0, false, null);
+    }
+
 }
