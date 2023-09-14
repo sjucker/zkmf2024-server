@@ -38,10 +38,15 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
@@ -57,6 +62,9 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
 import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.notExists;
 import static org.jooq.impl.DSL.selectCount;
@@ -166,6 +174,9 @@ public class VereinRepository {
     }
 
     public List<VereinDTO> findAllForExport() {
+
+        var programmePerVereinId = findProgrammePerVereinId();
+
         var praesident = KONTAKT.as("praesident");
         var direktion = KONTAKT.as("direktion");
         return jooqDsl.select()
@@ -230,9 +241,96 @@ public class VereinRepository {
                               ),
                               new VereinsinfoDTO(null, null, ""),
                               it.get(VEREIN.CONFIRMED_AT) != null,
-//                              findProgramme(it.get(VEREIN.ID))
-                              List.of()
+                              programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>())
                       ));
+    }
+
+    public Map<Long, List<VereinProgrammDTO>> findProgrammePerVereinId() {
+        Map<Long, Map<Modul, List<Record>>> rows = jooqDsl.select()
+                                                          .from(VEREIN)
+                                                          .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
+                                                          .leftJoin(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                                                          .leftJoin(TITEL).on(TITEL.ID.eq(VEREIN_PROGRAMM_TITEL.FK_TITEL))
+                                                          .stream()
+                                                          .collect(groupingBy(it -> it.get(VEREIN.ID),
+                                                                              groupingBy(it -> Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
+                                                                                         toList())));
+
+        Map<Long, Map<Modul, VereinProgrammDTO>> result = new HashMap<>();
+
+        for (var entry : rows.entrySet()) {
+            var vereinId = entry.getKey();
+            var value = entry.getValue();
+
+            var programmPerModul = result.computeIfAbsent(vereinId, key -> new HashMap<>());
+
+            for (var recordEntry : value.entrySet()) {
+                var records = recordEntry.getValue();
+
+                for (var r : records) {
+
+                    var vereinProgrammDTO = programmPerModul.computeIfAbsent(recordEntry.getKey(), key -> {
+                        var modul = Modul.valueOf(r.get(VEREIN_PROGRAMM.MODUL));
+                        return new VereinProgrammDTO(
+                                r.get(VEREIN_PROGRAMM.ID),
+                                modul,
+                                modul.getFullDescription(),
+                                Klasse.fromString(r.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                                Besetzung.fromString(r.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                                r.get(VEREIN_PROGRAMM.TITEL),
+                                r.get(VEREIN_PROGRAMM.INFO_MODERATION),
+                                0,
+                                null,
+                                null,
+                                new ArrayList<>(),
+                                modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_A),
+                                modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_B),
+                                modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_C),
+                                TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).orElse(null),
+                                TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).orElse(null),
+                                // TODO efficient?
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID), modul),
+                                r.get(VEREIN_PROGRAMM.MODUL_B_PA),
+                                r.get(VEREIN_PROGRAMM.MODUL_B_EGITARRE),
+                                r.get(VEREIN_PROGRAMM.MODUL_B_EBASS),
+                                r.get(VEREIN_PROGRAMM.MODUL_B_KEYBOARD),
+                                r.get(VEREIN_PROGRAMM.MODUL_B_GESANG),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), modul),
+                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID), modul)
+                        );
+                    });
+
+                    if (r.get(TITEL.ID) != null) {
+                        vereinProgrammDTO.ablauf().add(toVereinProgrammTitelDTO(r));
+                    }
+                }
+            }
+        }
+
+        return result.entrySet().stream()
+                     .collect(toMap(Entry::getKey,
+                                    entry -> entry.getValue().values().stream().toList()));
+    }
+
+    private VereinProgrammTitelDTO toVereinProgrammTitelDTO(Record it) {
+        return new VereinProgrammTitelDTO(
+                new TitelDTO(
+                        it.get(TITEL.ID),
+                        Modul.valueOf(it.get(TITEL.MODUL)),
+                        it.get(TITEL.TITEL_NAME),
+                        it.get(TITEL.COMPOSER),
+                        it.get(TITEL.ARRANGEUR),
+                        it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
+                        it.get(TITEL.SCHWIERIGKEITSGRAD),
+                        it.get(TITEL.DURATION_IN_SECONDS),
+                        it.get(TITEL.FK_VEREIN) == null,
+                        it.get(TITEL.INFO_MODERATION)
+                ),
+                it.get(VEREIN_PROGRAMM_TITEL.APPLAUS_IN_SECONDS)
+        );
     }
 
     public List<Long> findAllVereinIds() {
@@ -411,21 +509,7 @@ public class VereinRepository {
                             .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
                             .where(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(programmId))
                             .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
-                            .fetch(it -> new VereinProgrammTitelDTO(
-                                    new TitelDTO(
-                                            it.get(TITEL.ID),
-                                            Modul.valueOf(it.get(TITEL.MODUL)),
-                                            it.get(TITEL.TITEL_NAME),
-                                            it.get(TITEL.COMPOSER),
-                                            it.get(TITEL.ARRANGEUR),
-                                            it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
-                                            it.get(TITEL.SCHWIERIGKEITSGRAD),
-                                            it.get(TITEL.DURATION_IN_SECONDS),
-                                            it.get(TITEL.FK_VEREIN) == null,
-                                            it.get(TITEL.INFO_MODERATION)
-                                    ),
-                                    it.get(VEREIN_PROGRAMM_TITEL.APPLAUS_IN_SECONDS)
-                            ));
+                            .fetch(this::toVereinProgrammTitelDTO);
 
         // first time loading the Programm, automatically add the Pflichtitel (which cannot be deleted)
         if (ablauf.isEmpty()) {
