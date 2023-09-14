@@ -53,7 +53,7 @@ public class ExportService {
     private void fillProgramme(XSSFWorkbook wb, List<VereinDTO> vereine) {
         Map<Modul, List<VereinProgrammDTO>> perModul = vereine.stream()
                                                               .flatMap(vereinDTO -> vereinDTO.programme().stream())
-                                                              .collect(groupingBy(vereinProgrammDTO -> vereinProgrammDTO.modul(), toList()));
+                                                              .collect(groupingBy(VereinProgrammDTO::modul, toList()));
 
         Map<Long, String> toVereine = new HashMap<>();
         for (var vereinDTO : vereine) {
