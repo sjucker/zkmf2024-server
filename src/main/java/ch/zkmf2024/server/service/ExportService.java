@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jooq.tools.StopWatch;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -35,16 +36,26 @@ public class ExportService {
     }
 
     public File exportVereine() throws IOException {
+        var stopWatch = new StopWatch();
         try (var wb = new XSSFWorkbook()) {
             var dtos = vereinService.findAllForExport();
 
+            stopWatch.splitInfo("findAllForExport");
+
             fillVereineSheet(wb, dtos);
+            stopWatch.splitInfo("fillVereineSheet");
+
             fillDoppeleinsatzSheet(wb, dtos);
+            stopWatch.splitInfo("fillDoppeleinsatzSheet");
+
             fillProgramme(wb, dtos);
+            stopWatch.splitInfo("fillProgramme");
 
             var temp = Files.createTempFile(null, ".xlsx");
             try (var fileOut = new FileOutputStream(temp.toFile())) {
                 wb.write(fileOut);
+                stopWatch.splitInfo("write");
+
                 return temp.toFile();
             }
         }

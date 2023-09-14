@@ -40,6 +40,7 @@ import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
+import org.jooq.tools.StopWatch;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -174,75 +175,80 @@ public class VereinRepository {
     }
 
     public List<VereinDTO> findAllForExport() {
-
+        var stopWatch = new StopWatch();
         var programmePerVereinId = findProgrammePerVereinId();
+
+        stopWatch.splitInfo("findProgrammePerVereinId");
 
         var praesident = KONTAKT.as("praesident");
         var direktion = KONTAKT.as("direktion");
-        return jooqDsl.select()
-                      .from(VEREIN)
-                      .join(praesident).on(VEREIN.PRAESIDENT_KONTAKT_ID.eq(praesident.ID))
-                      .join(direktion).on(VEREIN.DIREKTION_KONTAKT_ID.eq(direktion.ID))
-                      .orderBy(VEREIN.VEREINSNAME)
-                      .fetch(it -> new VereinDTO(
-                              it.get(VEREIN.EMAIL),
-                              new VereinsangabenDTO(
-                                      it.get(VEREIN.VEREINSNAME),
-                                      it.get(VEREIN.ADRESSE),
-                                      it.get(VEREIN.PLZ),
-                                      it.get(VEREIN.ORT),
-                                      it.get(VEREIN.HOMEPAGE),
-                                      it.get(VEREIN.IBAN),
-                                      it.get(VEREIN.DIREKTION_DOPPELEINSATZ),
-                                      it.get(VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN),
-                                      it.get(VEREIN.MITSPIELER_DOPPELEINSATZ)
-                              ),
-                              findDoppeleinsatz(it.get(VEREIN.ID)),
-                              new KontaktDTO(
-                                      it.get(praesident.VORNAME),
-                                      it.get(praesident.NACHNAME),
-                                      it.get(praesident.ADRESSE),
-                                      it.get(praesident.PLZ),
-                                      it.get(praesident.ORT),
-                                      it.get(praesident.EMAIL),
-                                      it.get(praesident.TELEFON_PRIVAT),
-                                      it.get(praesident.TELEFON_MOBILE)
-                              ),
-                              new KontaktDTO(
-                                      it.get(direktion.VORNAME),
-                                      it.get(direktion.NACHNAME),
-                                      it.get(direktion.ADRESSE),
-                                      it.get(direktion.PLZ),
-                                      it.get(direktion.ORT),
-                                      it.get(direktion.EMAIL),
-                                      it.get(direktion.TELEFON_PRIVAT),
-                                      it.get(direktion.TELEFON_MOBILE)
-                              ),
-                              new VereinsanmeldungDTO(
-                                      it.get(VEREIN.MODULA),
-                                      it.get(VEREIN.MODULB),
-                                      it.get(VEREIN.MODULC),
-                                      it.get(VEREIN.MODULD),
-                                      it.get(VEREIN.MODULE),
-                                      it.get(VEREIN.MODULF),
-                                      it.get(VEREIN.MODULG),
-                                      it.get(VEREIN.MODULH),
-                                      Klasse.fromString(it.get(VEREIN.KLASSE_MODULA)).orElse(null),
-                                      Klasse.fromString(it.get(VEREIN.KLASSE_MODULB)).orElse(null),
-                                      Klasse.fromString(it.get(VEREIN.KLASSE_MODULH)).orElse(null),
-                                      it.get(VEREIN.TAMBOUREN_KAT_A),
-                                      it.get(VEREIN.TAMBOUREN_KAT_B),
-                                      it.get(VEREIN.TAMBOUREN_KAT_C),
-                                      it.get(VEREIN.HARMONIE),
-                                      it.get(VEREIN.BRASS_BAND),
-                                      it.get(VEREIN.FANFARE),
-                                      it.get(VEREIN.TAMBOUREN),
-                                      it.get(VEREIN.PERKUSSIONSENSEMBLE)
-                              ),
-                              new VereinsinfoDTO(null, null, ""),
-                              it.get(VEREIN.CONFIRMED_AT) != null,
-                              programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>())
-                      ));
+        var result = jooqDsl.select()
+                            .from(VEREIN)
+                            .join(praesident).on(VEREIN.PRAESIDENT_KONTAKT_ID.eq(praesident.ID))
+                            .join(direktion).on(VEREIN.DIREKTION_KONTAKT_ID.eq(direktion.ID))
+                            .orderBy(VEREIN.VEREINSNAME)
+                            .fetch(it -> new VereinDTO(
+                                    it.get(VEREIN.EMAIL),
+                                    new VereinsangabenDTO(
+                                            it.get(VEREIN.VEREINSNAME),
+                                            it.get(VEREIN.ADRESSE),
+                                            it.get(VEREIN.PLZ),
+                                            it.get(VEREIN.ORT),
+                                            it.get(VEREIN.HOMEPAGE),
+                                            it.get(VEREIN.IBAN),
+                                            it.get(VEREIN.DIREKTION_DOPPELEINSATZ),
+                                            it.get(VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN),
+                                            it.get(VEREIN.MITSPIELER_DOPPELEINSATZ)
+                                    ),
+                                    findDoppeleinsatz(it.get(VEREIN.ID)),
+                                    new KontaktDTO(
+                                            it.get(praesident.VORNAME),
+                                            it.get(praesident.NACHNAME),
+                                            it.get(praesident.ADRESSE),
+                                            it.get(praesident.PLZ),
+                                            it.get(praesident.ORT),
+                                            it.get(praesident.EMAIL),
+                                            it.get(praesident.TELEFON_PRIVAT),
+                                            it.get(praesident.TELEFON_MOBILE)
+                                    ),
+                                    new KontaktDTO(
+                                            it.get(direktion.VORNAME),
+                                            it.get(direktion.NACHNAME),
+                                            it.get(direktion.ADRESSE),
+                                            it.get(direktion.PLZ),
+                                            it.get(direktion.ORT),
+                                            it.get(direktion.EMAIL),
+                                            it.get(direktion.TELEFON_PRIVAT),
+                                            it.get(direktion.TELEFON_MOBILE)
+                                    ),
+                                    new VereinsanmeldungDTO(
+                                            it.get(VEREIN.MODULA),
+                                            it.get(VEREIN.MODULB),
+                                            it.get(VEREIN.MODULC),
+                                            it.get(VEREIN.MODULD),
+                                            it.get(VEREIN.MODULE),
+                                            it.get(VEREIN.MODULF),
+                                            it.get(VEREIN.MODULG),
+                                            it.get(VEREIN.MODULH),
+                                            Klasse.fromString(it.get(VEREIN.KLASSE_MODULA)).orElse(null),
+                                            Klasse.fromString(it.get(VEREIN.KLASSE_MODULB)).orElse(null),
+                                            Klasse.fromString(it.get(VEREIN.KLASSE_MODULH)).orElse(null),
+                                            it.get(VEREIN.TAMBOUREN_KAT_A),
+                                            it.get(VEREIN.TAMBOUREN_KAT_B),
+                                            it.get(VEREIN.TAMBOUREN_KAT_C),
+                                            it.get(VEREIN.HARMONIE),
+                                            it.get(VEREIN.BRASS_BAND),
+                                            it.get(VEREIN.FANFARE),
+                                            it.get(VEREIN.TAMBOUREN),
+                                            it.get(VEREIN.PERKUSSIONSENSEMBLE)
+                                    ),
+                                    new VereinsinfoDTO(null, null, ""),
+                                    it.get(VEREIN.CONFIRMED_AT) != null,
+                                    programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>())
+                            ));
+
+        stopWatch.splitInfo("findAllForExport");
+        return result;
     }
 
     public Map<Long, List<VereinProgrammDTO>> findProgrammePerVereinId() {
@@ -289,17 +295,17 @@ public class VereinRepository {
                                 TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).orElse(null),
                                 TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).orElse(null),
                                 // TODO efficient?
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID), modul),
+                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
+                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
+                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
+                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_PA),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_EGITARRE),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_EBASS),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_KEYBOARD),
                                 r.get(VEREIN_PROGRAMM.MODUL_B_GESANG),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID), modul)
+                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null),
+                                new TitelDTO(null, modul, null, null, null, null, null, 0, false, null)
                         );
                     });
 
