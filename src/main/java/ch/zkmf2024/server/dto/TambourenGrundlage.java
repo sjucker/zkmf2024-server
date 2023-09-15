@@ -4,13 +4,13 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-public enum TambourenGrundlage {
+@Getter
+public enum TambourenGrundlage implements HasDescription {
     WIRBEL("Wirbel"),
     RUF("5er Ruf"),
     BATAFLAFLA("Bataflafla"),
     DOUBLE("Doublé");
 
-    @Getter
     private final String description;
 
     TambourenGrundlage(String description) {

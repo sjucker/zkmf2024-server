@@ -4,14 +4,14 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-public enum Besetzung {
+@Getter
+public enum Besetzung implements HasDescription {
     HARMONIE("Harmonie"),
     BRASS_BAND("Brass Band"),
     FANFARE("Fanfare"),
     TAMBOUREN("Tambouren"),
     PERKUSSIONSENSEMBLE("Perkussionsensemble");
 
-    @Getter
     private final String description;
 
     Besetzung(String description) {

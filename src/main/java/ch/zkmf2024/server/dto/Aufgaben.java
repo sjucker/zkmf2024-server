@@ -2,7 +2,8 @@ package ch.zkmf2024.server.dto;
 
 import lombok.Getter;
 
-public enum Aufgaben {
+@Getter
+public enum Aufgaben implements HasDescription {
     EGAL("egal, überall einsetzbar"),
     KOERPERLICH("körperliche Arbeit möglich"),
     MUSIKALISCH("Mithilfe beim musikalischen Wettbewerb (z.B. Betreuer, Roadie)"),
@@ -17,7 +18,6 @@ public enum Aufgaben {
     AUFBAU("Aufbau bzw. Rückbau Zelte und Infrastruktur"),
     AUFSICHT("Aufsicht, Schicht-Chef");
 
-    @Getter
     private final String description;
 
     Aufgaben(String description) {

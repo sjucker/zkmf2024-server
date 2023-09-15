@@ -4,7 +4,8 @@ import lombok.Getter;
 
 import java.util.Optional;
 
-public enum Klasse {
+@Getter
+public enum Klasse implements HasDescription {
     // Modul A
     HOECHSTKLASSE("Höchstklasse"),
     KLASSE_1("1. Klasse"),
@@ -17,7 +18,6 @@ public enum Klasse {
     MITTELSTUFE("Mittelstufe"),
     UNTERSTUFE("Unterstufe");
 
-    @Getter
     private final String description;
 
     Klasse(String description) {

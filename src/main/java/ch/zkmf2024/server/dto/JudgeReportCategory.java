@@ -11,7 +11,7 @@ import static ch.zkmf2024.server.dto.Modul.A;
 import static ch.zkmf2024.server.dto.Modul.B;
 
 @Getter
-public enum JudgeReportCategory {
+public enum JudgeReportCategory implements HasDescription {
     STIMMUNG_INTONATION("Stimmung und Intonation", Set.of(A, B), false),
     TONKULTUR("Tonkultur", Set.of(A, B), false),
     RHYTHMUS_METRUM("Rhythmus und Metrum", Set.of(A, B), false),

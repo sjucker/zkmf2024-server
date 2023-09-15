@@ -10,7 +10,8 @@ import static ch.zkmf2024.server.dto.Besetzung.HARMONIE;
 import static ch.zkmf2024.server.dto.Besetzung.PERKUSSIONSENSEMBLE;
 import static ch.zkmf2024.server.dto.Besetzung.TAMBOUREN;
 
-public enum Modul {
+@Getter
+public enum Modul implements HasDescription {
     A("Konzertmusik"),
     B("Unterhaltungsmusik"),
     C("Platzkonzerte"),
@@ -20,7 +21,6 @@ public enum Modul {
     G("Tambouren"),
     H("Perkussionsensembles");
 
-    @Getter
     private final String description;
 
     Modul(String description) {

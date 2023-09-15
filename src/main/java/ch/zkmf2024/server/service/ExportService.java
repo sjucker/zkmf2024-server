@@ -1,7 +1,9 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.HasDescription;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static ch.zkmf2024.server.dto.Modul.B;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsLast;
@@ -94,16 +97,6 @@ public class ExportService {
                 var row = sheet.createRow(rowIndex++);
                 addModulData(modul, wb, row, vereinProgrammDTO, toVereine.get(vereinProgrammDTO.id()));
             }
-// TODO skip the info cell with long texts
-//            int columnIndex = switch (modul) {
-//                case A -> 5 + (5 * maxTitel);
-//                default -> 0;
-//            };
-
-//            for (int i = 0; i < columnIndex; i++) {
-
-//                sheet.autoSizeColumn(i);
-//            }
         }
     }
 
@@ -111,25 +104,87 @@ public class ExportService {
         var columnIndex = 0;
         columnIndex = setCellValue(columnIndex, row, vereinsname, wb);
 
-        var ablauf = vereinProgrammDTO.ablauf();
-
         switch (modul) {
-            case A -> {
+            case A, B -> {
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.klasse(), wb);
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.besetzung(), wb);
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.titel(), wb);
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.infoModeration(), wb);
-                for (var programmTitelDTO : ablauf) {
-                    columnIndex = setCellValue(columnIndex, row, "%s (%s)".formatted(programmTitelDTO.titel().titelName(),
-                                                                                     programmTitelDTO.titel().composer()),
-                                               wb);
+
+                if (modul == B) {
+                    columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.unterhaltungPA(), wb);
+                    columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.unterhaltungEGitarre(), wb);
+                    columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.unterhaltungEBass(), wb);
+                    columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.unterhaltungKeyboard(), wb);
+                    columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.unterhaltungGesang(), wb);
+                }
+
+                for (var programmTitelDTO : vereinProgrammDTO.ablauf()) {
+                    columnIndex = setCellValue(columnIndex, row, getFormattedTitel(programmTitelDTO.titel()), wb);
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().grad(), wb);
                     columnIndex = setCellValue(columnIndex, row, getDuration(programmTitelDTO.titel().durationInSeconds()), wb);
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.applausInSeconds(), wb);
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().infoModeration(), wb);
                 }
             }
+            case C -> {
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.infoModeration(), wb);
+                for (var programmTitelDTO : vereinProgrammDTO.ablauf()) {
+                    columnIndex = setCellValue(columnIndex, row, getFormattedTitel(programmTitelDTO.titel()), wb);
+                }
+            }
+            case D -> {
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.besetzung(), wb);
+                columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.parademusikTitel1()), wb);
+                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.parademusikTitel1().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.parademusikTitel2()), wb);
+                setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.parademusikTitel2().durationInSeconds()), wb);
+            }
+            case E -> {
+                for (var programmTitelDTO : vereinProgrammDTO.ablauf()) {
+                    columnIndex = setCellValue(columnIndex, row, getFormattedTitel(programmTitelDTO.titel()), wb);
+                    columnIndex = setCellValue(columnIndex, row, getDuration(programmTitelDTO.titel().durationInSeconds()), wb);
+                }
+            }
+            case F -> {
+                // not used
+            }
+            case G -> {
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatA(), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatAGrundlage1(), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatAGrundlage2(), wb);
+
+                columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatATitel1()), wb);
+                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatATitel1().durationInSeconds()), wb);
+
+                columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatATitel2()), wb);
+                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatATitel2().durationInSeconds()), wb);
+
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatB(), wb);
+                columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatBTitel()), wb);
+                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatBTitel().durationInSeconds()), wb);
+
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatC(), wb);
+                columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatCTitel()), wb);
+                setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatCTitel().durationInSeconds()), wb);
+            }
+            case H -> {
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.klasse(), wb);
+                for (var programmTitelDTO : vereinProgrammDTO.ablauf()) {
+                    columnIndex = setCellValue(columnIndex, row, getFormattedTitel(programmTitelDTO.titel()), wb);
+                    columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().schwierigkeitsgrad(), wb);
+                    columnIndex = setCellValue(columnIndex, row, getDuration(programmTitelDTO.titel().durationInSeconds()), wb);
+                    columnIndex = setCellValue(columnIndex, row, programmTitelDTO.applausInSeconds(), wb);
+                }
+            }
         }
+    }
+
+    private String getFormattedTitel(TitelDTO titel) {
+        if (titel.isValid()) {
+            return "%s (%s)".formatted(titel.titelName(), titel.composer());
+        }
+        return "";
     }
 
     private Duration getDuration(Integer seconds) {
@@ -143,17 +198,72 @@ public class ExportService {
         var columnIndex = 0;
         headerRow.createCell(columnIndex++).setCellValue("Vereinsname");
         switch (modul) {
-            case A -> {
+            case A, B -> {
                 headerRow.createCell(columnIndex++).setCellValue("Klasse");
                 headerRow.createCell(columnIndex++).setCellValue("Besetzung");
                 headerRow.createCell(columnIndex++).setCellValue("Programmtitel");
                 headerRow.createCell(columnIndex++).setCellValue("Erläuterungen zum Selbstwahlprogramm");
+
+                if (modul == B) {
+                    headerRow.createCell(columnIndex++).setCellValue("PA wird benötigt");
+                    headerRow.createCell(columnIndex++).setCellValue("E-Gitarre");
+                    headerRow.createCell(columnIndex++).setCellValue("Bass");
+                    headerRow.createCell(columnIndex++).setCellValue("Keyboard");
+                    headerRow.createCell(columnIndex++).setCellValue("Gesang");
+                }
+
                 for (var i = 0; i < maxTitel; i++) {
                     headerRow.createCell(columnIndex++).setCellValue("Musikstück");
                     headerRow.createCell(columnIndex++).setCellValue("Grad");
                     headerRow.createCell(columnIndex++).setCellValue("Dauer Stück");
                     headerRow.createCell(columnIndex++).setCellValue("Dauer Applaus");
                     headerRow.createCell(columnIndex++).setCellValue("Info");
+                }
+            }
+            case C -> {
+                headerRow.createCell(columnIndex++).setCellValue("Kommentar");
+                for (var i = 0; i < maxTitel; i++) {
+                    headerRow.createCell(columnIndex++).setCellValue("Musikstück");
+                }
+            }
+            case D -> {
+                headerRow.createCell(columnIndex++).setCellValue("Besetzung");
+                headerRow.createCell(columnIndex++).setCellValue("Komposition 1 (Schweizer Marsch)");
+                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Komposition 2");
+                headerRow.createCell(columnIndex).setCellValue("Dauer");
+            }
+            case E -> {
+                for (var i = 0; i < maxTitel; i++) {
+                    headerRow.createCell(columnIndex++).setCellValue("Musikstück");
+                    headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                }
+            }
+            case F -> {
+                // not used
+            }
+            case G -> {
+                headerRow.createCell(columnIndex++).setCellValue("Kategorie A");
+                headerRow.createCell(columnIndex++).setCellValue("Grundlage 1");
+                headerRow.createCell(columnIndex++).setCellValue("Grundlage 2");
+                headerRow.createCell(columnIndex++).setCellValue("Frei gewählter Baslermarsch (BM) oder Marsch (M)");
+                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Frei gewählte Komposition");
+                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Kategorie B");
+                headerRow.createCell(columnIndex++).setCellValue("Komposition");
+                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Kategorie C");
+                headerRow.createCell(columnIndex++).setCellValue("Komposition");
+                headerRow.createCell(columnIndex).setCellValue("Dauer");
+            }
+            case H -> {
+                headerRow.createCell(columnIndex++).setCellValue("Klasse");
+                for (var i = 0; i < maxTitel; i++) {
+                    headerRow.createCell(columnIndex++).setCellValue("Musikstück");
+                    headerRow.createCell(columnIndex++).setCellValue("Schierigkeitsgrad");
+                    headerRow.createCell(columnIndex++).setCellValue("Dauer Stück");
+                    headerRow.createCell(columnIndex++).setCellValue("Dauer Applaus");
                 }
             }
         }
@@ -323,13 +433,17 @@ public class ExportService {
             } else if (value instanceof Klasse klasseValue) {
                 cell.setCellValue(klasseValue.getDescription());
             } else if (value instanceof Duration durationValue) {
-                var durationCellStyle = wb.createCellStyle();
-                var creationHelper = wb.getCreationHelper();
-                durationCellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("mm:ss"));
+                if (!durationValue.isZero()) {
+                    var durationCellStyle = wb.createCellStyle();
+                    var creationHelper = wb.getCreationHelper();
+                    durationCellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("mm:ss"));
 
-                var seconds = durationValue.getSeconds();
-                cell.setCellValue("%02d:%02d".formatted(seconds / 60, seconds % 60));
-                cell.setCellStyle(durationCellStyle);
+                    var seconds = durationValue.getSeconds();
+                    cell.setCellValue("%02d:%02d".formatted(seconds / 60, seconds % 60));
+                    cell.setCellStyle(durationCellStyle);
+                }
+            } else if (value instanceof HasDescription hasDescriptionValue) {
+                cell.setCellValue(hasDescriptionValue.getDescription());
             }
         }
         return columnIndex;
