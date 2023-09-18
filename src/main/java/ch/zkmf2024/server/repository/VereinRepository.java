@@ -258,7 +258,7 @@ public class VereinRepository {
                       .from(VEREIN_DOPPELEINSATZ)
                       .join(VEREIN).on(VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN.eq(VEREIN.ID))
                       .stream()
-                      .collect(groupingBy(it -> it.get(VEREIN.ID),
+                      .collect(groupingBy(it -> it.get(VEREIN_DOPPELEINSATZ.FK_VEREIN),
                                           mapping(it -> new DoppelEinsatzDTO(
                                                   new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)),
                                                   it.get(VEREIN_DOPPELEINSATZ.NAME)
