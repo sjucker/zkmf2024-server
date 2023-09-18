@@ -84,7 +84,7 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     /**
      * The column <code>verein_programm.info_moderation</code>.
      */
-    public final TableField<VereinProgrammRecord, String> INFO_MODERATION = createField(DSL.name("info_moderation"), SQLDataType.VARCHAR(4096), this, "");
+    public final TableField<VereinProgrammRecord, String> INFO_MODERATION = createField(DSL.name("info_moderation"), SQLDataType.VARCHAR(8192), this, "");
 
     /**
      * The column <code>verein_programm.total_duration_in_seconds</code>.
@@ -217,7 +217,7 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>mvurdorf.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)

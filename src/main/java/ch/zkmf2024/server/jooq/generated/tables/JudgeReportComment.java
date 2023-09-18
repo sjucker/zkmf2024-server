@@ -115,7 +115,7 @@ public class JudgeReportComment extends TableImpl<JudgeReportCommentRecord> {
     private transient Titel _titel;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.judge_report</code>
+     * Get the implicit join path to the <code>mvurdorf.judge_report</code>
      * table.
      */
     public JudgeReport judgeReport() {
@@ -126,7 +126,7 @@ public class JudgeReportComment extends TableImpl<JudgeReportCommentRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.titel</code> table.
+     * Get the implicit join path to the <code>mvurdorf.titel</code> table.
      */
     public Titel titel() {
         if (_titel == null)

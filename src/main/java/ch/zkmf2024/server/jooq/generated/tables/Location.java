@@ -164,7 +164,7 @@ public class Location extends TableImpl<LocationRecord> {
     private transient Location _fkLocationJuryfeedback;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table,
+     * Get the implicit join path to the <code>mvurdorf.location</code> table,
      * via the <code>FK_LOCATION_EINSPIELLOKAL</code> key.
      */
     public Location fkLocationEinspiellokal() {
@@ -175,7 +175,7 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table,
+     * Get the implicit join path to the <code>mvurdorf.location</code> table,
      * via the <code>FK_LOCATION_INSTRUMENTENDEPOT</code> key.
      */
     public Location fkLocationInstrumentendepot() {
@@ -186,7 +186,7 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table,
+     * Get the implicit join path to the <code>mvurdorf.location</code> table,
      * via the <code>FK_LOCATION_JURYFEEDBACK</code> key.
      */
     public Location fkLocationJuryfeedback() {

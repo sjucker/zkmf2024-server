@@ -135,15 +135,31 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     @Override
-    public List<ForeignKey<TimetableEntryRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_TIMETABLE_PROGRAMM, Keys.FK_TIMETABLE_LOCATION);
+    public List<UniqueKey<TimetableEntryRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.KEY_TIMETABLE_ENTRY_UQ_TIMETABLE);
     }
 
+    @Override
+    public List<ForeignKey<TimetableEntryRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.FK_TIMETABLE_VEREIN, Keys.FK_TIMETABLE_PROGRAMM, Keys.FK_TIMETABLE_LOCATION);
+    }
+
+    private transient Verein _verein;
     private transient VereinProgramm _vereinProgramm;
     private transient Location _location;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein_programm</code>
+     * Get the implicit join path to the <code>mvurdorf.verein</code> table.
+     */
+    public Verein verein() {
+        if (_verein == null)
+            _verein = new Verein(this, Keys.FK_TIMETABLE_VEREIN);
+
+        return _verein;
+    }
+
+    /**
+     * Get the implicit join path to the <code>mvurdorf.verein_programm</code>
      * table.
      */
     public VereinProgramm vereinProgramm() {
@@ -154,7 +170,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table.
+     * Get the implicit join path to the <code>mvurdorf.location</code> table.
      */
     public Location location() {
         if (_location == null)

@@ -114,7 +114,7 @@ public class VereinStatus extends TableImpl<VereinStatusRecord> {
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>mvurdorf.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
