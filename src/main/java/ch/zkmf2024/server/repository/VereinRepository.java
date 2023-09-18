@@ -271,6 +271,7 @@ public class VereinRepository {
                                                           .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
                                                           .leftJoin(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                                                           .leftJoin(TITEL).on(TITEL.ID.eq(VEREIN_PROGRAMM_TITEL.FK_TITEL))
+                                                          .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
                                                           .stream()
                                                           .collect(groupingBy(it -> it.get(VEREIN.ID),
                                                                               groupingBy(it -> Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
