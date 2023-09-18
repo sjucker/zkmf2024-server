@@ -188,6 +188,36 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     }
 
     /**
+     * Fetch records that have <code>facebook BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfFacebook(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.FACEBOOK, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>facebook IN (values)</code>
+     */
+    public List<VereinPojo> fetchByFacebook(String... values) {
+        return fetch(Verein.VEREIN.FACEBOOK, values);
+    }
+
+    /**
+     * Fetch records that have <code>instagram BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfInstagram(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.INSTAGRAM, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>instagram IN (values)</code>
+     */
+    public List<VereinPojo> fetchByInstagram(String... values) {
+        return fetch(Verein.VEREIN.INSTAGRAM, values);
+    }
+
+    /**
      * Fetch records that have <code>iban BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */

@@ -162,8 +162,10 @@ export interface VereinDTO {
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
     programme: VereinProgrammDTO[];
-    phase1Status: PhaseStatus;
+    phase1Done: boolean;
+    phase2Done: boolean;
     phase2Status: PhaseStatus;
+    phase1Status: PhaseStatus;
 }
 
 export interface VereinProgrammDTO extends IsValid {
@@ -220,6 +222,8 @@ export interface VereinsangabenDTO extends IsValid {
     plz?: number;
     ort?: string;
     homepage?: string;
+    facebook?: string;
+    instagram?: string;
     iban?: string;
     direktionDoppeleinsatz: boolean;
     direktionDoppeleinsatzVerein?: string;

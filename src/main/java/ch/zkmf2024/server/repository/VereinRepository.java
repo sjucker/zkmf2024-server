@@ -199,6 +199,8 @@ public class VereinRepository {
                                             it.get(VEREIN.PLZ),
                                             it.get(VEREIN.ORT),
                                             it.get(VEREIN.HOMEPAGE),
+                                            it.get(VEREIN.FACEBOOK),
+                                            it.get(VEREIN.INSTAGRAM),
                                             it.get(VEREIN.IBAN),
                                             it.get(VEREIN.DIREKTION_DOPPELEINSATZ),
                                             it.get(VEREIN.DIREKTION_DOPPELEINSATZ_VEREIN),

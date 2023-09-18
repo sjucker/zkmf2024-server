@@ -24,6 +24,8 @@ public class VereinPojo implements IVerein {
     private Integer plz;
     private String ort;
     private String homepage;
+    private String facebook;
+    private String instagram;
     private String iban;
     private Boolean modula;
     private Boolean modulb;
@@ -63,6 +65,8 @@ public class VereinPojo implements IVerein {
         this.plz = value.getPlz();
         this.ort = value.getOrt();
         this.homepage = value.getHomepage();
+        this.facebook = value.getFacebook();
+        this.instagram = value.getInstagram();
         this.iban = value.getIban();
         this.modula = value.getModula();
         this.modulb = value.getModulb();
@@ -100,6 +104,8 @@ public class VereinPojo implements IVerein {
             Integer plz,
             String ort,
             String homepage,
+            String facebook,
+            String instagram,
             String iban,
             Boolean modula,
             Boolean modulb,
@@ -135,6 +141,8 @@ public class VereinPojo implements IVerein {
         this.plz = plz;
         this.ort = ort;
         this.homepage = homepage;
+        this.facebook = facebook;
+        this.instagram = instagram;
         this.iban = iban;
         this.modula = modula;
         this.modulb = modulb;
@@ -304,6 +312,38 @@ public class VereinPojo implements IVerein {
     @Override
     public void setHomepage(String homepage) {
         this.homepage = homepage;
+    }
+
+    /**
+     * Getter for <code>verein.facebook</code>.
+     */
+    @Override
+    public String getFacebook() {
+        return this.facebook;
+    }
+
+    /**
+     * Setter for <code>verein.facebook</code>.
+     */
+    @Override
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
+
+    /**
+     * Getter for <code>verein.instagram</code>.
+     */
+    @Override
+    public String getInstagram() {
+        return this.instagram;
+    }
+
+    /**
+     * Setter for <code>verein.instagram</code>.
+     */
+    @Override
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
     }
 
     /**
@@ -760,6 +800,16 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.homepage.equals(other.homepage))
             return false;
+        if (this.facebook == null) {
+            if (other.facebook != null)
+                return false;
+        } else if (!this.facebook.equals(other.facebook))
+            return false;
+        if (this.instagram == null) {
+            if (other.instagram != null)
+                return false;
+        } else if (!this.instagram.equals(other.instagram))
+            return false;
         if (this.iban == null) {
             if (other.iban != null)
                 return false;
@@ -901,6 +951,8 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.plz == null) ? 0 : this.plz.hashCode());
         result = prime * result + ((this.ort == null) ? 0 : this.ort.hashCode());
         result = prime * result + ((this.homepage == null) ? 0 : this.homepage.hashCode());
+        result = prime * result + ((this.facebook == null) ? 0 : this.facebook.hashCode());
+        result = prime * result + ((this.instagram == null) ? 0 : this.instagram.hashCode());
         result = prime * result + ((this.iban == null) ? 0 : this.iban.hashCode());
         result = prime * result + ((this.modula == null) ? 0 : this.modula.hashCode());
         result = prime * result + ((this.modulb == null) ? 0 : this.modulb.hashCode());
@@ -942,6 +994,8 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(plz);
         sb.append(", ").append(ort);
         sb.append(", ").append(homepage);
+        sb.append(", ").append(facebook);
+        sb.append(", ").append(instagram);
         sb.append(", ").append(iban);
         sb.append(", ").append(modula);
         sb.append(", ").append(modulb);
@@ -987,6 +1041,8 @@ public class VereinPojo implements IVerein {
         setPlz(from.getPlz());
         setOrt(from.getOrt());
         setHomepage(from.getHomepage());
+        setFacebook(from.getFacebook());
+        setInstagram(from.getInstagram());
         setIban(from.getIban());
         setModula(from.getModula());
         setModulb(from.getModulb());

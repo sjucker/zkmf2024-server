@@ -164,11 +164,43 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     }
 
     /**
+     * Setter for <code>verein.facebook</code>.
+     */
+    @Override
+    public void setFacebook(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>verein.facebook</code>.
+     */
+    @Override
+    public String getFacebook() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>verein.instagram</code>.
+     */
+    @Override
+    public void setInstagram(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>verein.instagram</code>.
+     */
+    @Override
+    public String getInstagram() {
+        return (String) get(10);
+    }
+
+    /**
      * Setter for <code>verein.iban</code>.
      */
     @Override
     public void setIban(String value) {
-        set(9, value);
+        set(11, value);
     }
 
     /**
@@ -176,7 +208,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public String getIban() {
-        return (String) get(9);
+        return (String) get(11);
     }
 
     /**
@@ -184,7 +216,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModula(Boolean value) {
-        set(10, value);
+        set(12, value);
     }
 
     /**
@@ -192,7 +224,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModula() {
-        return (Boolean) get(10);
+        return (Boolean) get(12);
     }
 
     /**
@@ -200,7 +232,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModulb(Boolean value) {
-        set(11, value);
+        set(13, value);
     }
 
     /**
@@ -208,7 +240,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModulb() {
-        return (Boolean) get(11);
+        return (Boolean) get(13);
     }
 
     /**
@@ -216,7 +248,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModulc(Boolean value) {
-        set(12, value);
+        set(14, value);
     }
 
     /**
@@ -224,7 +256,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModulc() {
-        return (Boolean) get(12);
+        return (Boolean) get(14);
     }
 
     /**
@@ -232,7 +264,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModuld(Boolean value) {
-        set(13, value);
+        set(15, value);
     }
 
     /**
@@ -240,7 +272,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModuld() {
-        return (Boolean) get(13);
+        return (Boolean) get(15);
     }
 
     /**
@@ -248,7 +280,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModule(Boolean value) {
-        set(14, value);
+        set(16, value);
     }
 
     /**
@@ -256,7 +288,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModule() {
-        return (Boolean) get(14);
+        return (Boolean) get(16);
     }
 
     /**
@@ -264,7 +296,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModulf(Boolean value) {
-        set(15, value);
+        set(17, value);
     }
 
     /**
@@ -272,7 +304,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModulf() {
-        return (Boolean) get(15);
+        return (Boolean) get(17);
     }
 
     /**
@@ -280,7 +312,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModulg(Boolean value) {
-        set(16, value);
+        set(18, value);
     }
 
     /**
@@ -288,7 +320,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModulg() {
-        return (Boolean) get(16);
+        return (Boolean) get(18);
     }
 
     /**
@@ -296,7 +328,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setModulh(Boolean value) {
-        set(17, value);
+        set(19, value);
     }
 
     /**
@@ -304,7 +336,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getModulh() {
-        return (Boolean) get(17);
+        return (Boolean) get(19);
     }
 
     /**
@@ -312,7 +344,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setKlasseModula(String value) {
-        set(18, value);
+        set(20, value);
     }
 
     /**
@@ -320,7 +352,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public String getKlasseModula() {
-        return (String) get(18);
+        return (String) get(20);
     }
 
     /**
@@ -328,7 +360,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setKlasseModulb(String value) {
-        set(19, value);
+        set(21, value);
     }
 
     /**
@@ -336,7 +368,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public String getKlasseModulb() {
-        return (String) get(19);
+        return (String) get(21);
     }
 
     /**
@@ -344,7 +376,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setKlasseModulh(String value) {
-        set(20, value);
+        set(22, value);
     }
 
     /**
@@ -352,7 +384,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public String getKlasseModulh() {
-        return (String) get(20);
+        return (String) get(22);
     }
 
     /**
@@ -360,7 +392,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setHarmonie(Boolean value) {
-        set(21, value);
+        set(23, value);
     }
 
     /**
@@ -368,7 +400,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getHarmonie() {
-        return (Boolean) get(21);
+        return (Boolean) get(23);
     }
 
     /**
@@ -376,7 +408,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setBrassBand(Boolean value) {
-        set(22, value);
+        set(24, value);
     }
 
     /**
@@ -384,7 +416,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getBrassBand() {
-        return (Boolean) get(22);
+        return (Boolean) get(24);
     }
 
     /**
@@ -392,7 +424,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setFanfare(Boolean value) {
-        set(23, value);
+        set(25, value);
     }
 
     /**
@@ -400,7 +432,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getFanfare() {
-        return (Boolean) get(23);
+        return (Boolean) get(25);
     }
 
     /**
@@ -408,7 +440,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setTambouren(Boolean value) {
-        set(24, value);
+        set(26, value);
     }
 
     /**
@@ -416,7 +448,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getTambouren() {
-        return (Boolean) get(24);
+        return (Boolean) get(26);
     }
 
     /**
@@ -424,7 +456,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setPerkussionsensemble(Boolean value) {
-        set(25, value);
+        set(27, value);
     }
 
     /**
@@ -432,7 +464,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getPerkussionsensemble() {
-        return (Boolean) get(25);
+        return (Boolean) get(27);
     }
 
     /**
@@ -440,7 +472,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setWebsiteText(String value) {
-        set(26, value);
+        set(28, value);
     }
 
     /**
@@ -448,7 +480,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public String getWebsiteText() {
-        return (String) get(26);
+        return (String) get(28);
     }
 
     /**
@@ -456,7 +488,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setDirektionDoppeleinsatz(Boolean value) {
-        set(27, value);
+        set(29, value);
     }
 
     /**
@@ -464,7 +496,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getDirektionDoppeleinsatz() {
-        return (Boolean) get(27);
+        return (Boolean) get(29);
     }
 
     /**
@@ -472,7 +504,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setDirektionDoppeleinsatzVerein(String value) {
-        set(28, value);
+        set(30, value);
     }
 
     /**
@@ -480,7 +512,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public String getDirektionDoppeleinsatzVerein() {
-        return (String) get(28);
+        return (String) get(30);
     }
 
     /**
@@ -488,7 +520,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setMitspielerDoppeleinsatz(Boolean value) {
-        set(29, value);
+        set(31, value);
     }
 
     /**
@@ -496,7 +528,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getMitspielerDoppeleinsatz() {
-        return (Boolean) get(29);
+        return (Boolean) get(31);
     }
 
     /**
@@ -504,7 +536,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setConfirmedAt(LocalDateTime value) {
-        set(30, value);
+        set(32, value);
     }
 
     /**
@@ -512,7 +544,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public LocalDateTime getConfirmedAt() {
-        return (LocalDateTime) get(30);
+        return (LocalDateTime) get(32);
     }
 
     /**
@@ -520,7 +552,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setTambourenKatA(Boolean value) {
-        set(31, value);
+        set(33, value);
     }
 
     /**
@@ -528,7 +560,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getTambourenKatA() {
-        return (Boolean) get(31);
+        return (Boolean) get(33);
     }
 
     /**
@@ -536,7 +568,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setTambourenKatB(Boolean value) {
-        set(32, value);
+        set(34, value);
     }
 
     /**
@@ -544,7 +576,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getTambourenKatB() {
-        return (Boolean) get(32);
+        return (Boolean) get(34);
     }
 
     /**
@@ -552,7 +584,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public void setTambourenKatC(Boolean value) {
-        set(33, value);
+        set(35, value);
     }
 
     /**
@@ -560,7 +592,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
      */
     @Override
     public Boolean getTambourenKatC() {
-        return (Boolean) get(33);
+        return (Boolean) get(35);
     }
 
     // -------------------------------------------------------------------------
@@ -587,6 +619,8 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setPlz(from.getPlz());
         setOrt(from.getOrt());
         setHomepage(from.getHomepage());
+        setFacebook(from.getFacebook());
+        setInstagram(from.getInstagram());
         setIban(from.getIban());
         setModula(from.getModula());
         setModulb(from.getModulb());
@@ -635,7 +669,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -647,6 +681,8 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setPlz(plz);
         setOrt(ort);
         setHomepage(homepage);
+        setFacebook(facebook);
+        setInstagram(instagram);
         setIban(iban);
         setModula(modula);
         setModulb(modulb);
@@ -691,6 +727,8 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setPlz(value.getPlz());
             setOrt(value.getOrt());
             setHomepage(value.getHomepage());
+            setFacebook(value.getFacebook());
+            setInstagram(value.getInstagram());
             setIban(value.getIban());
             setModula(value.getModula());
             setModulb(value.getModulb());

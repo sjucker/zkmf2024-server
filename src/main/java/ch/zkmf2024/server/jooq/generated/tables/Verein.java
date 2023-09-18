@@ -91,6 +91,16 @@ public class Verein extends TableImpl<VereinRecord> {
     public final TableField<VereinRecord, String> HOMEPAGE = createField(DSL.name("homepage"), SQLDataType.VARCHAR(255), this, "");
 
     /**
+     * The column <code>verein.facebook</code>.
+     */
+    public final TableField<VereinRecord, String> FACEBOOK = createField(DSL.name("facebook"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein.instagram</code>.
+     */
+    public final TableField<VereinRecord, String> INSTAGRAM = createField(DSL.name("instagram"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
      * The column <code>verein.iban</code>.
      */
     public final TableField<VereinRecord, String> IBAN = createField(DSL.name("iban"), SQLDataType.VARCHAR(255), this, "");

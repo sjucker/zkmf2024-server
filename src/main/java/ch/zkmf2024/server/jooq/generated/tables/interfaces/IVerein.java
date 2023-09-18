@@ -103,6 +103,26 @@ public interface IVerein extends Serializable {
     public String getHomepage();
 
     /**
+     * Setter for <code>verein.facebook</code>.
+     */
+    public void setFacebook(String value);
+
+    /**
+     * Getter for <code>verein.facebook</code>.
+     */
+    public String getFacebook();
+
+    /**
+     * Setter for <code>verein.instagram</code>.
+     */
+    public void setInstagram(String value);
+
+    /**
+     * Getter for <code>verein.instagram</code>.
+     */
+    public String getInstagram();
+
+    /**
      * Setter for <code>verein.iban</code>.
      */
     public void setIban(String value);
