@@ -14,7 +14,9 @@ public record VereinDTO(
         @NotNull VereinsanmeldungDTO anmeldung,
         @NotNull VereinsinfoDTO info,
         boolean registrationConfirmed,
-        @NotNull List<VereinProgrammDTO> programme
+        @NotNull List<VereinProgrammDTO> programme,
+        boolean phase1Done,
+        boolean phase2Done
 ) {
 
     @NotNull

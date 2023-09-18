@@ -52,6 +52,7 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
+import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
@@ -188,6 +189,7 @@ public class VereinRepository {
                             .from(VEREIN)
                             .join(praesident).on(VEREIN.PRAESIDENT_KONTAKT_ID.eq(praesident.ID))
                             .join(direktion).on(VEREIN.DIREKTION_KONTAKT_ID.eq(direktion.ID))
+                            .join(VEREIN_STATUS).on(VEREIN.ID.eq(VEREIN_STATUS.FK_VEREIN))
                             .orderBy(VEREIN.VEREINSNAME)
                             .fetch(it -> new VereinDTO(
                                     it.get(VEREIN.EMAIL),
@@ -246,7 +248,9 @@ public class VereinRepository {
                                     ),
                                     new VereinsinfoDTO(null, null, ""),
                                     it.get(VEREIN.CONFIRMED_AT) != null,
-                                    programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>())
+                                    programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>()),
+                                    PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)) == DONE,
+                                    PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)) == DONE
                             ));
 
         stopWatch.splitInfo("findAllForExport");

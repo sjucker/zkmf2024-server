@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jooq.tools.StopWatch;
@@ -280,6 +281,8 @@ public class ExportService {
         var columnIndex = 0;
         headerRow.createCell(columnIndex++).setCellValue("Vereinsname");
         headerRow.createCell(columnIndex++).setCellValue("Email");
+        headerRow.createCell(columnIndex++).setCellValue("Phase 1");
+        headerRow.createCell(columnIndex++).setCellValue("Phase 2");
         headerRow.createCell(columnIndex++).setCellValue("Adresse");
         headerRow.createCell(columnIndex++).setCellValue("PLZ");
         headerRow.createCell(columnIndex++).setCellValue("Ort");
@@ -334,6 +337,8 @@ public class ExportService {
 
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().vereinsname());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.email());
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.phase1Done());
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.phase2Done());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().adresse());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().plz());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().ort());
@@ -386,6 +391,7 @@ public class ExportService {
         for (int i = 0; i < columnIndex; i++) {
             sheet.autoSizeColumn(i);
         }
+        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex));
     }
 
     private void fillDoppeleinsatzSheet(XSSFWorkbook wb, List<VereinDTO> vereine) {

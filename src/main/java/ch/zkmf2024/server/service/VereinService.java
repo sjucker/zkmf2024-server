@@ -138,7 +138,10 @@ public class VereinService {
                 MAPPER.toVereinsanmeldungDTO(verein),
                 new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
-                getProgramme(verein.getId())
+                getProgramme(verein.getId()),
+                // only used for export, not important here
+                false,
+                false
         );
     }
 
