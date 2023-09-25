@@ -181,8 +181,10 @@ export interface VereinDTO {
     programme: VereinProgrammDTO[];
     phase1Done: boolean;
     phase2Done: boolean;
-    phase2Status: PhaseStatus;
+    phase2ConfirmedBy?: string;
+    phase2ConfirmedAt?: DateAsString;
     phase1Status: PhaseStatus;
+    phase2Status: PhaseStatus;
 }
 
 export interface VereinProgrammDTO extends IsValid {

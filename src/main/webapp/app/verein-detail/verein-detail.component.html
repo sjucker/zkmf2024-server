@@ -1,11 +1,15 @@
 <p-tabView *ngIf="verein">
     <p-tabPanel header="Wettspielprogramm">
-
         <p-button iconPos="right" icon="pi pi-check"
                   label="Programm Bestätigen"
-                  *ngIf="phase2Done"
+                  *ngIf="phase2Done && !phase2Confirmed"
                   [loading]="confirming"
                   (onClick)="confirm()"></p-button>
+
+        <div *ngIf="phase2Confirmed">
+            Programm bestätigt am {{verein.phase2ConfirmedAt | date: 'dd.MM.yyyy HH:mm'}}
+            durch {{verein.phase2ConfirmedBy}}
+        </div>
 
         <div *ngFor="let programm of verein.programme; let last = last;">
             <h3>{{programm.modulDescription}} {{programm.klasse}} {{programm.besetzung}}</h3>

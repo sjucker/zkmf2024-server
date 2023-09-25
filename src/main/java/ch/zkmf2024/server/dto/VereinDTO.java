@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.dto;
 
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
@@ -16,7 +17,9 @@ public record VereinDTO(
         boolean registrationConfirmed,
         @NotNull List<VereinProgrammDTO> programme,
         boolean phase1Done,
-        boolean phase2Done
+        boolean phase2Done,
+        String phase2ConfirmedBy,
+        LocalDateTime phase2ConfirmedAt
 ) {
 
     @NotNull
