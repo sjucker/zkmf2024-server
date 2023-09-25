@@ -38,4 +38,8 @@ export class VereineService {
         };
         return this.httpClient.post<VereinCommentDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/comments`, request);
     }
+
+    confirmProgramm(id: number) {
+        return this.httpClient.post<VereinDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/confirm-programm`, undefined);
+    }
 }

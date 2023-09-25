@@ -137,7 +137,7 @@ public class VereinProgrammTitel extends TableImpl<VereinProgrammTitelRecord> {
     private transient Titel _titel;
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.verein_programm</code>
+     * Get the implicit join path to the <code>zkmf2024.verein_programm</code>
      * table.
      */
     public VereinProgramm vereinProgramm() {
@@ -148,7 +148,7 @@ public class VereinProgrammTitel extends TableImpl<VereinProgrammTitelRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.titel</code> table.
+     * Get the implicit join path to the <code>zkmf2024.titel</code> table.
      */
     public Titel titel() {
         if (_titel == null)

@@ -592,4 +592,34 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByTambourenKatC(Boolean... values) {
         return fetch(Verein.VEREIN.TAMBOUREN_KAT_C, values);
     }
+
+    /**
+     * Fetch records that have <code>phase2_confirmed_by BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfPhase2ConfirmedBy(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.PHASE2_CONFIRMED_BY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>phase2_confirmed_by IN (values)</code>
+     */
+    public List<VereinPojo> fetchByPhase2ConfirmedBy(String... values) {
+        return fetch(Verein.VEREIN.PHASE2_CONFIRMED_BY, values);
+    }
+
+    /**
+     * Fetch records that have <code>phase2_confirmed_at BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfPhase2ConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(Verein.VEREIN.PHASE2_CONFIRMED_AT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>phase2_confirmed_at IN (values)</code>
+     */
+    public List<VereinPojo> fetchByPhase2ConfirmedAt(LocalDateTime... values) {
+        return fetch(Verein.VEREIN.PHASE2_CONFIRMED_AT, values);
+    }
 }

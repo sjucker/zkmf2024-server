@@ -595,6 +595,38 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         return (Boolean) get(35);
     }
 
+    /**
+     * Setter for <code>verein.phase2_confirmed_by</code>.
+     */
+    @Override
+    public void setPhase2ConfirmedBy(String value) {
+        set(36, value);
+    }
+
+    /**
+     * Getter for <code>verein.phase2_confirmed_by</code>.
+     */
+    @Override
+    public String getPhase2ConfirmedBy() {
+        return (String) get(36);
+    }
+
+    /**
+     * Setter for <code>verein.phase2_confirmed_at</code>.
+     */
+    @Override
+    public void setPhase2ConfirmedAt(LocalDateTime value) {
+        set(37, value);
+    }
+
+    /**
+     * Getter for <code>verein.phase2_confirmed_at</code>.
+     */
+    @Override
+    public LocalDateTime getPhase2ConfirmedAt() {
+        return (LocalDateTime) get(37);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -646,6 +678,8 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambourenKatA(from.getTambourenKatA());
         setTambourenKatB(from.getTambourenKatB());
         setTambourenKatC(from.getTambourenKatC());
+        setPhase2ConfirmedBy(from.getPhase2ConfirmedBy());
+        setPhase2ConfirmedAt(from.getPhase2ConfirmedAt());
         resetChangedOnNotNull();
     }
 
@@ -669,7 +703,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC, String phase2ConfirmedBy, LocalDateTime phase2ConfirmedAt) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -708,6 +742,8 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambourenKatA(tambourenKatA);
         setTambourenKatB(tambourenKatB);
         setTambourenKatC(tambourenKatC);
+        setPhase2ConfirmedBy(phase2ConfirmedBy);
+        setPhase2ConfirmedAt(phase2ConfirmedAt);
         resetChangedOnNotNull();
     }
 
@@ -754,6 +790,8 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setTambourenKatA(value.getTambourenKatA());
             setTambourenKatB(value.getTambourenKatB());
             setTambourenKatC(value.getTambourenKatC());
+            setPhase2ConfirmedBy(value.getPhase2ConfirmedBy());
+            setPhase2ConfirmedAt(value.getPhase2ConfirmedAt());
             resetChangedOnNotNull();
         }
     }

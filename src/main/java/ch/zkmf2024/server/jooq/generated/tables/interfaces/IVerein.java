@@ -372,6 +372,26 @@ public interface IVerein extends Serializable {
      */
     public Boolean getTambourenKatC();
 
+    /**
+     * Setter for <code>verein.phase2_confirmed_by</code>.
+     */
+    public void setPhase2ConfirmedBy(String value);
+
+    /**
+     * Getter for <code>verein.phase2_confirmed_by</code>.
+     */
+    public String getPhase2ConfirmedBy();
+
+    /**
+     * Setter for <code>verein.phase2_confirmed_at</code>.
+     */
+    public void setPhase2ConfirmedAt(LocalDateTime value);
+
+    /**
+     * Getter for <code>verein.phase2_confirmed_at</code>.
+     */
+    public LocalDateTime getPhase2ConfirmedAt();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {environment} from "../../environments/environment";
-import {Modul, TitelDTO, VereinDTO, VereinProgrammDTO} from "../rest";
+import {Modul, PhaseStatus, TitelDTO, VereinDTO, VereinProgrammDTO} from "../rest";
 import {VereineService} from "../service/vereine.service";
 
 export interface VereinDetailInput {
@@ -15,13 +15,16 @@ export interface VereinDetailInput {
 })
 export class VereinDetailComponent {
 
-    verein?: VereinDTO
+    verein?: VereinDTO;
+    vereinId?: number;
     loading = true;
+    confirming = false;
 
     constructor(config: DynamicDialogConfig<VereinDetailInput>,
                 private vereineService: VereineService) {
         if (config.data) {
             this.loading = true;
+            this.vereinId = config.data.id;
             this.vereineService.get(config.data.id).subscribe({
                 next: value => {
                     this.verein = value;
@@ -78,6 +81,13 @@ export class VereinDetailComponent {
         return !!(programm.minDurationInSeconds && programm.maxDurationInSeconds);
     }
 
+    isInRange(programm: VereinProgrammDTO): boolean {
+        if (programm.totalDurationInSeconds && programm.minDurationInSeconds && programm.maxDurationInSeconds) {
+            return programm.totalDurationInSeconds >= programm.minDurationInSeconds && programm.totalDurationInSeconds <= programm.maxDurationInSeconds;
+        }
+        return true;
+    }
+
     formatDuration(durationInSeconds?: number): string {
         if (durationInSeconds) {
             const seconds = Math.abs(durationInSeconds);
@@ -95,5 +105,35 @@ export class VereinDetailComponent {
 
     selbstwahlTitel(programm: VereinProgrammDTO): TitelDTO[] {
         return programm.ablauf.map(e => e.titel).filter(t => !t.pflichtStueck);
+    }
+
+    isBlank(titel: string | undefined): boolean {
+        if (titel) {
+            return titel.trim().length === 0;
+        }
+        return true;
+    }
+
+    confirm() {
+        if (this.vereinId) {
+            this.confirming = true;
+            this.vereineService.confirmProgramm(this.vereinId).subscribe({
+                next: value => {
+                    this.confirming = false;
+                    this.verein = value;
+                },
+                error: err => {
+                    this.confirming = false;
+                    console.error(err);
+                }
+            });
+        }
+    }
+
+    get phase2Done(): boolean {
+        if (this.verein) {
+            return this.verein.phase2Status === PhaseStatus.DONE;
+        }
+        return false;
     }
 }

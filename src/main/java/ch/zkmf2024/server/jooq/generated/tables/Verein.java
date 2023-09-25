@@ -225,6 +225,16 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_C = createField(DSL.name("tambouren_kat_c"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
 
+    /**
+     * The column <code>verein.phase2_confirmed_by</code>.
+     */
+    public final TableField<VereinRecord, String> PHASE2_CONFIRMED_BY = createField(DSL.name("phase2_confirmed_by"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein.phase2_confirmed_at</code>.
+     */
+    public final TableField<VereinRecord, LocalDateTime> PHASE2_CONFIRMED_AT = createField(DSL.name("phase2_confirmed_at"), SQLDataType.LOCALDATETIME(0), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -282,7 +292,7 @@ public class Verein extends TableImpl<VereinRecord> {
     private transient Kontakt _fkVereinOnDirektionKontakt;
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.kontakt</code> table,
+     * Get the implicit join path to the <code>zkmf2024.kontakt</code> table,
      * via the <code>FK_VEREIN_ON_PRAESIDENT_KONTAKT</code> key.
      */
     public Kontakt fkVereinOnPraesidentKontakt() {
@@ -293,7 +303,7 @@ public class Verein extends TableImpl<VereinRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.kontakt</code> table,
+     * Get the implicit join path to the <code>zkmf2024.kontakt</code> table,
      * via the <code>FK_VEREIN_ON_DIREKTION_KONTAKT</code> key.
      */
     public Kontakt fkVereinOnDirektionKontakt() {
