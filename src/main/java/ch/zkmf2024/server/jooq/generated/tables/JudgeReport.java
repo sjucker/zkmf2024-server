@@ -142,7 +142,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     private transient TimetableEntry _timetableEntry;
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.judge</code> table.
+     * Get the implicit join path to the <code>zkmf2024.judge</code> table.
      */
     public Judge judge() {
         if (_judge == null)
@@ -152,7 +152,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.timetable_entry</code>
+     * Get the implicit join path to the <code>zkmf2024.timetable_entry</code>
      * table.
      */
     public TimetableEntry timetableEntry() {

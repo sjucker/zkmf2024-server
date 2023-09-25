@@ -183,6 +183,21 @@ public class AdminEndpoint {
         return ResponseEntity.ok(vereinService.saveComment(userDetails.getUsername(), id, dto.comment()));
     }
 
+    @PostMapping(path = "/vereine/{id}/confirm-programm")
+    @Secured({"ADMIN"})
+    public ResponseEntity<VereinDTO> confirmProgramm(@AuthenticationPrincipal UserDetails userDetails,
+                                                     @PathVariable Long id) {
+        log.info("POST /secured/admin/vereine/{}/confirm-programm", id);
+
+        try {
+            vereinService.confirmProgramm(userDetails.getUsername(), id);
+            return ResponseEntity.ok(vereinService.findById(id).orElseThrow());
+        } catch (RuntimeException e) {
+            log.error("unexpected error during confirming of programm", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @PostMapping(path = "/user")
     @Secured({"ADMIN"})
     public ResponseEntity<UserDTO> createUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserCreateDTO dto) {

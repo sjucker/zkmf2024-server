@@ -511,4 +511,24 @@ public class VereinService {
         vereinRepository.insert(pojo);
         return new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy());
     }
+
+    public void confirmProgramm(String username, Long vereinId) {
+        var verein = vereinRepository.findById(vereinId).orElseThrow();
+        if (verein.getPhase2ConfirmedAt() != null) {
+            log.error("user {} tried to confirm programm for verein {}, but was already confirmed at {} by {}",
+                      username, verein.getId(), verein.getPhase2ConfirmedAt(), verein.getPhase2ConfirmedBy());
+            return;
+        }
+
+        var status = PhaseStatus.valueOf(findStatus(vereinId).getPhase2());
+        if (status != PhaseStatus.DONE) {
+            log.error("user {} tried to confirm programm for verein {}, but not yet in required status DONE, actual status {}",
+                      username, verein.getId(), status);
+            return;
+        }
+
+        verein.setPhase2ConfirmedAt(now());
+        verein.setPhase2ConfirmedBy(username);
+        vereinRepository.update(verein);
+    }
 }

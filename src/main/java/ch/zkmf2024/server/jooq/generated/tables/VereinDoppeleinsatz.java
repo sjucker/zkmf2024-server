@@ -133,7 +133,7 @@ public class VereinDoppeleinsatz extends TableImpl<VereinDoppeleinsatzRecord> {
     private transient Verein _vereinDoppeleinsatzIbfk_2;
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.verein</code> table, via
+     * Get the implicit join path to the <code>zkmf2024.verein</code> table, via
      * the <code>verein_doppeleinsatz_ibfk_1</code> key.
      */
     public Verein vereinDoppeleinsatzIbfk_1() {
@@ -144,7 +144,7 @@ public class VereinDoppeleinsatz extends TableImpl<VereinDoppeleinsatzRecord> {
     }
 
     /**
-     * Get the implicit join path to the <code>mvurdorf.verein</code> table, via
+     * Get the implicit join path to the <code>zkmf2024.verein</code> table, via
      * the <code>verein_doppeleinsatz_ibfk_2</code> key.
      */
     public Verein vereinDoppeleinsatzIbfk_2() {

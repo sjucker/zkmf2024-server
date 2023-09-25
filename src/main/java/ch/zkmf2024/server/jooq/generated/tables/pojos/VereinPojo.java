@@ -51,6 +51,8 @@ public class VereinPojo implements IVerein {
     private Boolean tambourenKatA;
     private Boolean tambourenKatB;
     private Boolean tambourenKatC;
+    private String phase2ConfirmedBy;
+    private LocalDateTime phase2ConfirmedAt;
 
     public VereinPojo() {
     }
@@ -92,6 +94,8 @@ public class VereinPojo implements IVerein {
         this.tambourenKatA = value.getTambourenKatA();
         this.tambourenKatB = value.getTambourenKatB();
         this.tambourenKatC = value.getTambourenKatC();
+        this.phase2ConfirmedBy = value.getPhase2ConfirmedBy();
+        this.phase2ConfirmedAt = value.getPhase2ConfirmedAt();
     }
 
     public VereinPojo(
@@ -130,7 +134,9 @@ public class VereinPojo implements IVerein {
             LocalDateTime confirmedAt,
             Boolean tambourenKatA,
             Boolean tambourenKatB,
-            Boolean tambourenKatC
+            Boolean tambourenKatC,
+            String phase2ConfirmedBy,
+            LocalDateTime phase2ConfirmedAt
     ) {
         this.id = id;
         this.email = email;
@@ -168,6 +174,8 @@ public class VereinPojo implements IVerein {
         this.tambourenKatA = tambourenKatA;
         this.tambourenKatB = tambourenKatB;
         this.tambourenKatC = tambourenKatC;
+        this.phase2ConfirmedBy = phase2ConfirmedBy;
+        this.phase2ConfirmedAt = phase2ConfirmedAt;
     }
 
     /**
@@ -746,6 +754,38 @@ public class VereinPojo implements IVerein {
         this.tambourenKatC = tambourenKatC;
     }
 
+    /**
+     * Getter for <code>verein.phase2_confirmed_by</code>.
+     */
+    @Override
+    public String getPhase2ConfirmedBy() {
+        return this.phase2ConfirmedBy;
+    }
+
+    /**
+     * Setter for <code>verein.phase2_confirmed_by</code>.
+     */
+    @Override
+    public void setPhase2ConfirmedBy(String phase2ConfirmedBy) {
+        this.phase2ConfirmedBy = phase2ConfirmedBy;
+    }
+
+    /**
+     * Getter for <code>verein.phase2_confirmed_at</code>.
+     */
+    @Override
+    public LocalDateTime getPhase2ConfirmedAt() {
+        return this.phase2ConfirmedAt;
+    }
+
+    /**
+     * Setter for <code>verein.phase2_confirmed_at</code>.
+     */
+    @Override
+    public void setPhase2ConfirmedAt(LocalDateTime phase2ConfirmedAt) {
+        this.phase2ConfirmedAt = phase2ConfirmedAt;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -935,6 +975,16 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.tambourenKatC.equals(other.tambourenKatC))
             return false;
+        if (this.phase2ConfirmedBy == null) {
+            if (other.phase2ConfirmedBy != null)
+                return false;
+        } else if (!this.phase2ConfirmedBy.equals(other.phase2ConfirmedBy))
+            return false;
+        if (this.phase2ConfirmedAt == null) {
+            if (other.phase2ConfirmedAt != null)
+                return false;
+        } else if (!this.phase2ConfirmedAt.equals(other.phase2ConfirmedAt))
+            return false;
         return true;
     }
 
@@ -978,6 +1028,8 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.tambourenKatA == null) ? 0 : this.tambourenKatA.hashCode());
         result = prime * result + ((this.tambourenKatB == null) ? 0 : this.tambourenKatB.hashCode());
         result = prime * result + ((this.tambourenKatC == null) ? 0 : this.tambourenKatC.hashCode());
+        result = prime * result + ((this.phase2ConfirmedBy == null) ? 0 : this.phase2ConfirmedBy.hashCode());
+        result = prime * result + ((this.phase2ConfirmedAt == null) ? 0 : this.phase2ConfirmedAt.hashCode());
         return result;
     }
 
@@ -1021,6 +1073,8 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(tambourenKatA);
         sb.append(", ").append(tambourenKatB);
         sb.append(", ").append(tambourenKatC);
+        sb.append(", ").append(phase2ConfirmedBy);
+        sb.append(", ").append(phase2ConfirmedAt);
 
         sb.append(")");
         return sb.toString();
@@ -1068,6 +1122,8 @@ public class VereinPojo implements IVerein {
         setTambourenKatA(from.getTambourenKatA());
         setTambourenKatB(from.getTambourenKatB());
         setTambourenKatC(from.getTambourenKatC());
+        setPhase2ConfirmedBy(from.getPhase2ConfirmedBy());
+        setPhase2ConfirmedAt(from.getPhase2ConfirmedAt());
     }
 
     @Override
