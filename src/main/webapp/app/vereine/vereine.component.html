@@ -98,7 +98,7 @@
             <td>{{dto.vereinsname}}</td>
             <td><i class="pi pi-star" *ngIf="dto.registrationConfirmed"></i></td>
             <td><i [ngClass]="getPhaseStatusIcon(dto.phase1)"></i></td>
-            <td [ngClass]="{'confirmed': !!dto.phase2ConfirmedAt}">
+            <td [ngClass]="{'confirmed': dto.phase2Confirmed}">
                 <i [ngClass]="getPhaseStatusIcon(dto.phase2)"></i>
             </td>
             <td>{{formatBoolean(dto.modulA)}}</td>

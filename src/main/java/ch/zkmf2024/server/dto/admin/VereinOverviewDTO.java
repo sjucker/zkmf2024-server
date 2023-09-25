@@ -28,6 +28,7 @@ public record VereinOverviewDTO(
         boolean tambouren,
         boolean perkussionsensemble,
         boolean registrationConfirmed,
+        boolean phase2Confirmed,
         @NotNull PhaseStatus phase1,
         @NotNull PhaseStatus phase2,
         boolean hasComments
