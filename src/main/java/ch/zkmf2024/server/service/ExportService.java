@@ -283,6 +283,7 @@ public class ExportService {
         headerRow.createCell(columnIndex++).setCellValue("Email");
         headerRow.createCell(columnIndex++).setCellValue("Phase 1");
         headerRow.createCell(columnIndex++).setCellValue("Phase 2");
+        headerRow.createCell(columnIndex++).setCellValue("Phase 2 bestätigt");
         headerRow.createCell(columnIndex++).setCellValue("Adresse");
         headerRow.createCell(columnIndex++).setCellValue("PLZ");
         headerRow.createCell(columnIndex++).setCellValue("Ort");
@@ -339,6 +340,7 @@ public class ExportService {
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.email());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.phase1Done());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.phase2Done());
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.phase2ConfirmedAt() != null);
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().adresse());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().plz());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.angaben().ort());
