@@ -162,6 +162,7 @@ public class VereinRepository {
                               it.get(VEREIN.TAMBOUREN),
                               it.get(VEREIN.PERKUSSIONSENSEMBLE),
                               it.get(VEREIN.CONFIRMED_AT) != null,
+                              it.get(VEREIN.PHASE2_CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)),
                               it.get("COMMENT_COUNT", Integer.class) > 0
