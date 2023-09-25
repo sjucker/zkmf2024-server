@@ -216,7 +216,9 @@ public class VereinService {
         MAPPER.updateKontakt(direktion, dto.direktion());
         vereinRepository.update(direktion);
 
-        updateProgramme(verein.getId(), dto.programme());
+        if (verein.getPhase2ConfirmedAt() == null) {
+            updateProgramme(verein.getId(), dto.programme());
+        }
         updateDoppeleinsatz(verein.getId(), dto.doppelEinsatz(), dto.angaben().mitspielerDoppeleinsatz());
 
         dto = toDTO(verein);
