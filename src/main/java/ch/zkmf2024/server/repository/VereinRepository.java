@@ -252,7 +252,9 @@ public class VereinRepository {
                                     it.get(VEREIN.CONFIRMED_AT) != null,
                                     programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>()),
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)) == DONE,
-                                    PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)) == DONE
+                                    PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)) == DONE,
+                                    it.get(VEREIN.PHASE2_CONFIRMED_BY),
+                                    it.get(VEREIN.PHASE2_CONFIRMED_AT)
                             ));
 
         stopWatch.splitInfo("findAllForExport");

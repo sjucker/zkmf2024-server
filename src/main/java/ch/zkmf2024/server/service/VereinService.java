@@ -141,7 +141,9 @@ public class VereinService {
                 getProgramme(verein.getId()),
                 // only used for export, not important here
                 false,
-                false
+                false,
+                verein.getPhase2ConfirmedBy(),
+                verein.getPhase2ConfirmedAt()
         );
     }
 
