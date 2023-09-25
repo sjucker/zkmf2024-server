@@ -139,7 +139,7 @@ export class VereinDetailComponent {
 
     get phase2Confirmed(): boolean {
         if (this.verein) {
-            return this.verein.phase2ConfirmedAt !== undefined;
+            return !!this.verein.phase2ConfirmedAt;
         }
         return false;
     }
