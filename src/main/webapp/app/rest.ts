@@ -303,14 +303,11 @@ export interface LocationSelectionDTO {
 
 export interface TimetableEntryCreateDTO {
     vereinId: number;
-    vereinProgrammId: number;
+    vereinProgrammId?: number;
     locationId: number;
     date: DateAsString;
     start: DateAsString;
     end: DateAsString;
-    judge1Id: number;
-    judge2Id: number;
-    judge3Id: number;
 }
 
 export interface TimetableEntryDTO {
@@ -373,6 +370,7 @@ export interface VereinOverviewDTO {
     tambouren: boolean;
     perkussionsensemble: boolean;
     registrationConfirmed: boolean;
+    phase2Confirmed: boolean;
     phase1: PhaseStatus;
     phase2: PhaseStatus;
     hasComments: boolean;

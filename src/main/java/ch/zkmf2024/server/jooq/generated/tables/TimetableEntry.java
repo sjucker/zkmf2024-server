@@ -64,7 +64,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     /**
      * The column <code>timetable_entry.fk_verein_programm</code>.
      */
-    public final TableField<TimetableEntryRecord, Long> FK_VEREIN_PROGRAMM = createField(DSL.name("fk_verein_programm"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<TimetableEntryRecord, Long> FK_VEREIN_PROGRAMM = createField(DSL.name("fk_verein_programm"), SQLDataType.BIGINT, this, "");
 
     /**
      * The column <code>timetable_entry.fk_location</code>.

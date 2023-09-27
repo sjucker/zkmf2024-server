@@ -240,7 +240,7 @@ public class AdminEndpoint {
 
     @PostMapping("/timetable")
     @Secured({"ADMIN"})
-    public ResponseEntity<?> getTimetable(@RequestBody TimetableEntryCreateDTO dto) {
+    public ResponseEntity<?> createTimetableEntry(@RequestBody TimetableEntryCreateDTO dto) {
         log.info("POST /secured/admin/timetable {}", dto);
         try {
             timetableService.create(dto);

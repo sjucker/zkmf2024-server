@@ -24,10 +24,7 @@ export class TimetableComponent implements OnInit {
         end: '13:00:00',
         locationId: 0,
         vereinId: 0,
-        vereinProgrammId: 0,
-        judge1Id: 0,
-        judge2Id: 0,
-        judge3Id: 0
+        vereinProgrammId: 0
     };
 
     availableLocations: LocationSelectionDTO[] = [];
@@ -115,19 +112,14 @@ export class TimetableComponent implements OnInit {
     }
 
     get valid(): boolean {
-        return this.newEntry.judge1Id > 0 &&
-            this.newEntry.judge2Id > 0 &&
-            this.newEntry.judge3Id > 0 &&
-            this.newEntry.judge1Id !== this.newEntry.judge2Id &&
-            this.newEntry.judge1Id !== this.newEntry.judge3Id &&
-            this.newEntry.judge2Id !== this.newEntry.judge3Id &&
-            this.newEntry.vereinProgrammId > 0 &&
-            this.newEntry.vereinId > 0 &&
+        return this.newEntry.vereinId > 0 &&
             this.newEntry.locationId > 0 &&
             // TODO validate date formats
             this.newEntry.end.length > 0 &&
             this.newEntry.start.length > 0 &&
             this.newEntry.date.length > 0;
+        // this.newEntry.vereinProgrammId > 0 && TODO
+
     }
 
     vereinSelectionChanged() {

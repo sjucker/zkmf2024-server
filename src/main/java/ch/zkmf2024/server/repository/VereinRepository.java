@@ -39,6 +39,7 @@ import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.tools.StopWatch;
 import org.springframework.stereotype.Repository;
@@ -169,10 +170,14 @@ public class VereinRepository {
                       ));
     }
 
-    public List<VereinSelectionDTO> findAllForSelection() {
+    public List<VereinSelectionDTO> findAllNotYetPlanned() {
         return jooqDsl.select()
                       .from(VEREIN)
-                      .where(VEREIN.CONFIRMED_AT.isNotNull())
+                      .where(
+                              VEREIN.CONFIRMED_AT.isNotNull(),
+                              VEREIN.PHASE2_CONFIRMED_AT.isNotNull(),
+                              DSL.notExists(selectOne().from(TIMETABLE_ENTRY).where(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID)))
+                      )
                       .orderBy(VEREIN.VEREINSNAME)
                       .fetch(it -> new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)));
     }

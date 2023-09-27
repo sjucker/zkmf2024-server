@@ -1,5 +1,21 @@
 <p-toast position="top-center"></p-toast>
 <div class="card">
+
+    <div class="p-fluid grid">
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+            <p-dropdown id="vereine"
+                        [autoDisplayFirst]="false"
+                        [options]="availableVereine"
+                        [(ngModel)]="newEntry.vereinId"
+                        optionValue="id"
+                        optionLabel="name"
+                        (onChange)="vereinSelectionChanged()"
+                        [filter]="true"></p-dropdown>
+            <label for="vereine">Verein</label>
+            </span>
+        </div>
+    </div>
     <div class="p-fluid grid">
         <div class="field col-12 md:col-4">
             <span class="p-float-label">
@@ -34,19 +50,7 @@
             <label for="locations">Wettspiellokal</label>
             </span>
         </div>
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-            <p-dropdown id="vereine"
-                        [autoDisplayFirst]="false"
-                        [options]="availableVereine"
-                        [(ngModel)]="newEntry.vereinId"
-                        optionValue="id"
-                        optionLabel="name"
-                        (onChange)="vereinSelectionChanged()"
-                        [filter]="true"></p-dropdown>
-            <label for="vereine">Verein</label>
-            </span>
-        </div>
+
 
         <div class="field col-12 md:col-4">
             <span class="p-float-label">
@@ -60,38 +64,38 @@
             </span>
         </div>
     </div>
-    <div class="p-fluid grid">
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-            <p-dropdown [options]="availableJudges"
-                        optionValue="id"
-                        optionLabel="name"
-                        id="judge1"
-                        [(ngModel)]="newEntry.judge1Id"></p-dropdown>
-               <label for="judge1">Jury 1</label>
-            </span>
-        </div>
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-            <p-dropdown [options]="availableJudges"
-                        optionValue="id"
-                        optionLabel="name"
-                        id="judge2"
-                        [(ngModel)]="newEntry.judge2Id"></p-dropdown>
-                <label for="judge2">Jury 2</label>
-            </span>
-        </div>
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-            <p-dropdown [options]="availableJudges"
-                        optionValue="id"
-                        optionLabel="name"
-                        id="judge3"
-                        [(ngModel)]="newEntry.judge3Id"></p-dropdown>
-                <label for="judge3">Jury 3</label>
-            </span>
-        </div>
-    </div>
+    <!--    <div class="p-fluid grid">-->
+    <!--        <div class="field col-12 md:col-4">-->
+    <!--            <span class="p-float-label">-->
+    <!--            <p-dropdown [options]="availableJudges"-->
+    <!--                        optionValue="id"-->
+    <!--                        optionLabel="name"-->
+    <!--                        id="judge1"-->
+    <!--                        [(ngModel)]="newEntry.judge1Id"></p-dropdown>-->
+    <!--               <label for="judge1">Jury 1</label>-->
+    <!--            </span>-->
+    <!--        </div>-->
+    <!--        <div class="field col-12 md:col-4">-->
+    <!--            <span class="p-float-label">-->
+    <!--            <p-dropdown [options]="availableJudges"-->
+    <!--                        optionValue="id"-->
+    <!--                        optionLabel="name"-->
+    <!--                        id="judge2"-->
+    <!--                        [(ngModel)]="newEntry.judge2Id"></p-dropdown>-->
+    <!--                <label for="judge2">Jury 2</label>-->
+    <!--            </span>-->
+    <!--        </div>-->
+    <!--        <div class="field col-12 md:col-4">-->
+    <!--            <span class="p-float-label">-->
+    <!--            <p-dropdown [options]="availableJudges"-->
+    <!--                        optionValue="id"-->
+    <!--                        optionLabel="name"-->
+    <!--                        id="judge3"-->
+    <!--                        [(ngModel)]="newEntry.judge3Id"></p-dropdown>-->
+    <!--                <label for="judge3">Jury 3</label>-->
+    <!--            </span>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <div class="flex flex lg:justify-content-end">
         <p-button (onClick)="create()"
                   [disabled]="!valid">
