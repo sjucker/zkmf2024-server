@@ -102,7 +102,7 @@ public class VereinService {
     }
 
     public List<VereinSelectionDTO> findAllForSelection() {
-        return vereinRepository.findAllForSelection();
+        return vereinRepository.findAllNotYetPlanned();
     }
 
     public List<VereinDTO> findAllForExport() {
