@@ -143,7 +143,10 @@ public class VereinService {
                 false,
                 false,
                 verein.getPhase2ConfirmedBy(),
-                verein.getPhase2ConfirmedAt()
+                verein.getPhase2ConfirmedAt(),
+                verein.getProvWettspiel(),
+                verein.getProvParademusik(),
+                verein.getProvPlatzkonzert()
         );
     }
 

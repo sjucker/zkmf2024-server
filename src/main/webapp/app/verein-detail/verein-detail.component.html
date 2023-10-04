@@ -11,6 +11,12 @@
             durch {{verein.phase2ConfirmedBy}}
         </div>
 
+        <div>
+            <div *ngIf="verein.provWettspiel">Wettspiel: {{verein.provWettspiel}}</div>
+            <div *ngIf="verein.provParademusik">Parademusik: {{verein.provParademusik}}</div>
+            <div *ngIf="verein.provPlatzkonzert">Platzkonzert: {{verein.provPlatzkonzert}}</div>
+        </div>
+
         <div *ngFor="let programm of verein.programme; let last = last;">
             <h3>{{programm.modulDescription}} {{programm.klasse}} {{programm.besetzung}}</h3>
             <div *ngIf="hasVorgabeDauer(programm)"><b>Vorgabe Dauer</b>:

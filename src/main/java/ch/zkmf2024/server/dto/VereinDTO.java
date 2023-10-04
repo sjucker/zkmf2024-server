@@ -19,7 +19,10 @@ public record VereinDTO(
         boolean phase1Done,
         boolean phase2Done,
         String phase2ConfirmedBy,
-        LocalDateTime phase2ConfirmedAt
+        LocalDateTime phase2ConfirmedAt,
+        String provWettspiel,
+        String provParademusik,
+        String provPlatzkonzert
 ) {
 
     @NotNull
