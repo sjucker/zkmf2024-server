@@ -392,6 +392,36 @@ public interface IVerein extends Serializable {
      */
     public LocalDateTime getPhase2ConfirmedAt();
 
+    /**
+     * Setter for <code>verein.prov_wettspiel</code>.
+     */
+    public void setProvWettspiel(String value);
+
+    /**
+     * Getter for <code>verein.prov_wettspiel</code>.
+     */
+    public String getProvWettspiel();
+
+    /**
+     * Setter for <code>verein.prov_parademusik</code>.
+     */
+    public void setProvParademusik(String value);
+
+    /**
+     * Getter for <code>verein.prov_parademusik</code>.
+     */
+    public String getProvParademusik();
+
+    /**
+     * Setter for <code>verein.prov_platzkonzert</code>.
+     */
+    public void setProvPlatzkonzert(String value);
+
+    /**
+     * Getter for <code>verein.prov_platzkonzert</code>.
+     */
+    public String getProvPlatzkonzert();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -53,6 +53,9 @@ public class VereinPojo implements IVerein {
     private Boolean tambourenKatC;
     private String phase2ConfirmedBy;
     private LocalDateTime phase2ConfirmedAt;
+    private String provWettspiel;
+    private String provParademusik;
+    private String provPlatzkonzert;
 
     public VereinPojo() {
     }
@@ -96,6 +99,9 @@ public class VereinPojo implements IVerein {
         this.tambourenKatC = value.getTambourenKatC();
         this.phase2ConfirmedBy = value.getPhase2ConfirmedBy();
         this.phase2ConfirmedAt = value.getPhase2ConfirmedAt();
+        this.provWettspiel = value.getProvWettspiel();
+        this.provParademusik = value.getProvParademusik();
+        this.provPlatzkonzert = value.getProvPlatzkonzert();
     }
 
     public VereinPojo(
@@ -136,7 +142,10 @@ public class VereinPojo implements IVerein {
             Boolean tambourenKatB,
             Boolean tambourenKatC,
             String phase2ConfirmedBy,
-            LocalDateTime phase2ConfirmedAt
+            LocalDateTime phase2ConfirmedAt,
+            String provWettspiel,
+            String provParademusik,
+            String provPlatzkonzert
     ) {
         this.id = id;
         this.email = email;
@@ -176,6 +185,9 @@ public class VereinPojo implements IVerein {
         this.tambourenKatC = tambourenKatC;
         this.phase2ConfirmedBy = phase2ConfirmedBy;
         this.phase2ConfirmedAt = phase2ConfirmedAt;
+        this.provWettspiel = provWettspiel;
+        this.provParademusik = provParademusik;
+        this.provPlatzkonzert = provPlatzkonzert;
     }
 
     /**
@@ -786,6 +798,54 @@ public class VereinPojo implements IVerein {
         this.phase2ConfirmedAt = phase2ConfirmedAt;
     }
 
+    /**
+     * Getter for <code>verein.prov_wettspiel</code>.
+     */
+    @Override
+    public String getProvWettspiel() {
+        return this.provWettspiel;
+    }
+
+    /**
+     * Setter for <code>verein.prov_wettspiel</code>.
+     */
+    @Override
+    public void setProvWettspiel(String provWettspiel) {
+        this.provWettspiel = provWettspiel;
+    }
+
+    /**
+     * Getter for <code>verein.prov_parademusik</code>.
+     */
+    @Override
+    public String getProvParademusik() {
+        return this.provParademusik;
+    }
+
+    /**
+     * Setter for <code>verein.prov_parademusik</code>.
+     */
+    @Override
+    public void setProvParademusik(String provParademusik) {
+        this.provParademusik = provParademusik;
+    }
+
+    /**
+     * Getter for <code>verein.prov_platzkonzert</code>.
+     */
+    @Override
+    public String getProvPlatzkonzert() {
+        return this.provPlatzkonzert;
+    }
+
+    /**
+     * Setter for <code>verein.prov_platzkonzert</code>.
+     */
+    @Override
+    public void setProvPlatzkonzert(String provPlatzkonzert) {
+        this.provPlatzkonzert = provPlatzkonzert;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -985,6 +1045,21 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.phase2ConfirmedAt.equals(other.phase2ConfirmedAt))
             return false;
+        if (this.provWettspiel == null) {
+            if (other.provWettspiel != null)
+                return false;
+        } else if (!this.provWettspiel.equals(other.provWettspiel))
+            return false;
+        if (this.provParademusik == null) {
+            if (other.provParademusik != null)
+                return false;
+        } else if (!this.provParademusik.equals(other.provParademusik))
+            return false;
+        if (this.provPlatzkonzert == null) {
+            if (other.provPlatzkonzert != null)
+                return false;
+        } else if (!this.provPlatzkonzert.equals(other.provPlatzkonzert))
+            return false;
         return true;
     }
 
@@ -1030,6 +1105,9 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.tambourenKatC == null) ? 0 : this.tambourenKatC.hashCode());
         result = prime * result + ((this.phase2ConfirmedBy == null) ? 0 : this.phase2ConfirmedBy.hashCode());
         result = prime * result + ((this.phase2ConfirmedAt == null) ? 0 : this.phase2ConfirmedAt.hashCode());
+        result = prime * result + ((this.provWettspiel == null) ? 0 : this.provWettspiel.hashCode());
+        result = prime * result + ((this.provParademusik == null) ? 0 : this.provParademusik.hashCode());
+        result = prime * result + ((this.provPlatzkonzert == null) ? 0 : this.provPlatzkonzert.hashCode());
         return result;
     }
 
@@ -1075,6 +1153,9 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(tambourenKatC);
         sb.append(", ").append(phase2ConfirmedBy);
         sb.append(", ").append(phase2ConfirmedAt);
+        sb.append(", ").append(provWettspiel);
+        sb.append(", ").append(provParademusik);
+        sb.append(", ").append(provPlatzkonzert);
 
         sb.append(")");
         return sb.toString();
@@ -1124,6 +1205,9 @@ public class VereinPojo implements IVerein {
         setTambourenKatC(from.getTambourenKatC());
         setPhase2ConfirmedBy(from.getPhase2ConfirmedBy());
         setPhase2ConfirmedAt(from.getPhase2ConfirmedAt());
+        setProvWettspiel(from.getProvWettspiel());
+        setProvParademusik(from.getProvParademusik());
+        setProvPlatzkonzert(from.getProvPlatzkonzert());
     }
 
     @Override

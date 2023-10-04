@@ -627,6 +627,54 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         return (LocalDateTime) get(37);
     }
 
+    /**
+     * Setter for <code>verein.prov_wettspiel</code>.
+     */
+    @Override
+    public void setProvWettspiel(String value) {
+        set(38, value);
+    }
+
+    /**
+     * Getter for <code>verein.prov_wettspiel</code>.
+     */
+    @Override
+    public String getProvWettspiel() {
+        return (String) get(38);
+    }
+
+    /**
+     * Setter for <code>verein.prov_parademusik</code>.
+     */
+    @Override
+    public void setProvParademusik(String value) {
+        set(39, value);
+    }
+
+    /**
+     * Getter for <code>verein.prov_parademusik</code>.
+     */
+    @Override
+    public String getProvParademusik() {
+        return (String) get(39);
+    }
+
+    /**
+     * Setter for <code>verein.prov_platzkonzert</code>.
+     */
+    @Override
+    public void setProvPlatzkonzert(String value) {
+        set(40, value);
+    }
+
+    /**
+     * Getter for <code>verein.prov_platzkonzert</code>.
+     */
+    @Override
+    public String getProvPlatzkonzert() {
+        return (String) get(40);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -680,6 +728,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambourenKatC(from.getTambourenKatC());
         setPhase2ConfirmedBy(from.getPhase2ConfirmedBy());
         setPhase2ConfirmedAt(from.getPhase2ConfirmedAt());
+        setProvWettspiel(from.getProvWettspiel());
+        setProvParademusik(from.getProvParademusik());
+        setProvPlatzkonzert(from.getProvPlatzkonzert());
         resetChangedOnNotNull();
     }
 
@@ -703,7 +754,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC, String phase2ConfirmedBy, LocalDateTime phase2ConfirmedAt) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC, String phase2ConfirmedBy, LocalDateTime phase2ConfirmedAt, String provWettspiel, String provParademusik, String provPlatzkonzert) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -744,6 +795,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setTambourenKatC(tambourenKatC);
         setPhase2ConfirmedBy(phase2ConfirmedBy);
         setPhase2ConfirmedAt(phase2ConfirmedAt);
+        setProvWettspiel(provWettspiel);
+        setProvParademusik(provParademusik);
+        setProvPlatzkonzert(provPlatzkonzert);
         resetChangedOnNotNull();
     }
 
@@ -792,6 +846,9 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setTambourenKatC(value.getTambourenKatC());
             setPhase2ConfirmedBy(value.getPhase2ConfirmedBy());
             setPhase2ConfirmedAt(value.getPhase2ConfirmedAt());
+            setProvWettspiel(value.getProvWettspiel());
+            setProvParademusik(value.getProvParademusik());
+            setProvPlatzkonzert(value.getProvPlatzkonzert());
             resetChangedOnNotNull();
         }
     }

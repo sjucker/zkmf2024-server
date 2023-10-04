@@ -622,4 +622,49 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByPhase2ConfirmedAt(LocalDateTime... values) {
         return fetch(Verein.VEREIN.PHASE2_CONFIRMED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>prov_wettspiel BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfProvWettspiel(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.PROV_WETTSPIEL, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>prov_wettspiel IN (values)</code>
+     */
+    public List<VereinPojo> fetchByProvWettspiel(String... values) {
+        return fetch(Verein.VEREIN.PROV_WETTSPIEL, values);
+    }
+
+    /**
+     * Fetch records that have <code>prov_parademusik BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfProvParademusik(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.PROV_PARADEMUSIK, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>prov_parademusik IN (values)</code>
+     */
+    public List<VereinPojo> fetchByProvParademusik(String... values) {
+        return fetch(Verein.VEREIN.PROV_PARADEMUSIK, values);
+    }
+
+    /**
+     * Fetch records that have <code>prov_platzkonzert BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfProvPlatzkonzert(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.PROV_PLATZKONZERT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>prov_platzkonzert IN (values)</code>
+     */
+    public List<VereinPojo> fetchByProvPlatzkonzert(String... values) {
+        return fetch(Verein.VEREIN.PROV_PLATZKONZERT, values);
+    }
 }

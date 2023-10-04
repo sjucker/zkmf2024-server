@@ -235,6 +235,21 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, LocalDateTime> PHASE2_CONFIRMED_AT = createField(DSL.name("phase2_confirmed_at"), SQLDataType.LOCALDATETIME(0), this, "");
 
+    /**
+     * The column <code>verein.prov_wettspiel</code>.
+     */
+    public final TableField<VereinRecord, String> PROV_WETTSPIEL = createField(DSL.name("prov_wettspiel"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein.prov_parademusik</code>.
+     */
+    public final TableField<VereinRecord, String> PROV_PARADEMUSIK = createField(DSL.name("prov_parademusik"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein.prov_platzkonzert</code>.
+     */
+    public final TableField<VereinRecord, String> PROV_PLATZKONZERT = createField(DSL.name("prov_platzkonzert"), SQLDataType.VARCHAR(255), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }
