@@ -331,6 +331,9 @@ public class ExportService {
         headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. A");
         headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. B");
         headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. C");
+        headerRow.createCell(columnIndex++).setCellValue("Prov. Wettspiel");
+        headerRow.createCell(columnIndex++).setCellValue("Prov. Parademusik");
+        headerRow.createCell(columnIndex++).setCellValue("Prov. Platzkonzert");
 
         for (var vereinDTO : vereine) {
             var row = sheet.createRow(rowIndex++);
@@ -388,6 +391,10 @@ public class ExportService {
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.anmeldung().tambourenKatA());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.anmeldung().tambourenKatB());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.anmeldung().tambourenKatC());
+
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.provWettspiel());
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.provParademusik());
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.provPlatzkonzert());
         }
 
         for (int i = 0; i < columnIndex; i++) {
