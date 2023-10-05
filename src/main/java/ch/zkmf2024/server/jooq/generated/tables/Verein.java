@@ -22,7 +22,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -210,7 +210,7 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.confirmed_at</code>.
      */
-    public final TableField<VereinRecord, OffsetDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
+    public final TableField<VereinRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     /**
      * The column <code>verein.tambouren_kat_a</code>.
@@ -235,7 +235,7 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.phase2_confirmed_at</code>.
      */
-    public final TableField<VereinRecord, OffsetDateTime> PHASE2_CONFIRMED_AT = createField(DSL.name("phase2_confirmed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
+    public final TableField<VereinRecord, LocalDateTime> PHASE2_CONFIRMED_AT = createField(DSL.name("phase2_confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     /**
      * The column <code>verein.prov_wettspiel</code>.

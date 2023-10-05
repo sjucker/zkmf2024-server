@@ -25,7 +25,7 @@ import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -154,7 +154,7 @@ public class HelperRegistration extends TableImpl<HelperRegistrationRecord> {
     /**
      * The column <code>helper_registration.registered_at</code>.
      */
-    public final TableField<HelperRegistrationRecord, OffsetDateTime> REGISTERED_AT = createField(DSL.name("registered_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
+    public final TableField<HelperRegistrationRecord, LocalDateTime> REGISTERED_AT = createField(DSL.name("registered_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     private HelperRegistration(Name alias, Table<HelperRegistrationRecord> aliased) {
         this(alias, aliased, null);
@@ -253,14 +253,14 @@ public class HelperRegistration extends TableImpl<HelperRegistrationRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row21<Long, String, String, String, String, String, String, String, LocalDate, String, String, String, String, String, String, String, String, String, String, String, OffsetDateTime> fieldsRow() {
+    public Row21<Long, String, String, String, String, String, String, String, LocalDate, String, String, String, String, String, String, String, String, String, String, String, LocalDateTime> fieldsRow() {
         return (Row21) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function21<? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDate, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super OffsetDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function21<? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDate, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -268,7 +268,7 @@ public class HelperRegistration extends TableImpl<HelperRegistrationRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function21<? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDate, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super OffsetDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function21<? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDate, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super LocalDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
