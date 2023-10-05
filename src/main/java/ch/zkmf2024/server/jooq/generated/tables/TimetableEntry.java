@@ -4,12 +4,14 @@
 package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
+import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function7;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -79,12 +81,12 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     /**
      * The column <code>timetable_entry.start_time</code>.
      */
-    public final TableField<TimetableEntryRecord, LocalTime> START_TIME = createField(DSL.name("start_time"), SQLDataType.LOCALTIME.nullable(false), this, "");
+    public final TableField<TimetableEntryRecord, LocalTime> START_TIME = createField(DSL.name("start_time"), SQLDataType.LOCALTIME(6).nullable(false), this, "");
 
     /**
      * The column <code>timetable_entry.end_time</code>.
      */
-    public final TableField<TimetableEntryRecord, LocalTime> END_TIME = createField(DSL.name("end_time"), SQLDataType.LOCALTIME.nullable(false), this, "");
+    public final TableField<TimetableEntryRecord, LocalTime> END_TIME = createField(DSL.name("end_time"), SQLDataType.LOCALTIME(6).nullable(false), this, "");
 
     private TimetableEntry(Name alias, Table<TimetableEntryRecord> aliased) {
         this(alias, aliased, null);
@@ -125,23 +127,28 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_FK_TIMETABLE_LOCATION, Indexes.IDX_FK_TIMETABLE_PROGRAMM);
+    }
+
+    @Override
     public Identity<TimetableEntryRecord, Long> getIdentity() {
         return (Identity<TimetableEntryRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<TimetableEntryRecord> getPrimaryKey() {
-        return Keys.KEY_TIMETABLE_ENTRY_PRIMARY;
+        return Keys.PK_TIMETABLE_ENTRY;
     }
 
     @Override
     public List<UniqueKey<TimetableEntryRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_TIMETABLE_ENTRY_UQ_TIMETABLE);
+        return Arrays.asList(Keys.TIMETABLE_ENTRY_FK_VEREIN_FK_VEREIN_PROGRAMM_KEY);
     }
 
     @Override
     public List<ForeignKey<TimetableEntryRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_TIMETABLE_VEREIN, Keys.FK_TIMETABLE_PROGRAMM, Keys.FK_TIMETABLE_LOCATION);
+        return Arrays.asList(Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION);
     }
 
     private transient Verein _verein;
@@ -149,32 +156,32 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     private transient Location _location;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>public.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
-            _verein = new Verein(this, Keys.FK_TIMETABLE_VEREIN);
+            _verein = new Verein(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN);
 
         return _verein;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein_programm</code>
+     * Get the implicit join path to the <code>public.verein_programm</code>
      * table.
      */
     public VereinProgramm vereinProgramm() {
         if (_vereinProgramm == null)
-            _vereinProgramm = new VereinProgramm(this, Keys.FK_TIMETABLE_PROGRAMM);
+            _vereinProgramm = new VereinProgramm(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM);
 
         return _vereinProgramm;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table.
+     * Get the implicit join path to the <code>public.location</code> table.
      */
     public Location location() {
         if (_location == null)
-            _location = new Location(this, Keys.FK_TIMETABLE_LOCATION);
+            _location = new Location(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION);
 
         return _location;
     }

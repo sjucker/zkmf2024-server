@@ -23,7 +23,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 /**
@@ -65,12 +65,12 @@ public class NewsletterRecipient extends TableImpl<NewsletterRecipientRecord> {
     /**
      * The column <code>newsletter_recipient.subscribed_at</code>.
      */
-    public final TableField<NewsletterRecipientRecord, LocalDateTime> SUBSCRIBED_AT = createField(DSL.name("subscribed_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<NewsletterRecipientRecord, OffsetDateTime> SUBSCRIBED_AT = createField(DSL.name("subscribed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
 
     /**
      * The column <code>newsletter_recipient.unsubscribed_at</code>.
      */
-    public final TableField<NewsletterRecipientRecord, LocalDateTime> UNSUBSCRIBED_AT = createField(DSL.name("unsubscribed_at"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<NewsletterRecipientRecord, OffsetDateTime> UNSUBSCRIBED_AT = createField(DSL.name("unsubscribed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     private NewsletterRecipient(Name alias, Table<NewsletterRecipientRecord> aliased) {
         this(alias, aliased, null);
@@ -112,7 +112,7 @@ public class NewsletterRecipient extends TableImpl<NewsletterRecipientRecord> {
 
     @Override
     public UniqueKey<NewsletterRecipientRecord> getPrimaryKey() {
-        return Keys.KEY_NEWSLETTER_RECIPIENT_PRIMARY;
+        return Keys.PK_NEWSLETTER_RECIPIENT;
     }
 
     @Override
@@ -159,14 +159,14 @@ public class NewsletterRecipient extends TableImpl<NewsletterRecipientRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<String, String, String, LocalDateTime, LocalDateTime> fieldsRow() {
+    public Row5<String, String, String, OffsetDateTime, OffsetDateTime> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function5<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function5<? super String, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -174,7 +174,7 @@ public class NewsletterRecipient extends TableImpl<NewsletterRecipientRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super String, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

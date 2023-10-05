@@ -1,8 +1,0 @@
-CREATE TABLE verein_status
-(
- fk_verein BIGINT NOT NULL,
- phase1 VARCHAR(255) NOT NULL DEFAULT 'NEW',
- phase2 VARCHAR(255) NOT NULL DEFAULT 'NEW',
- PRIMARY KEY (fk_verein),
- FOREIGN KEY (fk_verein) REFERENCES verein(id) ON DELETE CASCADE
-);

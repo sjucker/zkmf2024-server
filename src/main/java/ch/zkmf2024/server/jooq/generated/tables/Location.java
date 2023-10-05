@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
+import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
@@ -11,6 +12,7 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function11;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -69,17 +71,17 @@ public class Location extends TableImpl<LocationRecord> {
     /**
      * The column <code>location.latitude</code>.
      */
-    public final TableField<LocationRecord, BigDecimal> LATITUDE = createField(DSL.name("latitude"), SQLDataType.DECIMAL(16, 12).nullable(false), this, "");
+    public final TableField<LocationRecord, BigDecimal> LATITUDE = createField(DSL.name("latitude"), SQLDataType.NUMERIC(16, 12).nullable(false), this, "");
 
     /**
      * The column <code>location.longitude</code>.
      */
-    public final TableField<LocationRecord, BigDecimal> LONGITUDE = createField(DSL.name("longitude"), SQLDataType.DECIMAL(16, 12).nullable(false), this, "");
+    public final TableField<LocationRecord, BigDecimal> LONGITUDE = createField(DSL.name("longitude"), SQLDataType.NUMERIC(16, 12).nullable(false), this, "");
 
     /**
      * The column <code>location.location_type</code>.
      */
-    public final TableField<LocationRecord, LocationLocationType> LOCATION_TYPE = createField(DSL.name("location_type"), SQLDataType.VARCHAR(17).asEnumDataType(ch.zkmf2024.server.jooq.generated.enums.LocationLocationType.class), this, "");
+    public final TableField<LocationRecord, LocationLocationType> LOCATION_TYPE = createField(DSL.name("location_type"), SQLDataType.VARCHAR.asEnumDataType(ch.zkmf2024.server.jooq.generated.enums.LocationLocationType.class), this, "");
 
     /**
      * The column <code>location.capacity</code>.
@@ -145,18 +147,23 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_FK_LOCATION_EINSPIELLOKAL, Indexes.IDX_FK_LOCATION_INSTRUMENTENDEPOT, Indexes.IDX_FK_LOCATION_JURYFEEDBACK);
+    }
+
+    @Override
     public Identity<LocationRecord, Long> getIdentity() {
         return (Identity<LocationRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<LocationRecord> getPrimaryKey() {
-        return Keys.KEY_LOCATION_PRIMARY;
+        return Keys.PK_LOCATION;
     }
 
     @Override
     public List<ForeignKey<LocationRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_LOCATION_EINSPIELLOKAL, Keys.FK_LOCATION_INSTRUMENTENDEPOT, Keys.FK_LOCATION_JURYFEEDBACK);
+        return Arrays.asList(Keys.LOCATION__FK_LOCATION_EINSPIELLOKAL, Keys.LOCATION__FK_LOCATION_INSTRUMENTENDEPOT, Keys.LOCATION__FK_LOCATION_JURYFEEDBACK);
     }
 
     private transient Location _fkLocationEinspiellokal;
@@ -164,34 +171,34 @@ public class Location extends TableImpl<LocationRecord> {
     private transient Location _fkLocationJuryfeedback;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table,
-     * via the <code>FK_LOCATION_EINSPIELLOKAL</code> key.
+     * Get the implicit join path to the <code>public.location</code> table, via
+     * the <code>fk_location_einspiellokal</code> key.
      */
     public Location fkLocationEinspiellokal() {
         if (_fkLocationEinspiellokal == null)
-            _fkLocationEinspiellokal = new Location(this, Keys.FK_LOCATION_EINSPIELLOKAL);
+            _fkLocationEinspiellokal = new Location(this, Keys.LOCATION__FK_LOCATION_EINSPIELLOKAL);
 
         return _fkLocationEinspiellokal;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table,
-     * via the <code>FK_LOCATION_INSTRUMENTENDEPOT</code> key.
+     * Get the implicit join path to the <code>public.location</code> table, via
+     * the <code>fk_location_instrumentendepot</code> key.
      */
     public Location fkLocationInstrumentendepot() {
         if (_fkLocationInstrumentendepot == null)
-            _fkLocationInstrumentendepot = new Location(this, Keys.FK_LOCATION_INSTRUMENTENDEPOT);
+            _fkLocationInstrumentendepot = new Location(this, Keys.LOCATION__FK_LOCATION_INSTRUMENTENDEPOT);
 
         return _fkLocationInstrumentendepot;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.location</code> table,
-     * via the <code>FK_LOCATION_JURYFEEDBACK</code> key.
+     * Get the implicit join path to the <code>public.location</code> table, via
+     * the <code>fk_location_juryfeedback</code> key.
      */
     public Location fkLocationJuryfeedback() {
         if (_fkLocationJuryfeedback == null)
-            _fkLocationJuryfeedback = new Location(this, Keys.FK_LOCATION_JURYFEEDBACK);
+            _fkLocationJuryfeedback = new Location(this, Keys.LOCATION__FK_LOCATION_JURYFEEDBACK);
 
         return _fkLocationJuryfeedback;
     }

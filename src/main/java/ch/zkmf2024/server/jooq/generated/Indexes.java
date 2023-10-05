@@ -3,7 +3,13 @@
  */
 package ch.zkmf2024.server.jooq.generated;
 
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReport;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReportComment;
+import ch.zkmf2024.server.jooq.generated.tables.JudgeReportRating;
+import ch.zkmf2024.server.jooq.generated.tables.Location;
+import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
+import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
@@ -23,10 +29,20 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index VEREIN_DOPPELEINSATZ_FK_OTHER_VEREIN = Internal.createIndex(DSL.name("fk_other_verein"), VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ, new OrderField[]{VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN}, false);
-    public static final Index VEREIN_PROGRAMM_TITEL_FK_TITEL = Internal.createIndex(DSL.name("fk_titel"), VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, new OrderField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_TITEL}, false);
-    public static final Index TITEL_FK_VEREIN = Internal.createIndex(DSL.name("fk_verein"), Titel.TITEL, new OrderField[]{Titel.TITEL.FK_VEREIN}, false);
-    public static final Index VEREIN_COMMENT_FK_VEREIN = Internal.createIndex(DSL.name("fk_verein"), VereinComment.VEREIN_COMMENT, new OrderField[]{VereinComment.VEREIN_COMMENT.FK_VEREIN}, false);
-    public static final Index VEREIN_DOPPELEINSATZ_FK_VEREIN = Internal.createIndex(DSL.name("fk_verein"), VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ, new OrderField[]{VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ.FK_VEREIN}, false);
-    public static final Index VEREIN_PROGRAMM_FK_VEREIN = Internal.createIndex(DSL.name("fk_verein"), VereinProgramm.VEREIN_PROGRAMM, new OrderField[]{VereinProgramm.VEREIN_PROGRAMM.FK_VEREIN}, false);
+    public static final Index IDX_FK_JUDGE_REPORT_COMMENT_TITEL = Internal.createIndex(DSL.name("idx_fk_judge_report_comment_titel"), JudgeReportComment.JUDGE_REPORT_COMMENT, new OrderField[]{JudgeReportComment.JUDGE_REPORT_COMMENT.FK_TITEL}, false);
+    public static final Index IDX_FK_JUDGE_REPORT_RATING_TITEL = Internal.createIndex(DSL.name("idx_fk_judge_report_rating_titel"), JudgeReportRating.JUDGE_REPORT_RATING, new OrderField[]{JudgeReportRating.JUDGE_REPORT_RATING.FK_TITEL}, false);
+    public static final Index IDX_FK_JUDGE_REPORT_TIMETABLE = Internal.createIndex(DSL.name("idx_fk_judge_report_timetable"), JudgeReport.JUDGE_REPORT, new OrderField[]{JudgeReport.JUDGE_REPORT.FK_TIMETABLE_ENTRY}, false);
+    public static final Index IDX_FK_LOCATION_EINSPIELLOKAL = Internal.createIndex(DSL.name("idx_fk_location_einspiellokal"), Location.LOCATION, new OrderField[]{Location.LOCATION.EINSPIELLOKAL_ID}, false);
+    public static final Index IDX_FK_LOCATION_INSTRUMENTENDEPOT = Internal.createIndex(DSL.name("idx_fk_location_instrumentendepot"), Location.LOCATION, new OrderField[]{Location.LOCATION.INSTRUMENTENDEPOT_ID}, false);
+    public static final Index IDX_FK_LOCATION_JURYFEEDBACK = Internal.createIndex(DSL.name("idx_fk_location_juryfeedback"), Location.LOCATION, new OrderField[]{Location.LOCATION.JURYFEEDBACK_ID}, false);
+    public static final Index IDX_FK_TIMETABLE_LOCATION = Internal.createIndex(DSL.name("idx_fk_timetable_location"), TimetableEntry.TIMETABLE_ENTRY, new OrderField[]{TimetableEntry.TIMETABLE_ENTRY.FK_LOCATION}, false);
+    public static final Index IDX_FK_TIMETABLE_PROGRAMM = Internal.createIndex(DSL.name("idx_fk_timetable_programm"), TimetableEntry.TIMETABLE_ENTRY, new OrderField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM}, false);
+    public static final Index IDX_FK_TITEL_VEREIN = Internal.createIndex(DSL.name("idx_fk_titel_verein"), Titel.TITEL, new OrderField[]{Titel.TITEL.FK_VEREIN}, false);
+    public static final Index IDX_FK_VEREIN_COMMENT_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_comment_verein"), VereinComment.VEREIN_COMMENT, new OrderField[]{VereinComment.VEREIN_COMMENT.FK_VEREIN}, false);
+    public static final Index IDX_FK_VEREIN_DIREKTION_KONTAKT = Internal.createIndex(DSL.name("idx_fk_verein_direktion_kontakt"), Verein.VEREIN, new OrderField[]{Verein.VEREIN.DIREKTION_KONTAKT_ID}, false);
+    public static final Index IDX_FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_doppeleinsatz_other_verein"), VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ, new OrderField[]{VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN}, false);
+    public static final Index IDX_FK_VEREIN_DOPPELEINSATZ_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_doppeleinsatz_verein"), VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ, new OrderField[]{VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ.FK_VEREIN}, false);
+    public static final Index IDX_FK_VEREIN_PRAESIDENT_KONTAKT = Internal.createIndex(DSL.name("idx_fk_verein_praesident_kontakt"), Verein.VEREIN, new OrderField[]{Verein.VEREIN.PRAESIDENT_KONTAKT_ID}, false);
+    public static final Index IDX_FK_VEREIN_PROGRAMM_TITEL_TITEL = Internal.createIndex(DSL.name("idx_fk_verein_programm_titel_titel"), VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, new OrderField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_TITEL}, false);
+    public static final Index IDX_FK_VEREIN_PROGRAMM_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_programm_verein"), VereinProgramm.VEREIN_PROGRAMM, new OrderField[]{VereinProgramm.VEREIN_PROGRAMM.FK_VEREIN}, false);
 }

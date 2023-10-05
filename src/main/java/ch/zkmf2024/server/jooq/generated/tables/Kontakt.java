@@ -137,7 +137,7 @@ public class Kontakt extends TableImpl<KontaktRecord> {
 
     @Override
     public UniqueKey<KontaktRecord> getPrimaryKey() {
-        return Keys.KEY_KONTAKT_PRIMARY;
+        return Keys.PK_KONTAKT;
     }
 
     @Override

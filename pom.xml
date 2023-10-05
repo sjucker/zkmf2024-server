@@ -32,10 +32,10 @@
         <nodeVersion>v18.16.1</nodeVersion>
         <npmVersion>9.7.2</npmVersion>
 
-        <!-- start local DB using src/main/docker/mysql.yml  -->
-        <db.url>jdbc:mysql://localhost:3306/zkmf2024</db.url>
+        <!-- start local DB using src/main/docker/postgres.yml  -->
+        <db.url>jdbc:postgresql://localhost:5432/zkmf2024</db.url>
         <db.user>zkmf2024</db.user>
-        <db.schema>zkmf2024</db.schema>
+        <db.schema>public</db.schema>
         <db.password>zkmf2024</db.password>
 
         <sonar.organization>sjucker</sonar.organization>
@@ -92,11 +92,6 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-mysql</artifactId>
-            <version>${flyway.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -138,8 +133,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -156,7 +151,7 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>mysql</artifactId>
+            <artifactId>postgresql</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
@@ -343,14 +338,14 @@
                 <version>${jooq.version}</version>
                 <configuration>
                     <jdbc>
-                        <driver>com.mysql.cj.jdbc.Driver</driver>
+                        <driver>org.postgresql.Driver</driver>
                         <url>${db.url}</url>
                         <user>${db.user}</user>
                         <password>${db.password}</password>
                     </jdbc>
                     <generator>
                         <database>
-                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
                             <includes>.*</includes>
                             <excludes>flyway_schema_history</excludes>
                             <inputSchema>${db.schema}</inputSchema>

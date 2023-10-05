@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,14 +131,14 @@ public class JudgeReportDao extends DAOImpl<JudgeReportRecord, JudgeReportPojo, 
      * Fetch records that have <code>finished_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<JudgeReportPojo> fetchRangeOfFinishedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<JudgeReportPojo> fetchRangeOfFinishedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(JudgeReport.JUDGE_REPORT.FINISHED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>finished_at IN (values)</code>
      */
-    public List<JudgeReportPojo> fetchByFinishedAt(LocalDateTime... values) {
+    public List<JudgeReportPojo> fetchByFinishedAt(OffsetDateTime... values) {
         return fetch(JudgeReport.JUDGE_REPORT.FINISHED_AT, values);
     }
 }

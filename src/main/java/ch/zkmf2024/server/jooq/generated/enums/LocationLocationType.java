@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated.enums;
 
+import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import org.jooq.Catalog;
 import org.jooq.EnumType;
 import org.jooq.Schema;
@@ -31,17 +32,17 @@ public enum LocationLocationType implements EnumType {
 
     @Override
     public Catalog getCatalog() {
-        return null;
+        return getSchema().getCatalog();
     }
 
     @Override
     public Schema getSchema() {
-        return null;
+        return DefaultSchema.DEFAULT_SCHEMA;
     }
 
     @Override
     public String getName() {
-        return null;
+        return "location_location_type";
     }
 
     @Override

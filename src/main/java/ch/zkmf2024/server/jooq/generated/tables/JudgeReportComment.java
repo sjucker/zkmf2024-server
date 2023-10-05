@@ -4,11 +4,13 @@
 package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
+import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportCommentRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function3;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -102,35 +104,39 @@ public class JudgeReportComment extends TableImpl<JudgeReportCommentRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_FK_JUDGE_REPORT_COMMENT_TITEL);
+    }
+
+    @Override
     public UniqueKey<JudgeReportCommentRecord> getPrimaryKey() {
-        return Keys.KEY_JUDGE_REPORT_COMMENT_PRIMARY;
+        return Keys.PK_JUDGE_REPORT_COMMENT;
     }
 
     @Override
     public List<ForeignKey<JudgeReportCommentRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.JUDGE_REPORT_COMMENT_REPORT, Keys.JUDGE_REPORT_COMMENT_TITEL);
+        return Arrays.asList(Keys.JUDGE_REPORT_COMMENT__FK_JUDGE_REPORT_COMMENT_REPORT, Keys.JUDGE_REPORT_COMMENT__FK_JUDGE_REPORT_COMMENT_TITEL);
     }
 
     private transient JudgeReport _judgeReport;
     private transient Titel _titel;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.judge_report</code>
-     * table.
+     * Get the implicit join path to the <code>public.judge_report</code> table.
      */
     public JudgeReport judgeReport() {
         if (_judgeReport == null)
-            _judgeReport = new JudgeReport(this, Keys.JUDGE_REPORT_COMMENT_REPORT);
+            _judgeReport = new JudgeReport(this, Keys.JUDGE_REPORT_COMMENT__FK_JUDGE_REPORT_COMMENT_REPORT);
 
         return _judgeReport;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.titel</code> table.
+     * Get the implicit join path to the <code>public.titel</code> table.
      */
     public Titel titel() {
         if (_titel == null)
-            _titel = new Titel(this, Keys.JUDGE_REPORT_COMMENT_TITEL);
+            _titel = new Titel(this, Keys.JUDGE_REPORT_COMMENT__FK_JUDGE_REPORT_COMMENT_TITEL);
 
         return _titel;
     }

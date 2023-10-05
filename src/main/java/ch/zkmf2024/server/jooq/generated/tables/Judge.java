@@ -109,12 +109,12 @@ public class Judge extends TableImpl<JudgeRecord> {
 
     @Override
     public UniqueKey<JudgeRecord> getPrimaryKey() {
-        return Keys.KEY_JUDGE_PRIMARY;
+        return Keys.PK_JUDGE;
     }
 
     @Override
     public List<UniqueKey<JudgeRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_JUDGE_UQ_JUDGE_EMAIL);
+        return Arrays.asList(Keys.JUDGE_EMAIL_KEY);
     }
 
     @Override
