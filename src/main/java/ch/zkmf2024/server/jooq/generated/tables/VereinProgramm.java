@@ -124,27 +124,27 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     /**
      * The column <code>verein_programm.modul_b_pa</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_PA = createField(DSL.name("modul_b_pa"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_PA = createField(DSL.name("modul_b_pa"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_egitarre</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EGITARRE = createField(DSL.name("modul_b_egitarre"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EGITARRE = createField(DSL.name("modul_b_egitarre"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_ebass</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EBASS = createField(DSL.name("modul_b_ebass"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EBASS = createField(DSL.name("modul_b_ebass"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_keyboard</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_KEYBOARD = createField(DSL.name("modul_b_keyboard"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_KEYBOARD = createField(DSL.name("modul_b_keyboard"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_gesang</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_GESANG = createField(DSL.name("modul_b_gesang"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_GESANG = createField(DSL.name("modul_b_gesang"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein_programm.modul_d_titel_1_id</code>.
@@ -196,7 +196,7 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.VEREIN_PROGRAMM_FK_VEREIN);
+        return Arrays.asList(Indexes.IDX_FK_VEREIN_PROGRAMM_VEREIN);
     }
 
     @Override
@@ -206,22 +206,22 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
 
     @Override
     public UniqueKey<VereinProgrammRecord> getPrimaryKey() {
-        return Keys.KEY_VEREIN_PROGRAMM_PRIMARY;
+        return Keys.PK_VEREIN_PROGRAMM;
     }
 
     @Override
     public List<ForeignKey<VereinProgrammRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN_PROGRAMM_IBFK_1);
+        return Arrays.asList(Keys.VEREIN_PROGRAMM__FK_VEREIN_PROGRAMM_VEREIN);
     }
 
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>public.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
-            _verein = new Verein(this, Keys.VEREIN_PROGRAMM_IBFK_1);
+            _verein = new Verein(this, Keys.VEREIN_PROGRAMM__FK_VEREIN_PROGRAMM_VEREIN);
 
         return _verein;
     }

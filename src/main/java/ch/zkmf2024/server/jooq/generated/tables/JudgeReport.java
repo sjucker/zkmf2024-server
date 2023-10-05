@@ -4,12 +4,14 @@
 package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
+import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -24,7 +26,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -73,12 +75,12 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     /**
      * The column <code>judge_report.status</code>.
      */
-    public final TableField<JudgeReportRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.inline("NEW", SQLDataType.VARCHAR)), this, "");
+    public final TableField<JudgeReportRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("'NEW'::character varying"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>judge_report.finished_at</code>.
      */
-    public final TableField<JudgeReportRecord, LocalDateTime> FINISHED_AT = createField(DSL.name("finished_at"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<JudgeReportRecord, OffsetDateTime> FINISHED_AT = createField(DSL.name("finished_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     private JudgeReport(Name alias, Table<JudgeReportRecord> aliased) {
         this(alias, aliased, null);
@@ -119,45 +121,50 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_FK_JUDGE_REPORT_TIMETABLE);
+    }
+
+    @Override
     public Identity<JudgeReportRecord, Long> getIdentity() {
         return (Identity<JudgeReportRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<JudgeReportRecord> getPrimaryKey() {
-        return Keys.KEY_JUDGE_REPORT_PRIMARY;
+        return Keys.PK_JUDGE_REPORT;
     }
 
     @Override
     public List<UniqueKey<JudgeReportRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_JUDGE_REPORT_UQ_JUDGE_REPORT);
+        return Arrays.asList(Keys.JUDGE_REPORT_FK_JUDGE_FK_TIMETABLE_ENTRY_KEY);
     }
 
     @Override
     public List<ForeignKey<JudgeReportRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_JUDGE_REPORT_JUDGE, Keys.FK_JUDGE_REPORT_TIMETABLE);
+        return Arrays.asList(Keys.JUDGE_REPORT__FK_JUDGE_REPORT_JUDGE, Keys.JUDGE_REPORT__FK_JUDGE_REPORT_TIMETABLE);
     }
 
     private transient Judge _judge;
     private transient TimetableEntry _timetableEntry;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.judge</code> table.
+     * Get the implicit join path to the <code>public.judge</code> table.
      */
     public Judge judge() {
         if (_judge == null)
-            _judge = new Judge(this, Keys.FK_JUDGE_REPORT_JUDGE);
+            _judge = new Judge(this, Keys.JUDGE_REPORT__FK_JUDGE_REPORT_JUDGE);
 
         return _judge;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.timetable_entry</code>
+     * Get the implicit join path to the <code>public.timetable_entry</code>
      * table.
      */
     public TimetableEntry timetableEntry() {
         if (_timetableEntry == null)
-            _timetableEntry = new TimetableEntry(this, Keys.FK_JUDGE_REPORT_TIMETABLE);
+            _timetableEntry = new TimetableEntry(this, Keys.JUDGE_REPORT__FK_JUDGE_REPORT_TIMETABLE);
 
         return _timetableEntry;
     }
@@ -206,14 +213,14 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, Long, Long, Integer, String, LocalDateTime> fieldsRow() {
+    public Row6<Long, Long, Long, Integer, String, OffsetDateTime> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -221,7 +228,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super OffsetDateTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -5,7 +5,7 @@ package ch.zkmf2024.server.jooq.generated.tables.pojos;
 
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IImage;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /**
@@ -20,7 +20,7 @@ public class ImagePojo implements IImage {
     private Long foreignKey;
     private byte[] content;
     private String name;
-    private LocalDateTime uploadedAt;
+    private OffsetDateTime uploadedAt;
     private String type;
 
     public ImagePojo() {
@@ -40,7 +40,7 @@ public class ImagePojo implements IImage {
             Long foreignKey,
             byte[] content,
             String name,
-            LocalDateTime uploadedAt,
+            OffsetDateTime uploadedAt,
             String type
     ) {
         this.id = id;
@@ -119,7 +119,7 @@ public class ImagePojo implements IImage {
      * Getter for <code>image.uploaded_at</code>.
      */
     @Override
-    public LocalDateTime getUploadedAt() {
+    public OffsetDateTime getUploadedAt() {
         return this.uploadedAt;
     }
 
@@ -127,7 +127,7 @@ public class ImagePojo implements IImage {
      * Setter for <code>image.uploaded_at</code>.
      */
     @Override
-    public void setUploadedAt(LocalDateTime uploadedAt) {
+    public void setUploadedAt(OffsetDateTime uploadedAt) {
         this.uploadedAt = uploadedAt;
     }
 

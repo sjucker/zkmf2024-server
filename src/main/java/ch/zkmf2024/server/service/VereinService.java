@@ -47,6 +47,7 @@ import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 import static ch.zkmf2024.server.service.DateUtil.now;
+import static ch.zkmf2024.server.service.DateUtil.toLocalDateTime;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -91,7 +92,7 @@ public class VereinService {
 
     public List<VereinCommentDTO> findCommentsByVereinId(Long id) {
         return vereinRepository.findCommentByVereinId(id).stream()
-                               .map(pojo -> new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy()))
+                               .map(pojo -> new VereinCommentDTO(pojo.getComment(), toLocalDateTime(pojo.getCreatedAt()), pojo.getCreatedBy()))
                                // newest first
                                .sorted(comparing(VereinCommentDTO::createdAt).reversed())
                                .toList();
@@ -143,7 +144,7 @@ public class VereinService {
                 false,
                 false,
                 verein.getPhase2ConfirmedBy(),
-                verein.getPhase2ConfirmedAt(),
+                toLocalDateTime(verein.getPhase2ConfirmedAt()),
                 verein.getProvWettspiel(),
                 verein.getProvParademusik(),
                 verein.getProvPlatzkonzert()
@@ -516,7 +517,7 @@ public class VereinService {
     public VereinCommentDTO saveComment(String username, Long vereinId, String comment) {
         var pojo = new VereinCommentPojo(null, vereinId, comment, DateUtil.now(), username);
         vereinRepository.insert(pojo);
-        return new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy());
+        return new VereinCommentDTO(pojo.getComment(), toLocalDateTime(pojo.getCreatedAt()), pojo.getCreatedBy());
     }
 
     public void confirmProgramm(String username, Long vereinId) {

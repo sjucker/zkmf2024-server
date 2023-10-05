@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.VereinCommentRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,14 +101,14 @@ public class VereinCommentDao extends DAOImpl<VereinCommentRecord, VereinComment
      * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<VereinCommentPojo> fetchRangeOfCreatedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<VereinCommentPojo> fetchRangeOfCreatedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(VereinComment.VEREIN_COMMENT.CREATED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>created_at IN (values)</code>
      */
-    public List<VereinCommentPojo> fetchByCreatedAt(LocalDateTime... values) {
+    public List<VereinCommentPojo> fetchByCreatedAt(OffsetDateTime... values) {
         return fetch(VereinComment.VEREIN_COMMENT.CREATED_AT, values);
     }
 

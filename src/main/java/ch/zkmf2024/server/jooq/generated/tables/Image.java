@@ -24,7 +24,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 /**
@@ -71,7 +71,7 @@ public class Image extends TableImpl<ImageRecord> {
     /**
      * The column <code>image.uploaded_at</code>.
      */
-    public final TableField<ImageRecord, LocalDateTime> UPLOADED_AT = createField(DSL.name("uploaded_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<ImageRecord, OffsetDateTime> UPLOADED_AT = createField(DSL.name("uploaded_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
 
     /**
      * The column <code>image.type</code>.
@@ -123,7 +123,7 @@ public class Image extends TableImpl<ImageRecord> {
 
     @Override
     public UniqueKey<ImageRecord> getPrimaryKey() {
-        return Keys.KEY_IMAGE_PRIMARY;
+        return Keys.PK_IMAGE;
     }
 
     @Override
@@ -170,14 +170,14 @@ public class Image extends TableImpl<ImageRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, Long, byte[], String, LocalDateTime, String> fieldsRow() {
+    public Row6<Long, Long, byte[], String, OffsetDateTime, String> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super byte[], ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super byte[], ? super String, ? super OffsetDateTime, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -185,7 +185,7 @@ public class Image extends TableImpl<ImageRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super byte[], ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super byte[], ? super String, ? super OffsetDateTime, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

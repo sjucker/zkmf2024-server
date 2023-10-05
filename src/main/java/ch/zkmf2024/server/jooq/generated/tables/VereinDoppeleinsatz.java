@@ -111,7 +111,7 @@ public class VereinDoppeleinsatz extends TableImpl<VereinDoppeleinsatzRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.VEREIN_DOPPELEINSATZ_FK_OTHER_VEREIN, Indexes.VEREIN_DOPPELEINSATZ_FK_VEREIN);
+        return Arrays.asList(Indexes.IDX_FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN, Indexes.IDX_FK_VEREIN_DOPPELEINSATZ_VEREIN);
     }
 
     @Override
@@ -121,37 +121,37 @@ public class VereinDoppeleinsatz extends TableImpl<VereinDoppeleinsatzRecord> {
 
     @Override
     public UniqueKey<VereinDoppeleinsatzRecord> getPrimaryKey() {
-        return Keys.KEY_VEREIN_DOPPELEINSATZ_PRIMARY;
+        return Keys.PK_VEREIN_DOPPELEINSATZ;
     }
 
     @Override
     public List<ForeignKey<VereinDoppeleinsatzRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN_DOPPELEINSATZ_IBFK_1, Keys.VEREIN_DOPPELEINSATZ_IBFK_2);
+        return Arrays.asList(Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN);
     }
 
-    private transient Verein _vereinDoppeleinsatzIbfk_1;
-    private transient Verein _vereinDoppeleinsatzIbfk_2;
+    private transient Verein _fkVereinDoppeleinsatzVerein;
+    private transient Verein _fkVereinDoppeleinsatzOtherVerein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table, via
-     * the <code>verein_doppeleinsatz_ibfk_1</code> key.
+     * Get the implicit join path to the <code>public.verein</code> table, via
+     * the <code>fk_verein_doppeleinsatz_verein</code> key.
      */
-    public Verein vereinDoppeleinsatzIbfk_1() {
-        if (_vereinDoppeleinsatzIbfk_1 == null)
-            _vereinDoppeleinsatzIbfk_1 = new Verein(this, Keys.VEREIN_DOPPELEINSATZ_IBFK_1);
+    public Verein fkVereinDoppeleinsatzVerein() {
+        if (_fkVereinDoppeleinsatzVerein == null)
+            _fkVereinDoppeleinsatzVerein = new Verein(this, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN);
 
-        return _vereinDoppeleinsatzIbfk_1;
+        return _fkVereinDoppeleinsatzVerein;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table, via
-     * the <code>verein_doppeleinsatz_ibfk_2</code> key.
+     * Get the implicit join path to the <code>public.verein</code> table, via
+     * the <code>fk_verein_doppeleinsatz_other_verein</code> key.
      */
-    public Verein vereinDoppeleinsatzIbfk_2() {
-        if (_vereinDoppeleinsatzIbfk_2 == null)
-            _vereinDoppeleinsatzIbfk_2 = new Verein(this, Keys.VEREIN_DOPPELEINSATZ_IBFK_2);
+    public Verein fkVereinDoppeleinsatzOtherVerein() {
+        if (_fkVereinDoppeleinsatzOtherVerein == null)
+            _fkVereinDoppeleinsatzOtherVerein = new Verein(this, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN);
 
-        return _vereinDoppeleinsatzIbfk_2;
+        return _fkVereinDoppeleinsatzOtherVerein;
     }
 
     @Override

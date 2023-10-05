@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.NewsletterRecipientRecor
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,14 +101,14 @@ public class NewsletterRecipientDao extends DAOImpl<NewsletterRecipientRecord, N
      * Fetch records that have <code>subscribed_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<NewsletterRecipientPojo> fetchRangeOfSubscribedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<NewsletterRecipientPojo> fetchRangeOfSubscribedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(NewsletterRecipient.NEWSLETTER_RECIPIENT.SUBSCRIBED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>subscribed_at IN (values)</code>
      */
-    public List<NewsletterRecipientPojo> fetchBySubscribedAt(LocalDateTime... values) {
+    public List<NewsletterRecipientPojo> fetchBySubscribedAt(OffsetDateTime... values) {
         return fetch(NewsletterRecipient.NEWSLETTER_RECIPIENT.SUBSCRIBED_AT, values);
     }
 
@@ -116,14 +116,14 @@ public class NewsletterRecipientDao extends DAOImpl<NewsletterRecipientRecord, N
      * Fetch records that have <code>unsubscribed_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<NewsletterRecipientPojo> fetchRangeOfUnsubscribedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<NewsletterRecipientPojo> fetchRangeOfUnsubscribedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(NewsletterRecipient.NEWSLETTER_RECIPIENT.UNSUBSCRIBED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>unsubscribed_at IN (values)</code>
      */
-    public List<NewsletterRecipientPojo> fetchByUnsubscribedAt(LocalDateTime... values) {
+    public List<NewsletterRecipientPojo> fetchByUnsubscribedAt(OffsetDateTime... values) {
         return fetch(NewsletterRecipient.NEWSLETTER_RECIPIENT.UNSUBSCRIBED_AT, values);
     }
 }

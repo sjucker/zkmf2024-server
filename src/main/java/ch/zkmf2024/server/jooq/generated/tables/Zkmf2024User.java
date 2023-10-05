@@ -23,7 +23,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 /**
@@ -60,17 +60,17 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
     /**
      * The column <code>zkmf2024_user.password</code>.
      */
-    public final TableField<Zkmf2024UserRecord, String> PASSWORD = createField(DSL.name("password"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.inline("{noop}pass", SQLDataType.VARCHAR)), this, "");
+    public final TableField<Zkmf2024UserRecord, String> PASSWORD = createField(DSL.name("password"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("'{noop}pass'::character varying"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>zkmf2024_user.last_login</code>.
      */
-    public final TableField<Zkmf2024UserRecord, LocalDateTime> LAST_LOGIN = createField(DSL.name("last_login"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<Zkmf2024UserRecord, OffsetDateTime> LAST_LOGIN = createField(DSL.name("last_login"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     /**
      * The column <code>zkmf2024_user.created_at</code>.
      */
-    public final TableField<Zkmf2024UserRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<Zkmf2024UserRecord, OffsetDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     /**
      * The column <code>zkmf2024_user.email_verification</code>.
@@ -80,7 +80,7 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
     /**
      * The column <code>zkmf2024_user.email_verified_at</code>.
      */
-    public final TableField<Zkmf2024UserRecord, LocalDateTime> EMAIL_VERIFIED_AT = createField(DSL.name("email_verified_at"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<Zkmf2024UserRecord, OffsetDateTime> EMAIL_VERIFIED_AT = createField(DSL.name("email_verified_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     /**
      * The column <code>zkmf2024_user.password_reset_token</code>.
@@ -127,7 +127,7 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
 
     @Override
     public UniqueKey<Zkmf2024UserRecord> getPrimaryKey() {
-        return Keys.KEY_ZKMF2024_USER_PRIMARY;
+        return Keys.PK_ZKMF2024_USER;
     }
 
     @Override
@@ -174,14 +174,14 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<String, String, String, LocalDateTime, LocalDateTime, String, LocalDateTime, String> fieldsRow() {
+    public Row8<String, String, String, OffsetDateTime, OffsetDateTime, String, OffsetDateTime, String> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super OffsetDateTime, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -189,7 +189,7 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super OffsetDateTime, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

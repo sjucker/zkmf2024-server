@@ -56,12 +56,12 @@ public class VereinStatus extends TableImpl<VereinStatusRecord> {
     /**
      * The column <code>verein_status.phase1</code>.
      */
-    public final TableField<VereinStatusRecord, String> PHASE1 = createField(DSL.name("phase1"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.inline("NEW", SQLDataType.VARCHAR)), this, "");
+    public final TableField<VereinStatusRecord, String> PHASE1 = createField(DSL.name("phase1"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("'NEW'::character varying"), SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>verein_status.phase2</code>.
      */
-    public final TableField<VereinStatusRecord, String> PHASE2 = createField(DSL.name("phase2"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.inline("NEW", SQLDataType.VARCHAR)), this, "");
+    public final TableField<VereinStatusRecord, String> PHASE2 = createField(DSL.name("phase2"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("'NEW'::character varying"), SQLDataType.VARCHAR)), this, "");
 
     private VereinStatus(Name alias, Table<VereinStatusRecord> aliased) {
         this(alias, aliased, null);
@@ -103,22 +103,22 @@ public class VereinStatus extends TableImpl<VereinStatusRecord> {
 
     @Override
     public UniqueKey<VereinStatusRecord> getPrimaryKey() {
-        return Keys.KEY_VEREIN_STATUS_PRIMARY;
+        return Keys.PK_VEREIN_STATUS;
     }
 
     @Override
     public List<ForeignKey<VereinStatusRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN_STATUS_IBFK_1);
+        return Arrays.asList(Keys.VEREIN_STATUS__FK_VEREIN_STATUS);
     }
 
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>public.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
-            _verein = new Verein(this, Keys.VEREIN_STATUS_IBFK_1);
+            _verein = new Verein(this, Keys.VEREIN_STATUS__FK_VEREIN_STATUS);
 
         return _verein;
     }

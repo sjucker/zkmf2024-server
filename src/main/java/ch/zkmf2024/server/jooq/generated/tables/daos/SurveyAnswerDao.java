@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.SurveyAnswerRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,14 +71,14 @@ public class SurveyAnswerDao extends DAOImpl<SurveyAnswerRecord, SurveyAnswerPoj
      * Fetch records that have <code>timestamp BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<SurveyAnswerPojo> fetchRangeOfTimestamp(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<SurveyAnswerPojo> fetchRangeOfTimestamp(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(SurveyAnswer.SURVEY_ANSWER.TIMESTAMP, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>timestamp IN (values)</code>
      */
-    public List<SurveyAnswerPojo> fetchByTimestamp(LocalDateTime... values) {
+    public List<SurveyAnswerPojo> fetchByTimestamp(OffsetDateTime... values) {
         return fetch(SurveyAnswer.SURVEY_ANSWER.TIMESTAMP, values);
     }
 

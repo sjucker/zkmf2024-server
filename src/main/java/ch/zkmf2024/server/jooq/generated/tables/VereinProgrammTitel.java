@@ -115,44 +115,44 @@ public class VereinProgrammTitel extends TableImpl<VereinProgrammTitelRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.VEREIN_PROGRAMM_TITEL_FK_TITEL);
+        return Arrays.asList(Indexes.IDX_FK_VEREIN_PROGRAMM_TITEL_TITEL);
     }
 
     @Override
     public UniqueKey<VereinProgrammTitelRecord> getPrimaryKey() {
-        return Keys.KEY_VEREIN_PROGRAMM_TITEL_PRIMARY;
+        return Keys.PK_VEREIN_PROGRAMM_TITEL;
     }
 
     @Override
     public List<UniqueKey<VereinProgrammTitelRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_VEREIN_PROGRAMM_TITEL_UQ_VEREIN_PROGRAMM_TITEL);
+        return Arrays.asList(Keys.VEREIN_PROGRAMM_TITEL_FK_PROGRAMM_FK_TITEL_POSITION_KEY);
     }
 
     @Override
     public List<ForeignKey<VereinProgrammTitelRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN_PROGRAMM_TITEL_IBFK_1, Keys.VEREIN_PROGRAMM_TITEL_IBFK_2);
+        return Arrays.asList(Keys.VEREIN_PROGRAMM_TITEL__FK_VEREIN_PROGRAMM_TITEL_PROGRAMM, Keys.VEREIN_PROGRAMM_TITEL__FK_VEREIN_PROGRAMM_TITEL_PROGRAMM_TITEL);
     }
 
     private transient VereinProgramm _vereinProgramm;
     private transient Titel _titel;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein_programm</code>
+     * Get the implicit join path to the <code>public.verein_programm</code>
      * table.
      */
     public VereinProgramm vereinProgramm() {
         if (_vereinProgramm == null)
-            _vereinProgramm = new VereinProgramm(this, Keys.VEREIN_PROGRAMM_TITEL_IBFK_1);
+            _vereinProgramm = new VereinProgramm(this, Keys.VEREIN_PROGRAMM_TITEL__FK_VEREIN_PROGRAMM_TITEL_PROGRAMM);
 
         return _vereinProgramm;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.titel</code> table.
+     * Get the implicit join path to the <code>public.titel</code> table.
      */
     public Titel titel() {
         if (_titel == null)
-            _titel = new Titel(this, Keys.VEREIN_PROGRAMM_TITEL_IBFK_2);
+            _titel = new Titel(this, Keys.VEREIN_PROGRAMM_TITEL__FK_VEREIN_PROGRAMM_TITEL_PROGRAMM_TITEL);
 
         return _titel;
     }

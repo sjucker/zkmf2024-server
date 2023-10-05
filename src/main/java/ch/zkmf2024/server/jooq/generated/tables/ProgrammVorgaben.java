@@ -111,7 +111,7 @@ public class ProgrammVorgaben extends TableImpl<ProgrammVorgabenRecord> {
 
     @Override
     public UniqueKey<ProgrammVorgabenRecord> getPrimaryKey() {
-        return Keys.KEY_PROGRAMM_VORGABEN_PRIMARY;
+        return Keys.PK_PROGRAMM_VORGABEN;
     }
 
     @Override

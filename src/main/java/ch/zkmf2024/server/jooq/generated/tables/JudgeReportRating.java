@@ -4,12 +4,14 @@
 package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
+import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRatingRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -118,45 +120,49 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_FK_JUDGE_REPORT_RATING_TITEL);
+    }
+
+    @Override
     public Identity<JudgeReportRatingRecord, Long> getIdentity() {
         return (Identity<JudgeReportRatingRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<JudgeReportRatingRecord> getPrimaryKey() {
-        return Keys.KEY_JUDGE_REPORT_RATING_PRIMARY;
+        return Keys.PK_JUDGE_REPORT_RATING;
     }
 
     @Override
     public List<UniqueKey<JudgeReportRatingRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_JUDGE_REPORT_RATING_UQ_JUDGE_REPORT_RATING);
+        return Arrays.asList(Keys.JUDGE_REPORT_RATING_FK_JUDGE_REPORT_FK_TITEL_CATEGORY_KEY);
     }
 
     @Override
     public List<ForeignKey<JudgeReportRatingRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.JUDGE_REPORT_RATING_REPORT, Keys.JUDGE_REPORT_RATING_TITEL);
+        return Arrays.asList(Keys.JUDGE_REPORT_RATING__FK_JUDGE_REPORT_RATING_REPORT, Keys.JUDGE_REPORT_RATING__FK_JUDGE_REPORT_RATING_TITEL);
     }
 
     private transient JudgeReport _judgeReport;
     private transient Titel _titel;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.judge_report</code>
-     * table.
+     * Get the implicit join path to the <code>public.judge_report</code> table.
      */
     public JudgeReport judgeReport() {
         if (_judgeReport == null)
-            _judgeReport = new JudgeReport(this, Keys.JUDGE_REPORT_RATING_REPORT);
+            _judgeReport = new JudgeReport(this, Keys.JUDGE_REPORT_RATING__FK_JUDGE_REPORT_RATING_REPORT);
 
         return _judgeReport;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.titel</code> table.
+     * Get the implicit join path to the <code>public.titel</code> table.
      */
     public Titel titel() {
         if (_titel == null)
-            _titel = new Titel(this, Keys.JUDGE_REPORT_RATING_TITEL);
+            _titel = new Titel(this, Keys.JUDGE_REPORT_RATING__FK_JUDGE_REPORT_RATING_TITEL);
 
         return _titel;
     }

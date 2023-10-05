@@ -10,7 +10,7 @@ import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -371,14 +371,14 @@ public class HelperRegistrationDao extends DAOImpl<HelperRegistrationRecord, Hel
      * Fetch records that have <code>registered_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<HelperRegistrationPojo> fetchRangeOfRegisteredAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<HelperRegistrationPojo> fetchRangeOfRegisteredAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(HelperRegistration.HELPER_REGISTRATION.REGISTERED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>registered_at IN (values)</code>
      */
-    public List<HelperRegistrationPojo> fetchByRegisteredAt(LocalDateTime... values) {
+    public List<HelperRegistrationPojo> fetchByRegisteredAt(OffsetDateTime... values) {
         return fetch(HelperRegistration.HELPER_REGISTRATION.REGISTERED_AT, values);
     }
 }

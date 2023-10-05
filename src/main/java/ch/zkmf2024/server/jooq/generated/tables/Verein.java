@@ -4,11 +4,13 @@
 package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
+import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Schema;
@@ -20,7 +22,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -108,42 +110,42 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.modula</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULA = createField(DSL.name("modula"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULA = createField(DSL.name("modula"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.modulb</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULB = createField(DSL.name("modulb"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULB = createField(DSL.name("modulb"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.modulc</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULC = createField(DSL.name("modulc"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULC = createField(DSL.name("modulc"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.moduld</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULD = createField(DSL.name("moduld"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULD = createField(DSL.name("moduld"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.module</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULE = createField(DSL.name("module"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULE = createField(DSL.name("module"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.modulf</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULF = createField(DSL.name("modulf"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULF = createField(DSL.name("modulf"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.modulg</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULG = createField(DSL.name("modulg"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULG = createField(DSL.name("modulg"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.modulh</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULH = createField(DSL.name("modulh"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MODULH = createField(DSL.name("modulh"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.klasse_modula</code>.
@@ -163,27 +165,27 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.harmonie</code>.
      */
-    public final TableField<VereinRecord, Boolean> HARMONIE = createField(DSL.name("harmonie"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> HARMONIE = createField(DSL.name("harmonie"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.brass_band</code>.
      */
-    public final TableField<VereinRecord, Boolean> BRASS_BAND = createField(DSL.name("brass_band"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> BRASS_BAND = createField(DSL.name("brass_band"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.fanfare</code>.
      */
-    public final TableField<VereinRecord, Boolean> FANFARE = createField(DSL.name("fanfare"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> FANFARE = createField(DSL.name("fanfare"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.tambouren</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN = createField(DSL.name("tambouren"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN = createField(DSL.name("tambouren"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.perkussionsensemble</code>.
      */
-    public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.website_text</code>.
@@ -193,7 +195,7 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.direktion_doppeleinsatz</code>.
      */
-    public final TableField<VereinRecord, Boolean> DIREKTION_DOPPELEINSATZ = createField(DSL.name("direktion_doppeleinsatz"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> DIREKTION_DOPPELEINSATZ = createField(DSL.name("direktion_doppeleinsatz"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.direktion_doppeleinsatz_verein</code>.
@@ -203,27 +205,27 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.mitspieler_doppeleinsatz</code>.
      */
-    public final TableField<VereinRecord, Boolean> MITSPIELER_DOPPELEINSATZ = createField(DSL.name("mitspieler_doppeleinsatz"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> MITSPIELER_DOPPELEINSATZ = createField(DSL.name("mitspieler_doppeleinsatz"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.confirmed_at</code>.
      */
-    public final TableField<VereinRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<VereinRecord, OffsetDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     /**
      * The column <code>verein.tambouren_kat_a</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_A = createField(DSL.name("tambouren_kat_a"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_A = createField(DSL.name("tambouren_kat_a"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.tambouren_kat_b</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_B = createField(DSL.name("tambouren_kat_b"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_B = createField(DSL.name("tambouren_kat_b"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.tambouren_kat_c</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_C = createField(DSL.name("tambouren_kat_c"), SQLDataType.BIT.nullable(false).defaultValue(DSL.inline("b'0'", SQLDataType.BIT)), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_C = createField(DSL.name("tambouren_kat_c"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>verein.phase2_confirmed_by</code>.
@@ -233,7 +235,7 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.phase2_confirmed_at</code>.
      */
-    public final TableField<VereinRecord, LocalDateTime> PHASE2_CONFIRMED_AT = createField(DSL.name("phase2_confirmed_at"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<VereinRecord, OffsetDateTime> PHASE2_CONFIRMED_AT = createField(DSL.name("phase2_confirmed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     /**
      * The column <code>verein.prov_wettspiel</code>.
@@ -289,43 +291,48 @@ public class Verein extends TableImpl<VereinRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.IDX_FK_VEREIN_DIREKTION_KONTAKT, Indexes.IDX_FK_VEREIN_PRAESIDENT_KONTAKT);
+    }
+
+    @Override
     public Identity<VereinRecord, Long> getIdentity() {
         return (Identity<VereinRecord, Long>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<VereinRecord> getPrimaryKey() {
-        return Keys.KEY_VEREIN_PRIMARY;
+        return Keys.PK_VEREIN;
     }
 
     @Override
     public List<ForeignKey<VereinRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.FK_VEREIN_ON_PRAESIDENT_KONTAKT, Keys.FK_VEREIN_ON_DIREKTION_KONTAKT);
+        return Arrays.asList(Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT);
     }
 
-    private transient Kontakt _fkVereinOnPraesidentKontakt;
-    private transient Kontakt _fkVereinOnDirektionKontakt;
+    private transient Kontakt _fkVereinPraesidentKontakt;
+    private transient Kontakt _fkVereinDirektionKontakt;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.kontakt</code> table,
-     * via the <code>FK_VEREIN_ON_PRAESIDENT_KONTAKT</code> key.
+     * Get the implicit join path to the <code>public.kontakt</code> table, via
+     * the <code>fk_verein_praesident_kontakt</code> key.
      */
-    public Kontakt fkVereinOnPraesidentKontakt() {
-        if (_fkVereinOnPraesidentKontakt == null)
-            _fkVereinOnPraesidentKontakt = new Kontakt(this, Keys.FK_VEREIN_ON_PRAESIDENT_KONTAKT);
+    public Kontakt fkVereinPraesidentKontakt() {
+        if (_fkVereinPraesidentKontakt == null)
+            _fkVereinPraesidentKontakt = new Kontakt(this, Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT);
 
-        return _fkVereinOnPraesidentKontakt;
+        return _fkVereinPraesidentKontakt;
     }
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.kontakt</code> table,
-     * via the <code>FK_VEREIN_ON_DIREKTION_KONTAKT</code> key.
+     * Get the implicit join path to the <code>public.kontakt</code> table, via
+     * the <code>fk_verein_direktion_kontakt</code> key.
      */
-    public Kontakt fkVereinOnDirektionKontakt() {
-        if (_fkVereinOnDirektionKontakt == null)
-            _fkVereinOnDirektionKontakt = new Kontakt(this, Keys.FK_VEREIN_ON_DIREKTION_KONTAKT);
+    public Kontakt fkVereinDirektionKontakt() {
+        if (_fkVereinDirektionKontakt == null)
+            _fkVereinDirektionKontakt = new Kontakt(this, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT);
 
-        return _fkVereinOnDirektionKontakt;
+        return _fkVereinDirektionKontakt;
     }
 
     @Override

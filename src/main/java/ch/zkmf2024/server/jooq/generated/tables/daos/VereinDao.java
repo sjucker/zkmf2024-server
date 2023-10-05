@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.VereinRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -537,14 +537,14 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
      * Fetch records that have <code>confirmed_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<VereinPojo> fetchRangeOfConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<VereinPojo> fetchRangeOfConfirmedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(Verein.VEREIN.CONFIRMED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>confirmed_at IN (values)</code>
      */
-    public List<VereinPojo> fetchByConfirmedAt(LocalDateTime... values) {
+    public List<VereinPojo> fetchByConfirmedAt(OffsetDateTime... values) {
         return fetch(Verein.VEREIN.CONFIRMED_AT, values);
     }
 
@@ -612,14 +612,14 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
      * Fetch records that have <code>phase2_confirmed_at BETWEEN lowerInclusive
      * AND upperInclusive</code>
      */
-    public List<VereinPojo> fetchRangeOfPhase2ConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+    public List<VereinPojo> fetchRangeOfPhase2ConfirmedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
         return fetchRange(Verein.VEREIN.PHASE2_CONFIRMED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>phase2_confirmed_at IN (values)</code>
      */
-    public List<VereinPojo> fetchByPhase2ConfirmedAt(LocalDateTime... values) {
+    public List<VereinPojo> fetchByPhase2ConfirmedAt(OffsetDateTime... values) {
         return fetch(Verein.VEREIN.PHASE2_CONFIRMED_AT, values);
     }
 

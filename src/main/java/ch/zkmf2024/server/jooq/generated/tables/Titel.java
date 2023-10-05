@@ -80,7 +80,7 @@ public class Titel extends TableImpl<TitelRecord> {
     /**
      * The column <code>titel.grad</code>.
      */
-    public final TableField<TitelRecord, BigDecimal> GRAD = createField(DSL.name("grad"), SQLDataType.DECIMAL(2, 1), this, "");
+    public final TableField<TitelRecord, BigDecimal> GRAD = createField(DSL.name("grad"), SQLDataType.NUMERIC(2, 1), this, "");
 
     /**
      * The column <code>titel.duration_in_seconds</code>.
@@ -152,7 +152,7 @@ public class Titel extends TableImpl<TitelRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.TITEL_FK_VEREIN);
+        return Arrays.asList(Indexes.IDX_FK_TITEL_VEREIN);
     }
 
     @Override
@@ -162,22 +162,22 @@ public class Titel extends TableImpl<TitelRecord> {
 
     @Override
     public UniqueKey<TitelRecord> getPrimaryKey() {
-        return Keys.KEY_TITEL_PRIMARY;
+        return Keys.PK_TITEL;
     }
 
     @Override
     public List<ForeignKey<TitelRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.TITEL_IBFK_1);
+        return Arrays.asList(Keys.TITEL__FK_TITEL_VEREIN);
     }
 
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>public.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
-            _verein = new Verein(this, Keys.TITEL_IBFK_1);
+            _verein = new Verein(this, Keys.TITEL__FK_TITEL_VEREIN);
 
         return _verein;
     }

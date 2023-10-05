@@ -24,6 +24,7 @@ import java.util.List;
 
 import static ch.zkmf2024.server.mapper.HelperRegistrationMapper.LIST_DELIMITER;
 import static ch.zkmf2024.server.service.DateUtil.now;
+import static ch.zkmf2024.server.service.DateUtil.toLocalDateTime;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.REGISTERED;
@@ -212,7 +213,7 @@ public class HelperRegistrationService {
                 columnIndex = 0;
 
                 var registeredAtCell = row.createCell(columnIndex++);
-                registeredAtCell.setCellValue(DateUtil.getExcelDate(helperRegistration.getRegisteredAt()));
+                registeredAtCell.setCellValue(DateUtil.getExcelDate(toLocalDateTime(helperRegistration.getRegisteredAt())));
                 registeredAtCell.setCellStyle(dateTimeCellStyle);
 
                 row.createCell(columnIndex++).setCellValue(helperRegistration.getEmail());

@@ -24,7 +24,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 /**
@@ -56,7 +56,7 @@ public class SurveyAnswer extends TableImpl<SurveyAnswerRecord> {
     /**
      * The column <code>survey_answer.timestamp</code>.
      */
-    public final TableField<SurveyAnswerRecord, LocalDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<SurveyAnswerRecord, OffsetDateTime> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
 
     /**
      * The column <code>survey_answer.vereins_name</code>.
@@ -106,7 +106,7 @@ public class SurveyAnswer extends TableImpl<SurveyAnswerRecord> {
     /**
      * The column <code>survey_answer.absage</code>.
      */
-    public final TableField<SurveyAnswerRecord, Boolean> ABSAGE = createField(DSL.name("absage"), SQLDataType.BIT, this, "");
+    public final TableField<SurveyAnswerRecord, Boolean> ABSAGE = createField(DSL.name("absage"), SQLDataType.BOOLEAN, this, "");
 
     /**
      * The column <code>survey_answer.absage_kommentar</code>.
@@ -168,7 +168,7 @@ public class SurveyAnswer extends TableImpl<SurveyAnswerRecord> {
 
     @Override
     public UniqueKey<SurveyAnswerRecord> getPrimaryKey() {
-        return Keys.KEY_SURVEY_ANSWER_PRIMARY;
+        return Keys.PK_SURVEY_ANSWER;
     }
 
     @Override
@@ -215,14 +215,14 @@ public class SurveyAnswer extends TableImpl<SurveyAnswerRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row15<Long, LocalDateTime, String, String, String, String, String, String, String, String, String, Boolean, String, String, String> fieldsRow() {
+    public Row15<Long, OffsetDateTime, String, String, String, String, String, String, String, String, String, Boolean, String, String, String> fieldsRow() {
         return (Row15) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function15<? super Long, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function15<? super Long, ? super OffsetDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -230,7 +230,7 @@ public class SurveyAnswer extends TableImpl<SurveyAnswerRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function15<? super Long, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function15<? super Long, ? super OffsetDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

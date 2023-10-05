@@ -26,7 +26,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -70,7 +70,7 @@ public class VereinComment extends TableImpl<VereinCommentRecord> {
     /**
      * The column <code>verein_comment.created_at</code>.
      */
-    public final TableField<VereinCommentRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<VereinCommentRecord, OffsetDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
 
     /**
      * The column <code>verein_comment.created_by</code>.
@@ -117,7 +117,7 @@ public class VereinComment extends TableImpl<VereinCommentRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.VEREIN_COMMENT_FK_VEREIN);
+        return Arrays.asList(Indexes.IDX_FK_VEREIN_COMMENT_VEREIN);
     }
 
     @Override
@@ -127,22 +127,22 @@ public class VereinComment extends TableImpl<VereinCommentRecord> {
 
     @Override
     public UniqueKey<VereinCommentRecord> getPrimaryKey() {
-        return Keys.KEY_VEREIN_COMMENT_PRIMARY;
+        return Keys.PK_VEREIN_COMMENT;
     }
 
     @Override
     public List<ForeignKey<VereinCommentRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN_COMMENT_IBFK_1);
+        return Arrays.asList(Keys.VEREIN_COMMENT__FK_VEREIN_COMMENT_VEREIN);
     }
 
     private transient Verein _verein;
 
     /**
-     * Get the implicit join path to the <code>zkmf2024.verein</code> table.
+     * Get the implicit join path to the <code>public.verein</code> table.
      */
     public Verein verein() {
         if (_verein == null)
-            _verein = new Verein(this, Keys.VEREIN_COMMENT_IBFK_1);
+            _verein = new Verein(this, Keys.VEREIN_COMMENT__FK_VEREIN_COMMENT_VEREIN);
 
         return _verein;
     }
@@ -191,14 +191,14 @@ public class VereinComment extends TableImpl<VereinCommentRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Long, Long, String, LocalDateTime, String> fieldsRow() {
+    public Row5<Long, Long, String, OffsetDateTime, String> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function5<? super Long, ? super Long, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function5<? super Long, ? super Long, ? super String, ? super OffsetDateTime, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -206,7 +206,7 @@ public class VereinComment extends TableImpl<VereinCommentRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super Long, ? super Long, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super Long, ? super Long, ? super String, ? super OffsetDateTime, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
