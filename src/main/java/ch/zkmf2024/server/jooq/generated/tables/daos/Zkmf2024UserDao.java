@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.Zkmf2024UserRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,14 +101,14 @@ public class Zkmf2024UserDao extends DAOImpl<Zkmf2024UserRecord, Zkmf2024UserPoj
      * Fetch records that have <code>last_login BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<Zkmf2024UserPojo> fetchRangeOfLastLogin(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
+    public List<Zkmf2024UserPojo> fetchRangeOfLastLogin(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
         return fetchRange(Zkmf2024User.ZKMF2024_USER.LAST_LOGIN, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>last_login IN (values)</code>
      */
-    public List<Zkmf2024UserPojo> fetchByLastLogin(OffsetDateTime... values) {
+    public List<Zkmf2024UserPojo> fetchByLastLogin(LocalDateTime... values) {
         return fetch(Zkmf2024User.ZKMF2024_USER.LAST_LOGIN, values);
     }
 
@@ -116,14 +116,14 @@ public class Zkmf2024UserDao extends DAOImpl<Zkmf2024UserRecord, Zkmf2024UserPoj
      * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<Zkmf2024UserPojo> fetchRangeOfCreatedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
+    public List<Zkmf2024UserPojo> fetchRangeOfCreatedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
         return fetchRange(Zkmf2024User.ZKMF2024_USER.CREATED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>created_at IN (values)</code>
      */
-    public List<Zkmf2024UserPojo> fetchByCreatedAt(OffsetDateTime... values) {
+    public List<Zkmf2024UserPojo> fetchByCreatedAt(LocalDateTime... values) {
         return fetch(Zkmf2024User.ZKMF2024_USER.CREATED_AT, values);
     }
 
@@ -146,14 +146,14 @@ public class Zkmf2024UserDao extends DAOImpl<Zkmf2024UserRecord, Zkmf2024UserPoj
      * Fetch records that have <code>email_verified_at BETWEEN lowerInclusive
      * AND upperInclusive</code>
      */
-    public List<Zkmf2024UserPojo> fetchRangeOfEmailVerifiedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
+    public List<Zkmf2024UserPojo> fetchRangeOfEmailVerifiedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
         return fetchRange(Zkmf2024User.ZKMF2024_USER.EMAIL_VERIFIED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>email_verified_at IN (values)</code>
      */
-    public List<Zkmf2024UserPojo> fetchByEmailVerifiedAt(OffsetDateTime... values) {
+    public List<Zkmf2024UserPojo> fetchByEmailVerifiedAt(LocalDateTime... values) {
         return fetch(Zkmf2024User.ZKMF2024_USER.EMAIL_VERIFIED_AT, values);
     }
 

@@ -64,7 +64,6 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
-import static ch.zkmf2024.server.service.DateUtil.toLocalDateTime;
 import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
@@ -261,7 +260,7 @@ public class VereinRepository {
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)) == DONE,
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)) == DONE,
                                     it.get(VEREIN.PHASE2_CONFIRMED_BY),
-                                    toLocalDateTime(it.get(VEREIN.PHASE2_CONFIRMED_AT)),
+                                    it.get(VEREIN.PHASE2_CONFIRMED_AT),
                                     it.get(VEREIN.PROV_WETTSPIEL),
                                     it.get(VEREIN.PROV_PARADEMUSIK),
                                     it.get(VEREIN.PROV_PLATZKONZERT)

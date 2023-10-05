@@ -9,7 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.ImageRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,14 +116,14 @@ public class ImageDao extends DAOImpl<ImageRecord, ImagePojo, Long> {
      * Fetch records that have <code>uploaded_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<ImagePojo> fetchRangeOfUploadedAt(OffsetDateTime lowerInclusive, OffsetDateTime upperInclusive) {
+    public List<ImagePojo> fetchRangeOfUploadedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
         return fetchRange(Image.IMAGE.UPLOADED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>uploaded_at IN (values)</code>
      */
-    public List<ImagePojo> fetchByUploadedAt(OffsetDateTime... values) {
+    public List<ImagePojo> fetchByUploadedAt(LocalDateTime... values) {
         return fetch(Image.IMAGE.UPLOADED_AT, values);
     }
 

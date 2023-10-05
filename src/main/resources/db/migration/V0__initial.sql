@@ -5,26 +5,26 @@ create table helper_registration
     id                    bigserial
         constraint pk_helper_registration
             primary key,
-    vorname               varchar(255)             not null,
-    name                  varchar(255)             not null,
-    email                 varchar(255)             not null unique,
-    telefon               varchar(255)             not null,
+    vorname               varchar(255)  not null,
+    name                  varchar(255)  not null,
+    email                 varchar(255)  not null unique,
+    telefon               varchar(255)  not null,
     comment               varchar(1024),
-    adresse               varchar(255)             not null,
-    plz_ort               varchar(255)             not null,
-    geburtsdatum          date                     not null,
-    vereinszugehoerigkeit varchar(1024)            not null,
-    aufgaben              varchar(1024)            not null,
-    anzahl_einsaetze      varchar(1024)            not null,
-    einsatz_mittwoch      varchar(1024)            not null,
-    einsatz_donnerstag    varchar(1024)            not null,
-    einsatz_freitag       varchar(1024)            not null,
-    einsatz_samstag       varchar(1024)            not null,
-    einsatz_sonntag       varchar(1024)            not null,
-    einsatz_montag        varchar(1024)            not null,
-    einsatz_dienstag      varchar(1024)            not null,
-    groesse_shirt         varchar(24)              not null,
-    registered_at         timestamp with time zone not null
+    adresse               varchar(255)  not null,
+    plz_ort               varchar(255)  not null,
+    geburtsdatum          date          not null,
+    vereinszugehoerigkeit varchar(1024) not null,
+    aufgaben              varchar(1024) not null,
+    anzahl_einsaetze      varchar(1024) not null,
+    einsatz_mittwoch      varchar(1024) not null,
+    einsatz_donnerstag    varchar(1024) not null,
+    einsatz_freitag       varchar(1024) not null,
+    einsatz_samstag       varchar(1024) not null,
+    einsatz_sonntag       varchar(1024) not null,
+    einsatz_montag        varchar(1024) not null,
+    einsatz_dienstag      varchar(1024) not null,
+    groesse_shirt         varchar(24)   not null,
+    registered_at         timestamp     not null
 );
 
 create table image
@@ -32,11 +32,11 @@ create table image
     id          bigserial
         constraint pk_image
             primary key,
-    foreign_key bigint                   not null,
+    foreign_key bigint       not null,
     content     bytea,
-    name        varchar(255)             not null,
-    uploaded_at timestamp with time zone not null,
-    type        varchar(255)             not null
+    name        varchar(255) not null,
+    uploaded_at timestamp    not null,
+    type        varchar(255) not null
 );
 
 create table judge
@@ -97,13 +97,13 @@ create index idx_fk_location_instrumentendepot
 
 create table newsletter_recipient
 (
-    email           varchar(255)             not null
+    email           varchar(255) not null
         constraint pk_newsletter_recipient
             primary key,
     vorname         varchar(255),
-    name            varchar(255)             not null,
-    subscribed_at   timestamp with time zone not null,
-    unsubscribed_at timestamp with time zone
+    name            varchar(255) not null,
+    subscribed_at   timestamp    not null,
+    unsubscribed_at timestamp
 );
 
 create table programm_vorgaben
@@ -122,14 +122,14 @@ create table survey_answer
     id                     bigserial
         constraint pk_survey_answer
             primary key,
-    timestamp              timestamp with time zone not null,
-    vereins_name           varchar(255)             not null,
-    besetzung              varchar(255)             not null,
-    staerke_klasse         varchar(255)             not null,
-    anzahl_mitglieder      varchar(255)             not null,
-    kontakt_name           varchar(255)             not null,
-    kontakt_email          varchar(255)             not null,
-    kontakt_telefon        varchar(255)             not null,
+    timestamp              timestamp    not null,
+    vereins_name           varchar(255) not null,
+    besetzung              varchar(255) not null,
+    staerke_klasse         varchar(255) not null,
+    anzahl_mitglieder      varchar(255) not null,
+    kontakt_name           varchar(255) not null,
+    kontakt_email          varchar(255) not null,
+    kontakt_telefon        varchar(255) not null,
     modul_auswahl          varchar(255),
     zusage_kommentar       varchar(1024),
     absage                 boolean,
@@ -178,12 +178,12 @@ create table verein
     direktion_doppeleinsatz        boolean      not null,
     direktion_doppeleinsatz_verein varchar(255),
     mitspieler_doppeleinsatz       boolean      not null,
-    confirmed_at                   timestamp with time zone,
+    confirmed_at                   timestamp,
     tambouren_kat_a                boolean      not null,
     tambouren_kat_b                boolean      not null,
     tambouren_kat_c                boolean      not null,
     phase2_confirmed_by            varchar(255),
-    phase2_confirmed_at            timestamp with time zone,
+    phase2_confirmed_at            timestamp,
     prov_wettspiel                 varchar(255),
     prov_parademusik               varchar(255),
     prov_platzkonzert              varchar(255)
@@ -228,9 +228,9 @@ create table verein_comment
         constraint fk_verein_comment_verein
             references verein
             on delete cascade,
-    comment    varchar(8000)            not null,
-    created_at timestamp with time zone not null,
-    created_by varchar(255)             not null
+    comment    varchar(8000) not null,
+    created_at timestamp     not null,
+    created_by varchar(255)  not null
 );
 
 create index idx_fk_verein_comment_verein
@@ -324,7 +324,7 @@ create table judge_report
             references timetable_entry,
     score              integer,
     status             varchar(255) default 'NEW'::character varying not null,
-    finished_at        timestamp with time zone,
+    finished_at        timestamp,
     unique (fk_judge, fk_timetable_entry)
 );
 
@@ -416,10 +416,10 @@ create table zkmf2024_user
             primary key,
     role                 varchar(255)                                         not null,
     password             varchar(255) default '{noop}pass'::character varying not null,
-    last_login           timestamp with time zone,
-    created_at           timestamp with time zone,
+    last_login           timestamp,
+    created_at           timestamp,
     email_verification   varchar(255),
-    email_verified_at    timestamp with time zone,
+    email_verified_at    timestamp,
     password_reset_token varchar(255)
 );
 
