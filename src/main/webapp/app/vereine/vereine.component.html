@@ -14,6 +14,7 @@
         <tr>
             <th></th>
             <th></th>
+            <th></th>
             <th pSortableColumn="vereinsname">Vereinsname
                 <p-sortIcon field="vereinsname"></p-sortIcon>
             </th>
@@ -68,7 +69,12 @@
             </td>
             <td>
                 <div class="cursor-pointer" (click)="openVereinComments(dto)">
-                    <i class="pi pi-comments" [ngStyle]="{'color': dto.hasComments ? '' : 'lightgrey' }"></i>
+                    <i class="pi pi-inbox" [ngStyle]="{'color': dto.hasComments ? '' : 'lightgrey' }"></i>
+                </div>
+            </td>
+            <td>
+                <div class="cursor-pointer" (click)="openVereinMessages(dto)">
+                    <i class="pi pi-comments" [ngStyle]="{'color': dto.hasMessages ? '' : 'lightgrey' }"></i>
                 </div>
             </td>
             <td>{{dto.vereinsname}}</td>

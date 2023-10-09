@@ -110,42 +110,42 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.modula</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULA = createField(DSL.name("modula"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULA = createField(DSL.name("modula"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.modulb</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULB = createField(DSL.name("modulb"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULB = createField(DSL.name("modulb"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.modulc</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULC = createField(DSL.name("modulc"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULC = createField(DSL.name("modulc"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.moduld</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULD = createField(DSL.name("moduld"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULD = createField(DSL.name("moduld"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.module</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULE = createField(DSL.name("module"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULE = createField(DSL.name("module"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.modulf</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULF = createField(DSL.name("modulf"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULF = createField(DSL.name("modulf"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.modulg</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULG = createField(DSL.name("modulg"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULG = createField(DSL.name("modulg"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.modulh</code>.
      */
-    public final TableField<VereinRecord, Boolean> MODULH = createField(DSL.name("modulh"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MODULH = createField(DSL.name("modulh"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.klasse_modula</code>.
@@ -165,27 +165,27 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.harmonie</code>.
      */
-    public final TableField<VereinRecord, Boolean> HARMONIE = createField(DSL.name("harmonie"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> HARMONIE = createField(DSL.name("harmonie"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.brass_band</code>.
      */
-    public final TableField<VereinRecord, Boolean> BRASS_BAND = createField(DSL.name("brass_band"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> BRASS_BAND = createField(DSL.name("brass_band"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.fanfare</code>.
      */
-    public final TableField<VereinRecord, Boolean> FANFARE = createField(DSL.name("fanfare"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> FANFARE = createField(DSL.name("fanfare"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.tambouren</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN = createField(DSL.name("tambouren"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN = createField(DSL.name("tambouren"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.perkussionsensemble</code>.
      */
-    public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> PERKUSSIONSENSEMBLE = createField(DSL.name("perkussionsensemble"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.website_text</code>.
@@ -195,7 +195,7 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.direktion_doppeleinsatz</code>.
      */
-    public final TableField<VereinRecord, Boolean> DIREKTION_DOPPELEINSATZ = createField(DSL.name("direktion_doppeleinsatz"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> DIREKTION_DOPPELEINSATZ = createField(DSL.name("direktion_doppeleinsatz"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.direktion_doppeleinsatz_verein</code>.
@@ -205,7 +205,7 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.mitspieler_doppeleinsatz</code>.
      */
-    public final TableField<VereinRecord, Boolean> MITSPIELER_DOPPELEINSATZ = createField(DSL.name("mitspieler_doppeleinsatz"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> MITSPIELER_DOPPELEINSATZ = createField(DSL.name("mitspieler_doppeleinsatz"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.confirmed_at</code>.
@@ -215,17 +215,17 @@ public class Verein extends TableImpl<VereinRecord> {
     /**
      * The column <code>verein.tambouren_kat_a</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_A = createField(DSL.name("tambouren_kat_a"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_A = createField(DSL.name("tambouren_kat_a"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.tambouren_kat_b</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_B = createField(DSL.name("tambouren_kat_b"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_B = createField(DSL.name("tambouren_kat_b"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.tambouren_kat_c</code>.
      */
-    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_C = createField(DSL.name("tambouren_kat_c"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinRecord, Boolean> TAMBOUREN_KAT_C = createField(DSL.name("tambouren_kat_c"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein.phase2_confirmed_by</code>.

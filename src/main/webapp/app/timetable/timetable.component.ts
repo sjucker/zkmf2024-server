@@ -1,14 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {
-    JudgeDTO,
-    LocationSelectionDTO,
-    TimetableEntryCreateDTO,
-    TimetableEntryDTO,
-    VereinProgrammSelectionDTO,
-    VereinSelectionDTO
-} from "../rest";
+import {TimetableEntryCreateDTO, TimetableEntryDTO, TimetableEntryType, VereinSelectionDTO} from "../rest";
 import {TimetableService} from "../service/timetable.service";
 
 @Component({
@@ -18,19 +11,9 @@ import {TimetableService} from "../service/timetable.service";
 })
 export class TimetableComponent implements OnInit {
 
-    newEntry: TimetableEntryCreateDTO = {
-        date: '2024-06-22',
-        start: '12:00:00',
-        end: '13:00:00',
-        locationId: 0,
-        vereinId: 0,
-        vereinProgrammId: 0
-    };
-
-    availableLocations: LocationSelectionDTO[] = [];
+    vereinId: number = 0;
+    timetableEntries: TimetableEntryCreateDTO[] = [];
     availableVereine: VereinSelectionDTO[] = [];
-    availableProgramme: VereinProgrammSelectionDTO[] = [];
-    availableJudges: JudgeDTO[] = [];
 
     ref?: DynamicDialogRef;
 
@@ -44,24 +27,15 @@ export class TimetableComponent implements OnInit {
 
     ngOnInit(): void {
         this.load();
+        this.loadVereine();
+    }
 
-        this.service.locations().subscribe({
-            next: value => {
-                this.availableLocations = value;
-            }
-        });
-
+    private loadVereine() {
         this.service.vereine().subscribe({
             next: value => {
                 this.availableVereine = value;
             }
         });
-
-        this.service.judges().subscribe({
-            next: value => {
-                this.availableJudges = value;
-            }
-        })
     }
 
     private load() {
@@ -90,46 +64,65 @@ export class TimetableComponent implements OnInit {
     }
 
     create() {
-        this.service.create(this.newEntry).subscribe({
-            next: _ => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Erfolgreich erstellt',
-                    life: 2000
-                });
-                this.load();
-                this.vereinSelectionChanged();
-            },
-            error: err => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Fehler',
-                    detail: err.error,
-                    life: 3000
-                });
-            }
-        })
+        if (this.vereinId > 0) {
+            this.service.create(this.vereinId, this.timetableEntries).subscribe({
+                next: () => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Erfolgreich erstellt',
+                        life: 2000
+                    });
+                    this.load();
+                    this.loadVereine();
+                    this.vereinId = 0;
+                },
+                error: err => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Fehler',
+                        detail: err?.error?.message ?? err.error,
+                        life: 3000
+                    });
+                }
+            });
+        }
     }
 
     get valid(): boolean {
-        return this.newEntry.vereinId > 0 &&
-            this.newEntry.locationId > 0 &&
-            // TODO validate date formats
-            this.newEntry.end.length > 0 &&
-            this.newEntry.start.length > 0 &&
-            this.newEntry.date.length > 0;
-        // this.newEntry.vereinProgrammId > 0 && TODO
-
+        return this.vereinId > 0 &&
+            this.timetableEntries.every((entry: TimetableEntryCreateDTO) =>
+                entry.entries.every(e => e.locationId > 0));
     }
 
     vereinSelectionChanged() {
-        this.newEntry.vereinProgrammId = 0;
-        if (this.newEntry.vereinId) {
-            this.service.vereinProgramme(this.newEntry.vereinId).subscribe({
+        if (this.vereinId > 0) {
+            this.service.vereinProgramme(this.vereinId).subscribe({
                 next: value => {
-                    this.availableProgramme = value;
-                },
+                    this.timetableEntries = value;
+                }
             });
         }
+    }
+
+    protected readonly Date = Date;
+
+    getTranslation(type: TimetableEntryType): string {
+        switch (type) {
+            case TimetableEntryType.EINSPIEL:
+                return "Einspiel";
+            case TimetableEntryType.WETTSPIEL:
+                return "Wettspiel";
+            case TimetableEntryType.BESPRECHUNG:
+                return "Besprechung";
+            case TimetableEntryType.MARSCHMUSIK:
+                return "Marschmusik";
+            case TimetableEntryType.PLATZKONZERT:
+                return "Platzkonzert";
+        }
+
+    }
+
+    formatTime(time: string): string {
+        return time.substring(0, 5);
     }
 }

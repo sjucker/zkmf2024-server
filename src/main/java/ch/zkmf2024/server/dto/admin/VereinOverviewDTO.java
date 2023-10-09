@@ -33,6 +33,7 @@ public record VereinOverviewDTO(
         @NotNull PhaseStatus phase1,
         @NotNull PhaseStatus phase2,
         boolean hasComments,
+        boolean hasMessages,
         LocalDateTime programmLastUpdated
 ) {
 }

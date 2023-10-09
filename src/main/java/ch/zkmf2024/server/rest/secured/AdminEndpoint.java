@@ -2,18 +2,18 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
-import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.UserCreateDTO;
 import ch.zkmf2024.server.dto.admin.UserDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
+import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
-import ch.zkmf2024.server.dto.admin.VereinProgrammSelectionDTO;
 import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.JudgeService;
@@ -151,7 +151,7 @@ public class AdminEndpoint {
 
     @GetMapping(path = "/vereine/{id}/programme")
     @Secured({"ADMIN"})
-    public ResponseEntity<List<VereinProgrammSelectionDTO>> vereinProgrammeSelection(@PathVariable Long id) {
+    public ResponseEntity<List<TimetableEntryCreateDTO>> vereinProgrammeSelection(@PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}/programme", id);
 
         return ResponseEntity.ok(timetableService.findProgrammeByVerein(id));
@@ -173,6 +173,15 @@ public class AdminEndpoint {
         return ResponseEntity.ok(vereinService.findCommentsByVereinId(id));
     }
 
+    @GetMapping(path = "/vereine/{id}/messages")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<VereinMessageDTO>> vereinMessages(@AuthenticationPrincipal UserDetails userDetails,
+                                                                 @PathVariable Long id) {
+        log.info("GET /secured/admin/vereine/{}/messages", id);
+
+        return ResponseEntity.ok(vereinService.findMessagesByVereinId(id, userDetails.getUsername()));
+    }
+
     @PostMapping(path = "/vereine/{id}/comments")
     @Secured({"ADMIN"})
     public ResponseEntity<VereinCommentDTO> postVereinComment(@AuthenticationPrincipal UserDetails userDetails,
@@ -181,6 +190,16 @@ public class AdminEndpoint {
         log.info("POST /secured/admin/vereine/{}/comments {}", id, dto);
 
         return ResponseEntity.ok(vereinService.saveComment(userDetails.getUsername(), id, dto.comment()));
+    }
+
+    @PostMapping(path = "/vereine/{id}/messages")
+    @Secured({"ADMIN"})
+    public ResponseEntity<VereinMessageDTO> postVereinMessage(@AuthenticationPrincipal UserDetails userDetails,
+                                                              @PathVariable Long id,
+                                                              @RequestBody VereinMessageCreateDTO dto) {
+        log.info("POST /secured/admin/vereine/{}/messages {}", id, dto);
+
+        return ResponseEntity.ok(vereinService.saveMessage(userDetails.getUsername(), id, dto.message()));
     }
 
     @PostMapping(path = "/vereine/{id}/confirm-programm")
@@ -238,25 +257,20 @@ public class AdminEndpoint {
         return ResponseEntity.ok(timetableService.findAll());
     }
 
-    @PostMapping("/timetable")
+    @PostMapping("/timetable/{id}")
     @Secured({"ADMIN"})
-    public ResponseEntity<?> createTimetableEntry(@RequestBody TimetableEntryCreateDTO dto) {
-        log.info("POST /secured/admin/timetable {}", dto);
+    public ResponseEntity<?> createTimetableEntry(@PathVariable Long id, @RequestBody List<TimetableEntryCreateDTO> dtos) {
+        log.info("POST /secured/admin/timetable/{} {}", id, dtos);
         try {
-            timetableService.create(dto);
+            timetableService.create(id, dtos);
             return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            log.warn(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             log.error("unexpected error occurred", e);
             return ResponseEntity.badRequest().body("Eintrag konnte nicht erstellt werden.");
         }
-    }
-
-    @GetMapping("/location")
-    @Secured({"ADMIN"})
-    public ResponseEntity<List<LocationSelectionDTO>> getLocations() {
-        log.info("GET /secured/admin/location");
-
-        return ResponseEntity.ok(timetableService.findWettspiellokale());
     }
 
 }

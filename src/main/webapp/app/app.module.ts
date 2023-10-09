@@ -36,6 +36,7 @@ import {UserCreateComponent} from './user-create/user-create.component';
 import {UsersComponent} from './users/users.component';
 import {VereinCommentsComponent} from './verein-comments/verein-comments.component';
 import {VereinDetailComponent} from './verein-detail/verein-detail.component';
+import {VereinMessagesComponent} from './verein-messages/verein-messages.component';
 import {VereineComponent} from './vereine/vereine.component';
 
 @NgModule({
@@ -52,6 +53,7 @@ import {VereineComponent} from './vereine/vereine.component';
         JuryComponent,
         JuryLoginCreateComponent,
         TimetableComponent,
+        VereinMessagesComponent,
     ],
     imports: [
         BrowserModule,

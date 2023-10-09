@@ -1,0 +1,11 @@
+version: '3.8s'
+
+services:
+  zkmf2024-db-test:
+    image: postgres:15.4
+    environment:
+      - POSTGRES_USER=zkmf2024
+      - POSTGRES_PASSWORD=zkmf2024
+      - POSTGRES_DB=zkmf2024
+    ports:
+      - "5443:5432"

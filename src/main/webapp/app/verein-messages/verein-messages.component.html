@@ -1,0 +1,16 @@
+<div class="flex justify-content-start gap-5 align-items-end">
+    <textarea rows="5" cols="60" pInputTextarea [(ngModel)]="message" maxlength="8000"></textarea>
+    <p-button label="Senden"
+              (onClick)="saveMessage()"
+              [loading]="saving"
+              [disabled]="message.length < 1"></p-button>
+</div>
+
+<div class="messages-container">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="{'own': msg.ownMessage}">
+        <p><strong>{{msg.createdAt | date: 'dd.MM.yyyy HH:mm'}}, {{msg.createdBy}}</strong></p>
+        <p style="white-space: pre-wrap;" [ngClass]="">
+            {{msg.message}}
+        </p>
+    </div>
+</div>

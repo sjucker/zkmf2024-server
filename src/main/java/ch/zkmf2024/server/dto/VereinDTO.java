@@ -23,6 +23,7 @@ public record VereinDTO(
         String provWettspiel,
         String provParademusik,
         String provPlatzkonzert,
+        @NotNull List<VereinMessageDTO> messages,
         // used for client to signal that programm was updated
         boolean programmUpdated
 ) {

@@ -1,13 +1,12 @@
 <p-toast position="top-center"></p-toast>
-<div class="card">
-
+<div class="card p-component">
     <div class="p-fluid grid">
-        <div class="field col-12 md:col-4">
+        <div class="field col-12 md:col-4 lg:col-3">
             <span class="p-float-label">
             <p-dropdown id="vereine"
                         [autoDisplayFirst]="false"
                         [options]="availableVereine"
-                        [(ngModel)]="newEntry.vereinId"
+                        [(ngModel)]="vereinId"
                         optionValue="id"
                         optionLabel="name"
                         (onChange)="vereinSelectionChanged()"
@@ -16,87 +15,53 @@
             </span>
         </div>
     </div>
-    <div class="p-fluid grid">
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-                <input type="text" id="date" pInputText [(ngModel)]="newEntry.date">
-                <label for="date">Datum (yyyy-mm-dd)</label>
-            </span>
+    <div *ngIf="vereinId > 0">
+        <div *ngFor="let entry of timetableEntries">
+            <h3 class="mb-0">
+                {{entry.modulDescription}}
+                <span *ngIf="entry.klasse"> {{entry.klasse}}</span>
+                <span *ngIf="entry.besetzung"> {{entry.besetzung}}</span>
+            </h3>
+
+            <div *ngFor="let e of entry.entries" class="p-fluid grid">
+                <h4 class="col-12 m-0">{{getTranslation(e.type)}}</h4>
+                <div class="field col-12 md:col-3 lg:col-2">
+                    <p-calendar [(ngModel)]="e.date"
+                                [required]="true"
+                                [dateFormat]="'yy-mm-dd'"
+                                [firstDayOfWeek]="1"
+                                [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field col-12 md:col-3 lg:col-2">
+                    <span class="p-float-label">
+                        <input type="text" id="start" pInputText [(ngModel)]="e.start">
+                        <label for="start">Start (hh:mm)</label>
+                    </span>
+                </div>
+
+                <div class="field col-12 md:col-3 lg:col-2">
+                    <span class="p-float-label">
+                        <input type="text" id="end" pInputText [(ngModel)]="e.end">
+                        <label for="end">Stop (hh:mm)</label>
+                    </span>
+                </div>
+
+                <div class="field col-12 md:col-3 lg:col-2">
+                    <span class="p-float-label">
+                    <p-dropdown id="locations"
+                                [autoDisplayFirst]="false"
+                                [options]="e.availableLocations"
+                                [(ngModel)]="e.locationId"
+                                optionValue="id"
+                                optionLabel="name"></p-dropdown>
+                    <label for="locations">Lokal</label>
+                    </span>
+                </div>
+            </div>
         </div>
 
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-                <input type="text" id="start" pInputText [(ngModel)]="newEntry.start">
-                <label for="start">Start (hh:mm:ss)</label>
-            </span>
-        </div>
-
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-                <input type="text" id="end" pInputText [(ngModel)]="newEntry.end">
-                <label for="end">Stop (hh:mm:ss)</label>
-            </span>
-        </div>
     </div>
-    <div class="p-fluid grid">
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-            <p-dropdown id="locations"
-                        [autoDisplayFirst]="false"
-                        [options]="availableLocations"
-                        [(ngModel)]="newEntry.locationId"
-                        optionValue="id"
-                        optionLabel="name"></p-dropdown>
-            <label for="locations">Wettspiellokal</label>
-            </span>
-        </div>
-
-
-        <div class="field col-12 md:col-4">
-            <span class="p-float-label">
-            <p-dropdown [options]="availableProgramme"
-                        optionValue="id"
-                        optionLabel="name"
-                        id="programme"
-                        [(ngModel)]="newEntry.vereinProgrammId"
-                        [disabled]="!newEntry.vereinId"></p-dropdown>
-                    <label for="programme">Modul</label>
-            </span>
-        </div>
-    </div>
-    <!--    <div class="p-fluid grid">-->
-    <!--        <div class="field col-12 md:col-4">-->
-    <!--            <span class="p-float-label">-->
-    <!--            <p-dropdown [options]="availableJudges"-->
-    <!--                        optionValue="id"-->
-    <!--                        optionLabel="name"-->
-    <!--                        id="judge1"-->
-    <!--                        [(ngModel)]="newEntry.judge1Id"></p-dropdown>-->
-    <!--               <label for="judge1">Jury 1</label>-->
-    <!--            </span>-->
-    <!--        </div>-->
-    <!--        <div class="field col-12 md:col-4">-->
-    <!--            <span class="p-float-label">-->
-    <!--            <p-dropdown [options]="availableJudges"-->
-    <!--                        optionValue="id"-->
-    <!--                        optionLabel="name"-->
-    <!--                        id="judge2"-->
-    <!--                        [(ngModel)]="newEntry.judge2Id"></p-dropdown>-->
-    <!--                <label for="judge2">Jury 2</label>-->
-    <!--            </span>-->
-    <!--        </div>-->
-    <!--        <div class="field col-12 md:col-4">-->
-    <!--            <span class="p-float-label">-->
-    <!--            <p-dropdown [options]="availableJudges"-->
-    <!--                        optionValue="id"-->
-    <!--                        optionLabel="name"-->
-    <!--                        id="judge3"-->
-    <!--                        [(ngModel)]="newEntry.judge3Id"></p-dropdown>-->
-    <!--                <label for="judge3">Jury 3</label>-->
-    <!--            </span>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <div class="flex flex lg:justify-content-end">
+    <div class="flex flex lg:justify-content-start">
         <p-button (onClick)="create()"
                   [disabled]="!valid">
             Erstellen
@@ -111,30 +76,32 @@
         <ng-template pTemplate="caption">{{location}}</ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th>Datum</th>
-                <th>Start</th>
-                <th>Ende</th>
-                <th>Modul</th>
-                <th>Klasse</th>
-                <th>Besetzung</th>
-                <th>Verein</th>
-                <th>Jury 1</th>
-                <th>Jury 2</th>
-                <th>Jury 3</th>
+                <th class="col-1">Typ</th>
+                <th class="col-1">Datum</th>
+                <th class="col-1">Start</th>
+                <th class="col-1">Ende</th>
+                <th class="col-1">Modul</th>
+                <th class="col-1">Klasse</th>
+                <th class="col-1">Besetzung</th>
+                <th class="col-5">Verein</th>
+                <!--                <th>Jury 1</th>-->
+                <!--                <th>Jury 2</th>-->
+                <!--                <th>Jury 3</th>-->
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dto>
             <tr>
+                <td class="col-1">{{dto.type}}</td>
                 <td>{{dto.date | date: 'dd.MM.yyyy'}}</td>
-                <td>{{dto.start}}</td>
-                <td>{{dto.end}}</td>
+                <td>{{formatTime(dto.start)}}</td>
+                <td>{{formatTime(dto.end)}}</td>
                 <td>{{dto.modul}}</td>
                 <td>{{dto.klasse}}</td>
                 <td>{{dto.besetzung}}</td>
                 <td>{{dto.verein}}</td>
-                <td>{{dto.judge1}}</td>
-                <td>{{dto.judge2}}</td>
-                <td>{{dto.judge3}}</td>
+                <!--                <td>{{dto.judge1}}</td>-->
+                <!--                <td>{{dto.judge2}}</td>-->
+                <!--                <td>{{dto.judge3}}</td>-->
             </tr>
         </ng-template>
     </p-table>

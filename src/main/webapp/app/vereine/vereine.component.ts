@@ -6,6 +6,7 @@ import {Klasse, PhaseStatus, VereinOverviewDTO} from "../rest";
 import {VereineService} from "../service/vereine.service";
 import {VereinCommentsComponent, VereinCommentsInput} from "../verein-comments/verein-comments.component";
 import {VereinDetailComponent, VereinDetailInput} from "../verein-detail/verein-detail.component";
+import {VereinMessagesComponent, VereinMessagesInput} from "../verein-messages/verein-messages.component";
 
 @Component({
     selector: 'app-vereine',
@@ -104,7 +105,20 @@ export class VereineComponent implements OnInit {
             id: dto.id,
         }
         this.ref = this.dialogService.open(VereinCommentsComponent, {
-            header: dto.vereinsname,
+            header: `Interne Notizen für ${dto.vereinsname}`,
+            width: '90%',
+            height: '90%',
+            maximizable: true,
+            data: input
+        });
+    }
+
+    openVereinMessages(dto: VereinOverviewDTO): void {
+        const input: VereinMessagesInput = {
+            id: dto.id,
+        }
+        this.ref = this.dialogService.open(VereinMessagesComponent, {
+            header: `Chat mit ${dto.vereinsname}`,
             width: '90%',
             height: '90%',
             maximizable: true,

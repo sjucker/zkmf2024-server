@@ -19,6 +19,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz;
+import ch.zkmf2024.server.jooq.generated.tables.VereinMessage;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
@@ -109,6 +110,11 @@ public class Tables {
      * The table <code>verein_doppeleinsatz</code>.
      */
     public static final VereinDoppeleinsatz VEREIN_DOPPELEINSATZ = VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ;
+
+    /**
+     * The table <code>verein_message</code>.
+     */
+    public static final VereinMessage VEREIN_MESSAGE = VereinMessage.VEREIN_MESSAGE;
 
     /**
      * The table <code>verein_programm</code>.

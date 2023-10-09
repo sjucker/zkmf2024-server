@@ -2,7 +2,14 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {VereinCommentCreateDTO, VereinCommentDTO, VereinDTO, VereinOverviewDTO} from "../rest";
+import {
+    VereinCommentCreateDTO,
+    VereinCommentDTO,
+    VereinDTO,
+    VereinMessageCreateDTO,
+    VereinMessageDTO,
+    VereinOverviewDTO
+} from "../rest";
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +33,10 @@ export class VereineService {
         return this.httpClient.get<VereinCommentDTO[]>(`${this.baseUrl}/secured/admin/vereine/${id}/comments`);
     }
 
+    getMessages(id: number): Observable<VereinMessageDTO[]> {
+        return this.httpClient.get<VereinMessageDTO[]>(`${this.baseUrl}/secured/admin/vereine/${id}/messages`);
+    }
+
     export(): Observable<Blob> {
         return this.httpClient.get(`${this.baseUrl}/secured/admin/download/vereine`, {
             responseType: 'blob'
@@ -37,6 +48,13 @@ export class VereineService {
             comment: comment
         };
         return this.httpClient.post<VereinCommentDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/comments`, request);
+    }
+
+    saveMessag(id: number, message: string): Observable<VereinMessageDTO> {
+        const request: VereinMessageCreateDTO = {
+            message: message
+        };
+        return this.httpClient.post<VereinMessageDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/messages`, request);
     }
 
     confirmProgramm(id: number) {

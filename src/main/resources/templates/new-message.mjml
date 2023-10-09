@@ -1,0 +1,41 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-all padding="0"/>
+            <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins"/>
+            <mj-section background-color="white"/>
+        </mj-attributes>
+    </mj-head>
+    <mj-body background-color="rgb(242, 244, 246)">
+        <mj-section>
+            <mj-column>
+                <mj-image src="https://www.zkmf2024.ch/email/header-musik-bewegt.png" alt="ZKMF2024" padding="0"/>
+            </mj-column>
+        </mj-section>
+        <mj-section padding-bottom="80px" padding-top="10px">
+            <mj-column>
+                <mj-text align="center"
+                         font-family="Poppins">
+                    <h1>Neue Nachricht 📬</h1>
+                    <p>Du hast eine neue Nachricht!️</p>
+                    <p>Gehe ins Vereinsportal um sie zu lesen.</p>
+                </mj-text>
+                <mj-spacer height="20px"/>
+                <mj-button background-color="rgb(252, 102, 28)"
+                           color="white"
+                           th:href="${link}"
+                           font-family="Poppins"
+                           padding="20px 0 0 0"
+                           font-size="16px">
+                    zum Vereinsportal
+                </mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-section padding-bottom="10px">
+            <mj-column>
+                <mj-image src="https://www.zkmf2024.ch/email/sponsoren.png" alt="ZKMF2024 - Hauptsponsoren"
+                          padding="0"/>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

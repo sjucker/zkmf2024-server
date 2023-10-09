@@ -6,16 +6,17 @@ package ch.zkmf2024.server.jooq.generated.tables;
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
+import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
+import org.jooq.Function8;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -88,6 +89,11 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
      */
     public final TableField<TimetableEntryRecord, LocalTime> END_TIME = createField(DSL.name("end_time"), SQLDataType.LOCALTIME(6).nullable(false), this, "");
 
+    /**
+     * The column <code>timetable_entry.entry_type</code>.
+     */
+    public final TableField<TimetableEntryRecord, TimetableEntryType> ENTRY_TYPE = createField(DSL.name("entry_type"), SQLDataType.VARCHAR.nullable(false).defaultValue(DSL.field(DSL.raw("'WETTSPIEL'::timetable_entry_type"), SQLDataType.VARCHAR)).asEnumDataType(ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.class), this, "");
+
     private TimetableEntry(Name alias, Table<TimetableEntryRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -143,7 +149,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
 
     @Override
     public List<UniqueKey<TimetableEntryRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.TIMETABLE_ENTRY_FK_VEREIN_FK_VEREIN_PROGRAMM_KEY);
+        return Arrays.asList(Keys.TIMETABLE_ENTRY_FK_VEREIN_FK_VEREIN_PROGRAMM_KEY, Keys.UQ_TIMETABLE_ENTRY);
     }
 
     @Override
@@ -226,18 +232,18 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Long, Long, Long, LocalDate, LocalTime, LocalTime> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Long, Long, Long, Long, LocalDate, LocalTime, LocalTime, TimetableEntryType> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super Long, ? super Long, ? super Long, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Long, ? super Long, ? super Long, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? super TimetableEntryType, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -245,7 +251,7 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Long, ? super Long, ? super Long, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super Long, ? super Long, ? super Long, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? super TimetableEntryType, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

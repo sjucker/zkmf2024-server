@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
@@ -19,6 +20,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
@@ -45,6 +47,7 @@ import java.util.UUID;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
+import static ch.zkmf2024.server.dto.UserRole.ADMIN;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
 import static ch.zkmf2024.server.service.DateUtil.now;
 import static java.util.Comparator.comparing;
@@ -89,11 +92,18 @@ public class VereinService {
                                .map(this::toDTO);
     }
 
-    public List<VereinCommentDTO> findCommentsByVereinId(Long id) {
-        return vereinRepository.findCommentByVereinId(id).stream()
+    public List<VereinCommentDTO> findCommentsByVereinId(Long vereinId) {
+        return vereinRepository.findCommentsByVereinId(vereinId).stream()
                                .map(pojo -> new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy()))
                                // newest first
                                .sorted(comparing(VereinCommentDTO::createdAt).reversed())
+                               .toList();
+    }
+
+    public List<VereinMessageDTO> findMessagesByVereinId(Long vereinId, String username) {
+        return vereinRepository.findMessagesByVereinId(vereinId).stream()
+                               .map(pojo -> new VereinMessageDTO(pojo.getMessage(), pojo.getCreatedAt(), pojo.getCreatedBy(), pojo.getCreatedBy().equals(username)))
+                               .sorted(comparing(VereinMessageDTO::createdAt))
                                .toList();
     }
 
@@ -147,6 +157,7 @@ public class VereinService {
                 verein.getProvWettspiel(),
                 verein.getProvParademusik(),
                 verein.getProvPlatzkonzert(),
+                findMessagesByVereinId(verein.getId(), verein.getEmail()),
                 false
         );
     }
@@ -521,6 +532,22 @@ public class VereinService {
         var pojo = new VereinCommentPojo(null, vereinId, comment, now(), username);
         vereinRepository.insert(pojo);
         return new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy());
+    }
+
+    public VereinMessageDTO saveMessage(String email, String message) {
+        var verein = vereinRepository.findByEmail(email).orElseThrow();
+        return saveMessage(email, verein.getId(), message);
+    }
+
+    public VereinMessageDTO saveMessage(String username, Long vereinId, String message) {
+        var vereinPojo = vereinRepository.findById(vereinId).orElseThrow();
+        var pojo = new VereinMessagePojo(null, vereinPojo.getId(), message, now(), username);
+        vereinRepository.insert(pojo);
+
+        userRepository.findByIdAndRole(username, ADMIN).ifPresent(user -> mailService.sendNewMessageEmail(vereinPojo.getEmail()));
+        userRepository.findByIdAndRole(username, VEREIN).ifPresent(user -> mailService.sendNewMessageInternalEmail(vereinPojo));
+
+        return new VereinMessageDTO(pojo.getMessage(), pojo.getCreatedAt(), pojo.getCreatedBy(), true);
     }
 
     public void confirmProgramm(String username, Long vereinId) {

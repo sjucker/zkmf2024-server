@@ -8,6 +8,7 @@ import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -61,6 +62,7 @@ public class MailService {
     }
 
     public void sendRegistrationEmail(Zkmf2024UserPojo user) {
+        log.info("sending registration mail to {}", user.getEmail());
         try {
             var variables = new HashMap<String, Object>();
             variables.put("email", user.getEmail());
@@ -90,6 +92,7 @@ public class MailService {
     }
 
     public void sendRegistrationConfirmationEmail(VereinDTO vereinDTO) {
+        log.info("sending confirmation mail to {}", vereinDTO.email());
         try {
             var variables = new HashMap<String, Object>();
             variables.put("verein", vereinDTO.angaben().vereinsname());
@@ -138,6 +141,7 @@ public class MailService {
     }
 
     public void sendResetPasswordEmail(Zkmf2024UserPojo user) {
+        log.info("sending forgot-password mail to {}", user.getEmail());
         try {
             var variables = new HashMap<String, Object>();
             variables.put("resetLink", "%s/reset-passwort/%s/%s".formatted(applicationProperties.getBaseUrlVereine(),
@@ -158,10 +162,47 @@ public class MailService {
         } catch (RuntimeException | MessagingException e) {
             log.error("could not send reset password mail user %s".formatted(user), e);
         }
+    }
 
+    public void sendNewMessageEmail(String to) {
+        log.info("sending new-message mail to {}", to);
+        try {
+            var variables = new HashMap<String, Object>();
+            variables.put("link", applicationProperties.getBaseUrlVereine());
+
+            var mjml = templateEngine.process("new-message", new Context(GERMAN, variables));
+            var mimeMessage = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setTo(to);
+            helper.setBcc(applicationProperties.getBccMail());
+            helper.setSubject("[%s] Neue Nachricht".formatted(getSubjectPrefix()));
+            helper.setText(mjmlService.render(mjml), true);
+
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send new message mail to %s".formatted(to), e);
+        }
+    }
+
+    public void sendNewMessageInternalEmail(VereinPojo verein) {
+        try {
+            var mimeMessage = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setTo(applicationProperties.getBccMail()); // TODO replace with nachrichten@zkmf2024.ch
+            helper.setSubject("[%s] Neue Nachricht".formatted(getSubjectPrefix()));
+            helper.setText("Neue Nachricht vom Verein: %s".formatted(verein.getVereinsname()));
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send new message mail to %s".formatted(applicationProperties.getBccMail()), e);
+        }
     }
 
     public void sendHelperRegistrationEmail(HelperRegistrationPojo helperRegistration) {
+        log.info("sending helper-registration mail to {}", helperRegistration.getEmail());
         try {
             var variables = new HashMap<String, Object>();
             variables.put("email", helperRegistration.getEmail());
