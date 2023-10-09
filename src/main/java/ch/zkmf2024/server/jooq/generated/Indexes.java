@@ -12,6 +12,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz;
+import ch.zkmf2024.server.jooq.generated.tables.VereinMessage;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import org.jooq.Index;
@@ -42,6 +43,7 @@ public class Indexes {
     public static final Index IDX_FK_VEREIN_DIREKTION_KONTAKT = Internal.createIndex(DSL.name("idx_fk_verein_direktion_kontakt"), Verein.VEREIN, new OrderField[]{Verein.VEREIN.DIREKTION_KONTAKT_ID}, false);
     public static final Index IDX_FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_doppeleinsatz_other_verein"), VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ, new OrderField[]{VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN}, false);
     public static final Index IDX_FK_VEREIN_DOPPELEINSATZ_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_doppeleinsatz_verein"), VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ, new OrderField[]{VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ.FK_VEREIN}, false);
+    public static final Index IDX_FK_VEREIN_MESSAGE_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_message_verein"), VereinMessage.VEREIN_MESSAGE, new OrderField[]{VereinMessage.VEREIN_MESSAGE.FK_VEREIN}, false);
     public static final Index IDX_FK_VEREIN_PRAESIDENT_KONTAKT = Internal.createIndex(DSL.name("idx_fk_verein_praesident_kontakt"), Verein.VEREIN, new OrderField[]{Verein.VEREIN.PRAESIDENT_KONTAKT_ID}, false);
     public static final Index IDX_FK_VEREIN_PROGRAMM_TITEL_TITEL = Internal.createIndex(DSL.name("idx_fk_verein_programm_titel_titel"), VereinProgrammTitel.VEREIN_PROGRAMM_TITEL, new OrderField[]{VereinProgrammTitel.VEREIN_PROGRAMM_TITEL.FK_TITEL}, false);
     public static final Index IDX_FK_VEREIN_PROGRAMM_VEREIN = Internal.createIndex(DSL.name("idx_fk_verein_programm_verein"), VereinProgramm.VEREIN_PROGRAMM, new OrderField[]{VereinProgramm.VEREIN_PROGRAMM.FK_VEREIN}, false);

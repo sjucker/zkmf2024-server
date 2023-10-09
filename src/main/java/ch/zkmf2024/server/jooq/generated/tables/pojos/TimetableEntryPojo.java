@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.pojos;
 
+import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.ITimetableEntry;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+    private TimetableEntryType entryType;
 
     public TimetableEntryPojo() {
     }
@@ -35,6 +37,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
         this.date = value.getDate();
         this.startTime = value.getStartTime();
         this.endTime = value.getEndTime();
+        this.entryType = value.getEntryType();
     }
 
     public TimetableEntryPojo(
@@ -44,7 +47,8 @@ public class TimetableEntryPojo implements ITimetableEntry {
             Long fkLocation,
             LocalDate date,
             LocalTime startTime,
-            LocalTime endTime
+            LocalTime endTime,
+            TimetableEntryType entryType
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -53,6 +57,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.entryType = entryType;
     }
 
     /**
@@ -167,6 +172,22 @@ public class TimetableEntryPojo implements ITimetableEntry {
         this.endTime = endTime;
     }
 
+    /**
+     * Getter for <code>timetable_entry.entry_type</code>.
+     */
+    @Override
+    public TimetableEntryType getEntryType() {
+        return this.entryType;
+    }
+
+    /**
+     * Setter for <code>timetable_entry.entry_type</code>.
+     */
+    @Override
+    public void setEntryType(TimetableEntryType entryType) {
+        this.entryType = entryType;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -211,6 +232,11 @@ public class TimetableEntryPojo implements ITimetableEntry {
                 return false;
         } else if (!this.endTime.equals(other.endTime))
             return false;
+        if (this.entryType == null) {
+            if (other.entryType != null)
+                return false;
+        } else if (!this.entryType.equals(other.entryType))
+            return false;
         return true;
     }
 
@@ -225,6 +251,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
         result = prime * result + ((this.date == null) ? 0 : this.date.hashCode());
         result = prime * result + ((this.startTime == null) ? 0 : this.startTime.hashCode());
         result = prime * result + ((this.endTime == null) ? 0 : this.endTime.hashCode());
+        result = prime * result + ((this.entryType == null) ? 0 : this.entryType.hashCode());
         return result;
     }
 
@@ -239,6 +266,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
         sb.append(", ").append(date);
         sb.append(", ").append(startTime);
         sb.append(", ").append(endTime);
+        sb.append(", ").append(entryType);
 
         sb.append(")");
         return sb.toString();
@@ -257,6 +285,7 @@ public class TimetableEntryPojo implements ITimetableEntry {
         setDate(from.getDate());
         setStartTime(from.getStartTime());
         setEndTime(from.getEndTime());
+        setEntryType(from.getEntryType());
     }
 
     @Override

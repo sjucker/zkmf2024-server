@@ -3,6 +3,8 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.interfaces;
 
+import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -82,6 +84,16 @@ public interface ITimetableEntry extends Serializable {
      * Getter for <code>timetable_entry.end_time</code>.
      */
     public LocalTime getEndTime();
+
+    /**
+     * Setter for <code>timetable_entry.entry_type</code>.
+     */
+    public void setEntryType(TimetableEntryType value);
+
+    /**
+     * Getter for <code>timetable_entry.entry_type</code>.
+     */
+    public TimetableEntryType getEntryType();
 
     // -------------------------------------------------------------------------
     // FROM and INTO

@@ -24,6 +24,7 @@ import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDoppeleinsatzDao;
+import ch.zkmf2024.server.jooq.generated.tables.daos.VereinMessageDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammTitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinStatusDao;
@@ -31,6 +32,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
@@ -60,6 +62,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_DOPPELEINSATZ;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_MESSAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
@@ -88,6 +91,7 @@ public class VereinRepository {
     private final VereinProgrammDao vereinProgrammDao;
     private final VereinProgrammTitelDao vereinProgrammTitelDao;
     private final VereinCommentDao vereinCommentDao;
+    private final VereinMessageDao vereinMessageDao;
     private final VereinDoppeleinsatzDao vereinDoppeleinsatzDao;
 
     public VereinRepository(ProgrammVorgabenRepository programmVorgabenRepository,
@@ -102,6 +106,7 @@ public class VereinRepository {
         this.vereinProgrammDao = new VereinProgrammDao(jooqConfig);
         this.vereinProgrammTitelDao = new VereinProgrammTitelDao(jooqConfig);
         this.vereinCommentDao = new VereinCommentDao(jooqConfig);
+        this.vereinMessageDao = new VereinMessageDao(jooqConfig);
         this.vereinDoppeleinsatzDao = new VereinDoppeleinsatzDao(jooqConfig);
     }
 
@@ -131,11 +136,14 @@ public class VereinRepository {
     }
 
     public List<VereinOverviewDTO> findAllOverview() {
+        var commentCount = field(selectCount().from(VEREIN_COMMENT).where(VEREIN_COMMENT.FK_VEREIN.eq(VEREIN.ID))).as("COMMENT_COUNT");
+        var messageCount = field(selectCount().from(VEREIN_MESSAGE).where(VEREIN_MESSAGE.FK_VEREIN.eq(VEREIN.ID))).as("MESSAGE_COUNT");
         return jooqDsl.select(
                               VEREIN.asterisk(),
                               VEREIN_STATUS.PHASE1,
                               VEREIN_STATUS.PHASE2,
-                              field(selectCount().from(VEREIN_COMMENT).where(VEREIN_COMMENT.FK_VEREIN.eq(VEREIN.ID))).as("COMMENT_COUNT")
+                              commentCount,
+                              messageCount
                       )
                       .from(VEREIN)
                       .join(VEREIN_STATUS).on(VEREIN.ID.eq(VEREIN_STATUS.FK_VEREIN))
@@ -166,7 +174,8 @@ public class VereinRepository {
                               it.get(VEREIN.PHASE2_CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)),
-                              it.get("COMMENT_COUNT", Integer.class) > 0,
+                              it.get(commentCount) > 0,
+                              it.get(messageCount) > 0,
                               it.get(VEREIN.PROGRAMM_LAST_UPDATED)
                       ));
     }
@@ -176,7 +185,6 @@ public class VereinRepository {
                       .from(VEREIN)
                       .where(
                               VEREIN.CONFIRMED_AT.isNotNull(),
-                              VEREIN.PHASE2_CONFIRMED_AT.isNotNull(),
                               DSL.notExists(selectOne().from(TIMETABLE_ENTRY).where(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID)))
                       )
                       .orderBy(VEREIN.VEREINSNAME)
@@ -265,6 +273,7 @@ public class VereinRepository {
                                     it.get(VEREIN.PROV_WETTSPIEL),
                                     it.get(VEREIN.PROV_PARADEMUSIK),
                                     it.get(VEREIN.PROV_PLATZKONZERT),
+                                    List.of(),
                                     false
                             ));
 
@@ -436,6 +445,10 @@ public class VereinRepository {
         vereinCommentDao.insert(vereinComment);
     }
 
+    public void insert(VereinMessagePojo vereinMessagePojo) {
+        vereinMessageDao.insert(vereinMessagePojo);
+    }
+
     public void insert(VereinDoppeleinsatzPojo doppeleinsatz) {
         vereinDoppeleinsatzDao.insert(doppeleinsatz);
     }
@@ -482,10 +495,18 @@ public class VereinRepository {
                       .from(VEREIN_PROGRAMM)
                       .where(VEREIN_PROGRAMM.FK_VEREIN.eq(vereinId))
                       .and(notExists(selectOne().from(TIMETABLE_ENTRY).where(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))))
-                      .fetch(it -> new VereinProgrammSelectionDTO(
-                              it.get(VEREIN_PROGRAMM.ID),
-                              Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription()
-                      ));
+                      .fetch(it -> {
+                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+                          var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null);
+                          var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null);
+
+                          return new VereinProgrammSelectionDTO(
+                                  it.get(VEREIN_PROGRAMM.ID),
+                                  modul,
+                                  modul.getFullDescription(),
+                                  klasse,
+                                  besetzung);
+                      });
     }
 
     public List<VereinProgrammDTO> findProgramme(Long vereinId) {
@@ -588,8 +609,12 @@ public class VereinRepository {
         vereinProgrammTitelDao.delete(pojo);
     }
 
-    public List<VereinCommentPojo> findCommentByVereinId(Long vereinId) {
+    public List<VereinCommentPojo> findCommentsByVereinId(Long vereinId) {
         return vereinCommentDao.fetchByFkVerein(vereinId);
+    }
+
+    public List<VereinMessagePojo> findMessagesByVereinId(Long vereinId) {
+        return vereinMessageDao.fetchByFkVerein(vereinId);
     }
 
     public void deleteDoppeleinsatzByVereinId(Long vereinId) {

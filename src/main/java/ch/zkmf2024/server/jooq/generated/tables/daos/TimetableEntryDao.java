@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.daos;
 
+import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
@@ -156,5 +157,20 @@ public class TimetableEntryDao extends DAOImpl<TimetableEntryRecord, TimetableEn
      */
     public List<TimetableEntryPojo> fetchByEndTime(LocalTime... values) {
         return fetch(TimetableEntry.TIMETABLE_ENTRY.END_TIME, values);
+    }
+
+    /**
+     * Fetch records that have <code>entry_type BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<TimetableEntryPojo> fetchRangeOfEntryType(TimetableEntryType lowerInclusive, TimetableEntryType upperInclusive) {
+        return fetchRange(TimetableEntry.TIMETABLE_ENTRY.ENTRY_TYPE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>entry_type IN (values)</code>
+     */
+    public List<TimetableEntryPojo> fetchByEntryType(TimetableEntryType... values) {
+        return fetch(TimetableEntry.TIMETABLE_ENTRY.ENTRY_TYPE, values);
     }
 }

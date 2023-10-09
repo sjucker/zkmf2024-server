@@ -1,7 +1,8 @@
 package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.VereinDTO;
-import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.VereinMessageDTO;
+import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -39,13 +39,6 @@ public class SecuredVereinEndpoint {
 
         return vereinService.find(userDetails.getUsername()).map(ResponseEntity::ok)
                             .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<VereinSelectionDTO>> allVereine() {
-        log.info("GET /secured/verein/all");
-
-        return ResponseEntity.ok(vereinService.findAllForSelection());
     }
 
     @PutMapping
@@ -83,6 +76,14 @@ public class SecuredVereinEndpoint {
 
         vereinService.deleteImage(userDetails.getUsername(), id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/messages")
+    public ResponseEntity<VereinMessageDTO> postMessage(@AuthenticationPrincipal UserDetails userDetails,
+                                                        @RequestBody VereinMessageCreateDTO dto) {
+        log.info("POST /secured/verein/messages {}", dto);
+
+        return ResponseEntity.ok(vereinService.saveMessage(userDetails.getUsername(), dto.message()));
     }
 
     private static Object getFileDescription(MultipartFile file) {

@@ -19,6 +19,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz;
+import ch.zkmf2024.server.jooq.generated.tables.VereinMessage;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
@@ -124,6 +125,11 @@ public class DefaultSchema extends SchemaImpl {
     public final VereinDoppeleinsatz VEREIN_DOPPELEINSATZ = VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ;
 
     /**
+     * The table <code>verein_message</code>.
+     */
+    public final VereinMessage VEREIN_MESSAGE = VereinMessage.VEREIN_MESSAGE;
+
+    /**
      * The table <code>verein_programm</code>.
      */
     public final VereinProgramm VEREIN_PROGRAMM = VereinProgramm.VEREIN_PROGRAMM;
@@ -174,6 +180,7 @@ public class DefaultSchema extends SchemaImpl {
                 Verein.VEREIN,
                 VereinComment.VEREIN_COMMENT,
                 VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ,
+                VereinMessage.VEREIN_MESSAGE,
                 VereinProgramm.VEREIN_PROGRAMM,
                 VereinProgrammTitel.VEREIN_PROGRAMM_TITEL,
                 VereinStatus.VEREIN_STATUS,

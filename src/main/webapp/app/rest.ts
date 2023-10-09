@@ -186,9 +186,17 @@ export interface VereinDTO {
     provWettspiel?: string;
     provParademusik?: string;
     provPlatzkonzert?: string;
+    messages: VereinMessageDTO[];
     programmUpdated: boolean;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
+}
+
+export interface VereinMessageDTO {
+    message: string;
+    createdAt: DateAsString;
+    createdBy: string;
+    ownMessage: boolean;
 }
 
 export interface VereinProgrammDTO extends IsValid {
@@ -306,9 +314,18 @@ export interface LocationSelectionDTO {
 }
 
 export interface TimetableEntryCreateDTO {
-    vereinId: number;
-    vereinProgrammId?: number;
+    vereinProgrammId: number;
+    modul: Modul;
+    modulDescription: string;
+    klasse?: string;
+    besetzung?: string;
+    entries: TimeTableEntryDTO[];
+}
+
+export interface TimeTableEntryDTO {
+    type: TimetableEntryType;
     locationId: number;
+    availableLocations: LocationSelectionDTO[];
     date: DateAsString;
     start: DateAsString;
     end: DateAsString;
@@ -324,6 +341,7 @@ export interface TimetableEntryDTO {
     date: DateAsString;
     start: DateAsString;
     end: DateAsString;
+    type: TimetableEntryType;
     judge1: string;
     judge2: string;
     judge3: string;
@@ -365,6 +383,10 @@ export interface VereinCommentDTO {
     createdBy: string;
 }
 
+export interface VereinMessageCreateDTO {
+    message: string;
+}
+
 export interface VereinOverviewDTO {
     id: number;
     vereinsname: string;
@@ -392,12 +414,16 @@ export interface VereinOverviewDTO {
     phase1: PhaseStatus;
     phase2: PhaseStatus;
     hasComments: boolean;
+    hasMessages: boolean;
     programmLastUpdated?: DateAsString;
 }
 
 export interface VereinProgrammSelectionDTO {
     id: number;
-    name: string;
+    modul: Modul;
+    modulDescription: string;
+    klasse?: string;
+    besetzung?: string;
 }
 
 export interface IsValid {
@@ -445,8 +471,6 @@ export enum LocationType {
 
 export enum UserRole {
     VEREIN = "VEREIN",
-    HELPER = "HELPER",
-    PLANER = "PLANER",
     ADMIN = "ADMIN",
     JUDGE = "JUDGE",
 }
@@ -516,4 +540,12 @@ export enum Besetzung {
     FANFARE = "FANFARE",
     TAMBOUREN = "TAMBOUREN",
     PERKUSSIONSENSEMBLE = "PERKUSSIONSENSEMBLE",
+}
+
+export enum TimetableEntryType {
+    EINSPIEL = "EINSPIEL",
+    WETTSPIEL = "WETTSPIEL",
+    BESPRECHUNG = "BESPRECHUNG",
+    PLATZKONZERT = "PLATZKONZERT",
+    MARSCHMUSIK = "MARSCHMUSIK",
 }
