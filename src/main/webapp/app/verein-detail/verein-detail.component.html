@@ -62,7 +62,8 @@
                     <tr *ngFor="let entry of programm.ablauf; let i = index; let first = first; let last = last;">
                         <td class="pl-2 pr-2">{{i + 1}}</td>
                         <td class="pl-2 pr-2">
-                            {{entry.titel.titelName}} ({{entry.titel.composer}})<span *ngIf="entry.titel.pflichtStueck">*</span>
+                            {{entry.titel.titelName}} ({{entry.titel.composer}}<span *ngIf="entry.titel.arrangeur">, arr. {{entry.titel.arrangeur}}</span>)
+                            <span *ngIf="entry.titel.pflichtStueck">*</span>
                         </td>
                         <td class="pl-2 pr-2"
                             *ngIf="!isModulC(programm)">
