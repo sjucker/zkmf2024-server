@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -183,7 +184,11 @@ public class ExportService {
 
     private String getFormattedTitel(TitelDTO titel) {
         if (titel.isValid()) {
-            return "%s (%s)".formatted(titel.titelName(), titel.composer());
+            if (StringUtils.isBlank(titel.arrangeur())) {
+                return "%s (%s)".formatted(titel.titelName(), titel.composer());
+            } else {
+                return "%s (%s, arr. %s)".formatted(titel.titelName(), titel.composer(), titel.arrangeur());
+            }
         }
         return "";
     }
