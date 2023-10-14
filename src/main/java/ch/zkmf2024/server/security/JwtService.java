@@ -2,6 +2,7 @@ package ch.zkmf2024.server.security;
 
 import ch.zkmf2024.server.configuration.ApplicationProperties;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -45,6 +46,9 @@ public class JwtService {
 
         try {
             return Optional.of(jwtParser.parseClaimsJws(jwt).getBody());
+        } catch (ExpiredJwtException e) {
+            log.info("JWT was expired");
+            return Optional.empty();
         } catch (JwtException ex) {
             log.error("unable to parse given JWT: " + jwt, ex);
             return Optional.empty();
