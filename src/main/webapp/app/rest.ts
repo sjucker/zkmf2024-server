@@ -186,6 +186,7 @@ export interface VereinDTO {
     provWettspiel?: string;
     provParademusik?: string;
     provPlatzkonzert?: string;
+    programmUpdated: boolean;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
 }
@@ -391,6 +392,7 @@ export interface VereinOverviewDTO {
     phase1: PhaseStatus;
     phase2: PhaseStatus;
     hasComments: boolean;
+    programmLastUpdated?: DateAsString;
 }
 
 export interface VereinProgrammSelectionDTO {

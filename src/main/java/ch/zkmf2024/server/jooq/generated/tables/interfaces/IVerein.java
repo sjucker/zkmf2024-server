@@ -422,6 +422,16 @@ public interface IVerein extends Serializable {
      */
     public String getProvPlatzkonzert();
 
+    /**
+     * Setter for <code>verein.programm_last_updated</code>.
+     */
+    public void setProgrammLastUpdated(LocalDateTime value);
+
+    /**
+     * Getter for <code>verein.programm_last_updated</code>.
+     */
+    public LocalDateTime getProgrammLastUpdated();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

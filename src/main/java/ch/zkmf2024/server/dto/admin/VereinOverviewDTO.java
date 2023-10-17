@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.PhaseStatus;
 
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 public record VereinOverviewDTO(
         long id,
@@ -31,6 +32,7 @@ public record VereinOverviewDTO(
         boolean phase2Confirmed,
         @NotNull PhaseStatus phase1,
         @NotNull PhaseStatus phase2,
-        boolean hasComments
+        boolean hasComments,
+        LocalDateTime programmLastUpdated
 ) {
 }

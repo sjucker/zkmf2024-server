@@ -166,7 +166,8 @@ public class VereinRepository {
                               it.get(VEREIN.PHASE2_CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)),
-                              it.get("COMMENT_COUNT", Integer.class) > 0
+                              it.get("COMMENT_COUNT", Integer.class) > 0,
+                              it.get(VEREIN.PROGRAMM_LAST_UPDATED)
                       ));
     }
 
@@ -263,7 +264,8 @@ public class VereinRepository {
                                     it.get(VEREIN.PHASE2_CONFIRMED_AT),
                                     it.get(VEREIN.PROV_WETTSPIEL),
                                     it.get(VEREIN.PROV_PARADEMUSIK),
-                                    it.get(VEREIN.PROV_PLATZKONZERT)
+                                    it.get(VEREIN.PROV_PLATZKONZERT),
+                                    false
                             ));
 
         stopWatch.splitInfo("findAllForExport");

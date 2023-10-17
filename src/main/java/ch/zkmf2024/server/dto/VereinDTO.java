@@ -22,7 +22,9 @@ public record VereinDTO(
         LocalDateTime phase2ConfirmedAt,
         String provWettspiel,
         String provParademusik,
-        String provPlatzkonzert
+        String provPlatzkonzert,
+        // used for client to signal that programm was updated
+        boolean programmUpdated
 ) {
 
     @NotNull

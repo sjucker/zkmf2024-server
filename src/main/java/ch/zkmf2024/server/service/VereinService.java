@@ -146,7 +146,8 @@ public class VereinService {
                 verein.getPhase2ConfirmedAt(),
                 verein.getProvWettspiel(),
                 verein.getProvParademusik(),
-                verein.getProvPlatzkonzert()
+                verein.getProvPlatzkonzert(),
+                false
         );
     }
 
@@ -209,6 +210,9 @@ public class VereinService {
             MAPPER.updateVereinsanmeldung(verein, dto.anmeldung());
         }
         verein.setWebsiteText(dto.info().websiteText());
+        if (verein.getPhase2ConfirmedAt() == null && dto.programmUpdated()) {
+            verein.setProgrammLastUpdated(now());
+        }
         vereinRepository.update(verein);
 
         var praesident = vereinRepository.findKontaktById(verein.getPraesidentKontaktId());
@@ -514,7 +518,7 @@ public class VereinService {
     }
 
     public VereinCommentDTO saveComment(String username, Long vereinId, String comment) {
-        var pojo = new VereinCommentPojo(null, vereinId, comment, DateUtil.now(), username);
+        var pojo = new VereinCommentPojo(null, vereinId, comment, now(), username);
         vereinRepository.insert(pojo);
         return new VereinCommentDTO(pojo.getComment(), pojo.getCreatedAt(), pojo.getCreatedBy());
     }

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ZKMF2024 PROD" uuid="cc3af5a6-f4a6-4e2c-92a3-7951aec4eb09">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="zkmf2024@localhost" uuid="b1b20986-351e-4420-8354-55441e53dee6">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://db8.netzone.ch:3306/mvurdorf</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/zkmf2024</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="ZKMF2024 TEST" uuid="85251374-68e7-4d92-b26b-d0767c2f5357">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="Heroku Staging" uuid="2f23e5e2-78e6-42e7-acbe-66fc915d0f23">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://db8.netzone.ch:3306/mvurdorf10</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-63-33-143-66.eu-west-1.compute.amazonaws.com:5432/d77g3mre6mengr</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="zkmf2024@localhost" uuid="85e55296-a614-4b5b-aac6-92d17f2d3822">
-      <driver-ref>mysql.8</driver-ref>
+    <data-source source="LOCAL" name="Heroku Prod" uuid="454ad3d4-4ac3-4916-93d0-eee8f024f02b">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/zkmf2024</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-73-22-169.eu-west-1.compute.amazonaws.com:5432/d1rkfailh08u8o</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

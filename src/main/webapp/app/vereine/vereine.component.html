@@ -26,6 +26,9 @@
             <th pSortableColumn="phase2">Phase 2
                 <p-sortIcon field="phase2"></p-sortIcon>
             </th>
+            <th pSortableColumn="programmLastUpdated">Phase 2 Änderungsdatum
+                <p-sortIcon field="programmLastUpdated"></p-sortIcon>
+            </th>
             <th pSortableColumn="modulA">Modul A
                 <p-sortIcon field="modulA"></p-sortIcon>
             </th>
@@ -56,33 +59,6 @@
             <th pSortableColumn="klasseModulB">Klasse Modul B
                 <p-sortIcon field="klasseModulB"></p-sortIcon>
             </th>
-            <th pSortableColumn="klasseModulH">Klasse Modul H
-                <p-sortIcon field="klasseModulH"></p-sortIcon>
-            </th>
-            <th pSortableColumn="tambourenKatA">Kat. A
-                <p-sortIcon field="tambourenKatA"></p-sortIcon>
-            </th>
-            <th pSortableColumn="tambourenKatB">Kat. B
-                <p-sortIcon field="tambourenKatB"></p-sortIcon>
-            </th>
-            <th pSortableColumn="tambourenKatC">Kat. C
-                <p-sortIcon field="tambourenKatC"></p-sortIcon>
-            </th>
-            <th pSortableColumn="harmonie">Harmonie
-                <p-sortIcon field="harmonie"></p-sortIcon>
-            </th>
-            <th pSortableColumn="brassBand">Brass Band
-                <p-sortIcon field="brassBand"></p-sortIcon>
-            </th>
-            <th pSortableColumn="fanfare">Fanfare
-                <p-sortIcon field="fanfare"></p-sortIcon>
-            </th>
-            <th pSortableColumn="tambouren">Tambouren
-                <p-sortIcon field="tambouren"></p-sortIcon>
-            </th>
-            <th pSortableColumn="perkussionsensemble">Perk.ens.
-                <p-sortIcon field="perkussionsensemble"></p-sortIcon>
-            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-dto>
@@ -101,6 +77,7 @@
             <td [ngClass]="{'confirmed': dto.phase2Confirmed}">
                 <i [ngClass]="getPhaseStatusIcon(dto.phase2)"></i>
             </td>
+            <td>{{dto.programmLastUpdated | date: 'dd.MM.yyyy HH:mm'}}</td>
             <td>{{formatBoolean(dto.modulA)}}</td>
             <td>{{formatBoolean(dto.modulB)}}</td>
             <td>{{formatBoolean(dto.modulC)}}</td>
@@ -111,15 +88,6 @@
             <td>{{formatBoolean(dto.modulH)}}</td>
             <td>{{formatKlasse(dto.klasseModulA)}}</td>
             <td>{{formatKlasse(dto.klasseModulB)}}</td>
-            <td>{{formatKlasse(dto.klasseModulH)}}</td>
-            <td>{{formatBoolean(dto.tambourenKatA)}}</td>
-            <td>{{formatBoolean(dto.tambourenKatB)}}</td>
-            <td>{{formatBoolean(dto.tambourenKatC)}}</td>
-            <td>{{formatBoolean(dto.harmonie)}}</td>
-            <td>{{formatBoolean(dto.brassBand)}}</td>
-            <td>{{formatBoolean(dto.fanfare)}}</td>
-            <td>{{formatBoolean(dto.tambouren)}}</td>
-            <td>{{formatBoolean(dto.perkussionsensemble)}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">

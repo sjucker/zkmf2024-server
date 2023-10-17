@@ -56,6 +56,7 @@ public class VereinPojo implements IVerein {
     private String provWettspiel;
     private String provParademusik;
     private String provPlatzkonzert;
+    private LocalDateTime programmLastUpdated;
 
     public VereinPojo() {
     }
@@ -102,6 +103,7 @@ public class VereinPojo implements IVerein {
         this.provWettspiel = value.getProvWettspiel();
         this.provParademusik = value.getProvParademusik();
         this.provPlatzkonzert = value.getProvPlatzkonzert();
+        this.programmLastUpdated = value.getProgrammLastUpdated();
     }
 
     public VereinPojo(
@@ -145,7 +147,8 @@ public class VereinPojo implements IVerein {
             LocalDateTime phase2ConfirmedAt,
             String provWettspiel,
             String provParademusik,
-            String provPlatzkonzert
+            String provPlatzkonzert,
+            LocalDateTime programmLastUpdated
     ) {
         this.id = id;
         this.email = email;
@@ -188,6 +191,7 @@ public class VereinPojo implements IVerein {
         this.provWettspiel = provWettspiel;
         this.provParademusik = provParademusik;
         this.provPlatzkonzert = provPlatzkonzert;
+        this.programmLastUpdated = programmLastUpdated;
     }
 
     /**
@@ -846,6 +850,22 @@ public class VereinPojo implements IVerein {
         this.provPlatzkonzert = provPlatzkonzert;
     }
 
+    /**
+     * Getter for <code>verein.programm_last_updated</code>.
+     */
+    @Override
+    public LocalDateTime getProgrammLastUpdated() {
+        return this.programmLastUpdated;
+    }
+
+    /**
+     * Setter for <code>verein.programm_last_updated</code>.
+     */
+    @Override
+    public void setProgrammLastUpdated(LocalDateTime programmLastUpdated) {
+        this.programmLastUpdated = programmLastUpdated;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -1060,6 +1080,11 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.provPlatzkonzert.equals(other.provPlatzkonzert))
             return false;
+        if (this.programmLastUpdated == null) {
+            if (other.programmLastUpdated != null)
+                return false;
+        } else if (!this.programmLastUpdated.equals(other.programmLastUpdated))
+            return false;
         return true;
     }
 
@@ -1108,6 +1133,7 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.provWettspiel == null) ? 0 : this.provWettspiel.hashCode());
         result = prime * result + ((this.provParademusik == null) ? 0 : this.provParademusik.hashCode());
         result = prime * result + ((this.provPlatzkonzert == null) ? 0 : this.provPlatzkonzert.hashCode());
+        result = prime * result + ((this.programmLastUpdated == null) ? 0 : this.programmLastUpdated.hashCode());
         return result;
     }
 
@@ -1156,6 +1182,7 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(provWettspiel);
         sb.append(", ").append(provParademusik);
         sb.append(", ").append(provPlatzkonzert);
+        sb.append(", ").append(programmLastUpdated);
 
         sb.append(")");
         return sb.toString();
@@ -1208,6 +1235,7 @@ public class VereinPojo implements IVerein {
         setProvWettspiel(from.getProvWettspiel());
         setProvParademusik(from.getProvParademusik());
         setProvPlatzkonzert(from.getProvPlatzkonzert());
+        setProgrammLastUpdated(from.getProgrammLastUpdated());
     }
 
     @Override
