@@ -91,18 +91,24 @@ public class ExportService {
 
             int rowIndex = 1;
             addModulHeader(modul, sheet.createRow(0), maxTitel);
+            int maxColumnIndex = 0;
             for (var vereinProgrammDTO : programme.stream()
                                                   .sorted(comparing(VereinProgrammDTO::klasse, nullsLast(naturalOrder()))
                                                                   .thenComparing(VereinProgrammDTO::besetzung, nullsLast(naturalOrder()))
                                                                   .thenComparing(VereinProgrammDTO::id))
                                                   .toList()) {
                 var row = sheet.createRow(rowIndex++);
-                addModulData(modul, wb, row, vereinProgrammDTO, toVereine.get(vereinProgrammDTO.id()));
+                var columnIndex = addModulData(modul, wb, row, vereinProgrammDTO, toVereine.get(vereinProgrammDTO.id()));
+                maxColumnIndex = Math.max(maxColumnIndex, columnIndex);
+            }
+
+            if (maxColumnIndex > 0) {
+                sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, maxColumnIndex - 1));
             }
         }
     }
 
-    private void addModulData(Modul modul, XSSFWorkbook wb, XSSFRow row, VereinProgrammDTO vereinProgrammDTO, String vereinsname) {
+    private int addModulData(Modul modul, XSSFWorkbook wb, XSSFRow row, VereinProgrammDTO vereinProgrammDTO, String vereinsname) {
         var columnIndex = 0;
         columnIndex = setCellValue(columnIndex, row, vereinsname, wb);
 
@@ -140,7 +146,7 @@ public class ExportService {
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.parademusikTitel1()), wb);
                 columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.parademusikTitel1().durationInSeconds()), wb);
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.parademusikTitel2()), wb);
-                setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.parademusikTitel2().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.parademusikTitel2().durationInSeconds()), wb);
             }
             case E -> {
                 for (var programmTitelDTO : vereinProgrammDTO.ablauf()) {
@@ -168,7 +174,7 @@ public class ExportService {
 
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatC(), wb);
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatCTitel()), wb);
-                setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatCTitel().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatCTitel().durationInSeconds()), wb);
             }
             case H -> {
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.klasse(), wb);
@@ -180,6 +186,7 @@ public class ExportService {
                 }
             }
         }
+        return columnIndex;
     }
 
     private String getFormattedTitel(TitelDTO titel) {
