@@ -192,7 +192,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
-            helper.setTo(applicationProperties.getBccMail()); // TODO replace with nachrichten@zkmf2024.ch
+            helper.setTo(applicationProperties.getChatMail());
             helper.setSubject("[%s] Neue Nachricht".formatted(getSubjectPrefix()));
             helper.setText("Neue Nachricht vom Verein: %s".formatted(verein.getVereinsname()));
             mailSender.send(mimeMessage);
