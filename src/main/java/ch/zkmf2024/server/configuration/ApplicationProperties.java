@@ -20,4 +20,5 @@ public class ApplicationProperties {
     private String bccMail;
     private String mailchimpApiKey;
     private String mailchimpListId;
+    private String chatMail;
 }
