@@ -100,5 +100,10 @@
                 </mj-text>
             </mj-column>
         </mj-section>
+        <mj-section padding-bottom="10px">
+            <mj-column>
+                <mj-image src="https://www.zkmf2024.ch/email/sponsoren.png" alt="ZKMF2024 - Hauptsponsoren" padding="0"/>
+            </mj-column>
+        </mj-section>
     </mj-body>
 </mjml>

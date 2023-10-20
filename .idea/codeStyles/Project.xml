@@ -1,6 +1,7 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <option name="LINE_SEPARATOR" value="&#13;&#10;" />
+    <option name="RIGHT_MARGIN" value="200" />
     <option name="DO_NOT_FORMAT">
       <list>
         <fileSet type="globPattern" pattern="*.properties" />

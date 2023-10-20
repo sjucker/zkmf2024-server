@@ -18,7 +18,9 @@
                          font-family="Poppins">
                     <h1>Vereinsaccount erstellt</h1>
                     <p>Wir freuen uns sehr euch am 31. Zürcher Kantonalmusikfest dabei zu haben!</p>
-                    <p>Email: <span th:text="${email}">Email</span></p>
+                    <p>Email:
+                        <span th:text="${email}">Email</span>
+                    </p>
                 </mj-text>
                 <mj-spacer height="20px"/>
                 <mj-button width="200px"
@@ -42,6 +44,11 @@
                            font-size="16px">
                     Email bestätigen
                 </mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-section padding-bottom="10px">
+            <mj-column>
+                <mj-image src="https://www.zkmf2024.ch/email/sponsoren.png" alt="ZKMF2024 - Hauptsponsoren" padding="0"/>
             </mj-column>
         </mj-section>
     </mj-body>
