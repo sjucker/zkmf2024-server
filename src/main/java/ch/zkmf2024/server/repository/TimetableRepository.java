@@ -68,6 +68,10 @@ public class TimetableRepository {
         timetableEntryDao.insert(pojo);
     }
 
+    public void insertAll(List<TimetableEntryPojo> pojos) {
+        timetableEntryDao.insert(pojos);
+    }
+
     public List<TimetableEntryPojo> findAll() {
         return timetableEntryDao.findAll();
     }
