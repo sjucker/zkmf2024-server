@@ -13,7 +13,14 @@
     padding: 10px
     align-self: flex-start
 
+    p
+      overflow: hidden
+      text-overflow: ellipsis
+
     &.own
       background: lightblue
       border: solid 1px darkblue
       align-self: flex-end
+
+    @media screen and (max-width: 959px)
+      max-width: 90%
