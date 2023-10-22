@@ -12,8 +12,10 @@ import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +49,11 @@ public class TimetableService {
         return vereinRepository.findAllNotYetPlanned();
     }
 
+    @Transactional
     public void create(Long vereinId, List<TimetableEntryCreateDTO> dtos) {
         var allExisting = timetableRepository.findAll();
-        // first, validate it
+
+        // find collision with existing ones
         var collision = dtos.stream()
                             .map(dto -> findCollision(dto, allExisting))
                             .filter(Optional::isPresent)
@@ -64,9 +68,10 @@ public class TimetableService {
                     collidingEntry.getEndTime()));
         }
 
+        var pojos = new ArrayList<TimetableEntryPojo>();
         for (var dto : dtos) {
             for (var entry : dto.entries()) {
-                timetableRepository.insert(new TimetableEntryPojo(
+                pojos.add(new TimetableEntryPojo(
                         null,
                         vereinId,
                         dto.vereinProgrammId(),
@@ -78,9 +83,10 @@ public class TimetableService {
                 ));
             }
         }
+        timetableRepository.insertAll(pojos);
     }
 
-    private Optional<TimetableEntryPojo> findCollision(TimetableEntryCreateDTO dto, List<TimetableEntryPojo> allExisting) {
+    protected Optional<TimetableEntryPojo> findCollision(TimetableEntryCreateDTO dto, List<TimetableEntryPojo> allExisting) {
         return dto.entries().stream()
                   .map(entry -> findCollision(entry, allExisting))
                   .filter(Optional::isPresent)
@@ -88,7 +94,7 @@ public class TimetableService {
                   .findFirst();
     }
 
-    private Optional<TimetableEntryPojo> findCollision(TimeTableEntryDTO entry, List<TimetableEntryPojo> allExisting) {
+    protected Optional<TimetableEntryPojo> findCollision(TimeTableEntryDTO entry, List<TimetableEntryPojo> allExisting) {
         for (var timetableEntryDTO : allExisting) {
             // same location, same date and overlapping times
             if (timetableEntryDTO.getFkLocation().equals(entry.locationId()) &&

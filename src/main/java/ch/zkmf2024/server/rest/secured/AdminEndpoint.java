@@ -269,7 +269,7 @@ public class AdminEndpoint {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             log.error("unexpected error occurred", e);
-            return ResponseEntity.badRequest().body("Eintrag konnte nicht erstellt werden.");
+            return ResponseEntity.badRequest().body("Einträge konnten nicht erstellt werden.");
         }
     }
 

@@ -26,11 +26,10 @@
             <div *ngFor="let e of entry.entries" class="p-fluid grid">
                 <h4 class="col-12 m-0">{{getTranslation(e.type)}}</h4>
                 <div class="field col-12 md:col-3 lg:col-2">
-                    <p-calendar [(ngModel)]="e.date"
-                                [required]="true"
-                                [dateFormat]="'yy-mm-dd'"
-                                [firstDayOfWeek]="1"
-                                [showIcon]="true"></p-calendar>
+                   <span class="p-float-label">
+                        <input type="text" id="date" pInputText [(ngModel)]="e.date">
+                        <label for="date">Datum (jjjj-mm-dd)</label>
+                    </span>
                 </div>
                 <div class="field col-12 md:col-3 lg:col-2">
                     <span class="p-float-label">
