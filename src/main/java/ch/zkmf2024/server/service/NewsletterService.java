@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ch.zkmf2024.server.service.DateUtil.now;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.REGISTERED;
 import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
+import static ch.zkmf2024.server.util.DateUtil.now;
 
 @Service
 public class NewsletterService {

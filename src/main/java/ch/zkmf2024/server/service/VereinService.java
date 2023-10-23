@@ -8,6 +8,7 @@ import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
+import ch.zkmf2024.server.dto.VereinPresentationDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
@@ -49,7 +50,7 @@ import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.UserRole.ADMIN;
 import static ch.zkmf2024.server.dto.UserRole.VEREIN;
-import static ch.zkmf2024.server.service.DateUtil.now;
+import static ch.zkmf2024.server.util.DateUtil.now;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -526,6 +527,10 @@ public class VereinService {
 
     public List<VereinTeilnahmeDTO> getOverview() {
         return vereinRepository.findAllConfirmed();
+    }
+
+    public Optional<VereinPresentationDTO> findPresentationById(Long vereinId) {
+        return vereinRepository.findPresentationById(vereinId);
     }
 
     public VereinCommentDTO saveComment(String username, Long vereinId, String comment) {

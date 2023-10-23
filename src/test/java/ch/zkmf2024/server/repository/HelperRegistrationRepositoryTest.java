@@ -2,7 +2,7 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.AbstractIntegrationTest;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.HelperRegistrationPojo;
-import ch.zkmf2024.server.service.DateUtil;
+import ch.zkmf2024.server.util.DateUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

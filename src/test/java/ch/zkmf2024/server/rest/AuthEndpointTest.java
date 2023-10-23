@@ -6,7 +6,7 @@ import ch.zkmf2024.server.dto.LoginResponseDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.security.JwtService;
-import ch.zkmf2024.server.service.DateUtil;
+import ch.zkmf2024.server.util.DateUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

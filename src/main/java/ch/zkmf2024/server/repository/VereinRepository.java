@@ -9,15 +9,18 @@ import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.TambourenGrundlage;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinPresentationDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
+import ch.zkmf2024.server.dto.VereinTimetableEntryDTO;
 import ch.zkmf2024.server.dto.VereinsangabenDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.dto.admin.VereinProgrammSelectionDTO;
+import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
@@ -39,6 +42,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
+import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
@@ -46,18 +50,22 @@ import org.jooq.impl.DefaultConfiguration;
 import org.jooq.tools.StopWatch;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
 import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
+import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
@@ -117,6 +125,8 @@ public class VereinRepository {
                               VEREIN.VEREINSNAME,
                               VEREIN.WEBSITE_TEXT,
                               VEREIN.HOMEPAGE,
+                              VEREIN.FACEBOOK,
+                              VEREIN.INSTAGRAM,
                               vereinLogo.ID,
                               vereinBild.ID
                       )
@@ -130,9 +140,79 @@ public class VereinRepository {
                               it.get(vereinLogo.ID),
                               it.get(vereinBild.ID),
                               it.get(VEREIN.HOMEPAGE),
+                              it.get(VEREIN.FACEBOOK),
+                              it.get(VEREIN.INSTAGRAM),
                               it.get(VEREIN.WEBSITE_TEXT)
                       ));
+    }
 
+    public Optional<VereinPresentationDTO> findPresentationById(Long id) {
+        Image vereinLogo = IMAGE.as("i2");
+        Image vereinBild = IMAGE.as("i1");
+        return jooqDsl.select(
+                              VEREIN.VEREINSNAME,
+                              VEREIN.WEBSITE_TEXT,
+                              VEREIN.HOMEPAGE,
+                              VEREIN.FACEBOOK,
+                              VEREIN.INSTAGRAM,
+                              vereinLogo.ID,
+                              vereinBild.ID
+                      )
+                      .from(VEREIN)
+                      .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
+                      .leftJoin(vereinBild).on(vereinBild.FOREIGN_KEY.eq(VEREIN.ID).and(vereinBild.TYPE.eq(VEREIN_BILD.name())))
+                      .where(
+                              VEREIN.ID.eq(id),
+                              VEREIN.CONFIRMED_AT.isNotNull()
+                      )
+                      .fetchOptional(it -> new VereinPresentationDTO(
+                              it.get(VEREIN.VEREINSNAME),
+                              it.get(vereinLogo.ID),
+                              it.get(vereinBild.ID),
+                              it.get(VEREIN.HOMEPAGE),
+                              it.get(VEREIN.FACEBOOK),
+                              it.get(VEREIN.INSTAGRAM),
+                              it.get(VEREIN.WEBSITE_TEXT),
+                              findTimetableEntriesByVereinId(id)
+                      ));
+    }
+
+    private List<VereinTimetableEntryDTO> findTimetableEntriesByVereinId(Long id) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .where(
+                              TIMETABLE_ENTRY.FK_VEREIN.eq(id),
+                              TIMETABLE_ENTRY.ENTRY_TYPE.in(TimetableEntryType.WETTSPIEL, TimetableEntryType.PLATZKONZERT, TimetableEntryType.MARSCHMUSIK)
+                      )
+                      .fetch(it -> {
+                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+                          var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null);
+                          var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null);
+
+                          return new VereinTimetableEntryDTO(
+                                  getCompetition(modul, klasse, besetzung),
+                                  LocationRepository.toDTO(it),
+                                  getDateTime(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME), it.get(TIMETABLE_ENTRY.END_TIME))
+                          );
+                      });
+    }
+
+    private String getCompetition(Modul modul, String klasse, String besetzung) {
+        var joiner = new StringJoiner(", ");
+        joiner.add(modul.getDescription());
+        Optional.ofNullable(besetzung).ifPresent(joiner::add);
+        Optional.ofNullable(klasse).ifPresent(joiner::add);
+        return joiner.toString();
+    }
+
+    private String getDateTime(LocalDate localDate, LocalTime start, LocalTime end) {
+        return "%s, %s - %s".formatted(
+                FormatUtil.formatDate(localDate, true),
+                FormatUtil.formatTime(start),
+                FormatUtil.formatTime(end)
+        );
     }
 
     public List<VereinOverviewDTO> findAllOverview() {

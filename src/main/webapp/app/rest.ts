@@ -199,6 +199,17 @@ export interface VereinMessageDTO {
     ownMessage: boolean;
 }
 
+export interface VereinPresentationDTO {
+    name: string;
+    logoImgId?: number;
+    bildImgId?: number;
+    homepage?: string;
+    facebook?: string;
+    instagram?: string;
+    websiteText?: string;
+    timetableEntries: VereinTimetableEntryDTO[];
+}
+
 export interface VereinProgrammDTO extends IsValid {
     id: number;
     modul: Modul;
@@ -244,7 +255,15 @@ export interface VereinTeilnahmeDTO {
     logoImgId?: number;
     bildImgId?: number;
     homepage?: string;
+    facebook?: string;
+    instagram?: string;
     websiteText?: string;
+}
+
+export interface VereinTimetableEntryDTO {
+    competition: string;
+    location: LocationDTO;
+    dateTime: string;
 }
 
 export interface VereinsangabenDTO extends IsValid {
