@@ -124,27 +124,27 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     /**
      * The column <code>verein_programm.modul_b_pa</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_PA = createField(DSL.name("modul_b_pa"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_PA = createField(DSL.name("modul_b_pa"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_egitarre</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EGITARRE = createField(DSL.name("modul_b_egitarre"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EGITARRE = createField(DSL.name("modul_b_egitarre"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_ebass</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EBASS = createField(DSL.name("modul_b_ebass"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_EBASS = createField(DSL.name("modul_b_ebass"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_keyboard</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_KEYBOARD = createField(DSL.name("modul_b_keyboard"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_KEYBOARD = createField(DSL.name("modul_b_keyboard"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein_programm.modul_b_gesang</code>.
      */
-    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_GESANG = createField(DSL.name("modul_b_gesang"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<VereinProgrammRecord, Boolean> MODUL_B_GESANG = createField(DSL.name("modul_b_gesang"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein_programm.modul_d_titel_1_id</code>.
