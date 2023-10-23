@@ -2,14 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {
-    VereinCommentCreateDTO,
-    VereinCommentDTO,
-    VereinDTO,
-    VereinMessageCreateDTO,
-    VereinMessageDTO,
-    VereinOverviewDTO
-} from "../rest";
+import {BroadcastCreateDTO, VereinCommentCreateDTO, VereinCommentDTO, VereinDTO, VereinMessageCreateDTO, VereinMessageDTO, VereinOverviewDTO} from "../rest";
 
 @Injectable({
     providedIn: 'root'
@@ -59,5 +52,13 @@ export class VereineService {
 
     confirmProgramm(id: number) {
         return this.httpClient.post<VereinDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/confirm-programm`, undefined);
+    }
+
+    broadcast(ids: number[], message: string): Observable<VereinMessageDTO[]> {
+        const request: BroadcastCreateDTO = {
+            ids: ids,
+            message: message,
+        };
+        return this.httpClient.post<VereinMessageDTO[]>(`${this.baseUrl}/secured/admin/vereine/broadcast`, request);
     }
 }

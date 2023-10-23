@@ -53,6 +53,12 @@ export class VereinMessagesComponent {
                     this.saving = false;
                 },
                 error: err => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Fehler',
+                        detail: 'Nachricht konnte nicht gesendet werden',
+                        life: 3000,
+                    });
                     console.error(err);
                     this.saving = false;
                 }

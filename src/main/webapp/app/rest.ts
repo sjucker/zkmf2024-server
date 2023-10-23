@@ -296,6 +296,11 @@ export interface VerifyEmailRequestDTO {
     verification: string;
 }
 
+export interface BroadcastCreateDTO {
+    ids: number[];
+    message: string;
+}
+
 export interface JudgeDTO {
     id: number;
     name: string;

@@ -35,7 +35,7 @@ export class LoginComponent {
                         this.authenticationService.setCredentials(response);
                         this.router.navigate(['/']).then();
                     },
-                    error: _ => {
+                    error: () => {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Fehler',

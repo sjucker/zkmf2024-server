@@ -29,8 +29,8 @@
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 
-        <nodeVersion>v18.16.1</nodeVersion>
-        <npmVersion>9.7.2</npmVersion>
+        <nodeVersion>v18.18.2</nodeVersion>
+        <npmVersion>10.2.1</npmVersion>
 
         <!-- start local DB using src/main/docker/postgres.yml  -->
         <db.url>jdbc:postgresql://localhost:5432/zkmf2024</db.url>
@@ -241,13 +241,23 @@
                     </execution>
 
                     <execution>
-                        <id>npm install</id>
+                        <id>npm ci</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
-
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>ng lint</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <arguments>run-script lint</arguments>
                         </configuration>
                     </execution>
                 </executions>

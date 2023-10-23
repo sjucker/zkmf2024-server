@@ -45,7 +45,7 @@ export class NewsletterComponent implements OnInit {
             acceptLabel: 'Ja',
             accept: () => {
                 this.newsletterService.delete(dto.email).subscribe({
-                    next: _ => {
+                    next: () => {
                         this.data = this.data.filter(val => val.email !== dto.email);
                         this.messageService.add({
                             severity: 'success',
@@ -75,7 +75,7 @@ export class NewsletterComponent implements OnInit {
             acceptLabel: 'Ja',
             accept: () => {
                 this.newsletterService.unsubscribe(dto.email).subscribe({
-                    next: _ => {
+                    next: () => {
                         this.loadData();
                         this.messageService.add({
                             severity: 'success',

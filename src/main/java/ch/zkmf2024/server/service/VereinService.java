@@ -550,6 +550,12 @@ public class VereinService {
         return new VereinMessageDTO(pojo.getMessage(), pojo.getCreatedAt(), pojo.getCreatedBy(), true);
     }
 
+    public List<VereinMessageDTO> broadcast(String username, List<Long> ids, String message) {
+        return ids.stream()
+                  .map(vereinId -> saveMessage(username, vereinId, message))
+                  .toList();
+    }
+
     public void confirmProgramm(String username, Long vereinId) {
         var verein = vereinRepository.findById(vereinId).orElseThrow();
         if (verein.getPhase2ConfirmedAt() != null) {
