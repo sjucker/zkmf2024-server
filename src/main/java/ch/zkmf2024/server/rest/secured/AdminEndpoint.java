@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
@@ -200,6 +201,15 @@ public class AdminEndpoint {
         log.info("POST /secured/admin/vereine/{}/messages {}", id, dto);
 
         return ResponseEntity.ok(vereinService.saveMessage(userDetails.getUsername(), id, dto.message()));
+    }
+
+    @PostMapping(path = "/vereine/broadcast")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<VereinMessageDTO>> broadcast(@AuthenticationPrincipal UserDetails userDetails,
+                                                            @RequestBody BroadcastCreateDTO dto) {
+        log.info("POST /secured/admin/vereine/broadcast {}", dto);
+
+        return ResponseEntity.ok(vereinService.broadcast(userDetails.getUsername(), dto.ids(), dto.message()));
     }
 
     @PostMapping(path = "/vereine/{id}/confirm-programm")

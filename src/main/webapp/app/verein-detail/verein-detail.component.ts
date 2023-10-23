@@ -30,7 +30,7 @@ export class VereinDetailComponent {
                     this.verein = value;
                     this.loading = false
                 },
-                error: _ => {
+                error: () => {
                     this.loading = false
                 }
             });

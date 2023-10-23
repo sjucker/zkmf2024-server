@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {saveAs} from "file-saver";
 import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {BroadcastComponent, BroadcastInput} from "../broadcast/broadcast.component";
 import {Klasse, PhaseStatus, VereinOverviewDTO} from "../rest";
 import {VereineService} from "../service/vereine.service";
 import {VereinCommentsComponent, VereinCommentsInput} from "../verein-comments/verein-comments.component";
@@ -15,6 +16,7 @@ import {VereinMessagesComponent, VereinMessagesInput} from "../verein-messages/v
 })
 export class VereineComponent implements OnInit {
     data: VereinOverviewDTO[] = [];
+    selected: VereinOverviewDTO[] = [];
     loading = false;
     exporting = false;
 
@@ -91,7 +93,7 @@ export class VereineComponent implements OnInit {
         const input: VereinDetailInput = {
             id: dto.id,
         }
-        this.ref = this.dialogService.open(VereinDetailComponent, {
+        this.dialogService.open(VereinDetailComponent, {
             header: dto.vereinsname,
             width: '90%',
             height: '90%',
@@ -111,6 +113,10 @@ export class VereineComponent implements OnInit {
             maximizable: true,
             data: input
         });
+
+        this.ref.onClose.subscribe(() => {
+            this.loadData();
+        });
     }
 
     openVereinMessages(dto: VereinOverviewDTO): void {
@@ -124,6 +130,27 @@ export class VereineComponent implements OnInit {
             maximizable: true,
             data: input
         });
+
+        this.ref.onClose.subscribe(() => {
+            this.loadData();
+        });
+    }
+
+    openBroadcast(): void {
+        if (this.selected.length > 0) {
+            const input: BroadcastInput = {
+                ids: this.selected.map(value => value.id),
+            }
+
+            this.ref = this.dialogService.open(BroadcastComponent, {
+                header: `Broadcast für ${this.selected.length} Vereine`,
+                data: input,
+            });
+
+            this.ref.onClose.subscribe(() => {
+                this.loadData();
+            });
+        }
     }
 
     export() {

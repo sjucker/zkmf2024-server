@@ -1,0 +1,13 @@
+<div class="flex flex-column gap-5">
+    <textarea rows="5" cols="60" pInputTextarea [(ngModel)]="message" maxlength="8000"></textarea>
+
+    <div class="flex justify-content-end gap-5 align-items-end">
+        <p-button label="Schliessen"
+                  [text]="true"
+                  (onClick)="close()"></p-button>
+        <p-button label="Senden"
+                  (onClick)="broadcast()"
+                  [loading]="saving"
+                  [disabled]="message.length < 1"></p-button>
+    </div>
+</div>

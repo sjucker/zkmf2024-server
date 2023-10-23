@@ -1,17 +1,24 @@
 <p-toast position="top-center"></p-toast>
 <p-confirmDialog></p-confirmDialog>
-<div class="m-2 flex justify-content-end">
-    <p-button iconPos="right" icon="pi pi-download" [loading]="exporting" label="Export"
+<div class="m-2 flex justify-content-between">
+    <p-button iconPos="left" icon="pi pi-comments" label="Broadcast"
+              [disabled]="selected.length < 1"
+              (onClick)="openBroadcast()"></p-button>
+    <p-button iconPos="left" icon="pi pi-download" [loading]="exporting" label="Export"
               (onClick)="export()"></p-button>
 </div>
 <p-table [value]="data"
          [loading]="loading"
+         [(selection)]="selected"
          styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
     <ng-template pTemplate="caption">
         Vereine
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
+            <th>
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
             <th></th>
             <th></th>
             <th></th>
@@ -64,6 +71,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-dto>
         <tr>
+            <td>
+                <p-tableCheckbox [value]="dto"></p-tableCheckbox>
+            </td>
             <td>
                 <div class="cursor-pointer" (click)="openVereinDetail(dto)"><i class="pi pi-eye"></i></div>
             </td>
