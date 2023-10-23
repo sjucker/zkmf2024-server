@@ -156,6 +156,23 @@ export interface ResetPasswordRequestDTO {
     newPassword: string;
 }
 
+export interface TimetableDayOverviewDTO {
+    day: string;
+    entries: TimetableOverviewEntryDTO[];
+}
+
+export interface TimetableOverviewEntryDTO {
+    vereinId: number;
+    vereinsname: string;
+    modul: string;
+    competition: string;
+    location: LocationDTO;
+    date: DateAsString;
+    start: DateAsString;
+    end: DateAsString;
+    time: string;
+}
+
 export interface TitelDTO extends IsValid {
     id?: number;
     modul?: Modul;
