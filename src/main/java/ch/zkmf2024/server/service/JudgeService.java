@@ -23,7 +23,7 @@ import java.util.Optional;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.IN_PROGRESS;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
-import static ch.zkmf2024.server.service.DateUtil.now;
+import static ch.zkmf2024.server.util.DateUtil.now;
 
 @Slf4j
 @Service

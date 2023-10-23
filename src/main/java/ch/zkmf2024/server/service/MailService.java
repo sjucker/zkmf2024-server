@@ -20,7 +20,6 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import jakarta.mail.MessagingException;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzMit
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzMontagAsList;
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzSamstagAsList;
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzSonntagAsList;
+import static ch.zkmf2024.server.util.FormatUtil.formatDate;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Locale.GERMAN;
 import static java.util.stream.Collectors.joining;
@@ -210,7 +210,7 @@ public class MailService {
             variables.put("nachname", helperRegistration.getName());
             variables.put("adresse", helperRegistration.getAdresse());
             variables.put("plzOrt", helperRegistration.getPlzOrt());
-            variables.put("geburtsdatum", helperRegistration.getGeburtsdatum().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+            variables.put("geburtsdatum", formatDate(helperRegistration.getGeburtsdatum()));
             variables.put("telefon", helperRegistration.getTelefon());
             variables.put("vereinszugehoerigkeit", helperRegistration.getVereinszugehoerigkeit());
             variables.put("aufgaben", getAufgabenAsList(helperRegistration).stream().map(Aufgaben::getDescription).collect(joining(", ")));

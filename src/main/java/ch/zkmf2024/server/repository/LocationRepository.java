@@ -6,24 +6,24 @@ import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.daos.LocationDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.LocationPojo;
-import org.jooq.DSLContext;
+import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 
+import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Repository
 public class LocationRepository {
 
-    private final DSLContext jooqDsl;
     private final LocationDao locationDao;
 
-    public LocationRepository(DSLContext jooqDsl, DefaultConfiguration jooqConfig) {
-        this.jooqDsl = jooqDsl;
+    public LocationRepository(DefaultConfiguration jooqConfig) {
         this.locationDao = new LocationDao(jooqConfig);
     }
 
@@ -44,7 +44,7 @@ public class LocationRepository {
                                   pojo.getAddress(),
                                   pojo.getLatitude(),
                                   pojo.getLongitude(),
-                                  getGoogleMapsAddress(pojo),
+                                  getGoogleMapsAddress(pojo.getAddress()),
                                   getGoogleMapsCoordinates(pojo),
                                   type,
                                   pojo.getCapacity(),
@@ -68,7 +68,7 @@ public class LocationRepository {
                                   pojo.getAddress(),
                                   pojo.getLatitude(),
                                   pojo.getLongitude(),
-                                  getGoogleMapsAddress(pojo),
+                                  getGoogleMapsAddress(pojo.getAddress()),
                                   getGoogleMapsCoordinates(pojo),
                                   LocationType.valueOf(pojo.getLocationType().getLiteral()),
                                   pojo.getCapacity(),
@@ -79,12 +79,32 @@ public class LocationRepository {
                           ));
     }
 
-    private String getGoogleMapsAddress(LocationPojo pojo) {
-        return "https://www.google.ch/maps/place/%s".formatted(URLEncoder.encode(pojo.getAddress(), UTF_8));
+    public static LocationDTO toDTO(Record record) {
+        return new LocationDTO(
+                record.get(LOCATION.ID),
+                record.get(LOCATION.NAME),
+                record.get(LOCATION.ADDRESS),
+                record.get(LOCATION.LATITUDE),
+                record.get(LOCATION.LONGITUDE),
+                getGoogleMapsAddress(record.get(LOCATION.ADDRESS)),
+                getGoogleMapsCoordinates(record.get(LOCATION.LATITUDE), record.get(LOCATION.LONGITUDE)),
+                LocationType.valueOf(record.get(LOCATION.LOCATION_TYPE).getLiteral()),
+                record.get(LOCATION.CAPACITY),
+                record.get(LOCATION.MODULES),
+                null, null, null
+        );
     }
 
-    private String getGoogleMapsCoordinates(LocationPojo pojo) {
-        return "http://www.google.com/maps?q=%s,%s".formatted(pojo.getLatitude(), pojo.getLongitude());
+    private static String getGoogleMapsAddress(String address) {
+        return "https://www.google.ch/maps/place/%s".formatted(URLEncoder.encode(address, UTF_8));
+    }
+
+    private static String getGoogleMapsCoordinates(LocationPojo pojo) {
+        return getGoogleMapsCoordinates(pojo.getLatitude(), pojo.getLongitude());
+    }
+
+    private static String getGoogleMapsCoordinates(BigDecimal latitude, BigDecimal longitude) {
+        return "http://www.google.com/maps?q=%s,%s".formatted(latitude, longitude);
     }
 
 }

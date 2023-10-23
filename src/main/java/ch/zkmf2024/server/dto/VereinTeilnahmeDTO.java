@@ -6,5 +6,7 @@ public record VereinTeilnahmeDTO(@NotNull String name,
                                  Long logoImgId,
                                  Long bildImgId,
                                  String homepage,
+                                 String facebook,
+                                 String instagram,
                                  String websiteText) {
 }

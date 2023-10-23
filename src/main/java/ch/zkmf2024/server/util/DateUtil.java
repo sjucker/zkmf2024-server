@@ -1,4 +1,4 @@
-package ch.zkmf2024.server.service;
+package ch.zkmf2024.server.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
