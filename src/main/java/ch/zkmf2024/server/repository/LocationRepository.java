@@ -79,18 +79,18 @@ public class LocationRepository {
                           ));
     }
 
-    public static LocationDTO toDTO(Record record) {
+    public static LocationDTO toDTO(Record it) {
         return new LocationDTO(
-                record.get(LOCATION.ID),
-                record.get(LOCATION.NAME),
-                record.get(LOCATION.ADDRESS),
-                record.get(LOCATION.LATITUDE),
-                record.get(LOCATION.LONGITUDE),
-                getGoogleMapsAddress(record.get(LOCATION.ADDRESS)),
-                getGoogleMapsCoordinates(record.get(LOCATION.LATITUDE), record.get(LOCATION.LONGITUDE)),
-                LocationType.valueOf(record.get(LOCATION.LOCATION_TYPE).getLiteral()),
-                record.get(LOCATION.CAPACITY),
-                record.get(LOCATION.MODULES),
+                it.get(LOCATION.ID),
+                it.get(LOCATION.NAME),
+                it.get(LOCATION.ADDRESS),
+                it.get(LOCATION.LATITUDE),
+                it.get(LOCATION.LONGITUDE),
+                getGoogleMapsAddress(it.get(LOCATION.ADDRESS)),
+                getGoogleMapsCoordinates(it.get(LOCATION.LATITUDE), it.get(LOCATION.LONGITUDE)),
+                LocationType.valueOf(it.get(LOCATION.LOCATION_TYPE).getLiteral()),
+                it.get(LOCATION.CAPACITY),
+                it.get(LOCATION.MODULES),
                 null, null, null
         );
     }
