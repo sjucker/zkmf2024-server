@@ -186,24 +186,18 @@ public class VereinRepository {
                               TIMETABLE_ENTRY.FK_VEREIN.eq(id),
                               TIMETABLE_ENTRY.ENTRY_TYPE.in(TimetableEntryType.WETTSPIEL, TimetableEntryType.PLATZKONZERT, TimetableEntryType.MARSCHMUSIK)
                       )
-                      .fetch(it -> {
-                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
-                          var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null);
-                          var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null);
-
-                          return new VereinTimetableEntryDTO(
-                                  getCompetition(modul, klasse, besetzung),
-                                  LocationRepository.toDTO(it),
-                                  getDateTime(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME), it.get(TIMETABLE_ENTRY.END_TIME))
-                          );
-                      });
+                      .fetch(it -> new VereinTimetableEntryDTO(
+                              getCompetition(it),
+                              LocationRepository.toDTO(it),
+                              getDateTime(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME), it.get(TIMETABLE_ENTRY.END_TIME))
+                      ));
     }
 
-    private String getCompetition(Modul modul, String klasse, String besetzung) {
+    public static String getCompetition(Record record) {
         var joiner = new StringJoiner(", ");
-        joiner.add(modul.getDescription());
-        Optional.ofNullable(besetzung).ifPresent(joiner::add);
-        Optional.ofNullable(klasse).ifPresent(joiner::add);
+        joiner.add(Modul.valueOf(record.get(VEREIN_PROGRAMM.MODUL)).getDescription());
+        Klasse.fromString(record.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).ifPresent(joiner::add);
+        Besetzung.fromString(record.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).ifPresent(joiner::add);
         return joiner.toString();
     }
 

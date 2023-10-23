@@ -1,6 +1,8 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.LocationType;
+import ch.zkmf2024.server.dto.TimetableDayOverviewDTO;
+import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO.TimeTableEntryDTO;
@@ -24,6 +26,10 @@ import static ch.zkmf2024.server.dto.TimetableEntryType.BESPRECHUNG;
 import static ch.zkmf2024.server.dto.TimetableEntryType.EINSPIEL;
 import static ch.zkmf2024.server.dto.TimetableEntryType.MARSCHMUSIK;
 import static ch.zkmf2024.server.dto.TimetableEntryType.WETTSPIEL;
+import static ch.zkmf2024.server.util.FormatUtil.formatDate;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -139,4 +145,21 @@ public class TimetableService {
                                .toList();
     }
 
+    public List<TimetableDayOverviewDTO> getPublicTimetable() {
+        var entriesPerDate = timetableRepository.findAllForPublic().stream()
+                                                .collect(groupingBy(TimetableOverviewEntryDTO::date, toList()));
+
+        var result = new ArrayList<TimetableDayOverviewDTO>();
+        for (var localDate : entriesPerDate.keySet().stream()
+                                           .sorted()
+                                           .toList()) {
+            result.add(new TimetableDayOverviewDTO(formatDate(localDate, true),
+                                                   entriesPerDate.get(localDate).stream()
+                                                                 .sorted(comparing(TimetableOverviewEntryDTO::start)
+                                                                                 .thenComparing(TimetableOverviewEntryDTO::end))
+                                                                 .toList()));
+        }
+
+        return result;
+    }
 }

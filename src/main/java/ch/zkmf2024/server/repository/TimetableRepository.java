@@ -4,9 +4,11 @@ import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TimetableEntryType;
+import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TimetableEntryDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
+import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
@@ -15,8 +17,13 @@ import java.util.List;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.MARSCHMUSIK;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.PLATZKONZERT;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
 import static ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
+import static ch.zkmf2024.server.repository.LocationRepository.toDTO;
+import static ch.zkmf2024.server.repository.VereinRepository.getCompetition;
 
 @Repository
 public class TimetableRepository {
@@ -74,5 +81,29 @@ public class TimetableRepository {
 
     public List<TimetableEntryPojo> findAll() {
         return timetableEntryDao.findAll();
+    }
+
+    public List<TimetableOverviewEntryDTO> findAllForPublic() {
+
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .where(TIMETABLE_ENTRY.ENTRY_TYPE.in(MARSCHMUSIK, PLATZKONZERT, WETTSPIEL))
+                      .fetch(it -> new TimetableOverviewEntryDTO(
+                              it.get(VEREIN.ID),
+                              it.get(VEREIN.VEREINSNAME),
+                              Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription(),
+                              getCompetition(it),
+                              toDTO(it),
+                              it.get(TIMETABLE_ENTRY.DATE),
+                              it.get(TIMETABLE_ENTRY.START_TIME),
+                              it.get(TIMETABLE_ENTRY.END_TIME),
+                              "%s - %s".formatted(
+                                      FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.START_TIME)),
+                                      FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME)))
+                      ));
+
     }
 }
