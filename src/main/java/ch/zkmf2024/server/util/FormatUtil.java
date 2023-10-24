@@ -28,6 +28,6 @@ public final class FormatUtil {
         if (localTime == null) {
             return "";
         }
-        return localTime.format(ofPattern("hh:mm"));
+        return localTime.format(ofPattern("HH:mm"));
     }
 }

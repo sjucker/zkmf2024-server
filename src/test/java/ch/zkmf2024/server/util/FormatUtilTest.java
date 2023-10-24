@@ -20,6 +20,7 @@ class FormatUtilTest {
     void formatLocalTime() {
         assertThat(FormatUtil.formatTime(null)).isEmpty();
         assertThat(FormatUtil.formatTime(LocalTime.of(10, 30))).isEqualTo("10:30");
+        assertThat(FormatUtil.formatTime(LocalTime.of(18, 45))).isEqualTo("18:45");
     }
 
 }
