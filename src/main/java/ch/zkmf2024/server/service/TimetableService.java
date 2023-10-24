@@ -25,6 +25,7 @@ import static ch.zkmf2024.server.dto.LocationType.EINSPIELLOKAL;
 import static ch.zkmf2024.server.dto.TimetableEntryType.BESPRECHUNG;
 import static ch.zkmf2024.server.dto.TimetableEntryType.EINSPIEL;
 import static ch.zkmf2024.server.dto.TimetableEntryType.MARSCHMUSIK;
+import static ch.zkmf2024.server.dto.TimetableEntryType.PLATZKONZERT;
 import static ch.zkmf2024.server.dto.TimetableEntryType.WETTSPIEL;
 import static ch.zkmf2024.server.util.FormatUtil.formatDate;
 import static java.util.Comparator.comparing;
@@ -119,6 +120,7 @@ public class TimetableService {
         var einspiel = locationRepository.findAllSelectionByType(EINSPIELLOKAL);
         var juryfeedback = locationRepository.findAllSelectionByType(LocationType.JURYFEEDBACK);
         var parademusik = locationRepository.findAllSelectionByType(LocationType.PARADEMUSIK);
+        var platzkonzert = locationRepository.findAllSelectionByType(LocationType.PLATZKONZERT);
 
         var defaultDate = LocalDate.of(2024, 6, 22);
         return vereinRepository.findProgrammeSelection(vereinId).stream()
@@ -134,7 +136,9 @@ public class TimetableService {
                                                    new TimeTableEntryDTO(WETTSPIEL, null, wettspiel, defaultDate, null, null),
                                                    new TimeTableEntryDTO(BESPRECHUNG, null, juryfeedback, defaultDate, null, null)
                                            );
-                                           case C -> List.of(); // TODO Platzkonzert Locations
+                                           case C -> List.of(
+                                                   new TimeTableEntryDTO(PLATZKONZERT, null, platzkonzert, defaultDate, null, null)
+                                           );
                                            case D -> List.of(
                                                    new TimeTableEntryDTO(MARSCHMUSIK, null, parademusik, defaultDate, null, null)
                                            );

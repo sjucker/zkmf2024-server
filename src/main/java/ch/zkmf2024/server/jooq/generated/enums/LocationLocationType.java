@@ -22,7 +22,9 @@ public enum LocationLocationType implements EnumType {
 
     WETTSPIELLOKAL("WETTSPIELLOKAL"),
 
-    JURYFEEDBACK("JURYFEEDBACK");
+    JURYFEEDBACK("JURYFEEDBACK"),
+
+    PLATZKONZERT("PLATZKONZERT");
 
     private final String literal;
 
