@@ -131,7 +131,7 @@ public class TimetableService {
                                        it.klasse(),
                                        it.besetzung(),
                                        switch (it.modul()) {
-                                           case A, B -> List.of(
+                                           case A, B, G, H -> List.of(
                                                    new TimeTableEntryDTO(EINSPIEL, null, einspiel, defaultDate, null, null),
                                                    new TimeTableEntryDTO(WETTSPIEL, null, wettspiel, defaultDate, null, null),
                                                    new TimeTableEntryDTO(BESPRECHUNG, null, juryfeedback, defaultDate, null, null)
@@ -142,8 +142,7 @@ public class TimetableService {
                                            case D -> List.of(
                                                    new TimeTableEntryDTO(MARSCHMUSIK, null, parademusik, defaultDate, null, null)
                                            );
-                                           // TODO rest
-                                           default -> List.of();
+                                           case E, F -> List.of();
                                        }
                                ))
                                .toList();
