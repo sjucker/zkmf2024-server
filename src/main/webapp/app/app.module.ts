@@ -1,5 +1,8 @@
+import {registerLocaleData} from "@angular/common";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {NgModule} from '@angular/core';
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -22,7 +25,6 @@ import {RippleModule} from "primeng/ripple";
 import {TableModule} from "primeng/table";
 import {TabViewModule} from "primeng/tabview";
 import {ToastModule} from "primeng/toast";
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BroadcastComponent} from './broadcast/broadcast.component';
@@ -32,6 +34,7 @@ import {JuryLoginCreateComponent} from './jury-login-create/jury-login-create.co
 import {JuryComponent} from './jury/jury.component';
 import {LoginComponent} from './login/login.component';
 import {NewsletterComponent} from './newsletter/newsletter.component';
+import {TimetableEntryEditComponent} from './timetable-entry-edit/timetable-entry-edit.component';
 import {TimetableComponent} from './timetable/timetable.component';
 import {UserCreateComponent} from './user-create/user-create.component';
 import {UsersComponent} from './users/users.component';
@@ -56,6 +59,7 @@ import {VereineComponent} from './vereine/vereine.component';
         TimetableComponent,
         VereinMessagesComponent,
         BroadcastComponent,
+        TimetableEntryEditComponent,
     ],
     imports: [
         BrowserModule,
@@ -88,8 +92,12 @@ import {VereineComponent} from './vereine/vereine.component';
         ConfirmationService,
         DialogService,
         {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
+        {provide: LOCALE_ID, useValue: 'de-DE'}
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
+    constructor() {
+        registerLocaleData(localeDe, 'de-DE', localeDeExtra);
+    }
 }
