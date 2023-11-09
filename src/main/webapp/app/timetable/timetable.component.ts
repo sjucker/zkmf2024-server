@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TimetableEntryCreateDTO, TimetableEntryDTO, TimetableEntryType, VereinSelectionDTO} from "../rest";
 import {TimetableService} from "../service/timetable.service";
+import {TimetableEntryEditComponent, TimetableEntryEditInput} from "../timetable-entry-edit/timetable-entry-edit.component";
 
 @Component({
     selector: 'app-timetable',
@@ -22,7 +23,8 @@ export class TimetableComponent implements OnInit {
 
     constructor(private service: TimetableService,
                 public dialogService: DialogService,
-                public messageService: MessageService) {
+                public messageService: MessageService,
+                public confirmationService: ConfirmationService) {
     }
 
     ngOnInit(): void {
@@ -41,7 +43,6 @@ export class TimetableComponent implements OnInit {
     private load() {
         this.service.getAll().subscribe({
             next: value => {
-
                 this.timetable = new Map<string, TimetableEntryDTO[]>();
 
                 for (const dto of value) {
@@ -53,14 +54,18 @@ export class TimetableComponent implements OnInit {
                     }
                 }
 
-                this.locations = [...this.timetable.keys()];
-            }
+                this.locations = [...this.timetable.keys()].sort();
+            },
         });
     }
 
     getEntriesForLocation(location: string): TimetableEntryDTO[] {
-        // TODO sort it correctly
-        return this.timetable.get(location)?.sort((a, b) => a.date < b.date ? -1 : 1) ?? [];
+        return this.timetable.get(location)?.sort((a, b) => {
+            if (a.date === b.date) {
+                return a.start < b.start ? -1 : 1;
+            }
+            return a.date < b.date ? -1 : 1
+        }) ?? [];
     }
 
     create() {
@@ -104,8 +109,6 @@ export class TimetableComponent implements OnInit {
         }
     }
 
-    protected readonly Date = Date;
-
     getTranslation(type: TimetableEntryType): string {
         switch (type) {
             case TimetableEntryType.EINSPIEL:
@@ -119,10 +122,54 @@ export class TimetableComponent implements OnInit {
             case TimetableEntryType.PLATZKONZERT:
                 return "Platzkonzert";
         }
-
     }
 
     formatTime(time: string): string {
         return time.substring(0, 5);
+    }
+
+    edit(dto: TimetableEntryDTO) {
+        this.dialogService.open(TimetableEntryEditComponent, {
+            header: dto.verein,
+            data: {
+                dto: {...dto},
+            } as TimetableEntryEditInput,
+            width: "1000px",
+            height: "400px",
+        }).onClose.subscribe({
+            next: () => {
+                this.load();
+            }
+        })
+    }
+
+    delete(dto: TimetableEntryDTO) {
+        this.confirmationService.confirm({
+            header: 'Löschen',
+            icon: 'pi pi-exclamation-triangle',
+            message: "Soll dieser Eintrage wirklich gelöscht werden?",
+            acceptLabel: 'Ja',
+            rejectLabel: 'Abbrechen',
+            accept: () => {
+                this.service.deleteTimetableEntry(dto.id).subscribe({
+                    next: () => {
+                        this.load();
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Gelöscht',
+                            life: 3000
+                        });
+                    },
+                    error: () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Fehler',
+                            detail: 'Ein Fehler ist aufgetreten',
+                            life: 3000
+                        });
+                    },
+                });
+            },
+        });
     }
 }

@@ -377,6 +377,7 @@ export interface TimetableEntryDTO {
     modul: string;
     klasse?: string;
     besetzung?: string;
+    locationId: number;
     location: string;
     verein: string;
     date: DateAsString;

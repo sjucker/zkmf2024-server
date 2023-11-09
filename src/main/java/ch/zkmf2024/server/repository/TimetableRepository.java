@@ -14,6 +14,7 @@ import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
@@ -55,6 +56,7 @@ public class TimetableRepository {
                                   Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
                                   Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
                                   Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                                  it.get(LOCATION.ID),
                                   it.get(LOCATION.NAME),
                                   it.get(VEREIN.VEREINSNAME),
                                   it.get(TIMETABLE_ENTRY.DATE),
@@ -105,5 +107,17 @@ public class TimetableRepository {
                                       FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME)))
                       ));
 
+    }
+
+    public void delete(Long id) {
+        timetableEntryDao.deleteById(id);
+    }
+
+    public Optional<TimetableEntryPojo> find(Long id) {
+        return timetableEntryDao.findOptionalById(id);
+    }
+
+    public void update(TimetableEntryPojo entry) {
+        timetableEntryDao.update(entry);
     }
 }

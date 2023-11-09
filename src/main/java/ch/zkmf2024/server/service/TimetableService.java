@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.LocationType;
 import ch.zkmf2024.server.dto.TimetableDayOverviewDTO;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO.TimeTableEntryDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static ch.zkmf2024.server.dto.LocationType.EINSPIELLOKAL;
 import static ch.zkmf2024.server.dto.TimetableEntryType.BESPRECHUNG;
 import static ch.zkmf2024.server.dto.TimetableEntryType.EINSPIEL;
 import static ch.zkmf2024.server.dto.TimetableEntryType.MARSCHMUSIK;
@@ -93,6 +93,11 @@ public class TimetableService {
         timetableRepository.insertAll(pojos);
     }
 
+    @Transactional
+    public void deleteEntry(Long id) {
+        timetableRepository.delete(id);
+    }
+
     protected Optional<TimetableEntryPojo> findCollision(TimetableEntryCreateDTO dto, List<TimetableEntryPojo> allExisting) {
         return dto.entries().stream()
                   .map(entry -> findCollision(entry, allExisting))
@@ -117,11 +122,12 @@ public class TimetableService {
 
     public List<TimetableEntryCreateDTO> findProgrammeByVerein(Long vereinId) {
         var wettspiel = locationRepository.findAllSelectionByType(LocationType.WETTSPIELLOKAL);
-        var einspiel = locationRepository.findAllSelectionByType(EINSPIELLOKAL);
+        var einspiel = locationRepository.findAllSelectionByType(LocationType.EINSPIELLOKAL);
         var juryfeedback = locationRepository.findAllSelectionByType(LocationType.JURYFEEDBACK);
         var parademusik = locationRepository.findAllSelectionByType(LocationType.PARADEMUSIK);
         var platzkonzert = locationRepository.findAllSelectionByType(LocationType.PLATZKONZERT);
 
+        // hardcoded to Saturday of event
         var defaultDate = LocalDate.of(2024, 6, 22);
         return vereinRepository.findProgrammeSelection(vereinId).stream()
                                .map(it -> new TimetableEntryCreateDTO(
@@ -164,5 +170,18 @@ public class TimetableService {
         }
 
         return result;
+    }
+
+    public List<LocationSelectionDTO> findLocationsByType(LocationType type) {
+        return locationRepository.findAllSelectionByType(type);
+    }
+
+    public void updateEntry(TimetableEntryDTO dto) {
+        var entry = timetableRepository.find(dto.id()).orElseThrow();
+        entry.setDate(dto.date());
+        entry.setStartTime(dto.start());
+        entry.setEndTime(dto.end());
+        entry.setFkLocation(dto.locationId());
+        timetableRepository.update(entry);
     }
 }

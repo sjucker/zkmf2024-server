@@ -1,12 +1,14 @@
 package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
+import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
+import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.UserCreateDTO;
@@ -30,6 +32,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -281,6 +284,29 @@ public class AdminEndpoint {
             log.error("unexpected error occurred", e);
             return ResponseEntity.badRequest().body("Einträge konnten nicht erstellt werden.");
         }
+    }
+
+    @PatchMapping("/timetable/entry/{id}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> updateTimetableEntry(@PathVariable Long id, @RequestBody TimetableEntryDTO dto) {
+        log.info("PATCH /secured/admin/timetable/entry/{} {}", id, dto);
+        timetableService.updateEntry(dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/timetable/entry/{id}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> deleteTimetableEntry(@PathVariable Long id) {
+        log.info("DELETE /secured/admin/timetable/entry/{}", id);
+        timetableService.deleteEntry(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/location/{type}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<LocationSelectionDTO>> getLocationsByType(@PathVariable TimetableEntryType type) {
+        log.info("GET /secured/admin/location/{}", type);
+        return ResponseEntity.ok(timetableService.findLocationsByType(type.toLocationType()));
     }
 
 }

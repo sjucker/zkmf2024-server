@@ -1,0 +1,39 @@
+<div class="card" *ngIf="entry">
+    <div class="p-fluid grid max-h-fit">
+        <h4 class="col-12 m-0">{{entry.type}}</h4>
+        <div class="field col-12 md:col-2">
+                    <span class="p-float-label">
+                        <input type="text" id="date" pInputText [(ngModel)]="entry.date">
+                        <label for="date">Datum (jjjj-mm-dd)</label>
+                    </span>
+        </div>
+        <div class="field col-12 md:col-2">
+                    <span class="p-float-label">
+                        <input type="text" id="start" pInputText [(ngModel)]="entry.start">
+                        <label for="start">Start (hh:mm)</label>
+                    </span>
+        </div>
+
+        <div class="field col-12 md:col-2">
+                    <span class="p-float-label">
+                        <input type="text" id="end" pInputText [(ngModel)]="entry.end">
+                        <label for="end">Stop (hh:mm)</label>
+                    </span>
+        </div>
+
+        <div class="field col-12 md:col-3">
+                    <span class="p-float-label">
+                    <p-dropdown id="locations"
+                                [autoDisplayFirst]="false"
+                                [options]="availableLocations"
+                                [(ngModel)]="entry.locationId"
+                                optionValue="id"
+                                optionLabel="name"></p-dropdown>
+                    <label for="locations">Lokal</label>
+                    </span>
+        </div>
+        <div class="col-3">
+            <p-button label="Speichern" (onClick)="save()" [loading]="saving"></p-button>
+        </div>
+    </div>
+</div>
