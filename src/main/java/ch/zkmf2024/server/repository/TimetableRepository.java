@@ -23,7 +23,6 @@ import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.PLATZKO
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
 import static ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
-import static ch.zkmf2024.server.repository.LocationRepository.toDTO;
 import static ch.zkmf2024.server.repository.VereinRepository.getCompetition;
 
 @Repository
@@ -43,34 +42,26 @@ public class TimetableRepository {
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
-                      .fetch(it -> {
-                          // TODO
-//                          var judgeNames = jooqDsl.select()
-//                                                  .from(JUDGE_REPORT)
-//                                                  .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
-//                                                  .where(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(it.get(TIMETABLE_ENTRY.ID)))
-//                                                  .fetch(r -> r.get(JUDGE.NAME));
+                      .fetch(TimetableRepository::toDTO);
+    }
 
-                          return new TimetableEntryDTO(
-                                  it.get(TIMETABLE_ENTRY.ID),
-                                  Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
-                                  Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
-                                  Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
-                                  it.get(LOCATION.ID),
-                                  it.get(LOCATION.NAME),
-                                  it.get(VEREIN.VEREINSNAME),
-                                  it.get(TIMETABLE_ENTRY.DATE),
-                                  it.get(TIMETABLE_ENTRY.START_TIME),
-                                  it.get(TIMETABLE_ENTRY.END_TIME),
-                                  TimetableEntryType.valueOf(it.get(TIMETABLE_ENTRY.ENTRY_TYPE).getLiteral()),
-                                  null,
-                                  null,
-                                  null
-//                                  judgeNames.get(0),
-//                                  judgeNames.get(1),
-//                                  judgeNames.get(2)
-                          );
-                      });
+    private static TimetableEntryDTO toDTO(org.jooq.Record it) {
+        return new TimetableEntryDTO(
+                it.get(TIMETABLE_ENTRY.ID),
+                Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
+                Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                it.get(LOCATION.ID),
+                it.get(LOCATION.NAME),
+                it.get(VEREIN.VEREINSNAME),
+                it.get(TIMETABLE_ENTRY.DATE),
+                it.get(TIMETABLE_ENTRY.START_TIME),
+                it.get(TIMETABLE_ENTRY.END_TIME),
+                TimetableEntryType.valueOf(it.get(TIMETABLE_ENTRY.ENTRY_TYPE).getLiteral()),
+                null,
+                null,
+                null
+        );
     }
 
     public void insert(TimetableEntryPojo pojo) {
@@ -85,6 +76,17 @@ public class TimetableRepository {
         return timetableEntryDao.findAll();
     }
 
+    public List<TimetableOverviewEntryDTO> findAllByVereinId(Long vereinId) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .where(VEREIN.ID.eq(vereinId))
+                      .orderBy(TIMETABLE_ENTRY.DATE.asc(), TIMETABLE_ENTRY.START_TIME.asc())
+                      .fetch(TimetableRepository::toOverviewDTO);
+    }
+
     public List<TimetableOverviewEntryDTO> findAllForPublic() {
 
         return jooqDsl.select()
@@ -93,20 +95,25 @@ public class TimetableRepository {
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
                       .where(TIMETABLE_ENTRY.ENTRY_TYPE.in(MARSCHMUSIK, PLATZKONZERT, WETTSPIEL))
-                      .fetch(it -> new TimetableOverviewEntryDTO(
-                              it.get(VEREIN.ID),
-                              it.get(VEREIN.VEREINSNAME),
-                              Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription(),
-                              getCompetition(it),
-                              toDTO(it),
-                              it.get(TIMETABLE_ENTRY.DATE),
-                              it.get(TIMETABLE_ENTRY.START_TIME),
-                              it.get(TIMETABLE_ENTRY.END_TIME),
-                              "%s - %s".formatted(
-                                      FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.START_TIME)),
-                                      FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME)))
-                      ));
+                      .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME)
+                      .fetch(TimetableRepository::toOverviewDTO);
 
+    }
+
+    private static TimetableOverviewEntryDTO toOverviewDTO(org.jooq.Record it) {
+        return new TimetableOverviewEntryDTO(
+                it.get(VEREIN.ID),
+                it.get(VEREIN.VEREINSNAME),
+                Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription(),
+                getCompetition(it),
+                LocationRepository.toDTO(it),
+                it.get(TIMETABLE_ENTRY.DATE),
+                it.get(TIMETABLE_ENTRY.START_TIME),
+                it.get(TIMETABLE_ENTRY.END_TIME),
+                "%s - %s".formatted(
+                        FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.START_TIME)),
+                        FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME)))
+        );
     }
 
     public void delete(Long id) {

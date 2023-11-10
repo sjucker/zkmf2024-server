@@ -11,11 +11,11 @@
             durch {{verein.phase2ConfirmedBy}}
         </div>
 
-        <div>
-            <h3>Provisorische Einsatzzeiten</h3>
-            <div *ngIf="verein.provWettspiel">Wettspiel: {{verein.provWettspiel}}</div>
-            <div *ngIf="verein.provParademusik">Parademusik: {{verein.provParademusik}}</div>
-            <div *ngIf="verein.provPlatzkonzert">Platzkonzert: {{verein.provPlatzkonzert}}</div>
+        <div *ngIf="verein.timetableEntries?.length ?? 0 > 0">
+            <h3>Einsatzzeiten</h3>
+            <ul>
+                <li *ngFor="let entry of verein.timetableEntries">{{entry.date | date: 'dd.MM.yyyy'}} {{entry.time}}, {{entry.competition}}, {{entry.location.name}}</li>
+            </ul>
         </div>
 
         <div *ngFor="let programm of verein.programme; let last = last;">
