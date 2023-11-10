@@ -20,9 +20,7 @@ public record VereinDTO(
         boolean phase2Done,
         String phase2ConfirmedBy,
         LocalDateTime phase2ConfirmedAt,
-        String provWettspiel,
-        String provParademusik,
-        String provPlatzkonzert,
+        List<TimetableOverviewEntryDTO> timetableEntries,
         @NotNull List<VereinMessageDTO> messages,
         // used for client to signal that programm was updated
         boolean programmUpdated

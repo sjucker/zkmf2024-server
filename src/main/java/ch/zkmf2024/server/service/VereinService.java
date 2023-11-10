@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
+import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
@@ -29,6 +30,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ImageRepository;
+import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +67,7 @@ public class VereinService {
     private final UserRepository userRepository;
     private final VereinRepository vereinRepository;
     private final ImageRepository imageRepository;
+    private final TimetableRepository timetableRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final DSLContext jooqDsl;
@@ -72,12 +75,14 @@ public class VereinService {
     public VereinService(UserRepository userRepository,
                          VereinRepository vereinRepository,
                          ImageRepository imageRepository,
+                         TimetableRepository timetableRepository,
                          PasswordEncoder passwordEncoder,
                          MailService mailService,
                          DSLContext jooqDsl) {
         this.userRepository = userRepository;
         this.vereinRepository = vereinRepository;
         this.imageRepository = imageRepository;
+        this.timetableRepository = timetableRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
         this.jooqDsl = jooqDsl;
@@ -155,12 +160,14 @@ public class VereinService {
                 false,
                 verein.getPhase2ConfirmedBy(),
                 verein.getPhase2ConfirmedAt(),
-                verein.getProvWettspiel(),
-                verein.getProvParademusik(),
-                verein.getProvPlatzkonzert(),
+                findTimetableEntriesByVereinId(verein.getId()),
                 findMessagesByVereinId(verein.getId(), verein.getEmail()),
                 false
         );
+    }
+
+    private List<TimetableOverviewEntryDTO> findTimetableEntriesByVereinId(Long vereinId) {
+        return timetableRepository.findAllByVereinId(vereinId);
     }
 
     private List<DoppelEinsatzDTO> getDoppeleinsatz(Long vereinId) {

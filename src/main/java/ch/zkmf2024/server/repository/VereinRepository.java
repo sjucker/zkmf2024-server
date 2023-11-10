@@ -344,9 +344,7 @@ public class VereinRepository {
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)) == DONE,
                                     it.get(VEREIN.PHASE2_CONFIRMED_BY),
                                     it.get(VEREIN.PHASE2_CONFIRMED_AT),
-                                    it.get(VEREIN.PROV_WETTSPIEL),
-                                    it.get(VEREIN.PROV_PARADEMUSIK),
-                                    it.get(VEREIN.PROV_PLATZKONZERT),
+                                    List.of(),
                                     List.of(),
                                     false
                             ));
