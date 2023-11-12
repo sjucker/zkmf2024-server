@@ -197,7 +197,7 @@ public class VereinRepository {
         var joiner = new StringJoiner(", ");
         joiner.add(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription());
         Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).ifPresent(joiner::add);
-        Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).ifPresent(joiner::add);
+        Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).flatMap(Besetzung::getRelevantDescription).ifPresent(joiner::add);
         return joiner.toString();
     }
 

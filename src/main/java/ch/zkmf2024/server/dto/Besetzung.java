@@ -6,16 +6,22 @@ import java.util.Optional;
 
 @Getter
 public enum Besetzung implements HasDescription {
-    HARMONIE("Harmonie"),
-    BRASS_BAND("Brass Band"),
-    FANFARE("Fanfare"),
-    TAMBOUREN("Tambouren"),
-    PERKUSSIONSENSEMBLE("Perkussionsensemble");
+    HARMONIE("Harmonie", true),
+    BRASS_BAND("Brass Band", true),
+    FANFARE("Fanfare", true),
+    TAMBOUREN("Tambouren", false),
+    PERKUSSIONSENSEMBLE("Perkussionsensemble", false);
 
     private final String description;
+    private final boolean relevantForModul;
 
-    Besetzung(String description) {
+    Besetzung(String description, boolean relevantForModul) {
         this.description = description;
+        this.relevantForModul = relevantForModul;
+    }
+
+    public Optional<String> getRelevantDescription() {
+        return relevantForModul ? Optional.of(description) : Optional.empty();
     }
 
     public static Optional<Besetzung> fromString(String besetzung) {
