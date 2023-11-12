@@ -1,11 +1,20 @@
 package ch.zkmf2024.server.dto;
 
-public enum TimetableEntryType {
-    EINSPIEL,
-    WETTSPIEL,
-    BESPRECHUNG,
-    PLATZKONZERT,
-    MARSCHMUSIK;
+import lombok.Getter;
+
+@Getter
+public enum TimetableEntryType implements HasDescription {
+    EINSPIEL("Einspiel"),
+    WETTSPIEL("Wettspiel"),
+    BESPRECHUNG("Besprechung"),
+    PLATZKONZERT("Platzkonzert"),
+    MARSCHMUSIK("Marschmusik");
+
+    private final String description;
+
+    TimetableEntryType(String description) {
+        this.description = description;
+    }
 
     public LocationType toLocationType() {
         return switch (this) {
@@ -15,5 +24,9 @@ public enum TimetableEntryType {
             case PLATZKONZERT -> LocationType.PLATZKONZERT;
             case MARSCHMUSIK -> LocationType.PARADEMUSIK;
         };
+    }
+
+    public static TimetableEntryType from(ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType type) {
+        return valueOf(type.getLiteral());
     }
 }

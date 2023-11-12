@@ -166,6 +166,7 @@ export interface TimetableOverviewEntryDTO {
     vereinsname: string;
     modul: string;
     competition: string;
+    type: string;
     location: LocationDTO;
     date: DateAsString;
     start: DateAsString;
