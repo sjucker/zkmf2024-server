@@ -28,6 +28,7 @@ import {ToastModule} from "primeng/toast";
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BroadcastComponent} from './broadcast/broadcast.component';
+import {ErrataComponent} from './errata/errata.component';
 import {HelferComponent} from './helfer/helfer.component';
 import {AuthenticationInterceptor} from "./interceptor/authentication-interceptor.service";
 import {JuryLoginCreateComponent} from './jury-login-create/jury-login-create.component';
@@ -60,6 +61,7 @@ import {VereineComponent} from './vereine/vereine.component';
         VereinMessagesComponent,
         BroadcastComponent,
         TimetableEntryEditComponent,
+        ErrataComponent,
     ],
     imports: [
         BrowserModule,

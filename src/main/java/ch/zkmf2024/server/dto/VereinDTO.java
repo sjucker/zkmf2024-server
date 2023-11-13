@@ -1,5 +1,7 @@
 package ch.zkmf2024.server.dto;
 
+import ch.zkmf2024.server.dto.admin.VereinErrataDTO;
+
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,8 +22,9 @@ public record VereinDTO(
         boolean phase2Done,
         String phase2ConfirmedBy,
         LocalDateTime phase2ConfirmedAt,
-        List<TimetableOverviewEntryDTO> timetableEntries,
+        @NotNull List<TimetableOverviewEntryDTO> timetableEntries,
         @NotNull List<VereinMessageDTO> messages,
+        @NotNull List<VereinErrataDTO> errata,
         // used for client to signal that programm was updated
         boolean programmUpdated
 ) {

@@ -201,8 +201,9 @@ export interface VereinDTO {
     phase2Done: boolean;
     phase2ConfirmedBy?: string;
     phase2ConfirmedAt?: DateAsString;
-    timetableEntries?: TimetableOverviewEntryDTO[];
+    timetableEntries: TimetableOverviewEntryDTO[];
     messages: VereinMessageDTO[];
+    errata: VereinErrataDTO[];
     programmUpdated: boolean;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
@@ -336,6 +337,15 @@ export interface BroadcastCreateDTO {
     message: string;
 }
 
+export interface ErrataDTO {
+    id: number;
+    modul: Modul;
+    klasse: Klasse;
+    besetzung: Besetzung;
+    description: string;
+    text?: string;
+}
+
 export interface JudgeDTO {
     id: number;
     name: string;
@@ -422,6 +432,11 @@ export interface VereinCommentDTO {
     comment: string;
     createdAt: DateAsString;
     createdBy: string;
+}
+
+export interface VereinErrataDTO {
+    description: string;
+    text: string;
 }
 
 export interface VereinMessageCreateDTO {

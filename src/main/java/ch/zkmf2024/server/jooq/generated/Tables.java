@@ -3,6 +3,7 @@
  */
 package ch.zkmf2024.server.jooq.generated;
 
+import ch.zkmf2024.server.jooq.generated.tables.Errata;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
@@ -30,6 +31,11 @@ import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
  */
 @SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class Tables {
+
+    /**
+     * The table <code>errata</code>.
+     */
+    public static final Errata ERRATA = Errata.ERRATA;
 
     /**
      * The table <code>helper_registration</code>.
