@@ -217,4 +217,19 @@ public class LocationDao extends DAOImpl<LocationRecord, LocationPojo, Long> {
     public List<LocationPojo> fetchByJuryfeedbackId(Long... values) {
         return fetch(Location.LOCATION.JURYFEEDBACK_ID, values);
     }
+
+    /**
+     * Fetch records that have <code>sort_order BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfSortOrder(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(Location.LOCATION.SORT_ORDER, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>sort_order IN (values)</code>
+     */
+    public List<LocationPojo> fetchBySortOrder(Integer... values) {
+        return fetch(Location.LOCATION.SORT_ORDER, values);
+    }
 }

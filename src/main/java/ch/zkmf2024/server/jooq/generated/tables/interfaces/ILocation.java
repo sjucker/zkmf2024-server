@@ -124,6 +124,16 @@ public interface ILocation extends Serializable {
      */
     public Long getJuryfeedbackId();
 
+    /**
+     * Setter for <code>location.sort_order</code>.
+     */
+    public void setSortOrder(Integer value);
+
+    /**
+     * Getter for <code>location.sort_order</code>.
+     */
+    public Integer getSortOrder();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

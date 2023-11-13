@@ -49,6 +49,7 @@ public class LocationRepository {
                                   type,
                                   pojo.getCapacity(),
                                   pojo.getModules(),
+                                  pojo.getSortOrder(),
                                   findById(pojo.getEinspiellokalId()).orElse(null),
                                   findById(pojo.getInstrumentendepotId()).orElse(null),
                                   findById(pojo.getJuryfeedbackId()).orElse(null)
@@ -73,6 +74,7 @@ public class LocationRepository {
                                   LocationType.valueOf(pojo.getLocationType().getLiteral()),
                                   pojo.getCapacity(),
                                   pojo.getModules(),
+                                  pojo.getSortOrder(),
                                   findById(pojo.getEinspiellokalId()).orElse(null),
                                   findById(pojo.getInstrumentendepotId()).orElse(null),
                                   findById(pojo.getJuryfeedbackId()).orElse(null)
@@ -91,6 +93,7 @@ public class LocationRepository {
                 LocationType.valueOf(it.get(LOCATION.LOCATION_TYPE).getLiteral()),
                 it.get(LOCATION.CAPACITY),
                 it.get(LOCATION.MODULES),
+                it.get(LOCATION.SORT_ORDER),
                 null, null, null
         );
     }
