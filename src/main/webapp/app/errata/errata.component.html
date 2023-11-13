@@ -1,0 +1,8 @@
+<p-toast position="top-center"></p-toast>
+<div class="flex flex-column gap-4">
+    <p-button (onClick)="save()" [loading]="saving">Speichern</p-button>
+    <div *ngFor="let err of errata">
+        <div>{{err.description}}</div>
+        <textarea pInputTextarea [(ngModel)]="err.text" rows="3" cols="100"></textarea>
+    </div>
+</div>

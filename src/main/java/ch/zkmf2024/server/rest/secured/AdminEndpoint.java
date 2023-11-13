@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
+import ch.zkmf2024.server.dto.admin.ErrataDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
@@ -17,6 +18,7 @@ import ch.zkmf2024.server.dto.admin.VereinCommentCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
 import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
+import ch.zkmf2024.server.service.ErrataService;
 import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.JudgeService;
@@ -59,19 +61,22 @@ public class AdminEndpoint {
     private final ExportService exportService;
     private final JudgeService judgeService;
     private final TimetableService timetableService;
+    private final ErrataService errataService;
 
     public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService,
                          VereinService vereinService,
                          ExportService exportService,
                          JudgeService judgeService,
-                         TimetableService timetableService) {
+                         TimetableService timetableService,
+                         ErrataService errataService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.vereinService = vereinService;
         this.exportService = exportService;
         this.judgeService = judgeService;
         this.timetableService = timetableService;
+        this.errataService = errataService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -307,6 +312,21 @@ public class AdminEndpoint {
     public ResponseEntity<List<LocationSelectionDTO>> getLocationsByType(@PathVariable TimetableEntryType type) {
         log.info("GET /secured/admin/location/{}", type);
         return ResponseEntity.ok(timetableService.findLocationsByType(type.toLocationType()));
+    }
+
+    @GetMapping("/errata")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<ErrataDTO>> getErrata() {
+        log.info("GET /secured/admin/errata");
+        return ResponseEntity.ok(errataService.findAll());
+    }
+
+    @PostMapping("/errata")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> updateErrata(@RequestBody List<ErrataDTO> dtos) {
+        log.info("POST /secured/admin/errata {}", dtos);
+        errataService.update(dtos);
+        return ResponseEntity.ok().build();
     }
 
 }

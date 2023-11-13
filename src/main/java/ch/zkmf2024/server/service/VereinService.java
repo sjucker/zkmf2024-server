@@ -17,6 +17,7 @@ import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
+import ch.zkmf2024.server.dto.admin.VereinErrataDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
@@ -29,6 +30,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
+import ch.zkmf2024.server.repository.ErrataRepository;
 import ch.zkmf2024.server.repository.ImageRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UserRepository;
@@ -62,12 +64,13 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class VereinService {
 
-    private static final VereinMapper MAPPER = VereinMapper.INSTANCE;
+    public static final VereinMapper MAPPER = VereinMapper.INSTANCE;
 
     private final UserRepository userRepository;
     private final VereinRepository vereinRepository;
     private final ImageRepository imageRepository;
     private final TimetableRepository timetableRepository;
+    private final ErrataRepository errataRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final DSLContext jooqDsl;
@@ -76,6 +79,7 @@ public class VereinService {
                          VereinRepository vereinRepository,
                          ImageRepository imageRepository,
                          TimetableRepository timetableRepository,
+                         ErrataRepository errataRepository,
                          PasswordEncoder passwordEncoder,
                          MailService mailService,
                          DSLContext jooqDsl) {
@@ -83,6 +87,7 @@ public class VereinService {
         this.vereinRepository = vereinRepository;
         this.imageRepository = imageRepository;
         this.timetableRepository = timetableRepository;
+        this.errataRepository = errataRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
         this.jooqDsl = jooqDsl;
@@ -162,8 +167,13 @@ public class VereinService {
                 verein.getPhase2ConfirmedAt(),
                 findTimetableEntriesByVereinId(verein.getId()),
                 findMessagesByVereinId(verein.getId(), verein.getEmail()),
+                findErrata(verein.getId()),
                 false
         );
+    }
+
+    private List<VereinErrataDTO> findErrata(Long vereinId) {
+        return errataRepository.getRelevantErrata(vereinId);
     }
 
     private List<TimetableOverviewEntryDTO> findTimetableEntriesByVereinId(Long vereinId) {
