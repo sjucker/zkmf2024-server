@@ -27,6 +27,7 @@ public class LocationPojo implements ILocation {
     private Long einspiellokalId;
     private Long instrumentendepotId;
     private Long juryfeedbackId;
+    private Integer sortOrder;
 
     public LocationPojo() {
     }
@@ -43,6 +44,7 @@ public class LocationPojo implements ILocation {
         this.einspiellokalId = value.getEinspiellokalId();
         this.instrumentendepotId = value.getInstrumentendepotId();
         this.juryfeedbackId = value.getJuryfeedbackId();
+        this.sortOrder = value.getSortOrder();
     }
 
     public LocationPojo(
@@ -56,7 +58,8 @@ public class LocationPojo implements ILocation {
             String modules,
             Long einspiellokalId,
             Long instrumentendepotId,
-            Long juryfeedbackId
+            Long juryfeedbackId,
+            Integer sortOrder
     ) {
         this.id = id;
         this.name = name;
@@ -69,6 +72,7 @@ public class LocationPojo implements ILocation {
         this.einspiellokalId = einspiellokalId;
         this.instrumentendepotId = instrumentendepotId;
         this.juryfeedbackId = juryfeedbackId;
+        this.sortOrder = sortOrder;
     }
 
     /**
@@ -247,6 +251,22 @@ public class LocationPojo implements ILocation {
         this.juryfeedbackId = juryfeedbackId;
     }
 
+    /**
+     * Getter for <code>location.sort_order</code>.
+     */
+    @Override
+    public Integer getSortOrder() {
+        return this.sortOrder;
+    }
+
+    /**
+     * Setter for <code>location.sort_order</code>.
+     */
+    @Override
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -311,6 +331,11 @@ public class LocationPojo implements ILocation {
                 return false;
         } else if (!this.juryfeedbackId.equals(other.juryfeedbackId))
             return false;
+        if (this.sortOrder == null) {
+            if (other.sortOrder != null)
+                return false;
+        } else if (!this.sortOrder.equals(other.sortOrder))
+            return false;
         return true;
     }
 
@@ -329,6 +354,7 @@ public class LocationPojo implements ILocation {
         result = prime * result + ((this.einspiellokalId == null) ? 0 : this.einspiellokalId.hashCode());
         result = prime * result + ((this.instrumentendepotId == null) ? 0 : this.instrumentendepotId.hashCode());
         result = prime * result + ((this.juryfeedbackId == null) ? 0 : this.juryfeedbackId.hashCode());
+        result = prime * result + ((this.sortOrder == null) ? 0 : this.sortOrder.hashCode());
         return result;
     }
 
@@ -347,6 +373,7 @@ public class LocationPojo implements ILocation {
         sb.append(", ").append(einspiellokalId);
         sb.append(", ").append(instrumentendepotId);
         sb.append(", ").append(juryfeedbackId);
+        sb.append(", ").append(sortOrder);
 
         sb.append(")");
         return sb.toString();
@@ -369,6 +396,7 @@ public class LocationPojo implements ILocation {
         setEinspiellokalId(from.getEinspiellokalId());
         setInstrumentendepotId(from.getInstrumentendepotId());
         setJuryfeedbackId(from.getJuryfeedbackId());
+        setSortOrder(from.getSortOrder());
     }
 
     @Override

@@ -13,6 +13,7 @@ public record LocationDTO(@NotNull Long id,
                           @NotNull LocationType type,
                           @NotNull String capacity,
                           @NotNull String modules,
+                          @NotNull Integer sortOrder,
                           LocationDTO einspiellokal,
                           LocationDTO instrumentendepot,
                           LocationDTO juryfeedback) {

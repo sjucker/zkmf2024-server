@@ -92,6 +92,7 @@ export interface LocationDTO {
     type: LocationType;
     capacity: string;
     modules: string;
+    sortOrder: number;
     einspiellokal?: LocationDTO;
     instrumentendepot?: LocationDTO;
     juryfeedback?: LocationDTO;
