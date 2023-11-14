@@ -24,11 +24,11 @@ public class UserAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findById(username);
-        if (user.isPresent()) {
-            ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(user.get().getRole()));
-            return new User(user.get().getEmail(), user.get().getPassword(), authorities);
+        var user = userRepository.findById(username).orElse(null);
+        if (user != null) {
+            var authorities = new ArrayList<GrantedAuthority>();
+            authorities.add(new SimpleGrantedAuthority(user.getRole()));
+            return new User(user.getEmail(), user.getPassword(), authorities);
         }
 
         log.error("user not found for: {}", username);

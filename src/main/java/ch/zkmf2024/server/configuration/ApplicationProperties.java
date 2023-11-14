@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "zkmf2024")
 public class ApplicationProperties {
+    private String jwtSignatureAlgorithm;
     private String jwtSecret;
     private String mjmlAppId;
     private String mjmlPrivateKey;
@@ -21,4 +22,5 @@ public class ApplicationProperties {
     private String mailchimpApiKey;
     private String mailchimpListId;
     private String chatMail;
+    private String encodedMasterPassword;
 }

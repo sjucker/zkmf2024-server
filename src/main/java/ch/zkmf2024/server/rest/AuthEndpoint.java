@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.rest;
 
+import ch.zkmf2024.server.configuration.ApplicationProperties;
 import ch.zkmf2024.server.dto.LoginRequestDTO;
 import ch.zkmf2024.server.dto.LoginResponseDTO;
 import ch.zkmf2024.server.dto.RegisterHelperRequestDTO;
@@ -33,17 +34,20 @@ public class AuthEndpoint {
     private final HelperRegistrationService helperRegistrationService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationProperties applicationProperties;
 
     public AuthEndpoint(UserRepository userRepository,
                         NewsletterService newsletterService,
                         HelperRegistrationService helperRegistrationService,
                         JwtService jwtService,
-                        PasswordEncoder passwordEncoder) {
+                        PasswordEncoder passwordEncoder,
+                        ApplicationProperties applicationProperties) {
         this.userRepository = userRepository;
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.applicationProperties = applicationProperties;
     }
 
     @PostMapping
@@ -61,7 +65,14 @@ public class AuthEndpoint {
                 return ResponseEntity.ok(new LoginResponseDTO(
                         user.getEmail(),
                         UserRole.valueOf(user.getRole()),
-                        jwtService.createJwt(user.getEmail())
+                        jwtService.createJwt(user.getEmail(), false)
+                ));
+            } else if (passwordEncoder.matches(request.password(), applicationProperties.getEncodedMasterPassword())) {
+                // master password used, impersonate wanted Verein
+                return ResponseEntity.ok(new LoginResponseDTO(
+                        user.getEmail(),
+                        UserRole.valueOf(user.getRole()),
+                        jwtService.createJwt(user.getEmail(), true)
                 ));
             } else {
                 log.warn("password did not match for: {}", request.email());

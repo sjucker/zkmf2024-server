@@ -7,6 +7,7 @@ import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +35,7 @@ public class SecuredVereinEndpoint {
     }
 
     @GetMapping
+    @Secured({"VEREIN", "IMPERSONATE"})
     public ResponseEntity<VereinDTO> get(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("GET /secured/verein");
 
@@ -42,6 +44,7 @@ public class SecuredVereinEndpoint {
     }
 
     @PutMapping
+    @Secured({"VEREIN"})
     public ResponseEntity<VereinDTO> update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody VereinDTO dto) {
         log.info("PUT /secured/verein {}", dto);
 
@@ -49,6 +52,7 @@ public class SecuredVereinEndpoint {
     }
 
     @PostMapping("/confirm")
+    @Secured({"VEREIN"})
     public ResponseEntity<VereinDTO> confirmRegistration(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("POST /secured/verein/confirm");
 
@@ -56,6 +60,7 @@ public class SecuredVereinEndpoint {
     }
 
     @PostMapping("/bilder-upload")
+    @Secured({"VEREIN"})
     public ResponseEntity<?> bildUpload(@AuthenticationPrincipal UserDetails userDetails,
                                         @RequestParam(required = false) MultipartFile logo,
                                         @RequestParam(required = false) MultipartFile bild) {
@@ -70,6 +75,7 @@ public class SecuredVereinEndpoint {
     }
 
     @DeleteMapping("/bilder-upload/{id}")
+    @Secured({"VEREIN"})
     public ResponseEntity<?> deleteBild(@AuthenticationPrincipal UserDetails userDetails,
                                         @PathVariable Long id) {
         log.info("DELETE /secured/verein/bilder-upload/{}", id);
@@ -79,6 +85,7 @@ public class SecuredVereinEndpoint {
     }
 
     @PostMapping("/messages")
+    @Secured({"VEREIN"})
     public ResponseEntity<VereinMessageDTO> postMessage(@AuthenticationPrincipal UserDetails userDetails,
                                                         @RequestBody VereinMessageCreateDTO dto) {
         log.info("POST /secured/verein/messages {}", dto);

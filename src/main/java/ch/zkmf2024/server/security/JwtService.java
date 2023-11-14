@@ -14,22 +14,25 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
-import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 @Service
 public class JwtService {
 
-    private final SignatureAlgorithm signatureAlgorithm = HS256;
+    public static final String IMPERSONATE_CLAIM = "impersonate";
+
+    private final SignatureAlgorithm signatureAlgorithm;
     private final SecretKeySpec secretKey;
 
     public JwtService(ApplicationProperties properties) {
+        this.signatureAlgorithm = SignatureAlgorithm.forName(properties.getJwtSignatureAlgorithm());
         this.secretKey = new SecretKeySpec(properties.getJwtSecret().getBytes(UTF_8), signatureAlgorithm.getJcaName());
     }
 
-    public String createJwt(String email) {
-        Claims claims = Jwts.claims().setSubject(email);
+    public String createJwt(String email, boolean impersonate) {
+        var claims = Jwts.claims().setSubject(email);
+        claims.put(IMPERSONATE_CLAIM, impersonate);
 
         return Jwts.builder()
                    .setClaims(claims)
