@@ -531,6 +531,7 @@ export enum UserRole {
     VEREIN = "VEREIN",
     ADMIN = "ADMIN",
     JUDGE = "JUDGE",
+    IMPERSONATE = "IMPERSONATE",
 }
 
 export enum Aufgaben {
