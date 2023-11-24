@@ -23,4 +23,5 @@ public class ApplicationProperties {
     private String mailchimpListId;
     private String chatMail;
     private String encodedMasterPassword;
+    private boolean overrideRecipient;
 }

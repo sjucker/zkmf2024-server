@@ -351,6 +351,12 @@ export interface ErrataDTO {
     text?: string;
 }
 
+export interface ErrataSendDTO {
+    modul: Modul;
+    klasse: Klasse;
+    besetzung: Besetzung;
+}
+
 export interface JudgeDTO {
     id: number;
     name: string;

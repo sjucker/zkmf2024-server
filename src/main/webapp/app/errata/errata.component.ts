@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {ErrataDTO} from "../rest";
 import {ErrataService} from "../service/errata.service";
 
@@ -13,9 +13,11 @@ export class ErrataComponent implements OnInit {
     errata: ErrataDTO[] = [];
 
     saving = false;
+    sending = false;
 
     constructor(private service: ErrataService,
-                private readonly messageService: MessageService) {
+                private readonly messageService: MessageService,
+                private readonly confirmationService: ConfirmationService) {
     }
 
     ngOnInit() {
@@ -47,5 +49,33 @@ export class ErrataComponent implements OnInit {
                 });
             },
         });
+    }
+
+    triggerSend(errata: ErrataDTO) {
+        this.confirmationService.confirm({
+            header: 'Senden?',
+            message: 'Es wird ein Mail an alle relevanten Vereine gesendet.',
+            rejectLabel: 'Nein',
+            acceptLabel: 'Ja',
+            accept: () => {
+                this.service.send(errata.modul, errata.klasse, errata.besetzung).subscribe({
+                    next: () => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Erfolgreich gesendet',
+                            life: 2000
+                        });
+                    },
+                    error: () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Fehler',
+                            detail: 'Es ist ein Fehler aufgetreten...',
+                            life: 3000
+                        });
+                    }
+                })
+            }
+        })
     }
 }

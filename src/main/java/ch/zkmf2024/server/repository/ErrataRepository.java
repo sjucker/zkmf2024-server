@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.ERRATA;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -47,6 +48,16 @@ public class ErrataRepository {
 
     public void update(ErrataPojo pojo) {
         errataDao.update(pojo);
+    }
+
+    public List<String> getRelevantVereinEmails(Modul modul, Klasse klasse, Besetzung besetzung) {
+        return jooqDsl.selectDistinct(VEREIN.EMAIL)
+                      .from(VEREIN)
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
+                      .where(VEREIN_PROGRAMM.MODUL.eq(modul.name()),
+                             VEREIN_PROGRAMM.KLASSE.eq(klasse.name()),
+                             VEREIN_PROGRAMM.BESETZUNG.eq(besetzung.name()))
+                      .fetch(it -> it.get(VEREIN.EMAIL));
     }
 
     public List<VereinErrataDTO> getRelevantErrata(Long vereinId) {
