@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
 import ch.zkmf2024.server.dto.admin.ErrataDTO;
+import ch.zkmf2024.server.dto.admin.ErrataSendDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
@@ -326,6 +327,14 @@ public class AdminEndpoint {
     public ResponseEntity<Void> updateErrata(@RequestBody List<ErrataDTO> dtos) {
         log.info("POST /secured/admin/errata {}", dtos);
         errataService.update(dtos);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/errata/send")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> sendErrataEmail(@RequestBody ErrataSendDTO dto) {
+        log.info("POST /secured/admin/errata/send {}", dto);
+        errataService.send(dto.modul(), dto.klasse(), dto.besetzung());
         return ResponseEntity.ok().build();
     }
 

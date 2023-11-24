@@ -186,6 +186,34 @@ public class MailService {
         }
     }
 
+    public void sendErrataMail(List<String> tos) {
+        for (var to : tos) {
+            try {
+                log.info("sending errata mail to {}", to);
+                var variables = new HashMap<String, Object>();
+                variables.put("link", applicationProperties.getBaseUrlVereine());
+
+                var mjml = templateEngine.process("errata", new Context(GERMAN, variables));
+                var mimeMessage = mailSender.createMimeMessage();
+                var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+
+                helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+                if (applicationProperties.isOverrideRecipient()) {
+                    helper.setTo(applicationProperties.getBccMail());
+                } else {
+                    helper.setTo(to);
+                    helper.setBcc(applicationProperties.getBccMail());
+                }
+                helper.setSubject("[%s] Neue Errata".formatted(getSubjectPrefix()));
+                helper.setText(mjmlService.render(mjml), true);
+
+                mailSender.send(mimeMessage);
+            } catch (RuntimeException | MessagingException e) {
+                log.error("could not send new message mail to %s".formatted(to), e);
+            }
+        }
+    }
+
     public void sendNewMessageInternalEmail(VereinPojo verein) {
         try {
             var mimeMessage = mailSender.createMimeMessage();

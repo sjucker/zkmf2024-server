@@ -1,5 +1,8 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.Besetzung;
+import ch.zkmf2024.server.dto.Klasse;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.admin.ErrataDTO;
 import ch.zkmf2024.server.repository.ErrataRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +18,11 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Service
 public class ErrataService {
     private final ErrataRepository errataRepository;
+    private final MailService mailService;
 
-    public ErrataService(ErrataRepository errataRepository) {
+    public ErrataService(ErrataRepository errataRepository, MailService mailService) {
         this.errataRepository = errataRepository;
+        this.mailService = mailService;
     }
 
     public List<ErrataDTO> findAll() {
@@ -35,5 +40,9 @@ public class ErrataService {
             pojo.setText(texts.get(pojo.getId()));
             errataRepository.update(pojo);
         });
+    }
+
+    public void send(Modul modul, Klasse klasse, Besetzung besetzung) {
+        mailService.sendErrataMail(errataRepository.getRelevantVereinEmails(modul, klasse, besetzung));
     }
 }
