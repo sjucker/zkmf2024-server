@@ -136,6 +136,7 @@ public class VereinRepository {
                       .where(VEREIN.CONFIRMED_AT.isNotNull())
                       .orderBy(VEREIN.VEREINSNAME.asc())
                       .fetch(it -> new VereinTeilnahmeDTO(
+                              it.get(VEREIN.ID),
                               it.get(VEREIN.VEREINSNAME),
                               it.get(vereinLogo.ID),
                               it.get(vereinBild.ID),
@@ -166,6 +167,7 @@ public class VereinRepository {
                               VEREIN.CONFIRMED_AT.isNotNull()
                       )
                       .fetchOptional(it -> new VereinPresentationDTO(
+                              it.get(VEREIN.ID),
                               it.get(VEREIN.VEREINSNAME),
                               it.get(vereinLogo.ID),
                               it.get(vereinBild.ID),

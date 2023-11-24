@@ -218,6 +218,7 @@ export interface VereinMessageDTO {
 }
 
 export interface VereinPresentationDTO {
+    id: number;
     name: string;
     logoImgId?: number;
     bildImgId?: number;
@@ -269,6 +270,7 @@ export interface VereinSelectionDTO {
 }
 
 export interface VereinTeilnahmeDTO {
+    id: number;
     name: string;
     logoImgId?: number;
     bildImgId?: number;
