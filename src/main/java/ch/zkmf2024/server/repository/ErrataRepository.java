@@ -54,7 +54,8 @@ public class ErrataRepository {
         return jooqDsl.selectDistinct(VEREIN.EMAIL)
                       .from(VEREIN)
                       .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
-                      .where(VEREIN_PROGRAMM.MODUL.eq(modul.name()),
+                      .where(VEREIN.CONFIRMED_AT.isNotNull(),
+                             VEREIN_PROGRAMM.MODUL.eq(modul.name()),
                              VEREIN_PROGRAMM.KLASSE.eq(klasse.name()),
                              VEREIN_PROGRAMM.BESETZUNG.eq(besetzung.name()))
                       .fetch(it -> it.get(VEREIN.EMAIL));
