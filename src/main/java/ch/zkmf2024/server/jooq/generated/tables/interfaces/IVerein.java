@@ -432,6 +432,16 @@ public interface IVerein extends Serializable {
      */
     public LocalDateTime getProgrammLastUpdated();
 
+    /**
+     * Setter for <code>verein.identifier</code>.
+     */
+    public void setIdentifier(String value);
+
+    /**
+     * Getter for <code>verein.identifier</code>.
+     */
+    public String getIdentifier();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -682,4 +682,19 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByProgrammLastUpdated(LocalDateTime... values) {
         return fetch(Verein.VEREIN.PROGRAMM_LAST_UPDATED, values);
     }
+
+    /**
+     * Fetch records that have <code>identifier BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfIdentifier(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.IDENTIFIER, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>identifier IN (values)</code>
+     */
+    public List<VereinPojo> fetchByIdentifier(String... values) {
+        return fetch(Verein.VEREIN.IDENTIFIER, values);
+    }
 }

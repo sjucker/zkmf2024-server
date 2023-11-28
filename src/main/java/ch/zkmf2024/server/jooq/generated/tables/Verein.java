@@ -257,6 +257,11 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, LocalDateTime> PROGRAMM_LAST_UPDATED = createField(DSL.name("programm_last_updated"), SQLDataType.LOCALDATETIME(6), this, "");
 
+    /**
+     * The column <code>verein.identifier</code>.
+     */
+    public final TableField<VereinRecord, String> IDENTIFIER = createField(DSL.name("identifier"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("''::character varying"), SQLDataType.VARCHAR)), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }
