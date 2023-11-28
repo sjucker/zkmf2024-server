@@ -103,6 +103,7 @@ public class TimetableRepository {
     private static TimetableOverviewEntryDTO toOverviewDTO(org.jooq.Record it) {
         return new TimetableOverviewEntryDTO(
                 it.get(VEREIN.ID),
+                it.get(VEREIN.IDENTIFIER),
                 it.get(VEREIN.VEREINSNAME),
                 Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription(),
                 getCompetition(it),

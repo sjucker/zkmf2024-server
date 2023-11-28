@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record TimetableOverviewEntryDTO(@NotNull Long vereinId,
+                                        @NotNull String vereinIdentifier,
                                         @NotNull String vereinsname,
                                         @NotNull String modul,
                                         @NotNull String competition,

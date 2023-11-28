@@ -78,10 +78,10 @@ public class VereinEndpoint {
         return ResponseEntity.ok(vereinService.getOverview());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<VereinPresentationDTO> vereinById(@PathVariable Long id) {
-        log.info("GET /public/verein/{}", id);
+    @GetMapping("/{identifier}")
+    public ResponseEntity<VereinPresentationDTO> vereinById(@PathVariable String identifier) {
+        log.info("GET /public/verein/{}", identifier);
 
-        return ResponseEntity.of(vereinService.findPresentationById(id));
+        return ResponseEntity.of(vereinService.findPresentationByIdentifier(identifier));
     }
 }

@@ -137,6 +137,7 @@ public class VereinRepository {
                       .orderBy(VEREIN.VEREINSNAME.asc())
                       .fetch(it -> new VereinTeilnahmeDTO(
                               it.get(VEREIN.ID),
+                              it.get(VEREIN.IDENTIFIER),
                               it.get(VEREIN.VEREINSNAME),
                               it.get(vereinLogo.ID),
                               it.get(vereinBild.ID),
@@ -147,7 +148,7 @@ public class VereinRepository {
                       ));
     }
 
-    public Optional<VereinPresentationDTO> findPresentationById(Long id) {
+    public Optional<VereinPresentationDTO> findPresentationByIdentifier(String identifier) {
         Image vereinLogo = IMAGE.as("i2");
         Image vereinBild = IMAGE.as("i1");
         return jooqDsl.select(
@@ -163,7 +164,7 @@ public class VereinRepository {
                       .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
                       .leftJoin(vereinBild).on(vereinBild.FOREIGN_KEY.eq(VEREIN.ID).and(vereinBild.TYPE.eq(VEREIN_BILD.name())))
                       .where(
-                              VEREIN.ID.eq(id),
+                              VEREIN.IDENTIFIER.eq(identifier),
                               VEREIN.CONFIRMED_AT.isNotNull()
                       )
                       .fetchOptional(it -> new VereinPresentationDTO(
@@ -175,7 +176,7 @@ public class VereinRepository {
                               it.get(VEREIN.FACEBOOK),
                               it.get(VEREIN.INSTAGRAM),
                               it.get(VEREIN.WEBSITE_TEXT),
-                              findTimetableEntriesByVereinId(id)
+                              findTimetableEntriesByVereinId(it.get(VEREIN.ID))
                       ));
     }
 

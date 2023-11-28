@@ -697,4 +697,18 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByIdentifier(String... values) {
         return fetch(Verein.VEREIN.IDENTIFIER, values);
     }
+
+    /**
+     * Fetch a unique record that has <code>identifier = value</code>
+     */
+    public VereinPojo fetchOneByIdentifier(String value) {
+        return fetchOne(Verein.VEREIN.IDENTIFIER, value);
+    }
+
+    /**
+     * Fetch a unique record that has <code>identifier = value</code>
+     */
+    public Optional<VereinPojo> fetchOptionalByIdentifier(String value) {
+        return fetchOptional(Verein.VEREIN.IDENTIFIER, value);
+    }
 }

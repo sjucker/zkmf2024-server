@@ -164,6 +164,7 @@ export interface TimetableDayOverviewDTO {
 
 export interface TimetableOverviewEntryDTO {
     vereinId: number;
+    vereinIdentifier: string;
     vereinsname: string;
     modul: string;
     competition: string;
@@ -271,6 +272,7 @@ export interface VereinSelectionDTO {
 
 export interface VereinTeilnahmeDTO {
     id: number;
+    identifier: string;
     name: string;
     logoImgId?: number;
     bildImgId?: number;

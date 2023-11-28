@@ -546,8 +546,8 @@ public class VereinService {
         return vereinRepository.findAllConfirmed();
     }
 
-    public Optional<VereinPresentationDTO> findPresentationById(Long vereinId) {
-        return vereinRepository.findPresentationById(vereinId);
+    public Optional<VereinPresentationDTO> findPresentationByIdentifier(String vereinIdentifier) {
+        return vereinRepository.findPresentationByIdentifier(vereinIdentifier);
     }
 
     public VereinCommentDTO saveComment(String username, Long vereinId, String comment) {

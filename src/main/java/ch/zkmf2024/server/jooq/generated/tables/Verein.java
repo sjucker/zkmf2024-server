@@ -316,6 +316,11 @@ public class Verein extends TableImpl<VereinRecord> {
     }
 
     @Override
+    public List<UniqueKey<VereinRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.UQ_VEREIN_IDENTIFIER);
+    }
+
+    @Override
     public List<ForeignKey<VereinRecord, ?>> getReferences() {
         return Arrays.asList(Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT);
     }
