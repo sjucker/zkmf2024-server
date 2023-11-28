@@ -122,6 +122,8 @@ public class VereinRepository {
         Image vereinLogo = IMAGE.as("i2");
         Image vereinBild = IMAGE.as("i1");
         return jooqDsl.select(
+                              VEREIN.ID,
+                              VEREIN.IDENTIFIER,
                               VEREIN.VEREINSNAME,
                               VEREIN.WEBSITE_TEXT,
                               VEREIN.HOMEPAGE,
@@ -152,6 +154,7 @@ public class VereinRepository {
         Image vereinLogo = IMAGE.as("i2");
         Image vereinBild = IMAGE.as("i1");
         return jooqDsl.select(
+                              VEREIN.ID,
                               VEREIN.VEREINSNAME,
                               VEREIN.WEBSITE_TEXT,
                               VEREIN.HOMEPAGE,
