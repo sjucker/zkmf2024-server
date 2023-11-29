@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.service.JudgeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +31,14 @@ public class SecuredJudgeEndpoint {
     }
 
     @GetMapping
+    @Secured({"JUDGE"})
     public ResponseEntity<List<JudgeReportOverviewDTO>> get(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("GET /secured/judge");
         return ResponseEntity.ok(judgeService.getReports(userDetails.getUsername()));
     }
 
     @GetMapping("/{id}")
+    @Secured({"JUDGE"})
     public ResponseEntity<JudgeReportDTO> get(@AuthenticationPrincipal UserDetails userDetails,
                                               @PathVariable Long id) {
 
@@ -47,6 +50,7 @@ public class SecuredJudgeEndpoint {
     }
 
     @PutMapping("/{id}")
+    @Secured({"JUDGE"})
     public ResponseEntity<JudgeReportDTO> update(@AuthenticationPrincipal UserDetails userDetails,
                                                  @PathVariable Long id,
                                                  @RequestBody JudgeReportDTO dto) {
@@ -58,6 +62,7 @@ public class SecuredJudgeEndpoint {
     }
 
     @PostMapping("/{id}/finish")
+    @Secured({"JUDGE"})
     public ResponseEntity<?> finish(@AuthenticationPrincipal UserDetails userDetails,
                                     @PathVariable Long id) {
         log.info("POST /secured/judge/{}/finish", id);
@@ -68,6 +73,7 @@ public class SecuredJudgeEndpoint {
     }
 
     @GetMapping("/summary")
+    @Secured({"JUDGE"})
     public ResponseEntity<List<JudgeReportSummaryDTO>> summaries() {
         log.info("GET /secured/judge/summary");
         return ResponseEntity.ok(judgeService.findSummaries());

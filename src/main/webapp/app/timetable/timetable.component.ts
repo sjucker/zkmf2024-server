@@ -3,6 +3,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TimetableEntryCreateDTO, TimetableEntryDTO, TimetableEntryType, VereinSelectionDTO} from "../rest";
 import {TimetableService} from "../service/timetable.service";
+import {TimetableAssignJudgesComponent, TimetableAssignJudgesInput} from "../timetable-assign-judges/timetable-assign-judges.component";
 import {TimetableEntryEditComponent, TimetableEntryEditInput} from "../timetable-entry-edit/timetable-entry-edit.component";
 
 @Component({
@@ -140,7 +141,7 @@ export class TimetableComponent implements OnInit {
             next: () => {
                 this.load();
             }
-        })
+        });
     }
 
     delete(dto: TimetableEntryDTO) {
@@ -171,5 +172,32 @@ export class TimetableComponent implements OnInit {
                 });
             },
         });
+    }
+
+    assignJudges(dto: TimetableEntryDTO) {
+        this.dialogService.open(TimetableAssignJudgesComponent, {
+            header: dto.verein,
+            data: {
+                dto: {...dto},
+            } as TimetableAssignJudgesInput,
+            width: "1000px",
+            height: "400px",
+        }).onClose.subscribe({
+            next: () => {
+                this.load();
+            }
+        })
+    }
+
+    canAssignJudges(dto: TimetableEntryDTO) {
+        return (dto.type === TimetableEntryType.WETTSPIEL || dto.type === TimetableEntryType.MARSCHMUSIK) && !this.hasJudgesAssigned(dto);
+    }
+
+    hasJudgesAssigned(dto: TimetableEntryDTO): boolean {
+        return !!dto.judge1 && !!dto.judge2 && !!dto.judge3;
+    }
+
+    judges(dto: TimetableEntryDTO): string {
+        return `${dto.judge1}, ${dto.judge2}, ${dto.judge3}`;
     }
 }

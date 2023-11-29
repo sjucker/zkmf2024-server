@@ -16,6 +16,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
+import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.MARSCHMUSIK;
@@ -42,10 +44,17 @@ public class TimetableRepository {
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
-                      .fetch(TimetableRepository::toDTO);
+                      .fetch(this::toDTO);
     }
 
-    private static TimetableEntryDTO toDTO(org.jooq.Record it) {
+    private TimetableEntryDTO toDTO(org.jooq.Record it) {
+        var judgeNames = jooqDsl.select()
+                                .from(JUDGE_REPORT)
+                                .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
+                                .where(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(it.get(TIMETABLE_ENTRY.ID)))
+                                .orderBy(JUDGE_REPORT.ID)
+                                .fetch(r -> r.get(JUDGE.NAME));
+
         return new TimetableEntryDTO(
                 it.get(TIMETABLE_ENTRY.ID),
                 Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
@@ -58,10 +67,14 @@ public class TimetableRepository {
                 it.get(TIMETABLE_ENTRY.START_TIME),
                 it.get(TIMETABLE_ENTRY.END_TIME),
                 TimetableEntryType.from(it.get(TIMETABLE_ENTRY.ENTRY_TYPE)),
-                null,
-                null,
-                null
+                findElementAt(judgeNames, 0).orElse(null),
+                findElementAt(judgeNames, 1).orElse(null),
+                findElementAt(judgeNames, 2).orElse(null)
         );
+    }
+
+    private Optional<String> findElementAt(List<String> judgeNames, int i) {
+        return judgeNames.size() > i ? Optional.of(judgeNames.get(i)) : Optional.empty();
     }
 
     public void insert(TimetableEntryPojo pojo) {

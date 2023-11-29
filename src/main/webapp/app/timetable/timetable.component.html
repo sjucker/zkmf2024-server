@@ -97,9 +97,11 @@
                 <td>{{dto.klasse}}</td>
                 <td>{{dto.besetzung}}</td>
                 <td>{{dto.verein}}</td>
-                <td class="flex gap-2">
+                <td class="flex align-items-baseline gap-2">
                     <button pButton pRipple icon="pi pi-pencil" (click)="edit(dto)"></button>
                     <button pButton pRipple icon="pi pi-trash" (click)="delete(dto)"></button>
+                    <button pButton pRipple icon="pi pi-users" (click)="assignJudges(dto)" *ngIf="canAssignJudges(dto)"></button>
+                    <i class="pi pi-users" *ngIf="hasJudgesAssigned(dto)" [pTooltip]="judges(dto)" tooltipPosition="left"></i>
                 </td>
             </tr>
         </ng-template>
