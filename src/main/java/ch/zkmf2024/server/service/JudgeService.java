@@ -6,9 +6,11 @@ import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
+import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.JudgeRepository;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.IN_PROGRESS;
+import static ch.zkmf2024.server.dto.JudgeReportStatus.NEW;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
 import static ch.zkmf2024.server.util.DateUtil.now;
 
@@ -130,5 +133,11 @@ public class JudgeService {
 
     public List<JudgeReportSummaryDTO> findSummaries() {
         return judgeRepository.findSummaries();
+    }
+
+    public void createReports(Long timetableEntryId, JudgeReportCreateDTO dto) {
+        judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null));
+        judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null));
+        judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null));
     }
 }

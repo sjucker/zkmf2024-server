@@ -207,8 +207,8 @@ export interface VereinDTO {
     messages: VereinMessageDTO[];
     errata: VereinErrataDTO[];
     programmUpdated: boolean;
-    phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
+    phase1Status: PhaseStatus;
 }
 
 export interface VereinMessageDTO {
@@ -363,6 +363,13 @@ export interface JudgeDTO {
     email: string;
 }
 
+export interface JudgeReportCreateDTO {
+    timetableEntryId: number;
+    judge1Id: number;
+    judge2Id: number;
+    judge3Id: number;
+}
+
 export interface JuryLoginCreateDTO {
     name: string;
     email: string;
@@ -404,9 +411,9 @@ export interface TimetableEntryDTO {
     start: DateAsString;
     end: DateAsString;
     type: TimetableEntryType;
-    judge1: string;
-    judge2: string;
-    judge3: string;
+    judge1?: string;
+    judge2?: string;
+    judge3?: string;
 }
 
 export interface UserCreateDTO {

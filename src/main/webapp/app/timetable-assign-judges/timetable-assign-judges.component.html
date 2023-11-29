@@ -1,0 +1,43 @@
+<div class="p-fluid grid max-h-fit">
+    <h4 class="col-12 m-0">{{dto.modul}}</h4>
+
+    <div class="field col-12 md:col-3">
+        <span class="p-float-label">
+            <p-dropdown id="judge1"
+                        [autoDisplayFirst]="false"
+                        [options]="availableJudges"
+                        [(ngModel)]="judge1Id"
+                        optionValue="id"
+                        optionLabel="name"></p-dropdown>
+            <label for="judge1">1. Juror</label>
+        </span>
+    </div>
+
+    <div class="field col-12 md:col-3">
+        <span class="p-float-label">
+            <p-dropdown id="judge2"
+                        [autoDisplayFirst]="false"
+                        [options]="availableJudges"
+                        [(ngModel)]="judge2Id"
+                        optionValue="id"
+                        optionLabel="name"></p-dropdown>
+            <label for="judge2">2. Juror</label>
+        </span>
+    </div>
+
+    <div class="field col-12 md:col-3">
+        <span class="p-float-label">
+            <p-dropdown id="judge3"
+                        [autoDisplayFirst]="false"
+                        [options]="availableJudges"
+                        [(ngModel)]="judge3Id"
+                        optionValue="id"
+                        optionLabel="name"></p-dropdown>
+            <label for="judge3">3. Juror</label>
+        </span>
+    </div>
+
+    <div class="col-3">
+        <p-button label="Speichern" (onClick)="save()" [loading]="saving" [disabled]="!valid"></p-button>
+    </div>
+</div>

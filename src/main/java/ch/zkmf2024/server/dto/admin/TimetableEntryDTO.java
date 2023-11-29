@@ -17,7 +17,7 @@ public record TimetableEntryDTO(@NotNull Long id,
                                 @NotNull LocalTime start,
                                 @NotNull LocalTime end,
                                 @NotNull TimetableEntryType type,
-                                @NotNull String judge1,
-                                @NotNull String judge2,
-                                @NotNull String judge3) {
+                                String judge1,
+                                String judge2,
+                                String judge3) {
 }

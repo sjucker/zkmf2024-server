@@ -9,6 +9,7 @@ import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
 import ch.zkmf2024.server.dto.admin.ErrataDTO;
 import ch.zkmf2024.server.dto.admin.ErrataSendDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
+import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
@@ -266,6 +268,19 @@ public class AdminEndpoint {
         log.info("GET /secured/admin/jury");
 
         return ResponseEntity.ok(judgeService.findAll());
+    }
+
+    @PostMapping("/jury/report/{id}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> createJudgeReports(@PathVariable Long id, @RequestBody JudgeReportCreateDTO dto) {
+        log.info("POST /secured/admin/jury/report/{} {}", id, dto);
+
+        if (!Objects.equals(id, dto.timetableEntryId())) {
+            throw new IllegalArgumentException();
+        }
+
+        judgeService.createReports(id, dto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/timetable")

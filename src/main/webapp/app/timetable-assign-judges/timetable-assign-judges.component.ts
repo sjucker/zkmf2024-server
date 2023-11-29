@@ -1,45 +1,54 @@
 import {Component} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {LocationSelectionDTO, TimetableEntryDTO} from "../rest";
-import {TimetableService} from "../service/timetable.service";
+import {JudgeDTO, TimetableEntryDTO} from "../rest";
+import {JuryService} from "../service/jury.service";
 
-export interface TimetableEntryEditInput {
+export interface TimetableAssignJudgesInput {
     dto: TimetableEntryDTO
 }
 
 @Component({
-    selector: 'app-timetable-entry-edit',
-    templateUrl: './timetable-entry-edit.component.html',
-    styleUrls: ['./timetable-entry-edit.component.sass']
+    selector: 'app-timetable-assign-judges',
+    templateUrl: './timetable-assign-judges.component.html',
+    styleUrls: ['./timetable-assign-judges.component.sass']
 })
-export class TimetableEntryEditComponent {
+export class TimetableAssignJudgesComponent {
 
-    entry!: TimetableEntryDTO;
-    availableLocations: LocationSelectionDTO[] = [];
+    dto!: TimetableEntryDTO;
+    availableJudges: JudgeDTO[] = [];
+
+    judge1Id = 0;
+    judge2Id = 0;
+    judge3Id = 0;
 
     saving = false;
 
-    constructor(private service: TimetableService,
+    constructor(private service: JuryService,
                 private messageService: MessageService,
-                public config: DynamicDialogConfig<TimetableEntryEditInput>,
+                public config: DynamicDialogConfig<TimetableAssignJudgesInput>,
                 public ref: DynamicDialogRef) {
         if (config.data) {
-            this.entry = config.data.dto;
-            this.service.locations(this.entry.type).subscribe({
+            this.dto = config.data.dto;
+            this.service.getAll().subscribe({
                 next: value => {
-                    this.availableLocations = value;
+                    this.availableJudges = value;
                 },
                 error: err => {
                     console.error(err);
                 },
-            })
+            });
         }
+    }
+
+    get valid(): boolean {
+        return this.judge1Id > 0 && this.judge2Id > 0 && this.judge3Id > 0 &&
+            this.judge1Id !== this.judge2Id && this.judge1Id != this.judge3Id && this.judge2Id !== this.judge3Id;
     }
 
     save() {
         this.saving = true;
-        this.service.update(this.entry).subscribe({
+        this.service.createReports(this.dto.id, this.judge1Id, this.judge2Id, this.judge3Id).subscribe({
             next: () => {
                 this.saving = false;
                 this.ref.close();
