@@ -38,23 +38,28 @@ public class LocationRepository {
 
     public List<LocationDTO> findAllByType(LocationType type) {
         return locationDao.fetchByLocationType(LocationLocationType.lookupLiteral(type.name())).stream()
-                          .map(pojo -> new LocationDTO(
-                                  pojo.getId(),
-                                  pojo.getName(),
-                                  pojo.getAddress(),
-                                  pojo.getLatitude(),
-                                  pojo.getLongitude(),
-                                  getGoogleMapsAddress(pojo.getAddress()),
-                                  getGoogleMapsCoordinates(pojo),
-                                  type,
-                                  pojo.getCapacity(),
-                                  pojo.getModules(),
-                                  pojo.getSortOrder(),
-                                  findById(pojo.getEinspiellokalId()).orElse(null),
-                                  findById(pojo.getInstrumentendepotId()).orElse(null),
-                                  findById(pojo.getJuryfeedbackId()).orElse(null)
-                          ))
+                          .map(this::toLocationDTO)
                           .toList();
+    }
+
+    private LocationDTO toLocationDTO(LocationPojo pojo) {
+        return new LocationDTO(
+                pojo.getId(),
+                pojo.getIdentifier(),
+                pojo.getName(),
+                pojo.getAddress(),
+                pojo.getLatitude(),
+                pojo.getLongitude(),
+                getGoogleMapsAddress(pojo.getAddress()),
+                getGoogleMapsCoordinates(pojo),
+                LocationType.valueOf(pojo.getLocationType().getLiteral()),
+                pojo.getCapacity(),
+                pojo.getModules(),
+                pojo.getSortOrder(),
+                findById(pojo.getEinspiellokalId()).orElse(null),
+                findById(pojo.getInstrumentendepotId()).orElse(null),
+                findById(pojo.getJuryfeedbackId()).orElse(null)
+        );
     }
 
     public Optional<LocationDTO> findById(Long locationId) {
@@ -63,27 +68,18 @@ public class LocationRepository {
         }
 
         return locationDao.findOptionalById(locationId)
-                          .map(pojo -> new LocationDTO(
-                                  pojo.getId(),
-                                  pojo.getName(),
-                                  pojo.getAddress(),
-                                  pojo.getLatitude(),
-                                  pojo.getLongitude(),
-                                  getGoogleMapsAddress(pojo.getAddress()),
-                                  getGoogleMapsCoordinates(pojo),
-                                  LocationType.valueOf(pojo.getLocationType().getLiteral()),
-                                  pojo.getCapacity(),
-                                  pojo.getModules(),
-                                  pojo.getSortOrder(),
-                                  findById(pojo.getEinspiellokalId()).orElse(null),
-                                  findById(pojo.getInstrumentendepotId()).orElse(null),
-                                  findById(pojo.getJuryfeedbackId()).orElse(null)
-                          ));
+                          .map(this::toLocationDTO);
+    }
+
+    public Optional<LocationDTO> findByIdentifier(String identifier) {
+        return locationDao.fetchOptionalByIdentifier(identifier)
+                          .map(this::toLocationDTO);
     }
 
     public static LocationDTO toDTO(Record it) {
         return new LocationDTO(
                 it.get(LOCATION.ID),
+                it.get(LOCATION.IDENTIFIER),
                 it.get(LOCATION.NAME),
                 it.get(LOCATION.ADDRESS),
                 it.get(LOCATION.LATITUDE),
@@ -109,5 +105,4 @@ public class LocationRepository {
     private static String getGoogleMapsCoordinates(BigDecimal latitude, BigDecimal longitude) {
         return "http://www.google.com/maps?q=%s,%s".formatted(latitude, longitude);
     }
-
 }
