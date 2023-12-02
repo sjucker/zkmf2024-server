@@ -10,13 +10,13 @@ import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function12;
+import org.jooq.Function13;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row12;
+import org.jooq.Row13;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -113,6 +113,11 @@ public class Location extends TableImpl<LocationRecord> {
      */
     public final TableField<LocationRecord, Integer> SORT_ORDER = createField(DSL.name("sort_order"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.INTEGER)), this, "");
 
+    /**
+     * The column <code>location.identifier</code>.
+     */
+    public final TableField<LocationRecord, String> IDENTIFIER = createField(DSL.name("identifier"), SQLDataType.VARCHAR(255), this, "");
+
     private Location(Name alias, Table<LocationRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -164,6 +169,11 @@ public class Location extends TableImpl<LocationRecord> {
     @Override
     public UniqueKey<LocationRecord> getPrimaryKey() {
         return Keys.PK_LOCATION;
+    }
+
+    @Override
+    public List<UniqueKey<LocationRecord>> getUniqueKeys() {
+        return Arrays.asList(Keys.UQ_LOCATION_IDENTIFIER);
     }
 
     @Override
@@ -248,18 +258,18 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row12 type methods
+    // Row13 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row12<Long, String, String, BigDecimal, BigDecimal, LocationLocationType, String, String, Long, Long, Long, Integer> fieldsRow() {
-        return (Row12) super.fieldsRow();
+    public Row13<Long, String, String, BigDecimal, BigDecimal, LocationLocationType, String, String, Long, Long, Long, Integer, String> fieldsRow() {
+        return (Row13) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function12<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function13<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -267,7 +277,7 @@ public class Location extends TableImpl<LocationRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function12<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function13<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

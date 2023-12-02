@@ -134,6 +134,16 @@ public interface ILocation extends Serializable {
      */
     public Integer getSortOrder();
 
+    /**
+     * Setter for <code>location.identifier</code>.
+     */
+    public void setIdentifier(String value);
+
+    /**
+     * Getter for <code>location.identifier</code>.
+     */
+    public String getIdentifier();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
