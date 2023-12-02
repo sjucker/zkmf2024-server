@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record LocationDTO(@NotNull Long id,
+                          @NotNull String identifier,
                           @NotNull String name,
                           @NotNull String address,
                           @NotNull BigDecimal latitude,

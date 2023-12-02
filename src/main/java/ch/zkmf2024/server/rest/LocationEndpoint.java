@@ -5,6 +5,7 @@ import ch.zkmf2024.server.repository.LocationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +29,12 @@ public class LocationEndpoint {
         log.info("GET /public/location/wettspiel");
 
         return ResponseEntity.ok(locationRepository.findAllByType(WETTSPIELLOKAL));
+    }
+
+    @GetMapping("/{identifier}")
+    public ResponseEntity<LocationDTO> getLocation(@PathVariable String identifier) {
+        log.info("GET /public/location/{}", identifier);
+
+        return ResponseEntity.of(locationRepository.findByIdentifier(identifier));
     }
 }

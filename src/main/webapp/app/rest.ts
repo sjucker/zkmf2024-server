@@ -83,6 +83,7 @@ export interface KontaktDTO extends IsValid {
 
 export interface LocationDTO {
     id: number;
+    identifier: string;
     name: string;
     address: string;
     latitude: number;
