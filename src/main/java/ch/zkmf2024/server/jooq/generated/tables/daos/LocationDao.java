@@ -232,4 +232,33 @@ public class LocationDao extends DAOImpl<LocationRecord, LocationPojo, Long> {
     public List<LocationPojo> fetchBySortOrder(Integer... values) {
         return fetch(Location.LOCATION.SORT_ORDER, values);
     }
+
+    /**
+     * Fetch records that have <code>identifier BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfIdentifier(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Location.LOCATION.IDENTIFIER, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>identifier IN (values)</code>
+     */
+    public List<LocationPojo> fetchByIdentifier(String... values) {
+        return fetch(Location.LOCATION.IDENTIFIER, values);
+    }
+
+    /**
+     * Fetch a unique record that has <code>identifier = value</code>
+     */
+    public LocationPojo fetchOneByIdentifier(String value) {
+        return fetchOne(Location.LOCATION.IDENTIFIER, value);
+    }
+
+    /**
+     * Fetch a unique record that has <code>identifier = value</code>
+     */
+    public Optional<LocationPojo> fetchOptionalByIdentifier(String value) {
+        return fetchOptional(Location.LOCATION.IDENTIFIER, value);
+    }
 }

@@ -28,6 +28,7 @@ public class LocationPojo implements ILocation {
     private Long instrumentendepotId;
     private Long juryfeedbackId;
     private Integer sortOrder;
+    private String identifier;
 
     public LocationPojo() {
     }
@@ -45,6 +46,7 @@ public class LocationPojo implements ILocation {
         this.instrumentendepotId = value.getInstrumentendepotId();
         this.juryfeedbackId = value.getJuryfeedbackId();
         this.sortOrder = value.getSortOrder();
+        this.identifier = value.getIdentifier();
     }
 
     public LocationPojo(
@@ -59,7 +61,8 @@ public class LocationPojo implements ILocation {
             Long einspiellokalId,
             Long instrumentendepotId,
             Long juryfeedbackId,
-            Integer sortOrder
+            Integer sortOrder,
+            String identifier
     ) {
         this.id = id;
         this.name = name;
@@ -73,6 +76,7 @@ public class LocationPojo implements ILocation {
         this.instrumentendepotId = instrumentendepotId;
         this.juryfeedbackId = juryfeedbackId;
         this.sortOrder = sortOrder;
+        this.identifier = identifier;
     }
 
     /**
@@ -267,6 +271,22 @@ public class LocationPojo implements ILocation {
         this.sortOrder = sortOrder;
     }
 
+    /**
+     * Getter for <code>location.identifier</code>.
+     */
+    @Override
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
+    /**
+     * Setter for <code>location.identifier</code>.
+     */
+    @Override
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -336,6 +356,11 @@ public class LocationPojo implements ILocation {
                 return false;
         } else if (!this.sortOrder.equals(other.sortOrder))
             return false;
+        if (this.identifier == null) {
+            if (other.identifier != null)
+                return false;
+        } else if (!this.identifier.equals(other.identifier))
+            return false;
         return true;
     }
 
@@ -355,6 +380,7 @@ public class LocationPojo implements ILocation {
         result = prime * result + ((this.instrumentendepotId == null) ? 0 : this.instrumentendepotId.hashCode());
         result = prime * result + ((this.juryfeedbackId == null) ? 0 : this.juryfeedbackId.hashCode());
         result = prime * result + ((this.sortOrder == null) ? 0 : this.sortOrder.hashCode());
+        result = prime * result + ((this.identifier == null) ? 0 : this.identifier.hashCode());
         return result;
     }
 
@@ -374,6 +400,7 @@ public class LocationPojo implements ILocation {
         sb.append(", ").append(instrumentendepotId);
         sb.append(", ").append(juryfeedbackId);
         sb.append(", ").append(sortOrder);
+        sb.append(", ").append(identifier);
 
         sb.append(")");
         return sb.toString();
@@ -397,6 +424,7 @@ public class LocationPojo implements ILocation {
         setInstrumentendepotId(from.getInstrumentendepotId());
         setJuryfeedbackId(from.getJuryfeedbackId());
         setSortOrder(from.getSortOrder());
+        setIdentifier(from.getIdentifier());
     }
 
     @Override
