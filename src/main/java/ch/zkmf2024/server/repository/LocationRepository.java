@@ -56,6 +56,8 @@ public class LocationRepository {
                 pojo.getCapacity(),
                 pojo.getModules(),
                 pojo.getSortOrder(),
+                pojo.getCloudflareId(),
+                pojo.getKuulaId(),
                 findById(pojo.getEinspiellokalId()).orElse(null),
                 findById(pojo.getInstrumentendepotId()).orElse(null),
                 findById(pojo.getJuryfeedbackId()).orElse(null)
@@ -90,6 +92,8 @@ public class LocationRepository {
                 it.get(LOCATION.CAPACITY),
                 it.get(LOCATION.MODULES),
                 it.get(LOCATION.SORT_ORDER),
+                it.get(LOCATION.CLOUDFLARE_ID),
+                it.get(LOCATION.KUULA_ID),
                 null, null, null
         );
     }

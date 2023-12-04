@@ -10,13 +10,13 @@ import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function13;
+import org.jooq.Function15;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row13;
+import org.jooq.Row15;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -117,6 +117,16 @@ public class Location extends TableImpl<LocationRecord> {
      * The column <code>location.identifier</code>.
      */
     public final TableField<LocationRecord, String> IDENTIFIER = createField(DSL.name("identifier"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>location.cloudflare_id</code>.
+     */
+    public final TableField<LocationRecord, String> CLOUDFLARE_ID = createField(DSL.name("cloudflare_id"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>location.kuula_id</code>.
+     */
+    public final TableField<LocationRecord, String> KUULA_ID = createField(DSL.name("kuula_id"), SQLDataType.VARCHAR(255), this, "");
 
     private Location(Name alias, Table<LocationRecord> aliased) {
         this(alias, aliased, null);
@@ -258,18 +268,18 @@ public class Location extends TableImpl<LocationRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row13 type methods
+    // Row15 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Long, String, String, BigDecimal, BigDecimal, LocationLocationType, String, String, Long, Long, Long, Integer, String> fieldsRow() {
-        return (Row13) super.fieldsRow();
+    public Row15<Long, String, String, BigDecimal, BigDecimal, LocationLocationType, String, String, Long, Long, Long, Integer, String, String, String> fieldsRow() {
+        return (Row15) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function13<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function15<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -277,7 +287,7 @@ public class Location extends TableImpl<LocationRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function13<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function15<? super Long, ? super String, ? super String, ? super BigDecimal, ? super BigDecimal, ? super LocationLocationType, ? super String, ? super String, ? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
