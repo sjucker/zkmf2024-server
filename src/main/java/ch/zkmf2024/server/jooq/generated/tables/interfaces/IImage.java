@@ -72,6 +72,16 @@ public interface IImage extends Serializable {
      */
     public String getType();
 
+    /**
+     * Setter for <code>image.cloudflare_id</code>.
+     */
+    public void setCloudflareId(String value);
+
+    /**
+     * Getter for <code>image.cloudflare_id</code>.
+     */
+    public String getCloudflareId();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

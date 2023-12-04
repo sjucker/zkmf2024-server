@@ -1,0 +1,2 @@
+GET https://api.cloudflare.com/client/v4/accounts/{{cloudflare-account-id}}/images/v1
+Authorization: Bearer {{cloudflare-api-key}}

@@ -7,6 +7,7 @@ import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.tables.Image.IMAGE;
@@ -45,5 +46,9 @@ public class ImageRepository {
 
     public Optional<ImagePojo> findById(Long id) {
         return imageDao.findOptionalById(id);
+    }
+
+    public List<ImagePojo> findAll() {
+        return imageDao.findAll();
     }
 }

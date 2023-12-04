@@ -24,4 +24,6 @@ public class ApplicationProperties {
     private String chatMail;
     private String encodedMasterPassword;
     private boolean overrideRecipient;
+    private String cloudflareAccountId;
+    private String cloudflareApiToken;
 }

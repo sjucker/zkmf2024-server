@@ -141,4 +141,19 @@ public class ImageDao extends DAOImpl<ImageRecord, ImagePojo, Long> {
     public List<ImagePojo> fetchByType(String... values) {
         return fetch(Image.IMAGE.TYPE, values);
     }
+
+    /**
+     * Fetch records that have <code>cloudflare_id BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<ImagePojo> fetchRangeOfCloudflareId(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Image.IMAGE.CLOUDFLARE_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>cloudflare_id IN (values)</code>
+     */
+    public List<ImagePojo> fetchByCloudflareId(String... values) {
+        return fetch(Image.IMAGE.CLOUDFLARE_ID, values);
+    }
 }

@@ -22,6 +22,7 @@ public class ImagePojo implements IImage {
     private String name;
     private LocalDateTime uploadedAt;
     private String type;
+    private String cloudflareId;
 
     public ImagePojo() {
     }
@@ -33,6 +34,7 @@ public class ImagePojo implements IImage {
         this.name = value.getName();
         this.uploadedAt = value.getUploadedAt();
         this.type = value.getType();
+        this.cloudflareId = value.getCloudflareId();
     }
 
     public ImagePojo(
@@ -41,7 +43,8 @@ public class ImagePojo implements IImage {
             byte[] content,
             String name,
             LocalDateTime uploadedAt,
-            String type
+            String type,
+            String cloudflareId
     ) {
         this.id = id;
         this.foreignKey = foreignKey;
@@ -49,6 +52,7 @@ public class ImagePojo implements IImage {
         this.name = name;
         this.uploadedAt = uploadedAt;
         this.type = type;
+        this.cloudflareId = cloudflareId;
     }
 
     /**
@@ -147,6 +151,22 @@ public class ImagePojo implements IImage {
         this.type = type;
     }
 
+    /**
+     * Getter for <code>image.cloudflare_id</code>.
+     */
+    @Override
+    public String getCloudflareId() {
+        return this.cloudflareId;
+    }
+
+    /**
+     * Setter for <code>image.cloudflare_id</code>.
+     */
+    @Override
+    public void setCloudflareId(String cloudflareId) {
+        this.cloudflareId = cloudflareId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -186,6 +206,11 @@ public class ImagePojo implements IImage {
                 return false;
         } else if (!this.type.equals(other.type))
             return false;
+        if (this.cloudflareId == null) {
+            if (other.cloudflareId != null)
+                return false;
+        } else if (!this.cloudflareId.equals(other.cloudflareId))
+            return false;
         return true;
     }
 
@@ -199,6 +224,7 @@ public class ImagePojo implements IImage {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.uploadedAt == null) ? 0 : this.uploadedAt.hashCode());
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+        result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
         return result;
     }
 
@@ -212,6 +238,7 @@ public class ImagePojo implements IImage {
         sb.append(", ").append(name);
         sb.append(", ").append(uploadedAt);
         sb.append(", ").append(type);
+        sb.append(", ").append(cloudflareId);
 
         sb.append(")");
         return sb.toString();
@@ -229,6 +256,7 @@ public class ImagePojo implements IImage {
         setName(from.getName());
         setUploadedAt(from.getUploadedAt());
         setType(from.getType());
+        setCloudflareId(from.getCloudflareId());
     }
 
     @Override
