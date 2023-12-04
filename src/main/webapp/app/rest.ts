@@ -328,8 +328,10 @@ export interface VereinsanmeldungDTO extends IsValid {
 }
 
 export interface VereinsinfoDTO extends IsValid {
-    logoImgId?: string;
-    bildImgId?: string;
+    logoImgId?: number;
+    bildImgId?: number;
+    logoImgCloudflareId?: string;
+    bildImgCloudflareId?: string;
     websiteText?: string;
 }
 

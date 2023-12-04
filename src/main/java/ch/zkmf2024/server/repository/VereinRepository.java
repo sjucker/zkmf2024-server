@@ -343,7 +343,7 @@ public class VereinRepository {
                                             it.get(VEREIN.TAMBOUREN),
                                             it.get(VEREIN.PERKUSSIONSENSEMBLE)
                                     ),
-                                    new VereinsinfoDTO(null, null, ""),
+                                    new VereinsinfoDTO(null, null, null, null, ""),
                                     it.get(VEREIN.CONFIRMED_AT) != null,
                                     programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>()),
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)) == DONE,

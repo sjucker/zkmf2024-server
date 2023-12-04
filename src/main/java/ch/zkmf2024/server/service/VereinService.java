@@ -142,13 +142,8 @@ public class VereinService {
         var praesident = vereinRepository.findKontaktById(verein.getPraesidentKontaktId());
         var direktion = vereinRepository.findKontaktById(verein.getDirektionKontaktId());
 
-        var logoImgId = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO)
-                                       .map(ImagePojo::getCloudflareId)
-                                       .orElse(null);
-
-        var bildImgId = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD)
-                                       .map(ImagePojo::getCloudflareId)
-                                       .orElse(null);
+        var logoImg = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO);
+        var bildImg = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD);
 
         return new VereinDTO(
                 verein.getEmail(),
@@ -157,7 +152,11 @@ public class VereinService {
                 MAPPER.toDTO(praesident),
                 MAPPER.toDTO(direktion),
                 MAPPER.toVereinsanmeldungDTO(verein),
-                new VereinsinfoDTO(logoImgId, bildImgId, verein.getWebsiteText()),
+                new VereinsinfoDTO(logoImg.map(ImagePojo::getId).orElse(null),
+                                   bildImg.map(ImagePojo::getId).orElse(null),
+                                   logoImg.map(ImagePojo::getCloudflareId).orElse(null),
+                                   bildImg.map(ImagePojo::getCloudflareId).orElse(null),
+                                   verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
                 getProgramme(verein.getId()),
                 // only used for export, not important here

@@ -3,8 +3,10 @@ package ch.zkmf2024.server.dto;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public record VereinsinfoDTO(
-        String logoImgId,
-        String bildImgId,
+        Long logoImgId,
+        Long bildImgId,
+        String logoImgCloudflareId,
+        String bildImgCloudflareId,
         String websiteText
 ) implements IsValid {
     @Override
