@@ -14,6 +14,7 @@ public class ApplicationProperties {
     private String jwtSecret;
     private String mjmlAppId;
     private String mjmlPrivateKey;
+    private String baseUrl;
     private String baseUrlVereine;
     private String helferMail;
     private String sekretariatMail;

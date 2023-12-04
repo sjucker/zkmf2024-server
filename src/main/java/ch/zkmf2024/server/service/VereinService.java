@@ -73,6 +73,7 @@ public class VereinService {
     private final ErrataRepository errataRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final CloudflareService cloudflareService;
     private final DSLContext jooqDsl;
 
     public VereinService(UserRepository userRepository,
@@ -82,6 +83,7 @@ public class VereinService {
                          ErrataRepository errataRepository,
                          PasswordEncoder passwordEncoder,
                          MailService mailService,
+                         CloudflareService cloudflareService,
                          DSLContext jooqDsl) {
         this.userRepository = userRepository;
         this.vereinRepository = vereinRepository;
@@ -90,6 +92,7 @@ public class VereinService {
         this.errataRepository = errataRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
+        this.cloudflareService = cloudflareService;
         this.jooqDsl = jooqDsl;
     }
 
@@ -484,6 +487,7 @@ public class VereinService {
                 pojo.setContent(file.getBytes());
                 pojo.setUploadedAt(now());
                 imageRepository.update(pojo);
+                uploadToCloudflare(pojo);
             } else {
                 var pojo = new ImagePojo();
                 pojo.setForeignKey(vereinId);
@@ -492,8 +496,16 @@ public class VereinService {
                 pojo.setContent(file.getBytes());
                 pojo.setUploadedAt(now());
                 imageRepository.insert(pojo);
+                uploadToCloudflare(pojo);
             }
         }
+    }
+
+    private void uploadToCloudflare(ImagePojo pojo) {
+        cloudflareService.upload(pojo).ifPresent(cloudflareId -> {
+            pojo.setCloudflareId(cloudflareId);
+            imageRepository.update(pojo);
+        });
     }
 
     public void forgotPassword(String email) {
@@ -535,6 +547,7 @@ public class VereinService {
         var verein = vereinRepository.findByEmail(email).orElseThrow();
 
         if (Objects.equals(verein.getId(), image.getForeignKey())) {
+            cloudflareService.delete(image);
             imageRepository.delete(image);
         } else {
             log.error("user with email '{}' tried to delete image with id {}, but does not belong to them!", email, id);

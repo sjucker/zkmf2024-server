@@ -2,7 +2,6 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.configuration.ApplicationProperties;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
-import ch.zkmf2024.server.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 
@@ -21,25 +21,18 @@ public class CloudflareService {
 
     private final ApplicationProperties applicationProperties;
     private final WebClient webClient;
-    private final ImageRepository imageRepository;
 
-    public CloudflareService(ApplicationProperties applicationProperties,
-                             ImageRepository imageRepository) {
+    public CloudflareService(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
         this.webClient = WebClient.create(BASE_URL.formatted(applicationProperties.getCloudflareAccountId()));
-        this.imageRepository = imageRepository;
     }
 
-    public void migrateToCloudflare() {
-        imageRepository.findAll().stream()
-                       .filter(imagePojo -> imagePojo.getCloudflareId() == null)
-                       .forEach(this::upload);
-    }
-
-    private void upload(ImagePojo imagePojo) {
+    public Optional<String> upload(ImagePojo imagePojo) {
         try {
+            log.info("uploading image ({}) to Cloudflare", imagePojo);
             var builder = new MultipartBodyBuilder();
-            builder.part("url", "https://zkmf2024-server.herokuapp.com/public/image/%d".formatted(imagePojo.getId()));
+            builder.part("url", "%s/public/image/%d".formatted(applicationProperties.getBaseUrl(),
+                                                               imagePojo.getId()));
 
             var response = webClient.post()
                                     .headers(headers -> headers.setBearerAuth(applicationProperties.getCloudflareApiToken()))
@@ -47,11 +40,26 @@ public class CloudflareService {
                                     .body(BodyInserters.fromMultipartData(builder.build()))
                                     .retrieve()
                                     .bodyToMono(Response.class)
-                                    .block();
-            imagePojo.setCloudflareId(response.result().id());
-            imageRepository.update(imagePojo);
+                                    .blockOptional();
+
+            return response.map(r -> r.result.id());
         } catch (WebClientException e) {
             log.error("Upload to Cloudflare failed", e);
+            return Optional.empty();
+        }
+    }
+
+    public void delete(ImagePojo imagePojo) {
+        try {
+            log.info("deleting image ({}) from Cloudflare", imagePojo.getCloudflareId());
+            webClient.delete()
+                     .uri("/%s".formatted(imagePojo.getCloudflareId()))
+                     .headers(headers -> headers.setBearerAuth(applicationProperties.getCloudflareApiToken()))
+                     .retrieve()
+                     .bodyToMono(Response.class)
+                     .block();
+        } catch (WebClientException e) {
+            log.error("Delete from Cloudflare failed", e);
         }
     }
 
