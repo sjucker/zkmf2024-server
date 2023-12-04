@@ -144,6 +144,26 @@ public interface ILocation extends Serializable {
      */
     public String getIdentifier();
 
+    /**
+     * Setter for <code>location.cloudflare_id</code>.
+     */
+    public void setCloudflareId(String value);
+
+    /**
+     * Getter for <code>location.cloudflare_id</code>.
+     */
+    public String getCloudflareId();
+
+    /**
+     * Setter for <code>location.kuula_id</code>.
+     */
+    public void setKuulaId(String value);
+
+    /**
+     * Getter for <code>location.kuula_id</code>.
+     */
+    public String getKuulaId();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

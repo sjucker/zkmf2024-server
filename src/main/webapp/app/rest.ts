@@ -94,6 +94,8 @@ export interface LocationDTO {
     capacity: string;
     modules: string;
     sortOrder: number;
+    cloudflareId?: string;
+    kuulaId?: string;
     einspiellokal?: LocationDTO;
     instrumentendepot?: LocationDTO;
     juryfeedback?: LocationDTO;

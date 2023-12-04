@@ -261,4 +261,34 @@ public class LocationDao extends DAOImpl<LocationRecord, LocationPojo, Long> {
     public Optional<LocationPojo> fetchOptionalByIdentifier(String value) {
         return fetchOptional(Location.LOCATION.IDENTIFIER, value);
     }
+
+    /**
+     * Fetch records that have <code>cloudflare_id BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfCloudflareId(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Location.LOCATION.CLOUDFLARE_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>cloudflare_id IN (values)</code>
+     */
+    public List<LocationPojo> fetchByCloudflareId(String... values) {
+        return fetch(Location.LOCATION.CLOUDFLARE_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>kuula_id BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfKuulaId(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Location.LOCATION.KUULA_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>kuula_id IN (values)</code>
+     */
+    public List<LocationPojo> fetchByKuulaId(String... values) {
+        return fetch(Location.LOCATION.KUULA_ID, values);
+    }
 }

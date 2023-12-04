@@ -15,6 +15,8 @@ public record LocationDTO(@NotNull Long id,
                           @NotNull String capacity,
                           @NotNull String modules,
                           @NotNull Integer sortOrder,
+                          String cloudflareId,
+                          String kuulaId,
                           LocationDTO einspiellokal,
                           LocationDTO instrumentendepot,
                           LocationDTO juryfeedback) {

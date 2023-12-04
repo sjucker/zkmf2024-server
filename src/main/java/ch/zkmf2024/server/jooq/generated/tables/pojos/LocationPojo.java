@@ -29,6 +29,8 @@ public class LocationPojo implements ILocation {
     private Long juryfeedbackId;
     private Integer sortOrder;
     private String identifier;
+    private String cloudflareId;
+    private String kuulaId;
 
     public LocationPojo() {
     }
@@ -47,6 +49,8 @@ public class LocationPojo implements ILocation {
         this.juryfeedbackId = value.getJuryfeedbackId();
         this.sortOrder = value.getSortOrder();
         this.identifier = value.getIdentifier();
+        this.cloudflareId = value.getCloudflareId();
+        this.kuulaId = value.getKuulaId();
     }
 
     public LocationPojo(
@@ -62,7 +66,9 @@ public class LocationPojo implements ILocation {
             Long instrumentendepotId,
             Long juryfeedbackId,
             Integer sortOrder,
-            String identifier
+            String identifier,
+            String cloudflareId,
+            String kuulaId
     ) {
         this.id = id;
         this.name = name;
@@ -77,6 +83,8 @@ public class LocationPojo implements ILocation {
         this.juryfeedbackId = juryfeedbackId;
         this.sortOrder = sortOrder;
         this.identifier = identifier;
+        this.cloudflareId = cloudflareId;
+        this.kuulaId = kuulaId;
     }
 
     /**
@@ -287,6 +295,38 @@ public class LocationPojo implements ILocation {
         this.identifier = identifier;
     }
 
+    /**
+     * Getter for <code>location.cloudflare_id</code>.
+     */
+    @Override
+    public String getCloudflareId() {
+        return this.cloudflareId;
+    }
+
+    /**
+     * Setter for <code>location.cloudflare_id</code>.
+     */
+    @Override
+    public void setCloudflareId(String cloudflareId) {
+        this.cloudflareId = cloudflareId;
+    }
+
+    /**
+     * Getter for <code>location.kuula_id</code>.
+     */
+    @Override
+    public String getKuulaId() {
+        return this.kuulaId;
+    }
+
+    /**
+     * Setter for <code>location.kuula_id</code>.
+     */
+    @Override
+    public void setKuulaId(String kuulaId) {
+        this.kuulaId = kuulaId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -361,6 +401,16 @@ public class LocationPojo implements ILocation {
                 return false;
         } else if (!this.identifier.equals(other.identifier))
             return false;
+        if (this.cloudflareId == null) {
+            if (other.cloudflareId != null)
+                return false;
+        } else if (!this.cloudflareId.equals(other.cloudflareId))
+            return false;
+        if (this.kuulaId == null) {
+            if (other.kuulaId != null)
+                return false;
+        } else if (!this.kuulaId.equals(other.kuulaId))
+            return false;
         return true;
     }
 
@@ -381,6 +431,8 @@ public class LocationPojo implements ILocation {
         result = prime * result + ((this.juryfeedbackId == null) ? 0 : this.juryfeedbackId.hashCode());
         result = prime * result + ((this.sortOrder == null) ? 0 : this.sortOrder.hashCode());
         result = prime * result + ((this.identifier == null) ? 0 : this.identifier.hashCode());
+        result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
+        result = prime * result + ((this.kuulaId == null) ? 0 : this.kuulaId.hashCode());
         return result;
     }
 
@@ -401,6 +453,8 @@ public class LocationPojo implements ILocation {
         sb.append(", ").append(juryfeedbackId);
         sb.append(", ").append(sortOrder);
         sb.append(", ").append(identifier);
+        sb.append(", ").append(cloudflareId);
+        sb.append(", ").append(kuulaId);
 
         sb.append(")");
         return sb.toString();
@@ -425,6 +479,8 @@ public class LocationPojo implements ILocation {
         setJuryfeedbackId(from.getJuryfeedbackId());
         setSortOrder(from.getSortOrder());
         setIdentifier(from.getIdentifier());
+        setCloudflareId(from.getCloudflareId());
+        setKuulaId(from.getKuulaId());
     }
 
     @Override
