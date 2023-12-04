@@ -129,8 +129,8 @@ public class VereinRepository {
                               VEREIN.HOMEPAGE,
                               VEREIN.FACEBOOK,
                               VEREIN.INSTAGRAM,
-                              vereinLogo.ID,
-                              vereinBild.ID
+                              vereinLogo.CLOUDFLARE_ID,
+                              vereinBild.CLOUDFLARE_ID
                       )
                       .from(VEREIN)
                       .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
@@ -141,8 +141,8 @@ public class VereinRepository {
                               it.get(VEREIN.ID),
                               it.get(VEREIN.IDENTIFIER),
                               it.get(VEREIN.VEREINSNAME),
-                              it.get(vereinLogo.ID),
-                              it.get(vereinBild.ID),
+                              it.get(vereinLogo.CLOUDFLARE_ID),
+                              it.get(vereinBild.CLOUDFLARE_ID),
                               it.get(VEREIN.HOMEPAGE),
                               it.get(VEREIN.FACEBOOK),
                               it.get(VEREIN.INSTAGRAM),
@@ -160,8 +160,8 @@ public class VereinRepository {
                               VEREIN.HOMEPAGE,
                               VEREIN.FACEBOOK,
                               VEREIN.INSTAGRAM,
-                              vereinLogo.ID,
-                              vereinBild.ID
+                              vereinLogo.CLOUDFLARE_ID,
+                              vereinBild.CLOUDFLARE_ID
                       )
                       .from(VEREIN)
                       .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
@@ -173,8 +173,8 @@ public class VereinRepository {
                       .fetchOptional(it -> new VereinPresentationDTO(
                               it.get(VEREIN.ID),
                               it.get(VEREIN.VEREINSNAME),
-                              it.get(vereinLogo.ID),
-                              it.get(vereinBild.ID),
+                              it.get(vereinLogo.CLOUDFLARE_ID),
+                              it.get(vereinBild.CLOUDFLARE_ID),
                               it.get(VEREIN.HOMEPAGE),
                               it.get(VEREIN.FACEBOOK),
                               it.get(VEREIN.INSTAGRAM),
