@@ -143,11 +143,11 @@ public class VereinService {
         var direktion = vereinRepository.findKontaktById(verein.getDirektionKontaktId());
 
         var logoImgId = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO)
-                                       .map(ImagePojo::getId)
+                                       .map(ImagePojo::getCloudflareId)
                                        .orElse(null);
 
         var bildImgId = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD)
-                                       .map(ImagePojo::getId)
+                                       .map(ImagePojo::getCloudflareId)
                                        .orElse(null);
 
         return new VereinDTO(

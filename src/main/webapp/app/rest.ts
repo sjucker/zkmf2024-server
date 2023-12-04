@@ -208,8 +208,8 @@ export interface VereinDTO {
     messages: VereinMessageDTO[];
     errata: VereinErrataDTO[];
     programmUpdated: boolean;
-    phase2Status: PhaseStatus;
     phase1Status: PhaseStatus;
+    phase2Status: PhaseStatus;
 }
 
 export interface VereinMessageDTO {
@@ -328,8 +328,8 @@ export interface VereinsanmeldungDTO extends IsValid {
 }
 
 export interface VereinsinfoDTO extends IsValid {
-    logoImgId?: number;
-    bildImgId?: number;
+    logoImgId?: string;
+    bildImgId?: string;
     websiteText?: string;
 }
 

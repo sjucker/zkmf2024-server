@@ -38,11 +38,11 @@ export class VereinDetailComponent {
     }
 
     get logoImgSrc(): string {
-        return `${environment.baseUrl}/public/image/${this.verein?.info.logoImgId}`;
+        return `${environment.imageDeliveryUrl}${this.verein?.info.logoImgId}/public`;
     }
 
     get bildImgSrc(): string {
-        return `${environment.baseUrl}/public/image/${this.verein?.info.bildImgId}`;
+        return `${environment.imageDeliveryUrl}${this.verein?.info.bildImgId}/public`;
     }
 
     isModulAB(programm: VereinProgrammDTO): boolean {
