@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.zkmf2024</groupId>
@@ -14,23 +14,22 @@
     <name>server</name>
     <description>ZKMF 2024 Server</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
 
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jjwt.version>0.11.5</jjwt.version>
-        <poi.version>5.2.4</poi.version>
+        <poi.version>5.2.5</poi.version>
 
-        <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>3.2.1263</typescript-generator-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <flyway-maven-plugin.version>9.22.3</flyway-maven-plugin.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
 
-        <nodeVersion>v18.18.2</nodeVersion>
-        <npmVersion>10.2.1</npmVersion>
+        <nodeVersion>v20.10.0</nodeVersion>
+        <npmVersion>10.2.3</npmVersion>
 
         <!-- start local DB using src/main/docker/postgres.yml  -->
         <db.url>jdbc:postgresql://localhost:5432/zkmf2024</db.url>
@@ -329,7 +328,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flyway-maven-plugin.version}</version>
+                <version>${flyway.version}</version>
                 <configuration>
                     <url>${db.url}</url>
                     <user>${db.user}</user>

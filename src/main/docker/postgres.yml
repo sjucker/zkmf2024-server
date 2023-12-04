@@ -2,7 +2,7 @@ version: '3.8s'
 
 services:
   zkmf2024-db:
-    image: postgres:15.4
+    image: postgres:15.5
     environment:
       - POSTGRES_USER=zkmf2024
       - POSTGRES_PASSWORD=zkmf2024
