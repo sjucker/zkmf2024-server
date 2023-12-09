@@ -14,6 +14,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
+import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
@@ -36,6 +37,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.KontaktRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.NewsletterRecipientRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ProgrammVorgabenRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.SponsorRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.SurveyAnswerRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.TitelRecord;
@@ -57,7 +59,7 @@ import org.jooq.impl.Internal;
  * A class modelling foreign key relationships and constraints of tables in the
  * default schema.
  */
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Keys {
 
     // -------------------------------------------------------------------------
@@ -81,6 +83,7 @@ public class Keys {
     public static final UniqueKey<LocationRecord> UQ_LOCATION_IDENTIFIER = Internal.createUniqueKey(Location.LOCATION, DSL.name("uq_location_identifier"), new TableField[]{Location.LOCATION.IDENTIFIER}, true);
     public static final UniqueKey<NewsletterRecipientRecord> PK_NEWSLETTER_RECIPIENT = Internal.createUniqueKey(NewsletterRecipient.NEWSLETTER_RECIPIENT, DSL.name("pk_newsletter_recipient"), new TableField[]{NewsletterRecipient.NEWSLETTER_RECIPIENT.EMAIL}, true);
     public static final UniqueKey<ProgrammVorgabenRecord> PK_PROGRAMM_VORGABEN = Internal.createUniqueKey(ProgrammVorgaben.PROGRAMM_VORGABEN, DSL.name("pk_programm_vorgaben"), new TableField[]{ProgrammVorgaben.PROGRAMM_VORGABEN.MODUL, ProgrammVorgaben.PROGRAMM_VORGABEN.KLASSE, ProgrammVorgaben.PROGRAMM_VORGABEN.BESETZUNG}, true);
+    public static final UniqueKey<SponsorRecord> PK_SPONSOR = Internal.createUniqueKey(Sponsor.SPONSOR, DSL.name("pk_sponsor"), new TableField[]{Sponsor.SPONSOR.ID}, true);
     public static final UniqueKey<SurveyAnswerRecord> PK_SURVEY_ANSWER = Internal.createUniqueKey(SurveyAnswer.SURVEY_ANSWER, DSL.name("pk_survey_answer"), new TableField[]{SurveyAnswer.SURVEY_ANSWER.ID}, true);
     public static final UniqueKey<TimetableEntryRecord> PK_TIMETABLE_ENTRY = Internal.createUniqueKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("pk_timetable_entry"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
     public static final UniqueKey<TimetableEntryRecord> UQ_TIMETABLE_ENTRY = Internal.createUniqueKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("uq_timetable_entry"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN, TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM, TimetableEntry.TIMETABLE_ENTRY.ENTRY_TYPE}, true);
