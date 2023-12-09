@@ -160,6 +160,20 @@ export interface ResetPasswordRequestDTO {
     newPassword: string;
 }
 
+export interface SponsorDTO {
+    name: string;
+    cloudflareId: string;
+    url?: string;
+}
+
+export interface SponsoringDTO {
+    premium: SponsorDTO[];
+    deluxe: SponsorDTO[];
+    sponsor: SponsorDTO[];
+    musikfan: SponsorDTO[];
+    goenner: SponsorDTO[];
+}
+
 export interface TimetableDayOverviewDTO {
     day: string;
     entries: TimetableOverviewEntryDTO[];
