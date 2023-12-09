@@ -9,10 +9,18 @@ class ValidationUtilTest {
     @Test
     void isValidEmail() {
         assertThat(ValidationUtil.isValidEmail(null)).isFalse();
-        assertThat(ValidationUtil.isValidEmail("")).isFalse();
         assertThat(ValidationUtil.isValidEmail("null")).isFalse();
+        assertThat(ValidationUtil.isValidEmail("")).isFalse();
+        assertThat(ValidationUtil.isValidEmail("@")).isFalse();
+        assertThat(ValidationUtil.isValidEmail(" @ ")).isFalse();
+        assertThat(ValidationUtil.isValidEmail("@.com")).isFalse();
+        assertThat(ValidationUtil.isValidEmail("@test.com")).isFalse();
         assertThat(ValidationUtil.isValidEmail("test.com")).isFalse();
+        assertThat(ValidationUtil.isValidEmail("test test@test.com")).isFalse();
         assertThat(ValidationUtil.isValidEmail("test@test.com")).isTrue();
+        assertThat(ValidationUtil.isValidEmail("test-test@test.com")).isTrue();
+        assertThat(ValidationUtil.isValidEmail("test.test@test.com")).isTrue();
+        assertThat(ValidationUtil.isValidEmail("test.test+test@test.com")).isTrue();
     }
 
 }

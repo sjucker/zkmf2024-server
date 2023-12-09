@@ -7,7 +7,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public final class ValidationUtil {
 
     // simple Email verification, just check for the existence of an @
-    private static final Pattern emailPattern = Pattern.compile("^(.+)@(\\S+)$");
+    private static final Pattern emailPattern = Pattern.compile("^(\\S+)@(\\S+)$");
 
     private ValidationUtil() {
     }
