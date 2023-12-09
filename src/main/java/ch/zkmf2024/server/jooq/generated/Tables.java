@@ -14,6 +14,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
+import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
@@ -29,7 +30,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 /**
  * Convenience access to all tables in the default schema.
  */
-@SuppressWarnings({"all", "unchecked", "rawtypes"})
+@SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Tables {
 
     /**
@@ -86,6 +87,11 @@ public class Tables {
      * The table <code>programm_vorgaben</code>.
      */
     public static final ProgrammVorgaben PROGRAMM_VORGABEN = ProgrammVorgaben.PROGRAMM_VORGABEN;
+
+    /**
+     * The table <code>sponsor</code>.
+     */
+    public static final Sponsor SPONSOR = Sponsor.SPONSOR;
 
     /**
      * The table <code>survey_answer</code>.
