@@ -167,6 +167,7 @@ export interface SponsorDTO {
 }
 
 export interface SponsoringDTO {
+    hauptsponsor: SponsorDTO[];
     premium: SponsorDTO[];
     deluxe: SponsorDTO[];
     sponsor: SponsorDTO[];

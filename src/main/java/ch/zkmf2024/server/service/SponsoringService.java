@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static ch.zkmf2024.server.dto.SponsorType.DELUXE_PARTNER;
 import static ch.zkmf2024.server.dto.SponsorType.GOENNER;
+import static ch.zkmf2024.server.dto.SponsorType.HAUPTSPONSOR;
 import static ch.zkmf2024.server.dto.SponsorType.MUSIKFAN;
 import static ch.zkmf2024.server.dto.SponsorType.PREMIUM_PARTNER;
 import static ch.zkmf2024.server.dto.SponsorType.SPONSOR;
@@ -31,6 +32,7 @@ public class SponsoringService {
         var allPerType = sponsoringRepository.findAllPerType();
 
         return new SponsoringDTO(
+                shuffle(allPerType, HAUPTSPONSOR),
                 shuffle(allPerType, PREMIUM_PARTNER),
                 shuffle(allPerType, DELUXE_PARTNER),
                 shuffle(allPerType, SPONSOR, 30),
