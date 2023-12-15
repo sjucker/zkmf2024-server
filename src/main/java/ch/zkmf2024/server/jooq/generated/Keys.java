@@ -86,7 +86,6 @@ public class Keys {
     public static final UniqueKey<SponsorRecord> PK_SPONSOR = Internal.createUniqueKey(Sponsor.SPONSOR, DSL.name("pk_sponsor"), new TableField[]{Sponsor.SPONSOR.ID}, true);
     public static final UniqueKey<SurveyAnswerRecord> PK_SURVEY_ANSWER = Internal.createUniqueKey(SurveyAnswer.SURVEY_ANSWER, DSL.name("pk_survey_answer"), new TableField[]{SurveyAnswer.SURVEY_ANSWER.ID}, true);
     public static final UniqueKey<TimetableEntryRecord> PK_TIMETABLE_ENTRY = Internal.createUniqueKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("pk_timetable_entry"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
-    public static final UniqueKey<TimetableEntryRecord> UQ_TIMETABLE_ENTRY = Internal.createUniqueKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("uq_timetable_entry"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN, TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM, TimetableEntry.TIMETABLE_ENTRY.ENTRY_TYPE}, true);
     public static final UniqueKey<TitelRecord> PK_TITEL = Internal.createUniqueKey(Titel.TITEL, DSL.name("pk_titel"), new TableField[]{Titel.TITEL.ID}, true);
     public static final UniqueKey<VereinRecord> PK_VEREIN = Internal.createUniqueKey(Verein.VEREIN, DSL.name("pk_verein"), new TableField[]{Verein.VEREIN.ID}, true);
     public static final UniqueKey<VereinRecord> UQ_VEREIN_IDENTIFIER = Internal.createUniqueKey(Verein.VEREIN, DSL.name("uq_verein_identifier"), new TableField[]{Verein.VEREIN.IDENTIFIER}, true);

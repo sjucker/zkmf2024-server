@@ -148,11 +148,6 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
     }
 
     @Override
-    public List<UniqueKey<TimetableEntryRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.UQ_TIMETABLE_ENTRY);
-    }
-
-    @Override
     public List<ForeignKey<TimetableEntryRecord, ?>> getReferences() {
         return Arrays.asList(Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION);
     }
