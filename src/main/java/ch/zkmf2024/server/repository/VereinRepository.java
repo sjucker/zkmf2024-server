@@ -192,6 +192,7 @@ public class VereinRepository {
                               TIMETABLE_ENTRY.FK_VEREIN.eq(id),
                               TIMETABLE_ENTRY.ENTRY_TYPE.in(TimetableEntryType.WETTSPIEL, TimetableEntryType.PLATZKONZERT, TimetableEntryType.MARSCHMUSIK)
                       )
+                      .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
                       .fetch(it -> new VereinTimetableEntryDTO(
                               getCompetition(it),
                               LocationRepository.toDTO(it),
