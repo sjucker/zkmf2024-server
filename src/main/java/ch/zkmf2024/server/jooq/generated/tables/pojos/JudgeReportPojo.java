@@ -21,6 +21,7 @@ public class JudgeReportPojo implements IJudgeReport {
     private Integer score;
     private String status;
     private LocalDateTime finishedAt;
+    private Boolean ratingFixed;
 
     public JudgeReportPojo() {
     }
@@ -32,6 +33,7 @@ public class JudgeReportPojo implements IJudgeReport {
         this.score = value.getScore();
         this.status = value.getStatus();
         this.finishedAt = value.getFinishedAt();
+        this.ratingFixed = value.getRatingFixed();
     }
 
     public JudgeReportPojo(
@@ -40,7 +42,8 @@ public class JudgeReportPojo implements IJudgeReport {
             Long fkTimetableEntry,
             Integer score,
             String status,
-            LocalDateTime finishedAt
+            LocalDateTime finishedAt,
+            Boolean ratingFixed
     ) {
         this.id = id;
         this.fkJudge = fkJudge;
@@ -48,6 +51,7 @@ public class JudgeReportPojo implements IJudgeReport {
         this.score = score;
         this.status = status;
         this.finishedAt = finishedAt;
+        this.ratingFixed = ratingFixed;
     }
 
     /**
@@ -146,6 +150,22 @@ public class JudgeReportPojo implements IJudgeReport {
         this.finishedAt = finishedAt;
     }
 
+    /**
+     * Getter for <code>judge_report.rating_fixed</code>.
+     */
+    @Override
+    public Boolean getRatingFixed() {
+        return this.ratingFixed;
+    }
+
+    /**
+     * Setter for <code>judge_report.rating_fixed</code>.
+     */
+    @Override
+    public void setRatingFixed(Boolean ratingFixed) {
+        this.ratingFixed = ratingFixed;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -185,6 +205,11 @@ public class JudgeReportPojo implements IJudgeReport {
                 return false;
         } else if (!this.finishedAt.equals(other.finishedAt))
             return false;
+        if (this.ratingFixed == null) {
+            if (other.ratingFixed != null)
+                return false;
+        } else if (!this.ratingFixed.equals(other.ratingFixed))
+            return false;
         return true;
     }
 
@@ -198,6 +223,7 @@ public class JudgeReportPojo implements IJudgeReport {
         result = prime * result + ((this.score == null) ? 0 : this.score.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.finishedAt == null) ? 0 : this.finishedAt.hashCode());
+        result = prime * result + ((this.ratingFixed == null) ? 0 : this.ratingFixed.hashCode());
         return result;
     }
 
@@ -211,6 +237,7 @@ public class JudgeReportPojo implements IJudgeReport {
         sb.append(", ").append(score);
         sb.append(", ").append(status);
         sb.append(", ").append(finishedAt);
+        sb.append(", ").append(ratingFixed);
 
         sb.append(")");
         return sb.toString();
@@ -228,6 +255,7 @@ public class JudgeReportPojo implements IJudgeReport {
         setScore(from.getScore());
         setStatus(from.getStatus());
         setFinishedAt(from.getFinishedAt());
+        setRatingFixed(from.getRatingFixed());
     }
 
     @Override

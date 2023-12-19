@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.Besetzung;
+import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportCategory;
 import ch.zkmf2024.server.dto.JudgeReportCategoryRating;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
@@ -26,9 +27,11 @@ import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.JudgeReportCategoryRating.NEUTRAL;
@@ -44,6 +47,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
+import static java.math.RoundingMode.HALF_UP;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
@@ -147,6 +151,7 @@ public class JudgeRepository {
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::maxDurationInSeconds).orElse(null),
                                   it.get(JUDGE_REPORT.SCORE),
+                                  it.get(JUDGE_REPORT.RATING_FIXED),
                                   JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
                                   findTitles(judgeId, reportId),
                                   findOverallRatings(reportId, modul)
@@ -303,11 +308,13 @@ public class JudgeRepository {
                       .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
                       .values().stream()
                       .map(values -> {
+                          // TODO does not work for marschmusik, there are 4 judges
                           var record1 = values.get(0);
                           var record2 = values.get(1);
                           var record3 = values.get(2);
 
                           return new JudgeReportSummaryDTO(
+                                  record1.get(VEREIN_PROGRAMM.ID),
                                   Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
                                   Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
                                   Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
@@ -318,10 +325,14 @@ public class JudgeRepository {
                                                 it.get(JUDGE_REPORT.ID),
                                                 it.get(JUDGE.NAME),
                                                 it.get(JUDGE_REPORT.SCORE),
-                                                JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS))
+                                                it.get(JUDGE_REPORT.RATING_FIXED),
+                                                JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)) == DONE
                                         ))
                                         .toList(),
-                                  isDone(record1, record2, record3)
+                                  isDone(record1, record2, record3),
+                                  record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT) != null,
+                                  record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY),
+                                  record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT)
 
                           );
                       })
@@ -335,13 +346,53 @@ public class JudgeRepository {
                 JudgeReportStatus.valueOf(record3.get(JUDGE_REPORT.STATUS)) == DONE;
     }
 
-    private Integer overallScore(Record record1, Record record2, Record record3) {
+    private BigDecimal overallScore(Record record1, Record record2, Record record3) {
         var score1 = record1.get(JUDGE_REPORT.SCORE);
         var score2 = record2.get(JUDGE_REPORT.SCORE);
         var score3 = record3.get(JUDGE_REPORT.SCORE);
         if (score1 != null && score2 != null && score3 != null) {
-            return (score1 + score2 + score3) / 3;
+            return BigDecimal.valueOf(score1).add(BigDecimal.valueOf(score2)).add(BigDecimal.valueOf(score3)).divide(BigDecimal.valueOf(3), 2, HALF_UP);
         }
         return null;
+    }
+
+    public List<JudgeRankingEntryDTO> getRanking(Long reportId) {
+        var modul = jooqDsl.select(VEREIN_PROGRAMM.MODUL,
+                                   VEREIN_PROGRAMM.KLASSE,
+                                   VEREIN_PROGRAMM.BESETZUNG)
+                           .from(JUDGE_REPORT)
+                           .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
+                           .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                           .where(JUDGE_REPORT.ID.eq(reportId))
+                           .fetchSingle();
+
+        return jooqDsl.select(TIMETABLE_ENTRY.ID,
+                              VEREIN.VEREINSNAME,
+                              JUDGE_REPORT.SCORE)
+                      .from(JUDGE_REPORT)
+                      .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
+                      .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                      .where(VEREIN_PROGRAMM.MODUL.eq(modul.get(VEREIN_PROGRAMM.MODUL)),
+                             VEREIN_PROGRAMM.KLASSE.eq(modul.get(VEREIN_PROGRAMM.KLASSE)),
+                             VEREIN_PROGRAMM.BESETZUNG.eq(modul.get(VEREIN_PROGRAMM.BESETZUNG)))
+                      .stream()
+                      .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
+                      .values().stream()
+                      .map(values -> {
+                          // TODO does not work for marschmusik, there are 4 judges
+                          var record1 = values.get(0);
+                          var record2 = values.get(1);
+                          var record3 = values.get(2);
+                          var overallScore = overallScore(record1, record2, record3);
+                          if (overallScore != null) {
+                              return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore);
+                          } else {
+                              return null;
+                          }
+                      })
+                      .filter(Objects::nonNull)
+                      .sorted(comparing(JudgeRankingEntryDTO::score).reversed())
+                      .toList();
     }
 }

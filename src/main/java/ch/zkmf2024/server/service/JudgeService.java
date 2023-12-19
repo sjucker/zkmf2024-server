@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
@@ -15,6 +16,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.JudgeRepository;
 import ch.zkmf2024.server.repository.UserRepository;
+import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,13 +36,19 @@ public class JudgeService {
 
     private final JudgeRepository judgeRepository;
     private final UserRepository userRepository;
+    private final VereinRepository vereinRepository;
+    private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
     public JudgeService(JudgeRepository judgeRepository,
                         UserRepository userRepository,
+                        VereinRepository vereinRepository,
+                        MailService mailService,
                         PasswordEncoder passwordEncoder) {
         this.judgeRepository = judgeRepository;
         this.userRepository = userRepository;
+        this.vereinRepository = vereinRepository;
+        this.mailService = mailService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -98,6 +106,20 @@ public class JudgeService {
         }
     }
 
+    public void fixRating(String username, Long reportId) {
+        if (!judgeRepository.exists(username, reportId)) {
+            throw new IllegalArgumentException("no report exists for %s and id %d".formatted(username, reportId));
+        }
+
+        var reportPojo = judgeRepository.findReportById(reportId);
+        if (reportPojo.getRatingFixed()) {
+            throw new IllegalArgumentException("tried to fix rating for report with id %d that was already fixed".formatted(reportId));
+        }
+
+        reportPojo.setRatingFixed(true);
+        judgeRepository.update(reportPojo);
+    }
+
     public void finish(String username, Long reportId) {
         if (!judgeRepository.exists(username, reportId)) {
             throw new IllegalArgumentException("no report exists for %s and id %d".formatted(username, reportId));
@@ -136,8 +158,17 @@ public class JudgeService {
     }
 
     public void createReports(Long timetableEntryId, JudgeReportCreateDTO dto) {
-        judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null));
-        judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null));
-        judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null));
+        judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false));
+        judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false));
+        judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false));
+    }
+
+    public List<JudgeRankingEntryDTO> getRanking(Long reportId) {
+        return judgeRepository.getRanking(reportId);
+    }
+
+    public void confirmScores(String username, Long programmId) {
+        vereinRepository.confirmScores(username, programmId);
+        mailService.sendScoresConfirmation(vereinRepository.getEmailByProgrammId(programmId).orElseThrow());
     }
 }

@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.rest.secured;
 
+import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
@@ -61,6 +62,17 @@ public class SecuredJudgeEndpoint {
         return ResponseEntity.ok(dto);
     }
 
+    @PostMapping("/{id}/fix-rating")
+    @Secured({"JUDGE"})
+    public ResponseEntity<?> fixRating(@AuthenticationPrincipal UserDetails userDetails,
+                                       @PathVariable Long id) {
+        log.info("POST /secured/judge/{}/fix-rating", id);
+
+        judgeService.fixRating(userDetails.getUsername(), id);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/{id}/finish")
     @Secured({"JUDGE"})
     public ResponseEntity<?> finish(@AuthenticationPrincipal UserDetails userDetails,
@@ -73,10 +85,29 @@ public class SecuredJudgeEndpoint {
     }
 
     @GetMapping("/summary")
-    @Secured({"JUDGE"})
+    @Secured({"JUDGE", "ADMIN"})
     public ResponseEntity<List<JudgeReportSummaryDTO>> summaries() {
         log.info("GET /secured/judge/summary");
         return ResponseEntity.ok(judgeService.findSummaries());
+    }
+
+    @PostMapping("/confirm-scores/{programmId}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> confirmScores(@AuthenticationPrincipal UserDetails userDetails,
+                                           @PathVariable("programmId") Long programmId) {
+        log.info("GET /secured/judge/confirm-scores/{} {}", programmId, userDetails.getUsername());
+
+        judgeService.confirmScores(userDetails.getUsername(), programmId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/ranking/{reportId}")
+    @Secured({"JUDGE"})
+    public ResponseEntity<List<JudgeRankingEntryDTO>> ranking(@PathVariable("reportId") Long reportId) {
+        log.info("GET /secured/judge/ranking/{}", reportId);
+
+        return ResponseEntity.ok(judgeService.getRanking(reportId));
     }
 
 }

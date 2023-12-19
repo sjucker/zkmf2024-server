@@ -42,6 +42,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
+import ch.zkmf2024.server.util.DateUtil;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -717,4 +718,19 @@ public class VereinRepository {
                       ));
     }
 
+    public void confirmScores(String username, Long programmId) {
+        jooqDsl.update(VEREIN_PROGRAMM)
+               .set(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT, DateUtil.now())
+               .set(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY, username)
+               .where(VEREIN_PROGRAMM.ID.eq(programmId))
+               .execute();
+    }
+
+    public Optional<String> getEmailByProgrammId(Long programmId) {
+        return jooqDsl.select()
+                      .from(VEREIN_PROGRAMM)
+                      .join(VEREIN).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
+                      .where(VEREIN_PROGRAMM.ID.eq(programmId))
+                      .fetchOptional(VEREIN.EMAIL);
+    }
 }

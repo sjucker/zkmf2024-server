@@ -215,6 +215,32 @@ public class MailService {
         }
     }
 
+    public void sendScoresConfirmation(String to) {
+        log.info("sending scores-confirmation mail to {}", to);
+        try {
+            var variables = new HashMap<String, Object>();
+            variables.put("link", applicationProperties.getBaseUrlVereine());
+
+            var mjml = templateEngine.process("scores-confirmation", new Context(GERMAN, variables));
+            var mimeMessage = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
+
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            if (applicationProperties.isOverrideRecipient()) {
+                helper.setTo(applicationProperties.getBccMail());
+            } else {
+                helper.setTo(to);
+                helper.setBcc(applicationProperties.getBccMail());
+            }
+            helper.setSubject("[%s] Neue Bewertung verfügbar".formatted(getSubjectPrefix()));
+            helper.setText(mjmlService.render(mjml), true);
+
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send scores-confirmation mail to %s".formatted(to), e);
+        }
+    }
+
     public void sendNewMessageInternalEmail(VereinPojo verein) {
         try {
             var mimeMessage = mailSender.createMimeMessage();
