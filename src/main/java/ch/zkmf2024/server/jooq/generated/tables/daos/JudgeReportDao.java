@@ -141,4 +141,19 @@ public class JudgeReportDao extends DAOImpl<JudgeReportRecord, JudgeReportPojo, 
     public List<JudgeReportPojo> fetchByFinishedAt(LocalDateTime... values) {
         return fetch(JudgeReport.JUDGE_REPORT.FINISHED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>rating_fixed BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<JudgeReportPojo> fetchRangeOfRatingFixed(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(JudgeReport.JUDGE_REPORT.RATING_FIXED, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>rating_fixed IN (values)</code>
+     */
+    public List<JudgeReportPojo> fetchByRatingFixed(Boolean... values) {
+        return fetch(JudgeReport.JUDGE_REPORT.RATING_FIXED, values);
+    }
 }

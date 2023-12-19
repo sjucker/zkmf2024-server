@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -365,5 +366,35 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
      */
     public List<VereinProgrammPojo> fetchByModulDTitel_2Id(Long... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>scores_confirmed_by BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfScoresConfirmedBy(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.SCORES_CONFIRMED_BY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>scores_confirmed_by IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByScoresConfirmedBy(String... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.SCORES_CONFIRMED_BY, values);
+    }
+
+    /**
+     * Fetch records that have <code>scores_confirmed_at BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfScoresConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.SCORES_CONFIRMED_AT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>scores_confirmed_at IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByScoresConfirmedAt(LocalDateTime... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.SCORES_CONFIRMED_AT, values);
     }
 }

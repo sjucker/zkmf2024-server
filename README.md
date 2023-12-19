@@ -17,3 +17,6 @@
 * Prod:  
   `heroku pg:backups:capture --app zkmf2024-server`  
   `heroku pg:backups:download --app zkmf2024-server`
+
+* Restore:  
+  `pg_restore --verbose --clean --no-acl --no-owner --disable-triggers -h localhost -U zkmf2024 -d zkmf2024 latest.dump`

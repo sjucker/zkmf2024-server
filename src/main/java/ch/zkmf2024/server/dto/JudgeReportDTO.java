@@ -16,6 +16,7 @@ public record JudgeReportDTO(
         Integer minDurationInSeconds,
         Integer maxDurationInSeconds,
         Integer score,
+        boolean ratingFixed,
         @NotNull JudgeReportStatus status,
         @NotNull List<JudgeReportTitleDTO> titles,
         @NotNull List<JudgeReportRatingDTO> overallRatings

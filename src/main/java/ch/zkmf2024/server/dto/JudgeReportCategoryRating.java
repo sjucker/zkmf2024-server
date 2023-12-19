@@ -3,9 +3,11 @@ package ch.zkmf2024.server.dto;
 import java.util.Optional;
 
 public enum JudgeReportCategoryRating {
+    VERY_NEGATIVE,
     NEGATIVE,
     NEUTRAL,
-    POSITIVE;
+    POSITIVE,
+    VERY_POSITIVE;
 
     public static Optional<JudgeReportCategoryRating> fromString(String rating) {
         try {

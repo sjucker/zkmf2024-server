@@ -9,13 +9,13 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function7;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -81,6 +81,11 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
      * The column <code>judge_report.finished_at</code>.
      */
     public final TableField<JudgeReportRecord, LocalDateTime> FINISHED_AT = createField(DSL.name("finished_at"), SQLDataType.LOCALDATETIME(6), this, "");
+
+    /**
+     * The column <code>judge_report.rating_fixed</code>.
+     */
+    public final TableField<JudgeReportRecord, Boolean> RATING_FIXED = createField(DSL.name("rating_fixed"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     private JudgeReport(Name alias, Table<JudgeReportRecord> aliased) {
         this(alias, aliased, null);
@@ -209,18 +214,18 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, Long, Long, Integer, String, LocalDateTime> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<Long, Long, Long, Integer, String, LocalDateTime, Boolean> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -228,7 +233,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

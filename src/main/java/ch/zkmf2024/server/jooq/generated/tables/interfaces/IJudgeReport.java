@@ -72,6 +72,16 @@ public interface IJudgeReport extends Serializable {
      */
     public LocalDateTime getFinishedAt();
 
+    /**
+     * Setter for <code>judge_report.rating_fixed</code>.
+     */
+    public void setRatingFixed(Boolean value);
+
+    /**
+     * Getter for <code>judge_report.rating_fixed</code>.
+     */
+    public Boolean getRatingFixed();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

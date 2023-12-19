@@ -14,6 +14,11 @@ export interface ForgotPasswordRequestDTO {
     email: string;
 }
 
+export interface JudgeRankingEntryDTO {
+    verein: string;
+    score: number;
+}
+
 export interface JudgeReportDTO {
     id: number;
     modul: string;
@@ -27,6 +32,7 @@ export interface JudgeReportDTO {
     minDurationInSeconds?: number;
     maxDurationInSeconds?: number;
     score?: number;
+    ratingFixed: boolean;
     status: JudgeReportStatus;
     titles: JudgeReportTitleDTO[];
     overallRatings: JudgeReportRatingDTO[];
@@ -56,10 +62,12 @@ export interface JudgeReportScoreDTO {
     reportId: number;
     judgeName: string;
     score?: number;
-    status: JudgeReportStatus;
+    ratingFixed: boolean;
+    done: boolean;
 }
 
 export interface JudgeReportSummaryDTO {
+    programmId: number;
     modul: string;
     klasse?: string;
     besetzung?: string;
@@ -67,6 +75,9 @@ export interface JudgeReportSummaryDTO {
     overallScore?: number;
     scores: JudgeReportScoreDTO[];
     done: boolean;
+    scoresConfirmed: boolean;
+    scoresConfirmedBy?: string;
+    scoresConfirmedAt?: DateAsString;
 }
 
 export interface JudgeReportTitleDTO {
@@ -228,8 +239,8 @@ export interface VereinDTO {
     messages: VereinMessageDTO[];
     errata: VereinErrataDTO[];
     programmUpdated: boolean;
-    phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
+    phase1Status: PhaseStatus;
 }
 
 export interface VereinMessageDTO {
@@ -553,9 +564,11 @@ export enum JudgeReportCategory {
 }
 
 export enum JudgeReportCategoryRating {
+    VERY_NEGATIVE = "VERY_NEGATIVE",
     NEGATIVE = "NEGATIVE",
     NEUTRAL = "NEUTRAL",
     POSITIVE = "POSITIVE",
+    VERY_POSITIVE = "VERY_POSITIVE",
 }
 
 export enum LocationType {
