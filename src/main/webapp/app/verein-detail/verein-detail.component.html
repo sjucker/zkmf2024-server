@@ -96,7 +96,7 @@
                 </table>
             </div>
 
-            <div *ngIf="isModulAB(programm)">
+            <div *ngIf="isModulAB(programm) || isModulH(programm)">
                 <div *ngFor="let titel of selbstwahlTitel(programm)" class="pt-3">
                     <div [ngClass]="{'invalid': isBlank(titel.infoModeration)}">
                         <b>Infos für die Moderation: {{titel.titelName}}</b>

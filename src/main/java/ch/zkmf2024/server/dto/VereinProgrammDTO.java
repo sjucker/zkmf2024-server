@@ -45,7 +45,11 @@ public record VereinProgrammDTO(long id,
 
             case C -> !ablauf.isEmpty() && ablauf.stream().allMatch(dto -> dto.titel().isValid());
             case D -> parademusikTitel1.isValid() && parademusikTitel2.isValid();
-            case E, F, H -> !ablauf.isEmpty() && ablauf.stream().allMatch(dto -> dto.titel().isValid()) &&
+            case E, F -> !ablauf.isEmpty() && ablauf.stream().allMatch(dto -> dto.titel().isValid()) &&
+                    totalDurationInSeconds >= minDurationInSeconds && totalDurationInSeconds <= maxDurationInSeconds;
+            case H -> !ablauf.isEmpty() && ablauf.stream().allMatch(dto -> (dto.applausInSeconds() == null || dto.applausInSeconds() <= 30) &&
+                    dto.titel().isValid() &&
+                    isNotBlank(dto.titel().infoModeration())) &&
                     totalDurationInSeconds >= minDurationInSeconds && totalDurationInSeconds <= maxDurationInSeconds;
             case G -> {
                 if (tambourenKatA && (tambourenKatAGrundlage1 == null || tambourenKatAGrundlage2 == null || !tambourenKatATitel1.isValid() || !tambourenKatATitel2.isValid())) {
