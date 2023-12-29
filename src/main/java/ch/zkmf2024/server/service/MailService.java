@@ -260,6 +260,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setReplyTo(applicationProperties.getHelferMail());
             helper.setTo(helperRegistration.getEmail());
             helper.setCc(applicationProperties.getHelferMail());
             helper.setBcc(applicationProperties.getBccMail());
