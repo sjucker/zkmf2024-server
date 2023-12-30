@@ -79,6 +79,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setReplyTo(applicationProperties.getInfoMail());
             helper.setTo(user.getEmail());
             helper.setCc(applicationProperties.getSekretariatMail());
             helper.setBcc(applicationProperties.getBccMail());
@@ -114,6 +115,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setReplyTo(applicationProperties.getInfoMail());
             helper.setTo(vereinDTO.email());
             helper.setCc(new String[]{applicationProperties.getMusikMail(), applicationProperties.getSekretariatMail()});
             helper.setBcc(applicationProperties.getBccMail());
@@ -153,6 +155,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setReplyTo(applicationProperties.getInfoMail());
             helper.setTo(user.getEmail());
             helper.setBcc(applicationProperties.getBccMail());
             helper.setSubject("[%s] Passwort wiederherstellen".formatted(getSubjectPrefix()));
@@ -175,6 +178,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setReplyTo(applicationProperties.getInfoMail());
             helper.setTo(to);
             helper.setBcc(applicationProperties.getBccMail());
             helper.setSubject("[%s] Neue Nachricht".formatted(getSubjectPrefix()));
@@ -198,6 +202,7 @@ public class MailService {
                 var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
                 helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+                helper.setReplyTo(applicationProperties.getInfoMail());
                 if (applicationProperties.isOverrideRecipient()) {
                     helper.setTo(applicationProperties.getBccMail());
                 } else {
@@ -220,6 +225,7 @@ public class MailService {
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_MIXED_RELATED, UTF_8.name());
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setReplyTo(applicationProperties.getInfoMail());
             helper.setTo(applicationProperties.getChatMail());
             helper.setSubject("[%s] Neue Nachricht".formatted(getSubjectPrefix()));
             helper.setText("Neue Nachricht vom Verein: %s".formatted(verein.getVereinsname()));
