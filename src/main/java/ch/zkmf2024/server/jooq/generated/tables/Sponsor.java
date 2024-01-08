@@ -65,7 +65,7 @@ public class Sponsor extends TableImpl<SponsorRecord> {
     /**
      * The column <code>sponsor.cloudflare_id</code>.
      */
-    public final TableField<SponsorRecord, String> CLOUDFLARE_ID = createField(DSL.name("cloudflare_id"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<SponsorRecord, String> CLOUDFLARE_ID = createField(DSL.name("cloudflare_id"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>sponsor.url</code>.

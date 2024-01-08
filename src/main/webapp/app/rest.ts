@@ -162,7 +162,7 @@ export interface ResetPasswordRequestDTO {
 
 export interface SponsorDTO {
     name: string;
-    cloudflareId: string;
+    cloudflareId?: string;
     url?: string;
 }
 
