@@ -164,6 +164,16 @@ public interface ILocation extends Serializable {
      */
     public String getKuulaId();
 
+    /**
+     * Setter for <code>location.percussion_equipment</code>.
+     */
+    public void setPercussionEquipment(String value);
+
+    /**
+     * Getter for <code>location.percussion_equipment</code>.
+     */
+    public String getPercussionEquipment();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

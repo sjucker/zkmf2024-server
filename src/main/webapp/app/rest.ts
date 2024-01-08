@@ -104,6 +104,7 @@ export interface LocationDTO {
     einspiellokal?: LocationDTO;
     instrumentendepot?: LocationDTO;
     juryfeedback?: LocationDTO;
+    percussionEquipmentType?: PercussionEquipmentType;
     coordinates?: CoordinatesDTO;
 }
 
@@ -568,6 +569,11 @@ export enum LocationType {
     WETTSPIELLOKAL = "WETTSPIELLOKAL",
     JURYFEEDBACK = "JURYFEEDBACK",
     PLATZKONZERT = "PLATZKONZERT",
+}
+
+export enum PercussionEquipmentType {
+    STANDARD = "STANDARD",
+    FULL = "FULL",
 }
 
 export enum UserRole {

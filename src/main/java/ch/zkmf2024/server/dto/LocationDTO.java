@@ -19,7 +19,8 @@ public record LocationDTO(@NotNull Long id,
                           String kuulaId,
                           LocationDTO einspiellokal,
                           LocationDTO instrumentendepot,
-                          LocationDTO juryfeedback) {
+                          LocationDTO juryfeedback,
+                          PercussionEquipmentType percussionEquipmentType) {
 
     public CoordinatesDTO getCoordinates() {
         return new CoordinatesDTO(latitude, longitude);

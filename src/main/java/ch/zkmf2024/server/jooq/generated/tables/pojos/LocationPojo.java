@@ -31,6 +31,7 @@ public class LocationPojo implements ILocation {
     private String identifier;
     private String cloudflareId;
     private String kuulaId;
+    private String percussionEquipment;
 
     public LocationPojo() {
     }
@@ -51,6 +52,7 @@ public class LocationPojo implements ILocation {
         this.identifier = value.getIdentifier();
         this.cloudflareId = value.getCloudflareId();
         this.kuulaId = value.getKuulaId();
+        this.percussionEquipment = value.getPercussionEquipment();
     }
 
     public LocationPojo(
@@ -68,7 +70,8 @@ public class LocationPojo implements ILocation {
             Integer sortOrder,
             String identifier,
             String cloudflareId,
-            String kuulaId
+            String kuulaId,
+            String percussionEquipment
     ) {
         this.id = id;
         this.name = name;
@@ -85,6 +88,7 @@ public class LocationPojo implements ILocation {
         this.identifier = identifier;
         this.cloudflareId = cloudflareId;
         this.kuulaId = kuulaId;
+        this.percussionEquipment = percussionEquipment;
     }
 
     /**
@@ -327,6 +331,22 @@ public class LocationPojo implements ILocation {
         this.kuulaId = kuulaId;
     }
 
+    /**
+     * Getter for <code>location.percussion_equipment</code>.
+     */
+    @Override
+    public String getPercussionEquipment() {
+        return this.percussionEquipment;
+    }
+
+    /**
+     * Setter for <code>location.percussion_equipment</code>.
+     */
+    @Override
+    public void setPercussionEquipment(String percussionEquipment) {
+        this.percussionEquipment = percussionEquipment;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -411,6 +431,11 @@ public class LocationPojo implements ILocation {
                 return false;
         } else if (!this.kuulaId.equals(other.kuulaId))
             return false;
+        if (this.percussionEquipment == null) {
+            if (other.percussionEquipment != null)
+                return false;
+        } else if (!this.percussionEquipment.equals(other.percussionEquipment))
+            return false;
         return true;
     }
 
@@ -433,6 +458,7 @@ public class LocationPojo implements ILocation {
         result = prime * result + ((this.identifier == null) ? 0 : this.identifier.hashCode());
         result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
         result = prime * result + ((this.kuulaId == null) ? 0 : this.kuulaId.hashCode());
+        result = prime * result + ((this.percussionEquipment == null) ? 0 : this.percussionEquipment.hashCode());
         return result;
     }
 
@@ -455,6 +481,7 @@ public class LocationPojo implements ILocation {
         sb.append(", ").append(identifier);
         sb.append(", ").append(cloudflareId);
         sb.append(", ").append(kuulaId);
+        sb.append(", ").append(percussionEquipment);
 
         sb.append(")");
         return sb.toString();
@@ -481,6 +508,7 @@ public class LocationPojo implements ILocation {
         setIdentifier(from.getIdentifier());
         setCloudflareId(from.getCloudflareId());
         setKuulaId(from.getKuulaId());
+        setPercussionEquipment(from.getPercussionEquipment());
     }
 
     @Override

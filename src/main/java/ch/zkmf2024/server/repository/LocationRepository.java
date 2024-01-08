@@ -2,6 +2,7 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.LocationDTO;
 import ch.zkmf2024.server.dto.LocationType;
+import ch.zkmf2024.server.dto.PercussionEquipmentType;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
 import ch.zkmf2024.server.jooq.generated.tables.daos.LocationDao;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Optional.ofNullable;
 
 @Repository
 public class LocationRepository {
@@ -60,7 +62,8 @@ public class LocationRepository {
                 pojo.getKuulaId(),
                 findById(pojo.getEinspiellokalId()).orElse(null),
                 findById(pojo.getInstrumentendepotId()).orElse(null),
-                findById(pojo.getJuryfeedbackId()).orElse(null)
+                findById(pojo.getJuryfeedbackId()).orElse(null),
+                ofNullable(pojo.getPercussionEquipment()).map(PercussionEquipmentType::valueOf).orElse(null)
         );
     }
 
@@ -94,7 +97,8 @@ public class LocationRepository {
                 it.get(LOCATION.SORT_ORDER),
                 it.get(LOCATION.CLOUDFLARE_ID),
                 it.get(LOCATION.KUULA_ID),
-                null, null, null
+                null, null, null,
+                ofNullable(it.get(LOCATION.PERCUSSION_EQUIPMENT)).map(PercussionEquipmentType::valueOf).orElse(null)
         );
     }
 

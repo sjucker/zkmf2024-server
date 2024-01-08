@@ -291,4 +291,19 @@ public class LocationDao extends DAOImpl<LocationRecord, LocationPojo, Long> {
     public List<LocationPojo> fetchByKuulaId(String... values) {
         return fetch(Location.LOCATION.KUULA_ID, values);
     }
+
+    /**
+     * Fetch records that have <code>percussion_equipment BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfPercussionEquipment(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Location.LOCATION.PERCUSSION_EQUIPMENT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>percussion_equipment IN (values)</code>
+     */
+    public List<LocationPojo> fetchByPercussionEquipment(String... values) {
+        return fetch(Location.LOCATION.PERCUSSION_EQUIPMENT, values);
+    }
 }
