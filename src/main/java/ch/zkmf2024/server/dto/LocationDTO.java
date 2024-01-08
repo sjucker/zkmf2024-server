@@ -20,4 +20,8 @@ public record LocationDTO(@NotNull Long id,
                           LocationDTO einspiellokal,
                           LocationDTO instrumentendepot,
                           LocationDTO juryfeedback) {
+
+    public CoordinatesDTO getCoordinates() {
+        return new CoordinatesDTO(latitude, longitude);
+    }
 }

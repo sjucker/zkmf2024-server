@@ -1,5 +1,10 @@
 /* eslint-disable */
 
+export interface CoordinatesDTO {
+    latitude: number;
+    longitude: number;
+}
+
 export interface DoppelEinsatzDTO {
     otherVerein: VereinSelectionDTO;
     mitspielerName: string;
@@ -99,6 +104,7 @@ export interface LocationDTO {
     einspiellokal?: LocationDTO;
     instrumentendepot?: LocationDTO;
     juryfeedback?: LocationDTO;
+    coordinates?: CoordinatesDTO;
 }
 
 export interface LoginRequestDTO {
