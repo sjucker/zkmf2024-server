@@ -138,13 +138,9 @@ export interface RegisterHelperRequestDTO {
     vereinszugehoerigkeit: string;
     aufgaben: Aufgaben[];
     anzahlEinsaetze: string;
-    einsatzMittwoch: Einsatzzeit[];
-    einsatzDonnerstag: Einsatzzeit[];
     einsatzFreitag: Einsatzzeit[];
     einsatzSamstag: Einsatzzeit[];
     einsatzSonntag: Einsatzzeit[];
-    einsatzMontag: Einsatzzeit[];
-    einsatzDienstag: Einsatzzeit[];
     groesseShirt: string;
     comment: string;
 }

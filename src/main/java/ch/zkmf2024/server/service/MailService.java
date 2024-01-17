@@ -26,11 +26,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.service.HelperRegistrationService.getAufgabenAsList;
-import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzDienstagAsList;
-import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzDonnerstagAsList;
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzFreitagAsList;
-import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzMittwochAsList;
-import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzMontagAsList;
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzSamstagAsList;
 import static ch.zkmf2024.server.service.HelperRegistrationService.getEinsatzSonntagAsList;
 import static ch.zkmf2024.server.util.FormatUtil.formatDate;
@@ -249,13 +245,9 @@ public class MailService {
             variables.put("vereinszugehoerigkeit", helperRegistration.getVereinszugehoerigkeit());
             variables.put("aufgaben", getAufgabenAsList(helperRegistration).stream().map(Aufgaben::getDescription).collect(joining(", ")));
             variables.put("anzahl", helperRegistration.getAnzahlEinsaetze());
-            variables.put("mittwoch", getEinsatzzeit(getEinsatzMittwochAsList(helperRegistration)));
-            variables.put("donnerstag", getEinsatzzeit(getEinsatzDonnerstagAsList(helperRegistration)));
             variables.put("freitag", getEinsatzzeit(getEinsatzFreitagAsList(helperRegistration)));
             variables.put("samstag", getEinsatzzeit(getEinsatzSamstagAsList(helperRegistration)));
             variables.put("sonntag", getEinsatzzeit(getEinsatzSonntagAsList(helperRegistration)));
-            variables.put("montag", getEinsatzzeit(getEinsatzMontagAsList(helperRegistration)));
-            variables.put("dienstag", getEinsatzzeit(getEinsatzDienstagAsList(helperRegistration)));
             variables.put("shirt", helperRegistration.getGroesseShirt());
             variables.put("comment", helperRegistration.getComment());
 

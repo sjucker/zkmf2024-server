@@ -64,12 +64,6 @@
                     </p>
                     <p><b>Bevorzugte Einsatztage und -zeiten</b>:
                         <br/>
-                        Mittwoch, 19.06.2024:
-                        <span th:text="${mittwoch}">Mittwoch</span>
-                        <br/>
-                        Donnerstag, 20.06.2024:
-                        <span th:text="${donnerstag}">Donnerstag</span>
-                        <br/>
                         Freitag, 21.06.2024:
                         <span th:text="${freitag}">Freitag</span>
                         <br/>
@@ -78,12 +72,6 @@
                         <br/>
                         Sonntag, 23.06.2024:
                         <span th:text="${sonntag}">Sonntag</span>
-                        <br/>
-                        Montag, 24.06.2024:
-                        <span th:text="${montag}">Montag</span>
-                        <br/>
-                        Dienstag, 25.06.2024:
-                        <span th:text="${dienstag}">Dienstag</span>
                     </p>
                     <p><b>Grösse Helfer-T-Shirt</b>:
                         <span th:text="${shirt}">T-Shirt</span>

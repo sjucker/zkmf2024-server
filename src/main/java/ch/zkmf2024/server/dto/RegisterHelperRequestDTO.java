@@ -15,13 +15,9 @@ public record RegisterHelperRequestDTO(
         @NotNull String vereinszugehoerigkeit,
         @NotNull List<Aufgaben> aufgaben,
         @NotNull String anzahlEinsaetze,
-        @NotNull List<Einsatzzeit> einsatzMittwoch,
-        @NotNull List<Einsatzzeit> einsatzDonnerstag,
         @NotNull List<Einsatzzeit> einsatzFreitag,
         @NotNull List<Einsatzzeit> einsatzSamstag,
         @NotNull List<Einsatzzeit> einsatzSonntag,
-        @NotNull List<Einsatzzeit> einsatzMontag,
-        @NotNull List<Einsatzzeit> einsatzDienstag,
         @NotNull String groesseShirt,
         @NotNull String comment) {
 }
