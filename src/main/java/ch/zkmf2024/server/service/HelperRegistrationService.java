@@ -91,6 +91,10 @@ public class HelperRegistrationService {
 
         var helperRegistration = HelperRegistrationMapper.INSTANCE.fromDTO(request);
         helperRegistration.setRegisteredAt(now());
+        helperRegistration.setEinsatzMittwoch("");
+        helperRegistration.setEinsatzDonnerstag("");
+        helperRegistration.setEinsatzMontag("");
+        helperRegistration.setEinsatzDienstag("");
         helperRegistrationRepository.insert(helperRegistration);
 
         mailService.sendHelperRegistrationEmail(helperRegistration);
