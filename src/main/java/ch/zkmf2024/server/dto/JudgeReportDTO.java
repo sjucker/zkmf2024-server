@@ -5,7 +5,10 @@ import java.util.List;
 
 public record JudgeReportDTO(
         @NotNull Long id,
-        @NotNull String modul,
+        @NotNull Modul modul,
+        @NotNull String modulDescription,
+        @NotNull JudgeRole role,
+        @NotNull String roleDescription,
         String klasse,
         String besetzung,
         @NotNull String location,

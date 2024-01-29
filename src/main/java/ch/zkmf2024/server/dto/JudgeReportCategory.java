@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_1;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_1_OPTISCH;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_2;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_2_MUSIKALISCH;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3_MUSIKALISCH;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_4_OPTISCH;
 import static ch.zkmf2024.server.dto.Modul.A;
@@ -82,8 +85,7 @@ public enum JudgeReportCategory implements HasDescription {
     private final boolean overall;
 
     JudgeReportCategory(String description, Set<Modul> modules, boolean overall) {
-        this(description, modules, Set.of(), "", overall);
-
+        this(description, modules, Set.of(JUROR_1, JUROR_2, JUROR_3), "", overall);
     }
 
     JudgeReportCategory(String description, Set<Modul> modules, Set<JudgeRole> roles, String group, boolean overall) {
@@ -102,9 +104,10 @@ public enum JudgeReportCategory implements HasDescription {
         }
     }
 
-    public static List<JudgeReportCategory> get(Modul modul, boolean overall) {
+    public static List<JudgeReportCategory> get(Modul modul, JudgeRole role, boolean overall) {
         return Arrays.stream(JudgeReportCategory.values())
                      .filter(category -> category.getModules().contains(modul) &&
+                             category.getRoles().contains(role) &&
                              category.isOverall() == overall)
                      .toList();
     }
