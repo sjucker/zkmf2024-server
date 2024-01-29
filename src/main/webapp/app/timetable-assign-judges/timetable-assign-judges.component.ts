@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
-import {JudgeDTO, TimetableEntryDTO} from "../rest";
+import {JudgeDTO, Modul, TimetableEntryDTO} from "../rest";
 import {JuryService} from "../service/jury.service";
 
 export interface TimetableAssignJudgesInput {
@@ -21,6 +21,7 @@ export class TimetableAssignJudgesComponent {
     judge1Id = 0;
     judge2Id = 0;
     judge3Id = 0;
+    judge4Id = 0;
 
     saving = false;
 
@@ -42,13 +43,20 @@ export class TimetableAssignJudgesComponent {
     }
 
     get valid(): boolean {
-        return this.judge1Id > 0 && this.judge2Id > 0 && this.judge3Id > 0 &&
-            this.judge1Id !== this.judge2Id && this.judge1Id != this.judge3Id && this.judge2Id !== this.judge3Id;
+        if (this.isParademusik) {
+            return this.judge1Id > 0 && this.judge2Id > 0 && this.judge3Id > 0 && this.judge4Id > 0 &&
+                this.judge1Id !== this.judge2Id && this.judge1Id != this.judge3Id && this.judge1Id != this.judge4Id &&
+                this.judge2Id !== this.judge3Id && this.judge2Id !== this.judge4Id &&
+                this.judge3Id !== this.judge4Id;
+        } else {
+            return this.judge1Id > 0 && this.judge2Id > 0 && this.judge3Id > 0 &&
+                this.judge1Id !== this.judge2Id && this.judge1Id != this.judge3Id && this.judge2Id !== this.judge3Id;
+        }
     }
 
     save() {
         this.saving = true;
-        this.service.createReports(this.dto.id, this.dto.modul, this.judge1Id, this.judge2Id, this.judge3Id).subscribe({
+        this.service.createReports(this.dto.id, this.dto.modul, this.judge1Id, this.judge2Id, this.judge3Id, this.judge4Id).subscribe({
             next: () => {
                 this.saving = false;
                 this.ref.close();
@@ -69,4 +77,10 @@ export class TimetableAssignJudgesComponent {
             },
         });
     }
+
+    get isParademusik(): boolean {
+        return this.dto.modul === Modul.D || this.dto.modul === Modul.E || this.dto.modul === Modul.F;
+    }
+
+    protected readonly Modul = Modul;
 }

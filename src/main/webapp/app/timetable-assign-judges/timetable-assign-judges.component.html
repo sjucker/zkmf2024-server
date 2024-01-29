@@ -37,6 +37,20 @@
         </span>
     </div>
 
+    @if (isParademusik) {
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-dropdown id="judge4"
+                            [autoDisplayFirst]="false"
+                            [options]="availableJudges"
+                            [(ngModel)]="judge4Id"
+                            optionValue="id"
+                            optionLabel="name"></p-dropdown>
+                <label for="judge4">4. Juror</label>
+            </span>
+        </div>
+    }
+
     <div class="col-3">
         <p-button label="Speichern" (onClick)="save()" [loading]="saving" [disabled]="!valid"></p-button>
     </div>
