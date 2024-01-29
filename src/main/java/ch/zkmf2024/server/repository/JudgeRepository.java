@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import static ch.zkmf2024.server.dto.JudgeReportCategoryRating.NEUTRAL;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
@@ -312,10 +313,12 @@ public class JudgeRepository {
                           var record1 = values.get(0);
                           var record2 = values.get(1);
                           var record3 = values.get(2);
+                          var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
+                          var record4 = Set.of(Modul.D, Modul.E, Modul.F).contains(modul) ? values.get(4) : null;
 
                           return new JudgeReportSummaryDTO(
                                   record1.get(VEREIN_PROGRAMM.ID),
-                                  Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
+                                  modul.getFullDescription(),
                                   Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
                                   Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
                                   record1.get(VEREIN.VEREINSNAME),
