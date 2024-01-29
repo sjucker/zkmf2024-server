@@ -48,7 +48,7 @@ export class TimetableAssignJudgesComponent {
 
     save() {
         this.saving = true;
-        this.service.createReports(this.dto.id, this.judge1Id, this.judge2Id, this.judge3Id).subscribe({
+        this.service.createReports(this.dto.id, this.dto.modul, this.judge1Id, this.judge2Id, this.judge3Id).subscribe({
             next: () => {
                 this.saving = false;
                 this.ref.close();

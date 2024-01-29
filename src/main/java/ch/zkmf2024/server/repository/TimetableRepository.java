@@ -55,9 +55,12 @@ public class TimetableRepository {
                                 .orderBy(JUDGE_REPORT.ID)
                                 .fetch(r -> r.get(JUDGE.NAME));
 
+        var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+
         return new TimetableEntryDTO(
                 it.get(TIMETABLE_ENTRY.ID),
-                Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getFullDescription(),
+                modul,
+                modul.getFullDescription(),
                 Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
                 Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
                 it.get(LOCATION.ID),
@@ -69,7 +72,8 @@ public class TimetableRepository {
                 TimetableEntryType.from(it.get(TIMETABLE_ENTRY.ENTRY_TYPE)),
                 findElementAt(judgeNames, 0).orElse(null),
                 findElementAt(judgeNames, 1).orElse(null),
-                findElementAt(judgeNames, 2).orElse(null)
+                findElementAt(judgeNames, 2).orElse(null),
+                findElementAt(judgeNames, 3).orElse(null)
         );
     }
 

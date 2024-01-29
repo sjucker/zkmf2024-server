@@ -2,7 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {JudgeDTO, JudgeReportCreateDTO, JuryLoginCreateDTO} from "../rest";
+import {JudgeDTO, JudgeReportCreateDTO, JuryLoginCreateDTO, Modul} from "../rest";
 
 @Injectable({
     providedIn: 'root'
@@ -18,12 +18,14 @@ export class JuryService {
         return this.httpClient.post<unknown>(`${this.baseUrl}/secured/admin/jury/login`, dto)
     }
 
-    createReports(timetableEntryId: number, judge1Id: number, judge2Id: number, judge3Id: number): Observable<void> {
+    createReports(timetableEntryId: number, modul: Modul, judge1Id: number, judge2Id: number, judge3Id: number, judge4Id?: number): Observable<void> {
         const request: JudgeReportCreateDTO = {
             timetableEntryId: timetableEntryId,
+            modul: modul,
             judge1Id: judge1Id,
             judge2Id: judge2Id,
-            judge3Id: judge3Id
+            judge3Id: judge3Id,
+            judge4Id: judge4Id
         };
         return this.httpClient.post<void>(`${this.baseUrl}/secured/admin/jury/report/${timetableEntryId}`, request)
     }
