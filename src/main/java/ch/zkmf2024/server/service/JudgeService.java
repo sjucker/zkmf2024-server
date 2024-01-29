@@ -44,6 +44,7 @@ import static ch.zkmf2024.server.dto.Modul.G;
 import static ch.zkmf2024.server.dto.Modul.H;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
 import static ch.zkmf2024.server.util.DateUtil.now;
+import static java.util.Comparator.comparing;
 
 @Slf4j
 @Service
@@ -165,6 +166,7 @@ public class JudgeService {
     public List<JudgeDTO> findAll() {
         return judgeRepository.findAll().stream()
                               .map(it -> new JudgeDTO(it.getId(), it.getName(), it.getEmail()))
+                              .sorted(comparing(JudgeDTO::name))
                               .toList();
     }
 
