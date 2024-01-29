@@ -23,10 +23,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.IN_PROGRESS;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.NEW;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_1;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_1_OPTISCH;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_2;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_2_MUSIKALISCH;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3_MUSIKALISCH;
+import static ch.zkmf2024.server.dto.JudgeRole.JUROR_4_OPTISCH;
+import static ch.zkmf2024.server.dto.Modul.A;
+import static ch.zkmf2024.server.dto.Modul.B;
+import static ch.zkmf2024.server.dto.Modul.D;
+import static ch.zkmf2024.server.dto.Modul.E;
+import static ch.zkmf2024.server.dto.Modul.F;
+import static ch.zkmf2024.server.dto.Modul.G;
+import static ch.zkmf2024.server.dto.Modul.H;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
 import static ch.zkmf2024.server.util.DateUtil.now;
 
@@ -158,9 +173,18 @@ public class JudgeService {
     }
 
     public void createReports(Long timetableEntryId, JudgeReportCreateDTO dto) {
-        judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false));
-        judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false));
-        judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false));
+        if (Set.of(A, B, G, H).contains(dto.modul())) {
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_1.name()));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_2.name()));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_3.name()));
+        }
+
+        if (Set.of(D, E, F).contains(dto.modul())) {
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_1_OPTISCH.name()));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_2_MUSIKALISCH.name()));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_3_MUSIKALISCH.name()));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge4Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_4_OPTISCH.name()));
+        }
     }
 
     public List<JudgeRankingEntryDTO> getRanking(Long reportId) {
