@@ -198,6 +198,10 @@ export class TimetableComponent implements OnInit {
     }
 
     judges(dto: TimetableEntryDTO): string {
-        return `${dto.judge1}, ${dto.judge2}, ${dto.judge3}`;
+        let judges = `${dto.judge1}, ${dto.judge2}, ${dto.judge3}`;
+        if (dto.judge4) {
+            judges += `, ${dto.judge4}`;
+        }
+        return judges;
     }
 }
