@@ -82,6 +82,16 @@ public interface IJudgeReport extends Serializable {
      */
     public Boolean getRatingFixed();
 
+    /**
+     * Setter for <code>judge_report.role</code>.
+     */
+    public void setRole(String value);
+
+    /**
+     * Getter for <code>judge_report.role</code>.
+     */
+    public String getRole();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
