@@ -32,14 +32,14 @@ public class SecuredJudgeEndpoint {
     }
 
     @GetMapping
-    @Secured({"JUDGE"})
+    @Secured({"JUDGE", "IMPERSONATE"})
     public ResponseEntity<List<JudgeReportOverviewDTO>> get(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("GET /secured/judge");
         return ResponseEntity.ok(judgeService.getReports(userDetails.getUsername()));
     }
 
     @GetMapping("/{id}")
-    @Secured({"JUDGE"})
+    @Secured({"JUDGE", "IMPERSONATE"})
     public ResponseEntity<JudgeReportDTO> get(@AuthenticationPrincipal UserDetails userDetails,
                                               @PathVariable Long id) {
 
@@ -85,7 +85,7 @@ public class SecuredJudgeEndpoint {
     }
 
     @GetMapping("/summary")
-    @Secured({"JUDGE", "ADMIN"})
+    @Secured({"JUDGE", "ADMIN", "IMPERSONATE"})
     public ResponseEntity<List<JudgeReportSummaryDTO>> summaries() {
         log.info("GET /secured/judge/summary");
         return ResponseEntity.ok(judgeService.findSummaries());
@@ -103,7 +103,7 @@ public class SecuredJudgeEndpoint {
     }
 
     @GetMapping("/ranking/{reportId}")
-    @Secured({"JUDGE"})
+    @Secured({"JUDGE", "IMPERSONATE"})
     public ResponseEntity<List<JudgeRankingEntryDTO>> ranking(@PathVariable("reportId") Long reportId) {
         log.info("GET /secured/judge/ranking/{}", reportId);
 

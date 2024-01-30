@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
+import static ch.zkmf2024.server.util.ValidationUtil.isValidEmail;
 
 public record VereinDTO(
         @NotNull String email,

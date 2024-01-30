@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
-import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
+import static ch.zkmf2024.server.util.ValidationUtil.isValidEmail;
 
 public record KontaktDTO(String vorname,
                          String nachname,
