@@ -166,45 +166,58 @@ public class JudgeRepository {
                                   it.get(JUDGE_REPORT.SCORE),
                                   it.get(JUDGE_REPORT.RATING_FIXED),
                                   JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
-                                  findTitles(judgeId, reportId),
+                                  findTitles(reportId, modul),
                                   findOverallRatings(reportId, modul, role)
                           );
                       });
     }
 
-    private List<JudgeReportTitleDTO> findTitles(Long judgeId, Long reportId) {
-        return jooqDsl.select()
-                      .from(JUDGE_REPORT)
-                      .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
-                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
-                      .join(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM.ID.eq(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM))
-                      .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
-                      .leftJoin(JUDGE_REPORT_COMMENT).on(JUDGE_REPORT.ID.eq(JUDGE_REPORT_COMMENT.FK_JUDGE_REPORT),
-                                                         TITEL.ID.eq(JUDGE_REPORT_COMMENT.FK_TITEL))
-                      .where(JUDGE_REPORT.FK_JUDGE.eq(judgeId),
-                             JUDGE_REPORT.ID.eq(reportId))
-                      .orderBy(VEREIN_PROGRAMM_TITEL.POSITION)
-                      .fetch(it -> {
-                          var modul = Modul.valueOf(it.get(TITEL.MODUL));
-                          var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
-                          return new JudgeReportTitleDTO(
-                                  new TitelDTO(
-                                          it.get(TITEL.ID),
-                                          modul,
-                                          it.get(TITEL.TITEL_NAME),
-                                          it.get(TITEL.COMPOSER),
-                                          it.get(TITEL.ARRANGEUR),
-                                          it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
-                                          it.get(TITEL.SCHWIERIGKEITSGRAD),
-                                          it.get(TITEL.DURATION_IN_SECONDS),
-                                          it.get(TITEL.FK_VEREIN) == null,
-                                          it.get(TITEL.INFO_MODERATION)
-                                  ),
-                                  it.get(JUDGE_REPORT_COMMENT.COMMENT),
-                                  findTitelRatings(it.get(JUDGE_REPORT.ID), it.get(TITEL.ID), modul, role)
-                          );
-                      });
+    private List<JudgeReportTitleDTO> findTitles(Long reportId, Modul modul) {
+        if (modul == Modul.D) {
+            return jooqDsl.select()
+                          .from(JUDGE_REPORT)
+                          .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                          .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                          .join(TITEL).on(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID.eq(TITEL.ID)
+                                                                            .or(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID.eq(TITEL.ID)))
+                          .leftJoin(JUDGE_REPORT_COMMENT).on(JUDGE_REPORT.ID.eq(JUDGE_REPORT_COMMENT.FK_JUDGE_REPORT),
+                                                             TITEL.ID.eq(JUDGE_REPORT_COMMENT.FK_TITEL))
+                          .where(JUDGE_REPORT.ID.eq(reportId))
+                          .fetch(it -> toJudgeReportTitleDTO(modul, it));
+        } else {
+            return jooqDsl.select()
+                          .from(JUDGE_REPORT)
+                          .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                          .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                          .join(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM.ID.eq(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM))
+                          .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
+                          .leftJoin(JUDGE_REPORT_COMMENT).on(JUDGE_REPORT.ID.eq(JUDGE_REPORT_COMMENT.FK_JUDGE_REPORT),
+                                                             TITEL.ID.eq(JUDGE_REPORT_COMMENT.FK_TITEL))
+                          .where(JUDGE_REPORT.ID.eq(reportId))
+                          .orderBy(VEREIN_PROGRAMM_TITEL.POSITION)
+                          .fetch(it -> toJudgeReportTitleDTO(modul, it));
+        }
 
+    }
+
+    private JudgeReportTitleDTO toJudgeReportTitleDTO(Modul modul, Record it) {
+        var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
+        return new JudgeReportTitleDTO(
+                new TitelDTO(
+                        it.get(TITEL.ID),
+                        modul,
+                        it.get(TITEL.TITEL_NAME),
+                        it.get(TITEL.COMPOSER),
+                        it.get(TITEL.ARRANGEUR),
+                        it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
+                        it.get(TITEL.SCHWIERIGKEITSGRAD),
+                        it.get(TITEL.DURATION_IN_SECONDS),
+                        it.get(TITEL.FK_VEREIN) == null,
+                        it.get(TITEL.INFO_MODERATION)
+                ),
+                it.get(JUDGE_REPORT_COMMENT.COMMENT),
+                findTitelRatings(it.get(JUDGE_REPORT.ID), it.get(TITEL.ID), modul, role)
+        );
     }
 
     private List<JudgeReportRatingDTO> findOverallRatings(Long reportId, Modul modul, JudgeRole role) {
@@ -225,20 +238,22 @@ public class JudgeRepository {
         return ratings;
     }
 
-    private JudgeReportRatingDTO toJudgeReportRatingDTO(JudgeReportCategory cateogry) {
+    private JudgeReportRatingDTO toJudgeReportRatingDTO(JudgeReportCategory category) {
         return new JudgeReportRatingDTO(
-                cateogry,
-                cateogry.getDescription(),
+                category,
+                category.getDescription(),
+                category.getGroup(),
                 null,
                 NEUTRAL
         );
     }
 
     private JudgeReportRatingDTO toJudgeReportRatingDTO(org.jooq.Record it) {
-        var category = JudgeReportCategory.fromString(it.get(JUDGE_REPORT_RATING.CATEGORY));
+        var category = JudgeReportCategory.fromString(it.get(JUDGE_REPORT_RATING.CATEGORY)).orElseThrow();
         return new JudgeReportRatingDTO(
-                category.orElseThrow(),
-                category.map(JudgeReportCategory::getDescription).orElseThrow(),
+                category,
+                category.getDescription(),
+                category.getGroup(),
                 it.get(JUDGE_REPORT_RATING.COMMENT),
                 JudgeReportCategoryRating.fromString(it.get(JUDGE_REPORT_RATING.RATING)).orElseThrow()
         );

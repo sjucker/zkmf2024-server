@@ -26,8 +26,8 @@ import static ch.zkmf2024.server.mapper.HelperRegistrationMapper.LIST_DELIMITER;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.HelperRegistrationService.RegisterHelperResult.REGISTERED;
-import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
 import static ch.zkmf2024.server.util.DateUtil.now;
+import static ch.zkmf2024.server.util.ValidationUtil.isValidEmail;
 import static java.util.Comparator.comparing;
 
 @Service

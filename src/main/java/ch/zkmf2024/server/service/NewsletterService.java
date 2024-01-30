@@ -12,8 +12,8 @@ import java.util.List;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.ALREADY_REGISTERED;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.INVALID_EMAIL;
 import static ch.zkmf2024.server.service.NewsletterService.RegisterNewsletterResult.REGISTERED;
-import static ch.zkmf2024.server.service.ValidationUtil.isValidEmail;
 import static ch.zkmf2024.server.util.DateUtil.now;
+import static ch.zkmf2024.server.util.ValidationUtil.isValidEmail;
 
 @Service
 public class NewsletterService {

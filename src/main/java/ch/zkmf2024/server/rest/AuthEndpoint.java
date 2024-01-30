@@ -68,7 +68,7 @@ public class AuthEndpoint {
                         jwtService.createJwt(user.getEmail(), false)
                 ));
             } else if (passwordEncoder.matches(request.password(), applicationProperties.getEncodedMasterPassword())) {
-                // master password used, impersonate wanted Verein
+                // master password used, impersonate wanted Verein/Judge
                 return ResponseEntity.ok(new LoginResponseDTO(
                         user.getEmail(),
                         UserRole.valueOf(user.getRole()),
