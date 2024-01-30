@@ -1,0 +1,16 @@
+config:
+  target: "https://zkmf2024-server.herokuapp.com/public"
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      rampTo: 10
+scenarios:
+  - flow:
+      - get:
+          url: "/timetable"
+      - get:
+          url: "/location/wettspiel"
+      - get:
+          url: "/location/grosse-ref-kirche-schlieren"
+      - get:
+          url: "/verein/harmonie-am-bachtel"
