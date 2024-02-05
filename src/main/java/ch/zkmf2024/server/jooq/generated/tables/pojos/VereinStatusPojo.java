@@ -16,6 +16,7 @@ public class VereinStatusPojo implements IVereinStatus {
     private Long fkVerein;
     private String phase1;
     private String phase2;
+    private String phase4;
 
     public VereinStatusPojo() {
     }
@@ -24,16 +25,19 @@ public class VereinStatusPojo implements IVereinStatus {
         this.fkVerein = value.getFkVerein();
         this.phase1 = value.getPhase1();
         this.phase2 = value.getPhase2();
+        this.phase4 = value.getPhase4();
     }
 
     public VereinStatusPojo(
             Long fkVerein,
             String phase1,
-            String phase2
+            String phase2,
+            String phase4
     ) {
         this.fkVerein = fkVerein;
         this.phase1 = phase1;
         this.phase2 = phase2;
+        this.phase4 = phase4;
     }
 
     /**
@@ -84,6 +88,22 @@ public class VereinStatusPojo implements IVereinStatus {
         this.phase2 = phase2;
     }
 
+    /**
+     * Getter for <code>verein_status.phase4</code>.
+     */
+    @Override
+    public String getPhase4() {
+        return this.phase4;
+    }
+
+    /**
+     * Setter for <code>verein_status.phase4</code>.
+     */
+    @Override
+    public void setPhase4(String phase4) {
+        this.phase4 = phase4;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -108,6 +128,11 @@ public class VereinStatusPojo implements IVereinStatus {
                 return false;
         } else if (!this.phase2.equals(other.phase2))
             return false;
+        if (this.phase4 == null) {
+            if (other.phase4 != null)
+                return false;
+        } else if (!this.phase4.equals(other.phase4))
+            return false;
         return true;
     }
 
@@ -118,6 +143,7 @@ public class VereinStatusPojo implements IVereinStatus {
         result = prime * result + ((this.fkVerein == null) ? 0 : this.fkVerein.hashCode());
         result = prime * result + ((this.phase1 == null) ? 0 : this.phase1.hashCode());
         result = prime * result + ((this.phase2 == null) ? 0 : this.phase2.hashCode());
+        result = prime * result + ((this.phase4 == null) ? 0 : this.phase4.hashCode());
         return result;
     }
 
@@ -128,6 +154,7 @@ public class VereinStatusPojo implements IVereinStatus {
         sb.append(fkVerein);
         sb.append(", ").append(phase1);
         sb.append(", ").append(phase2);
+        sb.append(", ").append(phase4);
 
         sb.append(")");
         return sb.toString();
@@ -142,6 +169,7 @@ public class VereinStatusPojo implements IVereinStatus {
         setFkVerein(from.getFkVerein());
         setPhase1(from.getPhase1());
         setPhase2(from.getPhase2());
+        setPhase4(from.getPhase4());
     }
 
     @Override

@@ -17,6 +17,7 @@ import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinTimetableEntryDTO;
 import ch.zkmf2024.server.dto.VereinsangabenDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
+import ch.zkmf2024.server.dto.VereinsanmeldungDetailDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.dto.admin.VereinProgrammSelectionDTO;
@@ -24,6 +25,7 @@ import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
+import ch.zkmf2024.server.jooq.generated.tables.daos.VereinAnmeldungDetailDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDoppeleinsatzDao;
@@ -33,6 +35,7 @@ import ch.zkmf2024.server.jooq.generated.tables.daos.VereinProgrammTitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinStatusDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
@@ -103,6 +106,7 @@ public class VereinRepository {
     private final VereinCommentDao vereinCommentDao;
     private final VereinMessageDao vereinMessageDao;
     private final VereinDoppeleinsatzDao vereinDoppeleinsatzDao;
+    private final VereinAnmeldungDetailDao vereinAnmeldungDetailDao;
 
     public VereinRepository(ProgrammVorgabenRepository programmVorgabenRepository,
                             DSLContext jooqDsl,
@@ -118,6 +122,7 @@ public class VereinRepository {
         this.vereinCommentDao = new VereinCommentDao(jooqConfig);
         this.vereinMessageDao = new VereinMessageDao(jooqConfig);
         this.vereinDoppeleinsatzDao = new VereinDoppeleinsatzDao(jooqConfig);
+        this.vereinAnmeldungDetailDao = new VereinAnmeldungDetailDao(jooqConfig);
     }
 
     public List<VereinTeilnahmeDTO> findAllConfirmed() {
@@ -277,6 +282,7 @@ public class VereinRepository {
     public List<VereinDTO> findAllForExport() {
         var stopWatch = new StopWatch();
         var programmePerVereinId = findProgrammePerVereinId();
+        var detailsPerVereinId = findAnmeldungDetailsPerVereinId();
         var doppeleinsatzPerVereinId = findDoppeleinsatzPerVereinId();
 
         stopWatch.splitInfo("findProgrammePerVereinId");
@@ -349,8 +355,10 @@ public class VereinRepository {
                                     new VereinsinfoDTO(null, null, null, null, ""),
                                     it.get(VEREIN.CONFIRMED_AT) != null,
                                     programmePerVereinId.getOrDefault(it.get(VEREIN.ID), new ArrayList<>()),
+                                    detailsPerVereinId.get(it.get(VEREIN.ID)),
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)) == DONE,
                                     PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)) == DONE,
+                                    PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE4)) == DONE,
                                     it.get(VEREIN.PHASE2_CONFIRMED_BY),
                                     it.get(VEREIN.PHASE2_CONFIRMED_AT),
                                     List.of(),
@@ -733,6 +741,19 @@ public class VereinRepository {
                       .join(VEREIN).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
                       .where(VEREIN_PROGRAMM.ID.eq(programmId))
                       .fetchOptional(VEREIN.EMAIL);
+    }
+
+    public Optional<VereinAnmeldungDetailPojo> findAnmeldungDetail(Long vereinId) {
+        return vereinAnmeldungDetailDao.fetchByFkVerein(vereinId).stream().findFirst();
+    }
+
+    public Map<Long, VereinsanmeldungDetailDTO> findAnmeldungDetailsPerVereinId() {
+        return vereinAnmeldungDetailDao.findAll().stream()
+                                       .collect(toMap(VereinAnmeldungDetailPojo::getFkVerein, MAPPER::toAnmeldungDetailDto));
+    }
+
+    public void update(VereinAnmeldungDetailPojo anmeldungDetail) {
+        vereinAnmeldungDetailDao.update(anmeldungDetail);
     }
 
     public List<VereinProgrammPojo> findAllModulDProgramme() {

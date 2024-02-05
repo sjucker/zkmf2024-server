@@ -248,8 +248,10 @@ export interface VereinDTO {
     info: VereinsinfoDTO;
     registrationConfirmed: boolean;
     programme: VereinProgrammDTO[];
+    anmeldungDetail: VereinsanmeldungDetailDTO;
     phase1Done: boolean;
     phase2Done: boolean;
+    phase4Done: boolean;
     phase2ConfirmedBy?: string;
     phase2ConfirmedAt?: DateAsString;
     timetableEntries: TimetableOverviewEntryDTO[];
@@ -258,6 +260,7 @@ export interface VereinDTO {
     programmUpdated: boolean;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
+    phase4Status: PhaseStatus;
 }
 
 export interface VereinMessageDTO {
@@ -373,6 +376,31 @@ export interface VereinsanmeldungDTO extends IsValid {
     perkussionsensemble: boolean;
     module: Modul[];
     besetzungen: Besetzung[];
+}
+
+export interface VereinsanmeldungDetailDTO extends IsValid {
+    festfuehrerAmount?: number;
+    festkartenMusikerAmount?: number;
+    festkartenBegleiterAmount?: number;
+    freitagabendAmount?: number;
+    gehbehinderung: boolean;
+    partiturenSent: boolean;
+    partiturenSentAt?: DateAsString;
+    gesamtchor: boolean;
+    adhocOrchester: boolean;
+    anreisePublicTransport: boolean;
+    anreiseOtherwise?: string;
+    verpflegungMeat?: number;
+    verpflegungVegan?: number;
+    verpflegungAllergies?: number;
+    verpflegungNone?: number;
+    verpflegungHelper: boolean;
+    verpflegungHelper1?: string;
+    verpflegungHelper2?: string;
+    verpflegungHelper3?: string;
+    verpflegungHelper4?: string;
+    verpflegungHelper5?: string;
+    verpflegungHelper6?: string;
 }
 
 export interface VereinsinfoDTO extends IsValid {
