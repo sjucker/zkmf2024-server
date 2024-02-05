@@ -19,6 +19,8 @@ import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
+import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester;
+import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
 import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz;
 import ch.zkmf2024.server.jooq.generated.tables.VereinMessage;
@@ -127,6 +129,16 @@ public class DefaultSchema extends SchemaImpl {
     public final Verein VEREIN = Verein.VEREIN;
 
     /**
+     * The table <code>verein_anmeldung_adhoc_orchester</code>.
+     */
+    public final VereinAnmeldungAdhocOrchester VEREIN_ANMELDUNG_ADHOC_ORCHESTER = VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER;
+
+    /**
+     * The table <code>verein_anmeldung_detail</code>.
+     */
+    public final VereinAnmeldungDetail VEREIN_ANMELDUNG_DETAIL = VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL;
+
+    /**
      * The table <code>verein_comment</code>.
      */
     public final VereinComment VEREIN_COMMENT = VereinComment.VEREIN_COMMENT;
@@ -192,6 +204,8 @@ public class DefaultSchema extends SchemaImpl {
                 TimetableEntry.TIMETABLE_ENTRY,
                 Titel.TITEL,
                 Verein.VEREIN,
+                VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER,
+                VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL,
                 VereinComment.VEREIN_COMMENT,
                 VereinDoppeleinsatz.VEREIN_DOPPELEINSATZ,
                 VereinMessage.VEREIN_MESSAGE,
