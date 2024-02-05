@@ -95,4 +95,19 @@ public class VereinStatusDao extends DAOImpl<VereinStatusRecord, VereinStatusPoj
     public List<VereinStatusPojo> fetchByPhase2(String... values) {
         return fetch(VereinStatus.VEREIN_STATUS.PHASE2, values);
     }
+
+    /**
+     * Fetch records that have <code>phase4 BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinStatusPojo> fetchRangeOfPhase4(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinStatus.VEREIN_STATUS.PHASE4, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>phase4 IN (values)</code>
+     */
+    public List<VereinStatusPojo> fetchByPhase4(String... values) {
+        return fetch(VereinStatus.VEREIN_STATUS.PHASE4, values);
+    }
 }

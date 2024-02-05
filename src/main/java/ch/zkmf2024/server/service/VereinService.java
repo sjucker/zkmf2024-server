@@ -14,6 +14,7 @@ import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
+import ch.zkmf2024.server.dto.VereinsanmeldungDetailDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
@@ -46,6 +47,7 @@ import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -162,7 +164,9 @@ public class VereinService {
                                    verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
                 getProgramme(verein.getId()),
+                getAnmeldungDetail(verein.getId()),
                 // only used for export, not important here
+                false,
                 false,
                 false,
                 verein.getPhase2ConfirmedBy(),
@@ -172,6 +176,12 @@ public class VereinService {
                 findErrata(verein.getId()),
                 false
         );
+    }
+
+    private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId) {
+        return vereinRepository.findAnmeldungDetail(vereinId)
+                               .map(MAPPER::toAnmeldungDetailDto)
+                               .orElseThrow(() -> new NoSuchElementException("no VereinAnmeldungDetail found for vereinId: " + vereinId));
     }
 
     private List<VereinErrataDTO> findErrata(Long vereinId) {
@@ -258,6 +268,10 @@ public class VereinService {
             updateProgramme(verein.getId(), dto.programme());
         }
         updateDoppeleinsatz(verein.getId(), dto.doppelEinsatz(), dto.angaben().mitspielerDoppeleinsatz());
+
+        var anmeldungDetail = vereinRepository.findAnmeldungDetail(verein.getId()).orElseThrow();
+        MAPPER.updateAnmeldungDetail(anmeldungDetail, dto.anmeldungDetail());
+        vereinRepository.update(anmeldungDetail);
 
         dto = toDTO(verein);
 

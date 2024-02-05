@@ -24,4 +24,14 @@ class ValidationUtilTest {
         assertThat(ValidationUtil.isValidEmail("test.test+test@test.com")).isTrue();
     }
 
+    @Test
+    void isPositive() {
+        assertThat(ValidationUtil.isPositive(null)).isFalse();
+        assertThat(ValidationUtil.isPositive(0)).isFalse();
+        assertThat(ValidationUtil.isPositive(Integer.MIN_VALUE)).isFalse();
+        assertThat(ValidationUtil.isPositive(-1)).isFalse();
+        assertThat(ValidationUtil.isPositive(1)).isTrue();
+        assertThat(ValidationUtil.isPositive(Integer.MAX_VALUE)).isTrue();
+    }
+
 }

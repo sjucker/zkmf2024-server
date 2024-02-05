@@ -4,8 +4,10 @@ import ch.zkmf2024.server.dto.KontaktDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinsangabenDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
+import ch.zkmf2024.server.dto.VereinsanmeldungDetailDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -49,6 +51,14 @@ public interface VereinMapper {
     @Mapping(target = "modulH", source = "modulh")
     VereinsanmeldungDTO toVereinsanmeldungDTO(VereinPojo pojo);
 
+    @Mapping(target = "verpflegungHelper1", source = "verpflegungHelper_1")
+    @Mapping(target = "verpflegungHelper2", source = "verpflegungHelper_2")
+    @Mapping(target = "verpflegungHelper3", source = "verpflegungHelper_3")
+    @Mapping(target = "verpflegungHelper4", source = "verpflegungHelper_4")
+    @Mapping(target = "verpflegungHelper5", source = "verpflegungHelper_5")
+    @Mapping(target = "verpflegungHelper6", source = "verpflegungHelper_6")
+    VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo);
+
     @Mapping(target = "tambouren", ignore = true)
     @Mapping(target = "praesidentKontaktId", ignore = true)
     @Mapping(target = "perkussionsensemble", ignore = true)
@@ -78,6 +88,16 @@ public interface VereinMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateKontakt(@MappingTarget KontaktPojo pojo, KontaktDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "fkVerein", ignore = true)
+    @Mapping(target = "verpflegungHelper_1", source = "verpflegungHelper1")
+    @Mapping(target = "verpflegungHelper_2", source = "verpflegungHelper2")
+    @Mapping(target = "verpflegungHelper_3", source = "verpflegungHelper3")
+    @Mapping(target = "verpflegungHelper_4", source = "verpflegungHelper4")
+    @Mapping(target = "verpflegungHelper_5", source = "verpflegungHelper5")
+    @Mapping(target = "verpflegungHelper_6", source = "verpflegungHelper6")
+    void updateAnmeldungDetail(@MappingTarget VereinAnmeldungDetailPojo pojo, VereinsanmeldungDetailDTO dto);
 
     default void updateVereinsanmeldung(@MappingTarget VereinPojo pojo, VereinsanmeldungDTO dto) {
         pojo.setModula(dto.modulA());

@@ -41,6 +41,16 @@ public interface IVereinStatus extends Serializable {
      */
     public String getPhase2();
 
+    /**
+     * Setter for <code>verein_status.phase4</code>.
+     */
+    public void setPhase4(String value);
+
+    /**
+     * Getter for <code>verein_status.phase4</code>.
+     */
+    public String getPhase4();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -18,8 +18,10 @@ public record VereinDTO(
         @NotNull VereinsinfoDTO info,
         boolean registrationConfirmed,
         @NotNull List<VereinProgrammDTO> programme,
+        @NotNull VereinsanmeldungDetailDTO anmeldungDetail,
         boolean phase1Done,
         boolean phase2Done,
+        boolean phase4Done,
         String phase2ConfirmedBy,
         LocalDateTime phase2ConfirmedAt,
         @NotNull List<TimetableOverviewEntryDTO> timetableEntries,
@@ -50,6 +52,11 @@ public record VereinDTO(
         return programme.stream().allMatch(VereinProgrammDTO::isValid) ?
                 PhaseStatus.DONE :
                 PhaseStatus.IN_PROGRESS;
+    }
+
+    @NotNull
+    public PhaseStatus getPhase4Status() {
+        return anmeldungDetail.isValid() ? PhaseStatus.DONE : PhaseStatus.IN_PROGRESS;
     }
 
 }

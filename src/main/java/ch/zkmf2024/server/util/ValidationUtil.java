@@ -18,4 +18,8 @@ public final class ValidationUtil {
         }
         return emailPattern.matcher(email).matches();
     }
+
+    public static boolean isPositive(Integer i) {
+        return i != null && i > 0;
+    }
 }
