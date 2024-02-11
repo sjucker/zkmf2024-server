@@ -38,6 +38,12 @@ public class LocationRepository {
                           .toList();
     }
 
+    public List<LocationDTO> findAll() {
+        return locationDao.findAll().stream()
+                          .map(this::toLocationDTO)
+                          .toList();
+    }
+
     public List<LocationDTO> findAllByType(LocationType type) {
         return locationDao.fetchByLocationType(LocationLocationType.lookupLiteral(type.name())).stream()
                           .map(this::toLocationDTO)

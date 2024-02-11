@@ -2,6 +2,9 @@ package ch.zkmf2024.server.rest;
 
 import ch.zkmf2024.server.dto.CoordinatesDTO;
 import ch.zkmf2024.server.dto.LocationDTO;
+import ch.zkmf2024.server.dto.geojson.FeatureItem;
+import ch.zkmf2024.server.dto.geojson.GeoJSON;
+import ch.zkmf2024.server.dto.geojson.Geometry;
 import ch.zkmf2024.server.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static ch.zkmf2024.server.dto.LocationType.WETTSPIELLOKAL;
 
@@ -46,5 +50,21 @@ public class LocationEndpoint {
         log.info("GET /public/location/{}", identifier);
 
         return ResponseEntity.of(locationService.findByIdentifier(identifier));
+    }
+
+    @GetMapping(value = "/geojson")
+    public ResponseEntity<GeoJSON> getGeoJSON() {
+        log.info("GET /public/location/geojson");
+
+        return ResponseEntity.ok(new GeoJSON("FeatureCollection",
+                                             locationService.findAll().stream()
+                                                            .map(location -> new FeatureItem(
+                                                                    "Feature",
+                                                                    new Geometry("Point", List.of(location.getCoordinates().longitude(),
+                                                                                                  location.getCoordinates().latitude())),
+                                                                    Map.of("name", location.name(),
+                                                                           "type", location.type().name())
+                                                            ))
+                                                            .toList()));
     }
 }
