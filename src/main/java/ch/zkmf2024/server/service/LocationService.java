@@ -22,6 +22,10 @@ public class LocationService {
         this.locationRepository = locationRepository;
     }
 
+    public List<LocationDTO> findAll() {
+        return locationRepository.findAll();
+    }
+
     public List<LocationDTO> findAllByType(LocationType type) {
         return locationRepository.findAllByType(type);
     }
