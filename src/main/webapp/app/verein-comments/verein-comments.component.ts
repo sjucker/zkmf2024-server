@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {VereinCommentDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {VereineService} from "../service/vereine.service";
 
 export interface VereinCommentsInput {
@@ -20,6 +21,7 @@ export class VereinCommentsComponent {
     comment = '';
 
     constructor(private readonly config: DynamicDialogConfig<VereinCommentsInput>,
+                private authenticationService: AuthenticationService,
                 private vereineService: VereineService) {
         if (config.data) {
             this.loading = true;
@@ -51,5 +53,9 @@ export class VereinCommentsComponent {
                 }
             });
         }
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 }

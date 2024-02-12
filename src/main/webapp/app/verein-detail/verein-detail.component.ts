@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {environment} from "../../environments/environment";
 import {Modul, PhaseStatus, TitelDTO, VereinDTO, VereinProgrammDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {VereineService} from "../service/vereine.service";
 
 export interface VereinDetailInput {
@@ -21,6 +22,7 @@ export class VereinDetailComponent {
     confirming = false;
 
     constructor(config: DynamicDialogConfig<VereinDetailInput>,
+                private authenticationService: AuthenticationService,
                 private vereineService: VereineService) {
         if (config.data) {
             this.loading = true;
@@ -143,4 +145,9 @@ export class VereinDetailComponent {
         }
         return false;
     }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
+    }
+
 }

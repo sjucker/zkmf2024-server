@@ -50,7 +50,11 @@ export class AuthenticationService {
     }
 
     isAdmin(): boolean {
-        return this.isLoggedIn() && localStorage.getItem(this.role) === UserRole.ADMIN;
+        return this.isLoggedIn() && (localStorage.getItem(this.role) === UserRole.ADMIN || localStorage.getItem(this.role) === UserRole.ADMIN_READ_ONLY);
+    }
+
+    isReadOnly() {
+        return localStorage.getItem(this.role) === null || localStorage.getItem(this.role) === UserRole.ADMIN_READ_ONLY
     }
 
 }

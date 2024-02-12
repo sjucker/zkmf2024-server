@@ -83,21 +83,21 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/download/helfer")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<Resource> exportHelfer() throws IOException {
         log.info("GET /secured/admin/download/helfer");
         return export(helperRegistrationService.export());
     }
 
     @GetMapping(path = "/download/helfer-import")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<Resource> exportHelferImport() throws IOException {
         log.info("GET /secured/admin/download/helfer-import");
         return export(helperRegistrationService.exportForImport());
     }
 
     @GetMapping(path = "/download/vereine")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<Resource> exportVereine() throws IOException {
         log.info("GET /secured/admin/download/vereine");
         return export(exportService.exportVereine());
@@ -121,7 +121,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/newsletter")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<NewsletterRecipientDTO>> getNewsletter() {
         log.info("GET /secured/admin/newsletter");
         return ResponseEntity.ok(newsletterService.getAll());
@@ -146,7 +146,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<VereinOverviewDTO>> vereine() {
         log.info("GET /secured/admin/vereine");
 
@@ -154,7 +154,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine-selection")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<VereinSelectionDTO>> vereineSelection() {
         log.info("GET /secured/admin/vereine-selection");
 
@@ -162,7 +162,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine/{id}/programme")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<TimetableEntryCreateDTO>> vereinProgrammeSelection(@PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}/programme", id);
 
@@ -170,7 +170,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine/{id}")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<VereinDTO> vereinById(@PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}", id);
 
@@ -178,7 +178,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine/{id}/comments")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<VereinCommentDTO>> vereinComments(@PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}/comments", id);
 
@@ -186,7 +186,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping(path = "/vereine/{id}/messages")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<VereinMessageDTO>> vereinMessages(@AuthenticationPrincipal UserDetails userDetails,
                                                                  @PathVariable Long id) {
         log.info("GET /secured/admin/vereine/{}/messages", id);
@@ -263,7 +263,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping("/jury")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<JudgeDTO>> getJury() {
         log.info("GET /secured/admin/jury");
 
@@ -284,7 +284,7 @@ public class AdminEndpoint {
     }
 
     @GetMapping("/timetable")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<TimetableEntryDTO>> getTimetable() {
         log.info("GET /secured/admin/timetable");
 
@@ -324,14 +324,14 @@ public class AdminEndpoint {
     }
 
     @GetMapping("/location/{type}")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<LocationSelectionDTO>> getLocationsByType(@PathVariable TimetableEntryType type) {
         log.info("GET /secured/admin/location/{}", type);
         return ResponseEntity.ok(timetableService.findLocationsByType(type.toLocationType()));
     }
 
     @GetMapping("/errata")
-    @Secured({"ADMIN"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<List<ErrataDTO>> getErrata() {
         log.info("GET /secured/admin/errata");
         return ResponseEntity.ok(errataService.findAll());

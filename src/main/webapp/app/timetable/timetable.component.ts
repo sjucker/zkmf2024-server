@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ConfirmationService, MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TimetableEntryCreateDTO, TimetableEntryDTO, TimetableEntryType, VereinSelectionDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {TimetableService} from "../service/timetable.service";
 import {TimetableAssignJudgesComponent, TimetableAssignJudgesInput} from "../timetable-assign-judges/timetable-assign-judges.component";
 import {TimetableEntryEditComponent, TimetableEntryEditInput} from "../timetable-entry-edit/timetable-entry-edit.component";
@@ -23,6 +24,7 @@ export class TimetableComponent implements OnInit {
     locations: string[] = [];
 
     constructor(private service: TimetableService,
+                private authenticationService: AuthenticationService,
                 public dialogService: DialogService,
                 public messageService: MessageService,
                 public confirmationService: ConfirmationService) {
@@ -203,5 +205,9 @@ export class TimetableComponent implements OnInit {
             judges += `, ${dto.judge4}`;
         }
         return judges;
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 }

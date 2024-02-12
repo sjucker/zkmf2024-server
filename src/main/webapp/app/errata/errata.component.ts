@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ErrataDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {ErrataService} from "../service/errata.service";
 
 @Component({
@@ -15,7 +16,8 @@ export class ErrataComponent implements OnInit {
     saving = false;
     sending = false;
 
-    constructor(private service: ErrataService,
+    constructor(private authenticationService: AuthenticationService,
+                private service: ErrataService,
                 private readonly messageService: MessageService,
                 private readonly confirmationService: ConfirmationService) {
     }
@@ -77,5 +79,9 @@ export class ErrataComponent implements OnInit {
                 })
             }
         })
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 }

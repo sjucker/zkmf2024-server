@@ -19,13 +19,13 @@
     <div *ngIf="vereinId > 0">
         <div *ngFor="let entry of timetableEntries">
             <h3 class="mb-0">
-                {{entry.modulDescription}}
-                <span *ngIf="entry.klasse"> {{entry.klasse}}</span>
-                <span *ngIf="entry.besetzung"> {{entry.besetzung}}</span>
+                {{ entry.modulDescription }}
+                <span *ngIf="entry.klasse"> {{ entry.klasse }}</span>
+                <span *ngIf="entry.besetzung"> {{ entry.besetzung }}</span>
             </h3>
 
             <div *ngFor="let e of entry.entries" class="p-fluid grid">
-                <h4 class="col-12 m-0">{{getTranslation(e.type)}}</h4>
+                <h4 class="col-12 m-0">{{ getTranslation(e.type) }}</h4>
                 <div class="field col-12 md:col-3 lg:col-2">
                     <span class="p-float-label">
                         <input type="text" id="date" pInputText [(ngModel)]="e.date">
@@ -73,7 +73,7 @@
     <hr/>
     <p-table [value]="getEntriesForLocation(location)"
              styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-        <ng-template pTemplate="caption">{{location}}</ng-template>
+        <ng-template pTemplate="caption">{{ location }}</ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th class="col-1">Typ</th>
@@ -89,20 +89,24 @@
         </ng-template>
         <ng-template pTemplate="body" let-dto>
             <tr>
-                <td class="col-1">{{dto.type}}</td>
-                <td>{{dto.date | date: 'EEEE, dd.MM.yyyy'}}</td>
-                <td>{{formatTime(dto.start)}}</td>
-                <td>{{formatTime(dto.end)}}</td>
-                <td>{{dto.modul}}</td>
-                <td>{{dto.klasse}}</td>
-                <td>{{dto.besetzung}}</td>
-                <td>{{dto.verein}}</td>
-                <td class="flex align-items-baseline gap-2">
-                    <button pButton pRipple icon="pi pi-pencil" (click)="edit(dto)"></button>
-                    <button pButton pRipple icon="pi pi-trash" (click)="delete(dto)"></button>
-                    <button pButton pRipple icon="pi pi-users" (click)="assignJudges(dto)" *ngIf="canAssignJudges(dto)"></button>
-                    <i class="pi pi-users" *ngIf="hasJudgesAssigned(dto)" [pTooltip]="judges(dto)" tooltipPosition="left"></i>
-                </td>
+                <td class="col-1">{{ dto.type }}</td>
+                <td>{{ dto.date | date: 'EEEE, dd.MM.yyyy' }}</td>
+                <td>{{ formatTime(dto.start) }}</td>
+                <td>{{ formatTime(dto.end) }}</td>
+                <td>{{ dto.modul }}</td>
+                <td>{{ dto.klasse }}</td>
+                <td>{{ dto.besetzung }}</td>
+                <td>{{ dto.verein }}</td>
+                @if (isReadOnly()) {
+                    <td></td>
+                } @else {
+                    <td class="flex align-items-baseline gap-2">
+                        <button pButton pRipple icon="pi pi-pencil" (click)="edit(dto)"></button>
+                        <button pButton pRipple icon="pi pi-trash" (click)="delete(dto)"></button>
+                        <button pButton pRipple icon="pi pi-users" (click)="assignJudges(dto)" *ngIf="canAssignJudges(dto)"></button>
+                        <i class="pi pi-users" *ngIf="hasJudgesAssigned(dto)" [pTooltip]="judges(dto)" tooltipPosition="left"></i>
+                    </td>
+                }
             </tr>
         </ng-template>
     </p-table>

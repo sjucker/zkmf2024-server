@@ -655,6 +655,7 @@ export enum PercussionEquipmentType {
 export enum UserRole {
     VEREIN = "VEREIN",
     ADMIN = "ADMIN",
+    ADMIN_READ_ONLY = "ADMIN_READ_ONLY",
     JUDGE = "JUDGE",
     IMPERSONATE = "IMPERSONATE",
 }

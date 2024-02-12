@@ -8,6 +8,6 @@
         <p-button label="Senden"
                   (onClick)="broadcast()"
                   [loading]="saving"
-                  [disabled]="message.length < 1"></p-button>
+                  [disabled]="message.length < 1 || isReadOnly()"></p-button>
     </div>
 </div>

@@ -2,7 +2,8 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="mb-2 flex gap-2">
     <p-button label="Login erstellen"
-              (onClick)="openCreateJuryUser()"></p-button>
+              (onClick)="openCreateJuryUser()"
+              [disabled]="isReadOnly()"></p-button>
 </div>
 
 <p-table [value]="jury"
@@ -18,8 +19,8 @@
     </ng-template>
     <ng-template pTemplate="body" let-judge>
         <tr>
-            <td>{{judge.name}}</td>
-            <td>{{judge.email}}</td>
+            <td>{{ judge.name }}</td>
+            <td>{{ judge.email }}</td>
         </tr>
     </ng-template>
 </p-table>

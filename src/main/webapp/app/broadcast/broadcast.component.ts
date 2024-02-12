@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {AuthenticationService} from "../service/authentication.service";
 import {VereineService} from "../service/vereine.service";
 
 export interface BroadcastInput {
@@ -19,6 +20,7 @@ export class BroadcastComponent {
 
     constructor(private readonly config: DynamicDialogConfig<BroadcastInput>,
                 private readonly ref: DynamicDialogRef,
+                private authenticationService: AuthenticationService,
                 private readonly vereineService: VereineService,
                 private readonly messageService: MessageService) {
     }
@@ -51,5 +53,9 @@ export class BroadcastComponent {
 
     close() {
         this.ref.close();
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 }

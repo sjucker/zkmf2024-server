@@ -3,6 +3,7 @@ import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {JuryLoginCreateComponent} from "../jury-login-create/jury-login-create.component";
 import {JudgeDTO, JuryLoginCreateDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {JuryService} from "../service/jury.service";
 
 @Component({
@@ -17,6 +18,7 @@ export class JuryComponent implements OnInit {
     jury: JudgeDTO[] = [];
 
     constructor(private dialogService: DialogService,
+                private authenticationService: AuthenticationService,
                 private service: JuryService,
                 private messageService: MessageService) {
     }
@@ -65,6 +67,10 @@ export class JuryComponent implements OnInit {
                 });
             }
         });
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 
 }
