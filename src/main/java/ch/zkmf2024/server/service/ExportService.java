@@ -183,6 +183,7 @@ public class ExportService {
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().schwierigkeitsgrad(), wb);
                     columnIndex = setCellValue(columnIndex, row, getDuration(programmTitelDTO.titel().durationInSeconds()), wb);
                     columnIndex = setCellValue(columnIndex, row, programmTitelDTO.applausInSeconds(), wb);
+                    columnIndex = setCellValue(columnIndex, row, programmTitelDTO.titel().infoModeration(), wb);
                 }
             }
         }
@@ -274,9 +275,10 @@ public class ExportService {
                 headerRow.createCell(columnIndex++).setCellValue("Klasse");
                 for (var i = 0; i < maxTitel; i++) {
                     headerRow.createCell(columnIndex++).setCellValue("Musikstück");
-                    headerRow.createCell(columnIndex++).setCellValue("Schierigkeitsgrad");
+                    headerRow.createCell(columnIndex++).setCellValue("Schwierigkeitsgrad");
                     headerRow.createCell(columnIndex++).setCellValue("Dauer Stück");
                     headerRow.createCell(columnIndex++).setCellValue("Dauer Applaus");
+                    headerRow.createCell(columnIndex++).setCellValue("Info");
                 }
             }
         }
