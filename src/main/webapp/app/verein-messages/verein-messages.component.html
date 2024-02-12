@@ -3,7 +3,7 @@
     <p-button label="Senden"
               (onClick)="saveMessage()"
               [loading]="saving"
-              [disabled]="message.length < 1"></p-button>
+              [disabled]="message.length < 1 || isReadOnly()"></p-button>
 </div>
 
 <div class="messages-container">

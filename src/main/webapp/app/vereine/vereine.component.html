@@ -2,7 +2,7 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="m-2 flex justify-content-between">
     <p-button iconPos="left" icon="pi pi-comments" label="Broadcast"
-              [disabled]="selected.length < 1"
+              [disabled]="selected.length < 1 || isReadOnly()"
               (onClick)="openBroadcast()"></p-button>
     <p-button iconPos="left" icon="pi pi-download" [loading]="exporting" label="Export"
               (onClick)="export()"></p-button>

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {VereinMessageDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {VereineService} from "../service/vereine.service";
 
 export interface VereinMessagesInput {
@@ -21,6 +22,7 @@ export class VereinMessagesComponent {
     message = '';
 
     constructor(private readonly config: DynamicDialogConfig<VereinMessagesInput>,
+                private authenticationService: AuthenticationService,
                 private vereineService: VereineService,
                 private messageService: MessageService) {
         if (config.data) {
@@ -64,5 +66,9 @@ export class VereinMessagesComponent {
                 }
             });
         }
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 }

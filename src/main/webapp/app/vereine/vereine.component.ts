@@ -4,6 +4,7 @@ import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {BroadcastComponent, BroadcastInput} from "../broadcast/broadcast.component";
 import {Klasse, PhaseStatus, VereinOverviewDTO} from "../rest";
+import {AuthenticationService} from "../service/authentication.service";
 import {VereineService} from "../service/vereine.service";
 import {VereinCommentsComponent, VereinCommentsInput} from "../verein-comments/verein-comments.component";
 import {VereinDetailComponent, VereinDetailInput} from "../verein-detail/verein-detail.component";
@@ -24,6 +25,7 @@ export class VereineComponent implements OnInit {
 
     constructor(private vereineService: VereineService,
                 private messageService: MessageService,
+                private authenticationService: AuthenticationService,
                 private dialogService: DialogService) {
     }
 
@@ -172,5 +174,9 @@ export class VereineComponent implements OnInit {
                 this.exporting = false;
             }
         });
+    }
+
+    isReadOnly(): boolean {
+        return this.authenticationService.isReadOnly();
     }
 }
