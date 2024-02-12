@@ -32,7 +32,6 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.JudgeReportCategoryRating.NEUTRAL;
@@ -51,6 +50,8 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static java.math.RoundingMode.HALF_UP;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -406,6 +407,9 @@ public class JudgeRepository {
                                           .where(JUDGE_REPORT.ID.eq(reportId))
                                           .fetchSingle();
 
+        var klasse = modulKlasseBesetzung.get(VEREIN_PROGRAMM.KLASSE);
+        var besetzung = modulKlasseBesetzung.get(VEREIN_PROGRAMM.BESETZUNG);
+
         return jooqDsl.select(TIMETABLE_ENTRY.ID,
                               VEREIN.VEREINSNAME,
                               VEREIN_PROGRAMM.MODUL,
@@ -415,8 +419,8 @@ public class JudgeRepository {
                       .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
                       .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
                       .where(VEREIN_PROGRAMM.MODUL.eq(modulKlasseBesetzung.get(VEREIN_PROGRAMM.MODUL)),
-                             VEREIN_PROGRAMM.KLASSE.eq(modulKlasseBesetzung.get(VEREIN_PROGRAMM.KLASSE)),
-                             VEREIN_PROGRAMM.BESETZUNG.eq(modulKlasseBesetzung.get(VEREIN_PROGRAMM.BESETZUNG)))
+                             klasse != null ? VEREIN_PROGRAMM.KLASSE.eq(klasse) : VEREIN_PROGRAMM.KLASSE.isNull(),
+                             besetzung != null ? VEREIN_PROGRAMM.BESETZUNG.eq(besetzung) : VEREIN_PROGRAMM.BESETZUNG.isNull())
                       .stream()
                       .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
                       .values().stream()
@@ -427,14 +431,9 @@ public class JudgeRepository {
                           var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
                           var record4 = modul.isParademusik() ? values.get(3) : null;
                           var overallScore = overallScore(record1, record2, record3, record4, modul);
-                          if (overallScore != null) {
-                              return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore);
-                          } else {
-                              return null;
-                          }
+                          return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore);
                       })
-                      .filter(Objects::nonNull)
-                      .sorted(comparing(JudgeRankingEntryDTO::score).reversed())
+                      .sorted(comparing(JudgeRankingEntryDTO::score, nullsLast(naturalOrder())).reversed())
                       .toList();
     }
 }

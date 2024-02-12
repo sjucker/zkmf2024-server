@@ -16,7 +16,7 @@ export interface ForgotPasswordRequestDTO {
 
 export interface JudgeRankingEntryDTO {
     verein: string;
-    score: number;
+    score?: number;
 }
 
 export interface JudgeReportDTO {
