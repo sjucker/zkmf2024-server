@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
+import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
@@ -13,6 +14,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.JudgeRepository;
 import ch.zkmf2024.server.repository.UserRepository;
@@ -37,6 +39,8 @@ import static ch.zkmf2024.server.dto.JudgeRole.JUROR_4_OPTISCH;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
 import static ch.zkmf2024.server.util.DateUtil.now;
 import static java.util.Comparator.comparing;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @Service
@@ -186,5 +190,24 @@ public class JudgeService {
     public void confirmScores(String username, Long programmId) {
         vereinRepository.confirmScores(username, programmId);
         mailService.sendScoresConfirmation(vereinRepository.getEmailByProgrammId(programmId).orElseThrow());
+    }
+
+    public List<ModulDSelectionDTO> getModulDSelection() {
+        return judgeRepository.getModulDSelection();
+    }
+
+    public void updateModulD(List<ModulDSelectionDTO> dtos) {
+        var allModulDProgramme = vereinRepository.findAllModulDProgramme().stream()
+                                                 .collect(toMap(VereinProgrammPojo::getId, identity()));
+
+        for (var dto : dtos) {
+            var vereinProgrammPojo = allModulDProgramme.get(dto.vereinProgrammId());
+            if (!vereinProgrammPojo.getModulDTitelSelection().equals(dto.selection().name())) {
+                vereinProgrammPojo.setModulDTitelSelection(dto.selection().name());
+                vereinRepository.update(vereinProgrammPojo);
+                log.info("updating VereinProgramm {} modul D selection: {}", vereinProgrammPojo.getId(), dto.selection());
+            }
+        }
+
     }
 }

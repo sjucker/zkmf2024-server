@@ -63,6 +63,7 @@ import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
+import static ch.zkmf2024.server.dto.Modul.D;
 import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
@@ -732,5 +733,9 @@ public class VereinRepository {
                       .join(VEREIN).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
                       .where(VEREIN_PROGRAMM.ID.eq(programmId))
                       .fetchOptional(VEREIN.EMAIL);
+    }
+
+    public List<VereinProgrammPojo> findAllModulDProgramme() {
+        return vereinProgrammDao.fetchByModul(D.name());
     }
 }

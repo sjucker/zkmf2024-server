@@ -242,6 +242,16 @@ public interface IVereinProgramm extends Serializable {
      */
     public LocalDateTime getScoresConfirmedAt();
 
+    /**
+     * Setter for <code>verein_programm.modul_d_titel_selection</code>.
+     */
+    public void setModulDTitelSelection(String value);
+
+    /**
+     * Getter for <code>verein_programm.modul_d_titel_selection</code>.
+     */
+    public String getModulDTitelSelection();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

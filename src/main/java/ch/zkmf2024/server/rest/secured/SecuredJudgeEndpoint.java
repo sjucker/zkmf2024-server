@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
+import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.service.JudgeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -108,6 +109,24 @@ public class SecuredJudgeEndpoint {
         log.info("GET /secured/judge/ranking/{}", reportId);
 
         return ResponseEntity.ok(judgeService.getRanking(reportId));
+    }
+
+    @GetMapping("/modul-d")
+    @Secured({"JUDGE", "IMPERSONATE"})
+    public ResponseEntity<List<ModulDSelectionDTO>> modulD() {
+        log.info("GET /secured/judge/modul-d");
+
+        return ResponseEntity.ok(judgeService.getModulDSelection());
+    }
+
+    @PostMapping("/modul-d")
+    @Secured({"JUDGE"})
+    public ResponseEntity<?> updateModulD(@RequestBody List<ModulDSelectionDTO> dtos) {
+        log.info("POST /secured/judge/modul-d {}", dtos);
+
+        judgeService.updateModulD(dtos);
+
+        return ResponseEntity.ok().build();
     }
 
 }

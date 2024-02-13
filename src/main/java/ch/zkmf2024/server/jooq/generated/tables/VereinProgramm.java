@@ -162,6 +162,11 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      */
     public final TableField<VereinProgrammRecord, LocalDateTime> SCORES_CONFIRMED_AT = createField(DSL.name("scores_confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
+    /**
+     * The column <code>verein_programm.modul_d_titel_selection</code>.
+     */
+    public final TableField<VereinProgrammRecord, String> MODUL_D_TITEL_SELECTION = createField(DSL.name("modul_d_titel_selection"), SQLDataType.VARCHAR(255), this, "");
+
     private VereinProgramm(Name alias, Table<VereinProgrammRecord> aliased) {
         this(alias, aliased, null);
     }

@@ -14,6 +14,8 @@ import ch.zkmf2024.server.dto.JudgeReportTitleDTO;
 import ch.zkmf2024.server.dto.JudgeRole;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.ModulDSelection;
+import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeReportCommentDao;
@@ -36,6 +38,9 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.JudgeReportCategoryRating.NEUTRAL;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
+import static ch.zkmf2024.server.dto.Modul.D;
+import static ch.zkmf2024.server.dto.ModulDSelection.TITEL_1;
+import static ch.zkmf2024.server.dto.ModulDSelection.TITEL_2;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT_COMMENT;
@@ -174,13 +179,14 @@ public class JudgeRepository {
     }
 
     private List<JudgeReportTitleDTO> findTitles(Long reportId, Modul modul) {
-        if (modul == Modul.D) {
+        if (modul == D) {
+            var titel1Condition = VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID.eq(TITEL.ID).and(VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION.eq(TITEL_1.name()));
+            var titel2Condition = VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID.eq(TITEL.ID).and(VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION.eq(TITEL_2.name()));
             return jooqDsl.select()
                           .from(JUDGE_REPORT)
                           .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
                           .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
-                          .join(TITEL).on(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID.eq(TITEL.ID)
-                                                                            .or(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID.eq(TITEL.ID)))
+                          .join(TITEL).on(titel1Condition.or(titel2Condition))
                           .leftJoin(JUDGE_REPORT_COMMENT).on(JUDGE_REPORT.ID.eq(JUDGE_REPORT_COMMENT.FK_JUDGE_REPORT),
                                                              TITEL.ID.eq(JUDGE_REPORT_COMMENT.FK_TITEL))
                           .where(JUDGE_REPORT.ID.eq(reportId))
@@ -435,5 +441,26 @@ public class JudgeRepository {
                       })
                       .sorted(comparing(JudgeRankingEntryDTO::score, nullsLast(naturalOrder())).reversed())
                       .toList();
+    }
+
+    public List<ModulDSelectionDTO> getModulDSelection() {
+        var t1 = TITEL.as("t1");
+        var t2 = TITEL.as("t2");
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                      .join(t1).on(t1.ID.eq(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID))
+                      .join(t2).on(t2.ID.eq(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID))
+                      .where(VEREIN_PROGRAMM.MODUL.eq(D.name()))
+                      .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME)
+                      .fetch(it -> new ModulDSelectionDTO(
+                              it.get(VEREIN_PROGRAMM.ID),
+                              it.get(VEREIN.VEREINSNAME),
+                              "%s (%s)".formatted(it.get(t1.TITEL_NAME), it.get(t1.COMPOSER)),
+                              "%s (%s)".formatted(it.get(t2.TITEL_NAME), it.get(t2.COMPOSER)),
+                              ModulDSelection.valueOf(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION)),
+                              LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME))
+                      ));
     }
 }

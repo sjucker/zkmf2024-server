@@ -397,4 +397,19 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
     public List<VereinProgrammPojo> fetchByScoresConfirmedAt(LocalDateTime... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.SCORES_CONFIRMED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>modul_d_titel_selection BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulDTitelSelection(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_d_titel_selection IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulDTitelSelection(String... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION, values);
+    }
 }
