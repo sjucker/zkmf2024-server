@@ -18,6 +18,10 @@ public interface HelperRegistrationMapper {
 
     String LIST_DELIMITER = ",";
 
+    @Mapping(target = "einsatzMontag", ignore = true)
+    @Mapping(target = "einsatzMittwoch", ignore = true)
+    @Mapping(target = "einsatzDonnerstag", ignore = true)
+    @Mapping(target = "einsatzDienstag", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "registeredAt", ignore = true)
     HelperRegistrationPojo fromDTO(RegisterHelperRequestDTO dto);

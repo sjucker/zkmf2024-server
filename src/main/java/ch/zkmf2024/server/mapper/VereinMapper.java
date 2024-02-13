@@ -59,6 +59,13 @@ public interface VereinMapper {
     @Mapping(target = "verpflegungHelper6", source = "verpflegungHelper_6")
     VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo);
 
+    @Mapping(target = "provWettspiel", ignore = true)
+    @Mapping(target = "provPlatzkonzert", ignore = true)
+    @Mapping(target = "provParademusik", ignore = true)
+    @Mapping(target = "programmLastUpdated", ignore = true)
+    @Mapping(target = "phase2ConfirmedBy", ignore = true)
+    @Mapping(target = "phase2ConfirmedAt", ignore = true)
+    @Mapping(target = "identifier", ignore = true)
     @Mapping(target = "tambouren", ignore = true)
     @Mapping(target = "praesidentKontaktId", ignore = true)
     @Mapping(target = "perkussionsensemble", ignore = true)
