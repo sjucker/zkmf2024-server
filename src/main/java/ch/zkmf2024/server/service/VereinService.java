@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.AdhocOrchesterTeilnehmerDTO;
 import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
 import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.dto.Modul;
@@ -22,6 +23,7 @@ import ch.zkmf2024.server.dto.admin.VereinErrataDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrchesterPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
@@ -47,7 +49,6 @@ import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -179,9 +180,11 @@ public class VereinService {
     }
 
     private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId) {
-        return vereinRepository.findAnmeldungDetail(vereinId)
-                               .map(MAPPER::toAnmeldungDetailDto)
-                               .orElseThrow(() -> new NoSuchElementException("no VereinAnmeldungDetail found for vereinId: " + vereinId));
+        var anmeldungDetail = vereinRepository.getAnmeldungDetail(vereinId);
+        if (anmeldungDetail.adhocOrchesterTeilnehmer().isEmpty()) {
+            anmeldungDetail.adhocOrchesterTeilnehmer().add(new AdhocOrchesterTeilnehmerDTO(null, null, null));
+        }
+        return anmeldungDetail;
     }
 
     private List<VereinErrataDTO> findErrata(Long vereinId) {
@@ -272,6 +275,14 @@ public class VereinService {
         var anmeldungDetail = vereinRepository.findAnmeldungDetail(verein.getId()).orElseThrow();
         MAPPER.updateAnmeldungDetail(anmeldungDetail, dto.anmeldungDetail());
         vereinRepository.update(anmeldungDetail);
+
+        vereinRepository.deleteAdhocOrchester(verein.getId());
+        vereinRepository.insertAdhocOrchester(dto.anmeldungDetail().adhocOrchesterTeilnehmer().stream()
+                                                 .filter(AdhocOrchesterTeilnehmerDTO::isNotEmpty)
+                                                 .map(adhoc -> new VereinAnmeldungAdhocOrchesterPojo(
+                                                         null, verein.getId(), adhoc.name(), adhoc.email(), adhoc.instrument()
+                                                 ))
+                                                 .toList());
 
         dto = toDTO(verein);
 

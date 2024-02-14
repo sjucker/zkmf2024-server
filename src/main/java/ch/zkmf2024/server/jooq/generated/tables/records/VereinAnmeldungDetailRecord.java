@@ -216,11 +216,29 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
     }
 
     /**
+     * Setter for
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    @Override
+    public void setAnreisePublicTransportType(String value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    @Override
+    public String getAnreisePublicTransportType() {
+        return (String) get(12);
+    }
+
+    /**
      * Setter for <code>verein_anmeldung_detail.anreise_otherwise</code>.
      */
     @Override
     public void setAnreiseOtherwise(String value) {
-        set(12, value);
+        set(13, value);
     }
 
     /**
@@ -228,7 +246,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public String getAnreiseOtherwise() {
-        return (String) get(12);
+        return (String) get(13);
     }
 
     /**
@@ -236,7 +254,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public void setVerpflegungMeat(Integer value) {
-        set(13, value);
+        set(14, value);
     }
 
     /**
@@ -244,7 +262,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public Integer getVerpflegungMeat() {
-        return (Integer) get(13);
+        return (Integer) get(14);
     }
 
     /**
@@ -252,7 +270,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public void setVerpflegungVegan(Integer value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
@@ -260,7 +278,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public Integer getVerpflegungVegan() {
-        return (Integer) get(14);
+        return (Integer) get(15);
     }
 
     /**
@@ -268,7 +286,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public void setVerpflegungAllergies(Integer value) {
-        set(15, value);
+        set(16, value);
     }
 
     /**
@@ -276,7 +294,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public Integer getVerpflegungAllergies() {
-        return (Integer) get(15);
+        return (Integer) get(16);
     }
 
     /**
@@ -284,7 +302,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public void setVerpflegungNone(Integer value) {
-        set(16, value);
+        set(17, value);
     }
 
     /**
@@ -292,23 +310,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
      */
     @Override
     public Integer getVerpflegungNone() {
-        return (Integer) get(16);
-    }
-
-    /**
-     * Setter for <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    @Override
-    public void setVerpflegungHelper(Boolean value) {
-        set(17, value);
-    }
-
-    /**
-     * Getter for <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    @Override
-    public Boolean getVerpflegungHelper() {
-        return (Boolean) get(17);
+        return (Integer) get(17);
     }
 
     /**
@@ -434,12 +436,12 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setGesamtchor(from.getGesamtchor());
         setAdhocOrchester(from.getAdhocOrchester());
         setAnreisePublicTransport(from.getAnreisePublicTransport());
+        setAnreisePublicTransportType(from.getAnreisePublicTransportType());
         setAnreiseOtherwise(from.getAnreiseOtherwise());
         setVerpflegungMeat(from.getVerpflegungMeat());
         setVerpflegungVegan(from.getVerpflegungVegan());
         setVerpflegungAllergies(from.getVerpflegungAllergies());
         setVerpflegungNone(from.getVerpflegungNone());
-        setVerpflegungHelper(from.getVerpflegungHelper());
         setVerpflegungHelper_1(from.getVerpflegungHelper_1());
         setVerpflegungHelper_2(from.getVerpflegungHelper_2());
         setVerpflegungHelper_3(from.getVerpflegungHelper_3());
@@ -469,7 +471,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
     /**
      * Create a detached, initialised VereinAnmeldungDetailRecord
      */
-    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, Boolean verpflegungHelper, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6) {
+    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6) {
         super(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL);
 
         setId(id);
@@ -484,12 +486,12 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setGesamtchor(gesamtchor);
         setAdhocOrchester(adhocOrchester);
         setAnreisePublicTransport(anreisePublicTransport);
+        setAnreisePublicTransportType(anreisePublicTransportType);
         setAnreiseOtherwise(anreiseOtherwise);
         setVerpflegungMeat(verpflegungMeat);
         setVerpflegungVegan(verpflegungVegan);
         setVerpflegungAllergies(verpflegungAllergies);
         setVerpflegungNone(verpflegungNone);
-        setVerpflegungHelper(verpflegungHelper);
         setVerpflegungHelper_1(verpflegungHelper_1);
         setVerpflegungHelper_2(verpflegungHelper_2);
         setVerpflegungHelper_3(verpflegungHelper_3);
@@ -518,12 +520,12 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
             setGesamtchor(value.getGesamtchor());
             setAdhocOrchester(value.getAdhocOrchester());
             setAnreisePublicTransport(value.getAnreisePublicTransport());
+            setAnreisePublicTransportType(value.getAnreisePublicTransportType());
             setAnreiseOtherwise(value.getAnreiseOtherwise());
             setVerpflegungMeat(value.getVerpflegungMeat());
             setVerpflegungVegan(value.getVerpflegungVegan());
             setVerpflegungAllergies(value.getVerpflegungAllergies());
             setVerpflegungNone(value.getVerpflegungNone());
-            setVerpflegungHelper(value.getVerpflegungHelper());
             setVerpflegungHelper_1(value.getVerpflegungHelper_1());
             setVerpflegungHelper_2(value.getVerpflegungHelper_2());
             setVerpflegungHelper_3(value.getVerpflegungHelper_3());

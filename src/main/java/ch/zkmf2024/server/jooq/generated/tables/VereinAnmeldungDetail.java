@@ -108,6 +108,12 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
     public final TableField<VereinAnmeldungDetailRecord, Boolean> ANREISE_PUBLIC_TRANSPORT = createField(DSL.name("anreise_public_transport"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
+     * The column
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    public final TableField<VereinAnmeldungDetailRecord, String> ANREISE_PUBLIC_TRANSPORT_TYPE = createField(DSL.name("anreise_public_transport_type"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
      * The column <code>verein_anmeldung_detail.anreise_otherwise</code>.
      */
     public final TableField<VereinAnmeldungDetailRecord, String> ANREISE_OTHERWISE = createField(DSL.name("anreise_otherwise"), SQLDataType.VARCHAR(1024), this, "");
@@ -131,11 +137,6 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
      * The column <code>verein_anmeldung_detail.verpflegung_none</code>.
      */
     public final TableField<VereinAnmeldungDetailRecord, Integer> VERPFLEGUNG_NONE = createField(DSL.name("verpflegung_none"), SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    public final TableField<VereinAnmeldungDetailRecord, Boolean> VERPFLEGUNG_HELPER = createField(DSL.name("verpflegung_helper"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>verein_anmeldung_detail.verpflegung_helper_1</code>.

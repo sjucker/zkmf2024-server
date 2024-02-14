@@ -1,6 +1,8 @@
 package ch.zkmf2024.server.dto;
 
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 import static ch.zkmf2024.server.util.ValidationUtil.isPositive;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -15,13 +17,14 @@ public record VereinsanmeldungDetailDTO(
         LocalDate partiturenSentAt,
         boolean gesamtchor,
         boolean adhocOrchester,
+        @NotNull List<AdhocOrchesterTeilnehmerDTO> adhocOrchesterTeilnehmer,
         boolean anreisePublicTransport,
+        String anreisePublicTransportType,
         String anreiseOtherwise,
         Integer verpflegungMeat,
         Integer verpflegungVegan,
         Integer verpflegungAllergies,
         Integer verpflegungNone,
-        boolean verpflegungHelper,
         String verpflegungHelper1,
         String verpflegungHelper2,
         String verpflegungHelper3,
@@ -41,7 +44,6 @@ public record VereinsanmeldungDetailDTO(
                 verpflegungVegan != null &&
                 verpflegungAllergies != null &&
                 verpflegungNone != null &&
-                verpflegungHelper &&
                 isNotBlank(verpflegungHelper1) &&
                 isNotBlank(verpflegungHelper2) &&
                 isNotBlank(verpflegungHelper3) &&
