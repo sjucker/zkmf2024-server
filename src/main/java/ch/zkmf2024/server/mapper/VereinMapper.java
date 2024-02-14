@@ -7,12 +7,15 @@ import ch.zkmf2024.server.dto.VereinsanmeldungDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDetailDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrchesterPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 @Mapper
 public interface VereinMapper {
@@ -51,13 +54,13 @@ public interface VereinMapper {
     @Mapping(target = "modulH", source = "modulh")
     VereinsanmeldungDTO toVereinsanmeldungDTO(VereinPojo pojo);
 
-    @Mapping(target = "verpflegungHelper1", source = "verpflegungHelper_1")
-    @Mapping(target = "verpflegungHelper2", source = "verpflegungHelper_2")
-    @Mapping(target = "verpflegungHelper3", source = "verpflegungHelper_3")
-    @Mapping(target = "verpflegungHelper4", source = "verpflegungHelper_4")
-    @Mapping(target = "verpflegungHelper5", source = "verpflegungHelper_5")
-    @Mapping(target = "verpflegungHelper6", source = "verpflegungHelper_6")
-    VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo);
+    @Mapping(target = "verpflegungHelper1", source = "pojo.verpflegungHelper_1")
+    @Mapping(target = "verpflegungHelper2", source = "pojo.verpflegungHelper_2")
+    @Mapping(target = "verpflegungHelper3", source = "pojo.verpflegungHelper_3")
+    @Mapping(target = "verpflegungHelper4", source = "pojo.verpflegungHelper_4")
+    @Mapping(target = "verpflegungHelper5", source = "pojo.verpflegungHelper_5")
+    @Mapping(target = "verpflegungHelper6", source = "pojo.verpflegungHelper_6")
+    VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo, List<VereinAnmeldungAdhocOrchesterPojo> adhocOrchesterTeilnehmer);
 
     @Mapping(target = "provWettspiel", ignore = true)
     @Mapping(target = "provPlatzkonzert", ignore = true)

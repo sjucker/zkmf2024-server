@@ -137,6 +137,18 @@ public interface IVereinAnmeldungDetail extends Serializable {
     public Boolean getAnreisePublicTransport();
 
     /**
+     * Setter for
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    public void setAnreisePublicTransportType(String value);
+
+    /**
+     * Getter for
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    public String getAnreisePublicTransportType();
+
+    /**
      * Setter for <code>verein_anmeldung_detail.anreise_otherwise</code>.
      */
     public void setAnreiseOtherwise(String value);
@@ -185,16 +197,6 @@ public interface IVereinAnmeldungDetail extends Serializable {
      * Getter for <code>verein_anmeldung_detail.verpflegung_none</code>.
      */
     public Integer getVerpflegungNone();
-
-    /**
-     * Setter for <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    public void setVerpflegungHelper(Boolean value);
-
-    /**
-     * Getter for <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    public Boolean getVerpflegungHelper();
 
     /**
      * Setter for <code>verein_anmeldung_detail.verpflegung_helper_1</code>.

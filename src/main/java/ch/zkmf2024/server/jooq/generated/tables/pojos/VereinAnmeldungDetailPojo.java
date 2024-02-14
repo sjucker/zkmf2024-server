@@ -27,12 +27,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
     private Boolean gesamtchor;
     private Boolean adhocOrchester;
     private Boolean anreisePublicTransport;
+    private String anreisePublicTransportType;
     private String anreiseOtherwise;
     private Integer verpflegungMeat;
     private Integer verpflegungVegan;
     private Integer verpflegungAllergies;
     private Integer verpflegungNone;
-    private Boolean verpflegungHelper;
     private String verpflegungHelper_1;
     private String verpflegungHelper_2;
     private String verpflegungHelper_3;
@@ -56,12 +56,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.gesamtchor = value.getGesamtchor();
         this.adhocOrchester = value.getAdhocOrchester();
         this.anreisePublicTransport = value.getAnreisePublicTransport();
+        this.anreisePublicTransportType = value.getAnreisePublicTransportType();
         this.anreiseOtherwise = value.getAnreiseOtherwise();
         this.verpflegungMeat = value.getVerpflegungMeat();
         this.verpflegungVegan = value.getVerpflegungVegan();
         this.verpflegungAllergies = value.getVerpflegungAllergies();
         this.verpflegungNone = value.getVerpflegungNone();
-        this.verpflegungHelper = value.getVerpflegungHelper();
         this.verpflegungHelper_1 = value.getVerpflegungHelper_1();
         this.verpflegungHelper_2 = value.getVerpflegungHelper_2();
         this.verpflegungHelper_3 = value.getVerpflegungHelper_3();
@@ -83,12 +83,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
             Boolean gesamtchor,
             Boolean adhocOrchester,
             Boolean anreisePublicTransport,
+            String anreisePublicTransportType,
             String anreiseOtherwise,
             Integer verpflegungMeat,
             Integer verpflegungVegan,
             Integer verpflegungAllergies,
             Integer verpflegungNone,
-            Boolean verpflegungHelper,
             String verpflegungHelper_1,
             String verpflegungHelper_2,
             String verpflegungHelper_3,
@@ -108,12 +108,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.gesamtchor = gesamtchor;
         this.adhocOrchester = adhocOrchester;
         this.anreisePublicTransport = anreisePublicTransport;
+        this.anreisePublicTransportType = anreisePublicTransportType;
         this.anreiseOtherwise = anreiseOtherwise;
         this.verpflegungMeat = verpflegungMeat;
         this.verpflegungVegan = verpflegungVegan;
         this.verpflegungAllergies = verpflegungAllergies;
         this.verpflegungNone = verpflegungNone;
-        this.verpflegungHelper = verpflegungHelper;
         this.verpflegungHelper_1 = verpflegungHelper_1;
         this.verpflegungHelper_2 = verpflegungHelper_2;
         this.verpflegungHelper_3 = verpflegungHelper_3;
@@ -319,6 +319,24 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
     }
 
     /**
+     * Getter for
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    @Override
+    public String getAnreisePublicTransportType() {
+        return this.anreisePublicTransportType;
+    }
+
+    /**
+     * Setter for
+     * <code>verein_anmeldung_detail.anreise_public_transport_type</code>.
+     */
+    @Override
+    public void setAnreisePublicTransportType(String anreisePublicTransportType) {
+        this.anreisePublicTransportType = anreisePublicTransportType;
+    }
+
+    /**
      * Getter for <code>verein_anmeldung_detail.anreise_otherwise</code>.
      */
     @Override
@@ -396,22 +414,6 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
     @Override
     public void setVerpflegungNone(Integer verpflegungNone) {
         this.verpflegungNone = verpflegungNone;
-    }
-
-    /**
-     * Getter for <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    @Override
-    public Boolean getVerpflegungHelper() {
-        return this.verpflegungHelper;
-    }
-
-    /**
-     * Setter for <code>verein_anmeldung_detail.verpflegung_helper</code>.
-     */
-    @Override
-    public void setVerpflegungHelper(Boolean verpflegungHelper) {
-        this.verpflegungHelper = verpflegungHelper;
     }
 
     /**
@@ -579,6 +581,11 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
                 return false;
         } else if (!this.anreisePublicTransport.equals(other.anreisePublicTransport))
             return false;
+        if (this.anreisePublicTransportType == null) {
+            if (other.anreisePublicTransportType != null)
+                return false;
+        } else if (!this.anreisePublicTransportType.equals(other.anreisePublicTransportType))
+            return false;
         if (this.anreiseOtherwise == null) {
             if (other.anreiseOtherwise != null)
                 return false;
@@ -603,11 +610,6 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
             if (other.verpflegungNone != null)
                 return false;
         } else if (!this.verpflegungNone.equals(other.verpflegungNone))
-            return false;
-        if (this.verpflegungHelper == null) {
-            if (other.verpflegungHelper != null)
-                return false;
-        } else if (!this.verpflegungHelper.equals(other.verpflegungHelper))
             return false;
         if (this.verpflegungHelper_1 == null) {
             if (other.verpflegungHelper_1 != null)
@@ -658,12 +660,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         result = prime * result + ((this.gesamtchor == null) ? 0 : this.gesamtchor.hashCode());
         result = prime * result + ((this.adhocOrchester == null) ? 0 : this.adhocOrchester.hashCode());
         result = prime * result + ((this.anreisePublicTransport == null) ? 0 : this.anreisePublicTransport.hashCode());
+        result = prime * result + ((this.anreisePublicTransportType == null) ? 0 : this.anreisePublicTransportType.hashCode());
         result = prime * result + ((this.anreiseOtherwise == null) ? 0 : this.anreiseOtherwise.hashCode());
         result = prime * result + ((this.verpflegungMeat == null) ? 0 : this.verpflegungMeat.hashCode());
         result = prime * result + ((this.verpflegungVegan == null) ? 0 : this.verpflegungVegan.hashCode());
         result = prime * result + ((this.verpflegungAllergies == null) ? 0 : this.verpflegungAllergies.hashCode());
         result = prime * result + ((this.verpflegungNone == null) ? 0 : this.verpflegungNone.hashCode());
-        result = prime * result + ((this.verpflegungHelper == null) ? 0 : this.verpflegungHelper.hashCode());
         result = prime * result + ((this.verpflegungHelper_1 == null) ? 0 : this.verpflegungHelper_1.hashCode());
         result = prime * result + ((this.verpflegungHelper_2 == null) ? 0 : this.verpflegungHelper_2.hashCode());
         result = prime * result + ((this.verpflegungHelper_3 == null) ? 0 : this.verpflegungHelper_3.hashCode());
@@ -689,12 +691,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         sb.append(", ").append(gesamtchor);
         sb.append(", ").append(adhocOrchester);
         sb.append(", ").append(anreisePublicTransport);
+        sb.append(", ").append(anreisePublicTransportType);
         sb.append(", ").append(anreiseOtherwise);
         sb.append(", ").append(verpflegungMeat);
         sb.append(", ").append(verpflegungVegan);
         sb.append(", ").append(verpflegungAllergies);
         sb.append(", ").append(verpflegungNone);
-        sb.append(", ").append(verpflegungHelper);
         sb.append(", ").append(verpflegungHelper_1);
         sb.append(", ").append(verpflegungHelper_2);
         sb.append(", ").append(verpflegungHelper_3);
@@ -724,12 +726,12 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         setGesamtchor(from.getGesamtchor());
         setAdhocOrchester(from.getAdhocOrchester());
         setAnreisePublicTransport(from.getAnreisePublicTransport());
+        setAnreisePublicTransportType(from.getAnreisePublicTransportType());
         setAnreiseOtherwise(from.getAnreiseOtherwise());
         setVerpflegungMeat(from.getVerpflegungMeat());
         setVerpflegungVegan(from.getVerpflegungVegan());
         setVerpflegungAllergies(from.getVerpflegungAllergies());
         setVerpflegungNone(from.getVerpflegungNone());
-        setVerpflegungHelper(from.getVerpflegungHelper());
         setVerpflegungHelper_1(from.getVerpflegungHelper_1());
         setVerpflegungHelper_2(from.getVerpflegungHelper_2());
         setVerpflegungHelper_3(from.getVerpflegungHelper_3());

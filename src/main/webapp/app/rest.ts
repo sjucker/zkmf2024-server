@@ -1,5 +1,11 @@
 /* eslint-disable */
 
+export interface AdhocOrchesterTeilnehmerDTO {
+    name?: string;
+    email?: string;
+    instrument?: string;
+}
+
 export interface CoordinatesDTO {
     latitude: number;
     longitude: number;
@@ -388,13 +394,14 @@ export interface VereinsanmeldungDetailDTO extends IsValid {
     partiturenSentAt?: DateAsString;
     gesamtchor: boolean;
     adhocOrchester: boolean;
+    adhocOrchesterTeilnehmer: AdhocOrchesterTeilnehmerDTO[];
     anreisePublicTransport: boolean;
+    anreisePublicTransportType?: string;
     anreiseOtherwise?: string;
     verpflegungMeat?: number;
     verpflegungVegan?: number;
     verpflegungAllergies?: number;
     verpflegungNone?: number;
-    verpflegungHelper: boolean;
     verpflegungHelper1?: string;
     verpflegungHelper2?: string;
     verpflegungHelper3?: string;

@@ -235,6 +235,22 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
     }
 
     /**
+     * Fetch records that have <code>anreise_public_transport_type BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfAnreisePublicTransportType(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.ANREISE_PUBLIC_TRANSPORT_TYPE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>anreise_public_transport_type IN
+     * (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByAnreisePublicTransportType(String... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.ANREISE_PUBLIC_TRANSPORT_TYPE, values);
+    }
+
+    /**
      * Fetch records that have <code>anreise_otherwise BETWEEN lowerInclusive
      * AND upperInclusive</code>
      */
@@ -307,21 +323,6 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
      */
     public List<VereinAnmeldungDetailPojo> fetchByVerpflegungNone(Integer... values) {
         return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_NONE, values);
-    }
-
-    /**
-     * Fetch records that have <code>verpflegung_helper BETWEEN lowerInclusive
-     * AND upperInclusive</code>
-     */
-    public List<VereinAnmeldungDetailPojo> fetchRangeOfVerpflegungHelper(Boolean lowerInclusive, Boolean upperInclusive) {
-        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_HELPER, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>verpflegung_helper IN (values)</code>
-     */
-    public List<VereinAnmeldungDetailPojo> fetchByVerpflegungHelper(Boolean... values) {
-        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_HELPER, values);
     }
 
     /**
