@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -49,6 +51,9 @@ public class ExportService {
 
             fillVereineSheet(wb, dtos);
             stopWatch.splitInfo("fillVereineSheet");
+
+            fillVereineDetailsSheet(wb, dtos);
+            stopWatch.splitInfo("fillVereineDetailsSheet");
 
             fillDoppeleinsatzSheet(wb, dtos);
             stopWatch.splitInfo("fillDoppeleinsatzSheet");
@@ -78,10 +83,9 @@ public class ExportService {
             }
         }
 
-        int sheetIndex = 2;
         for (var modul : Modul.values()) {
             var sheet = wb.createSheet();
-            wb.setSheetName(sheetIndex++, "Modul %s".formatted(modul.name()));
+            wb.setSheetName(wb.getSheetIndex(sheet), "Modul %s".formatted(modul.name()));
 
             var programme = perModul.getOrDefault(modul, new ArrayList<>());
             var maxTitel = programme.stream()
@@ -286,7 +290,7 @@ public class ExportService {
 
     private void fillVereineSheet(XSSFWorkbook wb, List<VereinDTO> vereine) {
         var sheet = wb.createSheet();
-        wb.setSheetName(0, "Vereine");
+        wb.setSheetName(wb.getSheetIndex(sheet), "Vereine");
 
         var rowIndex = 0;
         // headers
@@ -410,9 +414,84 @@ public class ExportService {
         sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex));
     }
 
+    private void fillVereineDetailsSheet(XSSFWorkbook wb, List<VereinDTO> vereine) {
+        var sheet = wb.createSheet();
+        wb.setSheetName(wb.getSheetIndex(sheet), "Phase 4");
+
+        var rowIndex = 0;
+        // headers
+        var headerRow = sheet.createRow(rowIndex++);
+
+        var columnIndex = 0;
+        headerRow.createCell(columnIndex++).setCellValue("Vereinsname");
+        headerRow.createCell(columnIndex++).setCellValue("Festführer");
+        headerRow.createCell(columnIndex++).setCellValue("Festkarten Musizierende");
+        headerRow.createCell(columnIndex++).setCellValue("Festkarten Begleitpersonen");
+        headerRow.createCell(columnIndex++).setCellValue("Mittagessen \"Klassisch\"");
+        headerRow.createCell(columnIndex++).setCellValue("Mittagessen \"Vegan\"");
+        headerRow.createCell(columnIndex++).setCellValue("Mittagessen \"Gluten- und Laktosefrei\"");
+        headerRow.createCell(columnIndex++).setCellValue("Teilnehmer ohne Mittagessen");
+        headerRow.createCell(columnIndex++).setCellValue("Essenservice - 1. Person");
+        headerRow.createCell(columnIndex++).setCellValue("Essenservice - 2. Person");
+        headerRow.createCell(columnIndex++).setCellValue("Essenservice - 3. Person");
+        headerRow.createCell(columnIndex++).setCellValue("Essenservice - 4. Person");
+        headerRow.createCell(columnIndex++).setCellValue("Essenservice - 5. Person");
+        headerRow.createCell(columnIndex++).setCellValue("Essenservice - 6. Person");
+        headerRow.createCell(columnIndex++).setCellValue("Party Freitagabend");
+        headerRow.createCell(columnIndex++).setCellValue("Anreise mit ÖV");
+        headerRow.createCell(columnIndex++).setCellValue("Kapazitätsplanung ÖV");
+        headerRow.createCell(columnIndex++).setCellValue("Andere Anreise");
+        headerRow.createCell(columnIndex++).setCellValue("Gehbehinderung");
+        headerRow.createCell(columnIndex++).setCellValue("Partituren versandt");
+        headerRow.createCell(columnIndex++).setCellValue("Partituren versandt am");
+        headerRow.createCell(columnIndex++).setCellValue("Gesamtchor");
+        headerRow.createCell(columnIndex++).setCellValue("Ad-hoc-Orchester");
+        headerRow.createCell(columnIndex++).setCellValue("Ad-hoc-Orchester Teilnehmer");
+
+        for (var dto : vereine) {
+            var row = sheet.createRow(rowIndex++);
+            var detail = dto.anmeldungDetail();
+
+            columnIndex = 0;
+
+            columnIndex = setCellValue(columnIndex, row, dto.angaben().vereinsname(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.festfuehrerAmount(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.festkartenMusikerAmount(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.festkartenBegleiterAmount(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungMeat(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungVegan(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungAllergies(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungNone(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungHelper1(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungHelper2(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungHelper3(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungHelper4(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungHelper5(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.verpflegungHelper6(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.freitagabendAmount(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.anreisePublicTransport(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.anreisePublicTransport() ? detail.anreisePublicTransportType() : null, wb);
+            columnIndex = setCellValue(columnIndex, row, detail.anreisePublicTransport() ? detail.anreiseOtherwise() : null, wb);
+            columnIndex = setCellValue(columnIndex, row, detail.gehbehinderung(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.partiturenSent(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.partiturenSentAt(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.gesamtchor(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.adhocOrchester(), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.adhocOrchesterTeilnehmer().stream()
+                                                               .map(teilnehmer -> "%s, %s, %s".formatted(teilnehmer.name(), teilnehmer.email(), teilnehmer.instrument()))
+                                                               .collect(joining("\n")), wb);
+
+        }
+
+        for (int i = 0; i < columnIndex; i++) {
+            sheet.autoSizeColumn(i);
+        }
+        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex));
+    }
+
     private void fillDoppeleinsatzSheet(XSSFWorkbook wb, List<VereinDTO> vereine) {
         var sheet = wb.createSheet();
-        wb.setSheetName(1, "Doppeleinsätze");
+        wb.setSheetName(wb.getSheetIndex(sheet), "Doppeleinsätze");
 
         var rowIndex = 0;
 
@@ -466,6 +545,12 @@ public class ExportService {
                 }
             } else if (value instanceof HasDescription hasDescriptionValue) {
                 cell.setCellValue(hasDescriptionValue.getDescription());
+            } else if (value instanceof LocalDate date) {
+                var dateCellStyle = wb.createCellStyle();
+                dateCellStyle.setDataFormat((short) 14);
+
+                cell.setCellValue(date);
+                cell.setCellStyle(dateCellStyle);
             }
         }
         return columnIndex;
