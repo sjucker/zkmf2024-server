@@ -181,6 +181,38 @@
             <span class="font-semibold"> Musikant/innen - Doppelteilnahme:</span> ja
         </div>
     </p-tabPanel>
+    <p-tabPanel header="Detailangaben">
+        <div><span class="font-semibold">Anzahl Festführer:</span> {{ verein.anmeldungDetail.festfuehrerAmount }}</div>
+        <div><span class="font-semibold">Anzahl Festkarten Musizierende:</span> {{ verein.anmeldungDetail.festkartenMusikerAmount }}</div>
+        <div><span class="font-semibold">Anzahl Festkarten Begleitpersonen:</span> {{ verein.anmeldungDetail.festkartenBegleiterAmount }}</div>
+        <div><span class="font-semibold">Anzahl Mittagessen "Klassisch":</span> {{ verein.anmeldungDetail.verpflegungMeat }}</div>
+        <div><span class="font-semibold">Anzahl Mittagessen "Vegan":</span> {{ verein.anmeldungDetail.verpflegungVegan }}</div>
+        <div><span class="font-semibold">Anzahl Mittagessen "Gluten- und Laktosefrei":</span> {{ verein.anmeldungDetail.verpflegungAllergies }}</div>
+        <div><span class="font-semibold">Anzahl Teilnehmer ohne Mittagessen:</span> {{ verein.anmeldungDetail.verpflegungNone }}</div>
+        <div><span class="font-semibold">Essenservice - 1. Person</span> {{ verein.anmeldungDetail.verpflegungHelper1 }}</div>
+        <div><span class="font-semibold">Essenservice - 2. Person</span> {{ verein.anmeldungDetail.verpflegungHelper2 }}</div>
+        <div><span class="font-semibold">Essenservice - 3. Person</span> {{ verein.anmeldungDetail.verpflegungHelper3 }}</div>
+        <div><span class="font-semibold">Essenservice - 4. Person</span> {{ verein.anmeldungDetail.verpflegungHelper4 }}</div>
+        <div><span class="font-semibold">Essenservice - 5. Person</span> {{ verein.anmeldungDetail.verpflegungHelper5 }}</div>
+        <div><span class="font-semibold">Essenservice - 6. Person</span> {{ verein.anmeldungDetail.verpflegungHelper6 }}</div>
+        <div><span class="font-semibold">Party Freitagabend</span> {{ verein.anmeldungDetail.freitagabendAmount }}</div>
+        <div><span class="font-semibold">Anreise mit ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransport ? 'ja' : 'nein' }}</div>
+        @if (verein.anmeldungDetail.anreisePublicTransport) {
+            <div><span class="font-semibold">Kapazitätsplanung ÖV: </span> {{ verein.anmeldungDetail.anreisePublicTransportType }}</div>
+        } @else {
+            <div><span class="font-semibold">Andere Anreise: </span> {{ verein.anmeldungDetail.anreiseOtherwise }}</div>
+        }
+        <div><span class="font-semibold">Gehbehinderung:</span> {{ verein.anmeldungDetail.gehbehinderung ? 'ja' : 'nein' }}</div>
+        <div><span class="font-semibold">Partituren versandt:</span> {{ verein.anmeldungDetail.partiturenSent ? 'ja' : 'nein' }}</div>
+        <div><span class="font-semibold">Partituren versandt am:</span> {{ verein.anmeldungDetail.partiturenSentAt | date: 'dd.MM.yyyy' }}</div>
+        <div><span class="font-semibold">Gesamtchor:</span> {{ verein.anmeldungDetail.gesamtchor ? 'ja' : 'nein' }}</div>
+        <div><span class="font-semibold">Ad-hoc-Orchester:</span> {{ verein.anmeldungDetail.adhocOrchester ? 'ja' : 'nein' }}</div>
+        @if (verein.anmeldungDetail.adhocOrchester) {
+            @for (adhoc of verein.anmeldungDetail.adhocOrchesterTeilnehmer; track adhoc) {
+                <div>{{ adhoc.name }}, {{ adhoc.email }}, {{ adhoc.instrument }}</div>
+            }
+        }
+    </p-tabPanel>
     <p-tabPanel header="Kontaktangaben - Präsident/in">
         <div><span class="font-semibold">Vorname:</span> {{ verein.praesident.vorname }}</div>
         <div><span class="font-semibold">Name:</span> {{ verein.praesident.nachname }}</div>

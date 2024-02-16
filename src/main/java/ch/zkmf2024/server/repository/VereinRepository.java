@@ -236,6 +236,7 @@ public class VereinRepository {
                               VEREIN.asterisk(),
                               VEREIN_STATUS.PHASE1,
                               VEREIN_STATUS.PHASE2,
+                              VEREIN_STATUS.PHASE4,
                               commentCount,
                               messageCount
                       )
@@ -268,6 +269,7 @@ public class VereinRepository {
                               it.get(VEREIN.PHASE2_CONFIRMED_AT) != null,
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE1)),
                               PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE2)),
+                              PhaseStatus.valueOf(it.get(VEREIN_STATUS.PHASE4)),
                               it.get(commentCount) > 0,
                               it.get(messageCount) > 0,
                               it.get(VEREIN.PROGRAMM_LAST_UPDATED)
