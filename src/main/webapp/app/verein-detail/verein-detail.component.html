@@ -195,12 +195,12 @@
         <div><span class="font-semibold">Essenservice - 4. Person</span> {{ verein.anmeldungDetail.verpflegungHelper4 }}</div>
         <div><span class="font-semibold">Essenservice - 5. Person</span> {{ verein.anmeldungDetail.verpflegungHelper5 }}</div>
         <div><span class="font-semibold">Essenservice - 6. Person</span> {{ verein.anmeldungDetail.verpflegungHelper6 }}</div>
-        <div><span class="font-semibold">Party Freitagabend</span> {{ verein.anmeldungDetail.freitagabendAmount }}</div>
+        <div><span class="font-semibold">Party Freitagabend: </span> {{ verein.anmeldungDetail.freitagabendAmount }}</div>
         <div><span class="font-semibold">Anreise mit ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransport ? 'ja' : 'nein' }}</div>
         @if (verein.anmeldungDetail.anreisePublicTransport) {
-            <div><span class="font-semibold">Kapazitätsplanung ÖV: </span> {{ verein.anmeldungDetail.anreisePublicTransportType }}</div>
+            <div><span class="font-semibold">Kapazitätsplanung ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransportType }}</div>
         } @else {
-            <div><span class="font-semibold">Andere Anreise: </span> {{ verein.anmeldungDetail.anreiseOtherwise }}</div>
+            <div><span class="font-semibold">Andere Anreise:</span> {{ verein.anmeldungDetail.anreiseOtherwise }}</div>
         }
         <div><span class="font-semibold">Gehbehinderung:</span> {{ verein.anmeldungDetail.gehbehinderung ? 'ja' : 'nein' }}</div>
         <div><span class="font-semibold">Partituren versandt:</span> {{ verein.anmeldungDetail.partiturenSent ? 'ja' : 'nein' }}</div>

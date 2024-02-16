@@ -47,6 +47,7 @@ public record VereinsanmeldungDetailDTO(
                 isNotBlank(verpflegungHelper3) &&
                 isNotBlank(verpflegungHelper4) &&
                 freitagabendAmount != null &&
+                (isNotBlank(anreisePublicTransportType) || isNotBlank(anreiseOtherwise)) &&
                 partiturenSent &&
                 partiturenSentAt != null;
     }
