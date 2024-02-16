@@ -37,16 +37,22 @@ public record VereinsanmeldungDetailDTO(
         return festfuehrerAmount != null &&
                 isPositive(festkartenMusikerAmount) &&
                 festkartenBegleiterAmount != null &&
-                freitagabendAmount != null &&
-                partiturenSent &&
-                partiturenSentAt != null &&
                 verpflegungMeat != null &&
                 verpflegungVegan != null &&
                 verpflegungAllergies != null &&
                 verpflegungNone != null &&
+                isValidAmount() &&
                 isNotBlank(verpflegungHelper1) &&
                 isNotBlank(verpflegungHelper2) &&
                 isNotBlank(verpflegungHelper3) &&
-                isNotBlank(verpflegungHelper4);
+                isNotBlank(verpflegungHelper4) &&
+                freitagabendAmount != null &&
+                partiturenSent &&
+                partiturenSentAt != null;
+    }
+
+    private boolean isValidAmount() {
+        return (festkartenMusikerAmount + festkartenBegleiterAmount) ==
+                (verpflegungMeat + verpflegungVegan + verpflegungAllergies + verpflegungNone);
     }
 }
