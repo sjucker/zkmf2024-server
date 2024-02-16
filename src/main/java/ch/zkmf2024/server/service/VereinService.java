@@ -45,7 +45,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -286,7 +285,7 @@ public class VereinService {
 
         dto = toDTO(verein);
 
-        updateStatus(verein.getId(), dto.getPhase1Status(), dto.getPhase2Status());
+        updateStatus(verein.getId(), dto);
 
         return dto;
     }
@@ -303,10 +302,11 @@ public class VereinService {
         }
     }
 
-    public void updateStatus(Long vereinId, @NotNull PhaseStatus phase1Status, @NotNull PhaseStatus phase2Status) {
+    public void updateStatus(Long vereinId, VereinDTO dto) {
         var status = vereinRepository.findStatusById(vereinId);
-        status.setPhase1(phase1Status.name());
-        status.setPhase2(phase2Status.name());
+        status.setPhase1(dto.getPhase1Status().name());
+        status.setPhase2(dto.getPhase2Status().name());
+        status.setPhase4(dto.getPhase4Status().name());
         vereinRepository.update(status);
     }
 

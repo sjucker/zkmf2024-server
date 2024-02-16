@@ -34,6 +34,9 @@
             <th pSortableColumn="phase2">Phase 2
                 <p-sortIcon field="phase2"></p-sortIcon>
             </th>
+            <th pSortableColumn="phase4">Phase 4
+                <p-sortIcon field="phase4"></p-sortIcon>
+            </th>
             <th pSortableColumn="programmLastUpdated">Phase 2 Änderungsdatum
                 <p-sortIcon field="programmLastUpdated"></p-sortIcon>
             </th>
@@ -93,6 +96,7 @@
             <td [ngClass]="{'confirmed': dto.phase2Confirmed}">
                 <i [ngClass]="getPhaseStatusIcon(dto.phase2)"></i>
             </td>
+            <td><i [ngClass]="getPhaseStatusIcon(dto.phase4)"></i></td>
             <td>{{dto.programmLastUpdated | date: 'dd.MM.yyyy HH:mm'}}</td>
             <td>{{formatBoolean(dto.modulA)}}</td>
             <td>{{formatBoolean(dto.modulB)}}</td>

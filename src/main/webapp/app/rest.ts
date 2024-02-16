@@ -4,6 +4,7 @@ export interface AdhocOrchesterTeilnehmerDTO {
     name?: string;
     email?: string;
     instrument?: string;
+    notEmpty: boolean;
 }
 
 export interface CoordinatesDTO {
@@ -577,6 +578,7 @@ export interface VereinOverviewDTO {
     phase2Confirmed: boolean;
     phase1: PhaseStatus;
     phase2: PhaseStatus;
+    phase4: PhaseStatus;
     hasComments: boolean;
     hasMessages: boolean;
     programmLastUpdated?: DateAsString;

@@ -31,7 +31,7 @@ public class StatusUpdateJob {
                 log.info("updating status of verein with id={}, old phase 1={}, new phase 1={}, old phase 2={}, new phase 2={}",
                          id, status.getPhase1(), verein.getPhase1Status(), status.getPhase2(), verein.getPhase2Status());
 
-                vereinService.updateStatus(id, verein.getPhase1Status(), verein.getPhase2Status());
+                vereinService.updateStatus(id, verein);
             }
         }
 
