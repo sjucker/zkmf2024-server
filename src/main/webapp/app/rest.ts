@@ -341,9 +341,13 @@ export interface VereinTeilnahmeDTO {
 }
 
 export interface VereinTimetableEntryDTO {
+    modul: Modul;
     competition: string;
     location: LocationDTO;
     dateTime: string;
+    titel?: string;
+    description?: string;
+    programm: TitelDTO[];
 }
 
 export interface VereinsangabenDTO extends IsValid {

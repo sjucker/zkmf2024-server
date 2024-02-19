@@ -207,10 +207,31 @@ public class VereinRepository {
                       )
                       .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
                       .fetch(it -> new VereinTimetableEntryDTO(
+                              Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
                               getCompetition(it),
                               LocationRepository.toDTO(it),
-                              getDateTime(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME), it.get(TIMETABLE_ENTRY.END_TIME))
+                              getDateTime(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME), it.get(TIMETABLE_ENTRY.END_TIME)),
+                              it.get(VEREIN_PROGRAMM.TITEL),
+                              it.get(VEREIN_PROGRAMM.INFO_MODERATION),
+                              getProgramm(it)
                       ));
+    }
+
+    private List<TitelDTO> getProgramm(Record it) {
+        var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+        if (modul.isParademusik()) {
+            return jooqDsl.select()
+                          .from(TITEL)
+                          .where(TITEL.ID.in(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID)))
+                          .fetch(this::toTitelDTO);
+        } else {
+            return jooqDsl.select()
+                          .from(VEREIN_PROGRAMM_TITEL)
+                          .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
+                          .where(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(it.get(VEREIN_PROGRAMM.ID)))
+                          .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
+                          .fetch(this::toTitelDTO);
+        }
     }
 
     public static String getCompetition(Record it) {
@@ -461,19 +482,23 @@ public class VereinRepository {
 
     private VereinProgrammTitelDTO toVereinProgrammTitelDTO(Record it) {
         return new VereinProgrammTitelDTO(
-                new TitelDTO(
-                        it.get(TITEL.ID),
-                        Modul.valueOf(it.get(TITEL.MODUL)),
-                        it.get(TITEL.TITEL_NAME),
-                        it.get(TITEL.COMPOSER),
-                        it.get(TITEL.ARRANGEUR),
-                        it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
-                        it.get(TITEL.SCHWIERIGKEITSGRAD),
-                        it.get(TITEL.DURATION_IN_SECONDS),
-                        it.get(TITEL.FK_VEREIN) == null,
-                        it.get(TITEL.INFO_MODERATION)
-                ),
+                toTitelDTO(it),
                 it.get(VEREIN_PROGRAMM_TITEL.APPLAUS_IN_SECONDS)
+        );
+    }
+
+    private TitelDTO toTitelDTO(Record it) {
+        return new TitelDTO(
+                it.get(TITEL.ID),
+                Modul.valueOf(it.get(TITEL.MODUL)),
+                it.get(TITEL.TITEL_NAME),
+                it.get(TITEL.COMPOSER),
+                it.get(TITEL.ARRANGEUR),
+                it.get(TITEL.GRAD) != null ? it.get(TITEL.GRAD).floatValue() : null,
+                it.get(TITEL.SCHWIERIGKEITSGRAD),
+                it.get(TITEL.DURATION_IN_SECONDS),
+                it.get(TITEL.FK_VEREIN) == null,
+                it.get(TITEL.INFO_MODERATION)
         );
     }
 
