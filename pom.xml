@@ -23,13 +23,13 @@
 
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>3.2.1263</typescript-generator-maven-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-        <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
 
-        <nodeVersion>v20.10.0</nodeVersion>
-        <npmVersion>10.2.3</npmVersion>
+        <nodeVersion>v20.11.1</nodeVersion>
+        <npmVersion>10.2.4</npmVersion>
 
         <!-- start local DB using src/main/docker/postgres.yml  -->
         <db.url>jdbc:postgresql://localhost:5432/zkmf2024</db.url>
