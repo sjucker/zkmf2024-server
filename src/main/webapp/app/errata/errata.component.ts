@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed, OnInit, signal} from '@angular/core';
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ErrataDTO} from "../rest";
 import {AuthenticationService} from "../service/authentication.service";
@@ -13,8 +13,19 @@ export class ErrataComponent implements OnInit {
 
     errata: ErrataDTO[] = [];
 
-    saving = false;
-    sending = false;
+    unsavedChanges = signal(false);
+    readOnly = signal(false);
+
+    saving = signal(false);
+    sending = signal(false);
+
+    triggerSendActive = computed(() => {
+        return !this.unsavedChanges() && !this.readOnly();
+    });
+
+    saveActive = computed(() => {
+        return this.unsavedChanges() && !this.readOnly();
+    });
 
     constructor(private authenticationService: AuthenticationService,
                 private service: ErrataService,
@@ -28,13 +39,16 @@ export class ErrataComponent implements OnInit {
                 this.errata = value;
             },
         });
+
+        this.readOnly.set(this.authenticationService.isReadOnly());
     }
 
     save() {
-        this.saving = true;
+        this.saving.set(true);
         this.service.save(this.errata).subscribe({
             next: () => {
-                this.saving = false;
+                this.saving.set(false);
+                this.unsavedChanges.set(false);
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Gespeichert',
@@ -42,7 +56,7 @@ export class ErrataComponent implements OnInit {
                 });
             },
             error: () => {
-                this.saving = false;
+                this.saving.set(false);
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Fehler',
@@ -81,7 +95,7 @@ export class ErrataComponent implements OnInit {
         })
     }
 
-    isReadOnly(): boolean {
-        return this.authenticationService.isReadOnly();
+    onChange() {
+        this.unsavedChanges.set(true);
     }
 }
