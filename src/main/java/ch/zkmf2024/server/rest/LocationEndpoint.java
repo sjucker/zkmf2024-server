@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ch.zkmf2024.server.dto.LocationType.WETTSPIELLOKAL;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Slf4j
 @RestController
@@ -56,14 +58,18 @@ public class LocationEndpoint {
     public ResponseEntity<GeoJSON> getGeoJSON() {
         log.info("GET /public/location/geojson");
 
+        var atomicInteger = new AtomicInteger(1);
+
         return ResponseEntity.ok(new GeoJSON("FeatureCollection",
                                              locationService.findAll().stream()
                                                             .map(location -> new FeatureItem(
                                                                     "Feature",
                                                                     new Geometry("Point", List.of(location.getCoordinates().longitude(),
                                                                                                   location.getCoordinates().latitude())),
-                                                                    Map.of("name", location.name(),
-                                                                           "type", location.type().name())
+                                                                    Map.of("id", String.valueOf(atomicInteger.getAndIncrement()),
+                                                                           "name", location.name(),
+                                                                           "type", location.type().name(),
+                                                                           "info", defaultString(location.modules()))
                                                             ))
                                                             .toList()));
     }
