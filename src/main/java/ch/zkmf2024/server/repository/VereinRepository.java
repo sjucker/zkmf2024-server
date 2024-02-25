@@ -809,6 +809,10 @@ public class VereinRepository {
                                                                                           adhocPerVerein.getOrDefault(pojo.getFkVerein(), List.of()))));
     }
 
+    public void insert(VereinAnmeldungDetailPojo anmeldungDetail) {
+        vereinAnmeldungDetailDao.insert(anmeldungDetail);
+    }
+
     public void update(VereinAnmeldungDetailPojo anmeldungDetail) {
         vereinAnmeldungDetailDao.update(anmeldungDetail);
     }
