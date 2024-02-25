@@ -174,6 +174,16 @@ public interface ILocation extends Serializable {
      */
     public String getPercussionEquipment();
 
+    /**
+     * Setter for <code>location.map_id</code>.
+     */
+    public void setMapId(String value);
+
+    /**
+     * Getter for <code>location.map_id</code>.
+     */
+    public String getMapId();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
