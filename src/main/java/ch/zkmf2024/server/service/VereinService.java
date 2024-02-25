@@ -24,6 +24,7 @@ import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrchesterPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
@@ -234,6 +235,10 @@ public class VereinService {
             verein.setDirektionKontaktId(kontaktDirektion.getId());
 
             vereinRepository.insert(verein);
+
+            var detail = new VereinAnmeldungDetailPojo();
+            detail.setFkVerein(verein.getId());
+            vereinRepository.insert(detail);
 
             var status = new VereinStatusPojo();
             status.setFkVerein(verein.getId());
