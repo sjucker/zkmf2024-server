@@ -222,13 +222,17 @@ public class VereinRepository {
         if (modul.isParademusik()) {
             return jooqDsl.select()
                           .from(TITEL)
-                          .where(TITEL.ID.in(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID)))
+                          .join(VEREIN).on(VEREIN.ID.eq(it.get(VEREIN_PROGRAMM.FK_VEREIN)))
+                          .where(TITEL.ID.in(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID)),
+                                 VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
                           .fetch(this::toTitelDTO);
         } else {
             return jooqDsl.select()
                           .from(VEREIN_PROGRAMM_TITEL)
                           .join(TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
-                          .where(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(it.get(VEREIN_PROGRAMM.ID)))
+                          .join(VEREIN).on(VEREIN.ID.eq(it.get(VEREIN_PROGRAMM.FK_VEREIN)))
+                          .where(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(it.get(VEREIN_PROGRAMM.ID)),
+                                 VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
                           .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
                           .fetch(this::toTitelDTO);
         }
