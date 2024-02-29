@@ -271,9 +271,8 @@ public class VereinService {
         MAPPER.updateKontakt(direktion, dto.direktion());
         vereinRepository.update(direktion);
 
-        if (verein.getPhase2ConfirmedAt() == null) {
-            updateProgramme(verein.getId(), dto.programme());
-        }
+        updateProgramme(verein.getId(), dto.programme(), verein.getPhase2ConfirmedAt() != null);
+
         updateDoppeleinsatz(verein.getId(), dto.doppelEinsatz(), dto.angaben().mitspielerDoppeleinsatz());
 
         var anmeldungDetail = vereinRepository.findAnmeldungDetail(verein.getId()).orElseThrow();
@@ -361,10 +360,15 @@ public class VereinService {
         return module;
     }
 
-    private void updateProgramme(Long vereinId, List<VereinProgrammDTO> programme) {
+    private void updateProgramme(Long vereinId, List<VereinProgrammDTO> programme, boolean phase2Confirmed) {
         for (var programm : programme) {
             var programmPojo = vereinRepository.findVereinProgramm(programm.id()).orElseThrow();
             if (Objects.equals(vereinId, programmPojo.getFkVerein())) {
+                if (phase2Confirmed && programm.modul() != Modul.C) {
+                    // only Modul C (Platzkonzert) is allowed to update Programm after phase 2 confirmation
+                    continue;
+                }
+
                 programmPojo.setTitel(programm.titel());
                 programmPojo.setInfoModeration(programm.infoModeration());
                 programmPojo.setTotalDurationInSeconds(calculateTotalDurationInSeconds(programm.ablauf()));
