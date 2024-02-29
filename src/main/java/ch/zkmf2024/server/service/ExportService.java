@@ -447,6 +447,7 @@ public class ExportService {
         headerRow.createCell(columnIndex++).setCellValue("Gesamtchor");
         headerRow.createCell(columnIndex++).setCellValue("Ad-hoc-Orchester");
         headerRow.createCell(columnIndex++).setCellValue("Ad-hoc-Orchester Teilnehmer");
+        headerRow.createCell(columnIndex++).setCellValue("Nicht regelmässig Mitspielende");
 
         for (var dto : vereine) {
             var row = sheet.createRow(rowIndex++);
@@ -479,6 +480,9 @@ public class ExportService {
             columnIndex = setCellValue(columnIndex, row, detail.adhocOrchester(), wb);
             columnIndex = setCellValue(columnIndex, row, detail.adhocOrchesterTeilnehmer().stream()
                                                                .map(teilnehmer -> "%s, %s, %s".formatted(teilnehmer.name(), teilnehmer.email(), teilnehmer.instrument()))
+                                                               .collect(joining("\n")), wb);
+            columnIndex = setCellValue(columnIndex, row, detail.nichtmitglieder().stream()
+                                                               .map(nichtmitglieder -> "%s: %d".formatted(nichtmitglieder.instrument(), nichtmitglieder.amount()))
                                                                .collect(joining("\n")), wb);
 
         }

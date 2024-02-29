@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrchesterPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungNichtmitgliederPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -60,7 +61,9 @@ public interface VereinMapper {
     @Mapping(target = "verpflegungHelper4", source = "pojo.verpflegungHelper_4")
     @Mapping(target = "verpflegungHelper5", source = "pojo.verpflegungHelper_5")
     @Mapping(target = "verpflegungHelper6", source = "pojo.verpflegungHelper_6")
-    VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo, List<VereinAnmeldungAdhocOrchesterPojo> adhocOrchesterTeilnehmer);
+    VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo,
+                                                   List<VereinAnmeldungAdhocOrchesterPojo> adhocOrchesterTeilnehmer,
+                                                   List<VereinAnmeldungNichtmitgliederPojo> nichtmitglieder);
 
     @Mapping(target = "provWettspiel", ignore = true)
     @Mapping(target = "provPlatzkonzert", ignore = true)

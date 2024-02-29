@@ -27,6 +27,7 @@ import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinAnmeldungAdhocOrchesterDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinAnmeldungDetailDao;
+import ch.zkmf2024.server.jooq.generated.tables.daos.VereinAnmeldungNichtmitgliederDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.VereinDoppeleinsatzDao;
@@ -38,6 +39,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrchesterPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungNichtmitgliederPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
@@ -112,6 +114,7 @@ public class VereinRepository {
     private final VereinDoppeleinsatzDao vereinDoppeleinsatzDao;
     private final VereinAnmeldungDetailDao vereinAnmeldungDetailDao;
     private final VereinAnmeldungAdhocOrchesterDao vereinAnmeldungAdhocOrchesterDao;
+    private final VereinAnmeldungNichtmitgliederDao vereinAnmeldungNichtmitgliederDao;
 
     public VereinRepository(ProgrammVorgabenRepository programmVorgabenRepository,
                             DSLContext jooqDsl,
@@ -129,6 +132,7 @@ public class VereinRepository {
         this.vereinDoppeleinsatzDao = new VereinDoppeleinsatzDao(jooqConfig);
         this.vereinAnmeldungDetailDao = new VereinAnmeldungDetailDao(jooqConfig);
         this.vereinAnmeldungAdhocOrchesterDao = new VereinAnmeldungAdhocOrchesterDao(jooqConfig);
+        this.vereinAnmeldungNichtmitgliederDao = new VereinAnmeldungNichtmitgliederDao(jooqConfig);
     }
 
     public List<VereinTeilnahmeDTO> findAllConfirmed() {
@@ -796,9 +800,23 @@ public class VereinRepository {
         vereinAnmeldungAdhocOrchesterDao.insert(pojos);
     }
 
+    public List<VereinAnmeldungNichtmitgliederPojo> findNichtmitglieder(Long vereinId) {
+        return vereinAnmeldungNichtmitgliederDao.fetchByFkVerein(vereinId);
+    }
+
+    public void deleteNichtmitglieder(Long vereinId) {
+        vereinAnmeldungNichtmitgliederDao.delete(findNichtmitglieder(vereinId));
+    }
+
+    public void insertNichtmitglieder(List<VereinAnmeldungNichtmitgliederPojo> pojos) {
+        vereinAnmeldungNichtmitgliederDao.insert(pojos);
+    }
+
     public VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId) {
         return vereinAnmeldungDetailDao.fetchByFkVerein(vereinId).stream().findFirst()
-                                       .map(pojo -> MAPPER.toAnmeldungDetailDto(pojo, vereinAnmeldungAdhocOrchesterDao.fetchByFkVerein(pojo.getFkVerein())))
+                                       .map(pojo -> MAPPER.toAnmeldungDetailDto(pojo,
+                                                                                vereinAnmeldungAdhocOrchesterDao.fetchByFkVerein(pojo.getFkVerein()),
+                                                                                vereinAnmeldungNichtmitgliederDao.fetchByFkVerein(pojo.getFkVerein())))
                                        .orElseThrow(() -> new NoSuchElementException("no VereinAnmeldungDetail found for vereinId: " + vereinId));
     }
 
@@ -807,10 +825,15 @@ public class VereinRepository {
                                                              .sorted(comparing(VereinAnmeldungAdhocOrchesterPojo::getId))
                                                              .collect(groupingBy(VereinAnmeldungAdhocOrchesterPojo::getFkVerein, toList()));
 
+        var nichtmitgliederPerVerein = vereinAnmeldungNichtmitgliederDao.findAll().stream()
+                                                                        .sorted(comparing(VereinAnmeldungNichtmitgliederPojo::getId))
+                                                                        .collect(groupingBy(VereinAnmeldungNichtmitgliederPojo::getFkVerein, toList()));
+
         return vereinAnmeldungDetailDao.findAll().stream()
                                        .collect(toMap(VereinAnmeldungDetailPojo::getFkVerein,
                                                       pojo -> MAPPER.toAnmeldungDetailDto(pojo,
-                                                                                          adhocPerVerein.getOrDefault(pojo.getFkVerein(), List.of()))));
+                                                                                          adhocPerVerein.getOrDefault(pojo.getFkVerein(), List.of()),
+                                                                                          nichtmitgliederPerVerein.getOrDefault(pojo.getFkVerein(), List.of()))));
     }
 
     public void insert(VereinAnmeldungDetailPojo anmeldungDetail) {
