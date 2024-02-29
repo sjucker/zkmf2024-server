@@ -77,7 +77,9 @@ public class LocationEndpoint {
             case INSTRUMENTENDEPOT -> "Instrumentendepot";
             case WETTSPIELLOKAL -> "Module: " + location.modules();
             case JURYFEEDBACK -> "Jury Gespräch";
-            case PLATZKONZERT -> "Festzelt & Food Meile";
+            case PLATZKONZERT -> "Platzkonzert";
+            case FESTZELT -> "Festzelt & Food Meile";
+            case INFOSTAND -> "Empfang, Infostand";
         };
     }
 }
