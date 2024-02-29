@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.AdhocOrchesterTeilnehmerDTO;
 import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
 import ch.zkmf2024.server.dto.ImageType;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.NichtmitgliederDTO;
 import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
@@ -25,6 +26,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.ImagePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.KontaktPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrchesterPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungNichtmitgliederPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinDoppeleinsatzPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinMessagePojo;
@@ -184,6 +186,9 @@ public class VereinService {
         if (anmeldungDetail.adhocOrchesterTeilnehmer().isEmpty()) {
             anmeldungDetail.adhocOrchesterTeilnehmer().add(new AdhocOrchesterTeilnehmerDTO(null, null, null));
         }
+        if (anmeldungDetail.nichtmitglieder().isEmpty()) {
+            anmeldungDetail.nichtmitglieder().add(new NichtmitgliederDTO(null, null));
+        }
         return anmeldungDetail;
     }
 
@@ -286,6 +291,14 @@ public class VereinService {
                                                          null, verein.getId(), adhoc.name(), adhoc.email(), adhoc.instrument()
                                                  ))
                                                  .toList());
+
+        vereinRepository.deleteNichtmitglieder(verein.getId());
+        vereinRepository.insertNichtmitglieder(dto.anmeldungDetail().nichtmitglieder().stream()
+                                                  .filter(NichtmitgliederDTO::isNotEmpty)
+                                                  .map(nichtmitglieder -> new VereinAnmeldungNichtmitgliederPojo(
+                                                          null, verein.getId(), nichtmitglieder.amount(), nichtmitglieder.instrument()
+                                                  ))
+                                                  .toList());
 
         dto = toDTO(verein);
 

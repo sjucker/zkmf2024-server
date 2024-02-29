@@ -18,6 +18,7 @@ public record VereinsanmeldungDetailDTO(
         boolean gesamtchor,
         boolean adhocOrchester,
         @NotNull List<AdhocOrchesterTeilnehmerDTO> adhocOrchesterTeilnehmer,
+        @NotNull List<NichtmitgliederDTO> nichtmitglieder,
         boolean anreisePublicTransport,
         String anreisePublicTransportType,
         String anreiseOtherwise,

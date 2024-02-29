@@ -124,6 +124,7 @@ export interface LocationDTO {
     capacity: string;
     modules: string;
     sortOrder: number;
+    mapId: string;
     cloudflareId?: string;
     kuulaId?: string;
     einspiellokal?: LocationDTO;
@@ -159,6 +160,11 @@ export interface NewsletterRecipientDTO {
     email: string;
     subscribedAt: DateAsString;
     unsubscribedAt?: DateAsString;
+}
+
+export interface NichtmitgliederDTO {
+    amount?: number;
+    instrument?: string;
 }
 
 export interface RegisterHelperRequestDTO {
@@ -399,6 +405,7 @@ export interface VereinsanmeldungDetailDTO extends IsValid {
     gesamtchor: boolean;
     adhocOrchester: boolean;
     adhocOrchesterTeilnehmer: AdhocOrchesterTeilnehmerDTO[];
+    nichtmitglieder: NichtmitgliederDTO[];
     anreisePublicTransport: boolean;
     anreisePublicTransportType?: string;
     anreiseOtherwise?: string;

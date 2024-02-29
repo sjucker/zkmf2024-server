@@ -21,6 +21,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Titel;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
+import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungNichtmitglieder;
 import ch.zkmf2024.server.jooq.generated.tables.VereinComment;
 import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz;
 import ch.zkmf2024.server.jooq.generated.tables.VereinMessage;
@@ -124,6 +125,11 @@ public class Tables {
      * The table <code>verein_anmeldung_detail</code>.
      */
     public static final VereinAnmeldungDetail VEREIN_ANMELDUNG_DETAIL = VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL;
+
+    /**
+     * The table <code>verein_anmeldung_nichtmitglieder</code>.
+     */
+    public static final VereinAnmeldungNichtmitglieder VEREIN_ANMELDUNG_NICHTMITGLIEDER = VereinAnmeldungNichtmitglieder.VEREIN_ANMELDUNG_NICHTMITGLIEDER;
 
     /**
      * The table <code>verein_comment</code>.
