@@ -1,11 +1,9 @@
 name: Qodana
 on:
-  pull_request:
   push:
     branches:
       - main
       - develop
-
 jobs:
   qodana:
     runs-on: ubuntu-latest
