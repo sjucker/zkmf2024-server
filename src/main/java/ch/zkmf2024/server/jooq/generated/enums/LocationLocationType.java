@@ -24,7 +24,11 @@ public enum LocationLocationType implements EnumType {
 
     JURYFEEDBACK("JURYFEEDBACK"),
 
-    PLATZKONZERT("PLATZKONZERT");
+    PLATZKONZERT("PLATZKONZERT"),
+
+    INFOSTAND("INFOSTAND"),
+
+    FESTZELT("FESTZELT");
 
     private final String literal;
 

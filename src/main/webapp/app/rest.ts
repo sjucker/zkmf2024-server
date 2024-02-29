@@ -701,6 +701,8 @@ export enum LocationType {
     WETTSPIELLOKAL = "WETTSPIELLOKAL",
     JURYFEEDBACK = "JURYFEEDBACK",
     PLATZKONZERT = "PLATZKONZERT",
+    INFOSTAND = "INFOSTAND",
+    FESTZELT = "FESTZELT",
 }
 
 export enum PercussionEquipmentType {
