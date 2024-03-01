@@ -64,6 +64,7 @@ public class LocationEndpoint {
                                                                                                   location.getCoordinates().latitude())),
                                                                     Map.of("id", location.mapId(),
                                                                            "name", location.name(),
+                                                                           "identifier", location.identifier(),
                                                                            "type", location.type().name(),
                                                                            "info", getInfo(location))
                                                             ))
