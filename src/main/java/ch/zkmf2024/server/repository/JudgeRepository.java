@@ -339,7 +339,7 @@ public class JudgeRepository {
                       .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
                       .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
                       .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
-                      .orderBy(JUDGE_REPORT.ID)
+                      .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
                       .stream()
                       .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
                       .values().stream()
