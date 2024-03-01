@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static ch.zkmf2024.server.dto.LocationType.WETTSPIELLOKAL;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Slf4j
 @RestController
@@ -64,7 +65,7 @@ public class LocationEndpoint {
                                                                                                   location.getCoordinates().latitude())),
                                                                     Map.of("id", location.mapId(),
                                                                            "name", location.name(),
-                                                                           "identifier", location.identifier(),
+                                                                           "identifier", defaultString(location.identifier()),
                                                                            "type", location.type().name(),
                                                                            "info", getInfo(location))
                                                             ))
