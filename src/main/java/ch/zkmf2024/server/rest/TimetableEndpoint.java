@@ -5,6 +5,7 @@ import ch.zkmf2024.server.service.TimetableService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +25,15 @@ public class TimetableEndpoint {
     @GetMapping
     public ResponseEntity<List<TimetableDayOverviewDTO>> getTimetable() {
         log.info("GET /public/timetable");
-        
+
         return ResponseEntity.ok(timetableService.getPublicTimetable());
+    }
+
+    @GetMapping("/{locationIdentifier}")
+    public ResponseEntity<List<TimetableDayOverviewDTO>> getTimetable(@PathVariable String locationIdentifier) {
+        log.info("GET /public/timetable/{}", locationIdentifier);
+
+        return ResponseEntity.ok(timetableService.getPublicTimetable(locationIdentifier));
     }
 
 }

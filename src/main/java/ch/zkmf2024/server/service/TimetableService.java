@@ -14,6 +14,7 @@ import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,7 +156,12 @@ public class TimetableService {
     }
 
     public List<TimetableDayOverviewDTO> getPublicTimetable() {
+        return getPublicTimetable(null);
+    }
+
+    public List<TimetableDayOverviewDTO> getPublicTimetable(String locationIdentifier) {
         var entriesPerDate = timetableRepository.findAllForPublic().stream()
+                                                .filter(dto -> locationIdentifier == null || StringUtils.equals(dto.location().identifier(), locationIdentifier))
                                                 .collect(groupingBy(TimetableOverviewEntryDTO::date, toList()));
 
         var result = new ArrayList<TimetableDayOverviewDTO>();
