@@ -41,6 +41,46 @@ public interface IJudge extends Serializable {
      */
     public String getName();
 
+    /**
+     * Setter for <code>judge.first_name</code>.
+     */
+    public void setFirstName(String value);
+
+    /**
+     * Getter for <code>judge.first_name</code>.
+     */
+    public String getFirstName();
+
+    /**
+     * Setter for <code>judge.modul</code>.
+     */
+    public void setModul(String value);
+
+    /**
+     * Getter for <code>judge.modul</code>.
+     */
+    public String getModul();
+
+    /**
+     * Setter for <code>judge.cloudflare_id</code>.
+     */
+    public void setCloudflareId(String value);
+
+    /**
+     * Getter for <code>judge.cloudflare_id</code>.
+     */
+    public String getCloudflareId();
+
+    /**
+     * Setter for <code>judge.presentation_text</code>.
+     */
+    public void setPresentationText(String value);
+
+    /**
+     * Getter for <code>judge.presentation_text</code>.
+     */
+    public String getPresentationText();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.JudgePresentationDTO;
 import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
@@ -20,6 +21,7 @@ import ch.zkmf2024.server.repository.JudgeRepository;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -148,7 +150,7 @@ public class JudgeService {
     }
 
     public void createLogin(JuryLoginCreateDTO dto) {
-        judgeRepository.insert(new JudgePojo(null, dto.email(), dto.name()));
+        judgeRepository.insert(new JudgePojo(null, dto.email(), dto.name(), dto.firstName(), null, null, null));
         userRepository.insert(new Zkmf2024UserPojo(dto.email(),
                                                    JUDGE.name(),
                                                    passwordEncoder.encode(dto.password()),
@@ -209,5 +211,16 @@ public class JudgeService {
             }
         }
 
+    }
+
+    public List<JudgePresentationDTO> getJudgePresentations() {
+        return judgeRepository.findAll().stream()
+                              .filter(judge -> StringUtils.isNotBlank(judge.getModul()))
+                              .sorted(comparing(JudgePojo::getName).thenComparing(JudgePojo::getFirstName))
+                              .map(judge -> new JudgePresentationDTO("%s %s".formatted(judge.getName(), judge.getFirstName()),
+                                                                     judge.getModul(),
+                                                                     judge.getCloudflareId(),
+                                                                     judge.getPresentationText()))
+                              .toList();
     }
 }

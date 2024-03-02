@@ -109,4 +109,64 @@ public class JudgeDao extends DAOImpl<JudgeRecord, JudgePojo, Long> {
     public List<JudgePojo> fetchByName(String... values) {
         return fetch(Judge.JUDGE.NAME, values);
     }
+
+    /**
+     * Fetch records that have <code>first_name BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<JudgePojo> fetchRangeOfFirstName(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Judge.JUDGE.FIRST_NAME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>first_name IN (values)</code>
+     */
+    public List<JudgePojo> fetchByFirstName(String... values) {
+        return fetch(Judge.JUDGE.FIRST_NAME, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<JudgePojo> fetchRangeOfModul(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Judge.JUDGE.MODUL, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul IN (values)</code>
+     */
+    public List<JudgePojo> fetchByModul(String... values) {
+        return fetch(Judge.JUDGE.MODUL, values);
+    }
+
+    /**
+     * Fetch records that have <code>cloudflare_id BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<JudgePojo> fetchRangeOfCloudflareId(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Judge.JUDGE.CLOUDFLARE_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>cloudflare_id IN (values)</code>
+     */
+    public List<JudgePojo> fetchByCloudflareId(String... values) {
+        return fetch(Judge.JUDGE.CLOUDFLARE_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>presentation_text BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<JudgePojo> fetchRangeOfPresentationText(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Judge.JUDGE.PRESENTATION_TEXT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>presentation_text IN (values)</code>
+     */
+    public List<JudgePojo> fetchByPresentationText(String... values) {
+        return fetch(Judge.JUDGE.PRESENTATION_TEXT, values);
+    }
 }

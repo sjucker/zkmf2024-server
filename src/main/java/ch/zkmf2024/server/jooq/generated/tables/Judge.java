@@ -8,12 +8,12 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function3;
+import org.jooq.Function7;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -63,6 +63,26 @@ public class Judge extends TableImpl<JudgeRecord> {
      * The column <code>judge.name</code>.
      */
     public final TableField<JudgeRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
+     * The column <code>judge.first_name</code>.
+     */
+    public final TableField<JudgeRecord, String> FIRST_NAME = createField(DSL.name("first_name"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>judge.modul</code>.
+     */
+    public final TableField<JudgeRecord, String> MODUL = createField(DSL.name("modul"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>judge.cloudflare_id</code>.
+     */
+    public final TableField<JudgeRecord, String> CLOUDFLARE_ID = createField(DSL.name("cloudflare_id"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>judge.presentation_text</code>.
+     */
+    public final TableField<JudgeRecord, String> PRESENTATION_TEXT = createField(DSL.name("presentation_text"), SQLDataType.VARCHAR(4096), this, "");
 
     private Judge(Name alias, Table<JudgeRecord> aliased) {
         this(alias, aliased, null);
@@ -157,18 +177,18 @@ public class Judge extends TableImpl<JudgeRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<Long, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row7<Long, String, String, String, String, String, String> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function3<? super Long, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -176,7 +196,7 @@ public class Judge extends TableImpl<JudgeRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super Long, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Long, ? super String, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

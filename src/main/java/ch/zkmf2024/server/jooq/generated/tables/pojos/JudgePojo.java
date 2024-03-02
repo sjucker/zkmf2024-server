@@ -16,6 +16,10 @@ public class JudgePojo implements IJudge {
     private Long id;
     private String email;
     private String name;
+    private String firstName;
+    private String modul;
+    private String cloudflareId;
+    private String presentationText;
 
     public JudgePojo() {
     }
@@ -24,16 +28,28 @@ public class JudgePojo implements IJudge {
         this.id = value.getId();
         this.email = value.getEmail();
         this.name = value.getName();
+        this.firstName = value.getFirstName();
+        this.modul = value.getModul();
+        this.cloudflareId = value.getCloudflareId();
+        this.presentationText = value.getPresentationText();
     }
 
     public JudgePojo(
             Long id,
             String email,
-            String name
+            String name,
+            String firstName,
+            String modul,
+            String cloudflareId,
+            String presentationText
     ) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.firstName = firstName;
+        this.modul = modul;
+        this.cloudflareId = cloudflareId;
+        this.presentationText = presentationText;
     }
 
     /**
@@ -84,6 +100,70 @@ public class JudgePojo implements IJudge {
         this.name = name;
     }
 
+    /**
+     * Getter for <code>judge.first_name</code>.
+     */
+    @Override
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    /**
+     * Setter for <code>judge.first_name</code>.
+     */
+    @Override
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Getter for <code>judge.modul</code>.
+     */
+    @Override
+    public String getModul() {
+        return this.modul;
+    }
+
+    /**
+     * Setter for <code>judge.modul</code>.
+     */
+    @Override
+    public void setModul(String modul) {
+        this.modul = modul;
+    }
+
+    /**
+     * Getter for <code>judge.cloudflare_id</code>.
+     */
+    @Override
+    public String getCloudflareId() {
+        return this.cloudflareId;
+    }
+
+    /**
+     * Setter for <code>judge.cloudflare_id</code>.
+     */
+    @Override
+    public void setCloudflareId(String cloudflareId) {
+        this.cloudflareId = cloudflareId;
+    }
+
+    /**
+     * Getter for <code>judge.presentation_text</code>.
+     */
+    @Override
+    public String getPresentationText() {
+        return this.presentationText;
+    }
+
+    /**
+     * Setter for <code>judge.presentation_text</code>.
+     */
+    @Override
+    public void setPresentationText(String presentationText) {
+        this.presentationText = presentationText;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -108,6 +188,26 @@ public class JudgePojo implements IJudge {
                 return false;
         } else if (!this.name.equals(other.name))
             return false;
+        if (this.firstName == null) {
+            if (other.firstName != null)
+                return false;
+        } else if (!this.firstName.equals(other.firstName))
+            return false;
+        if (this.modul == null) {
+            if (other.modul != null)
+                return false;
+        } else if (!this.modul.equals(other.modul))
+            return false;
+        if (this.cloudflareId == null) {
+            if (other.cloudflareId != null)
+                return false;
+        } else if (!this.cloudflareId.equals(other.cloudflareId))
+            return false;
+        if (this.presentationText == null) {
+            if (other.presentationText != null)
+                return false;
+        } else if (!this.presentationText.equals(other.presentationText))
+            return false;
         return true;
     }
 
@@ -118,6 +218,10 @@ public class JudgePojo implements IJudge {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + ((this.firstName == null) ? 0 : this.firstName.hashCode());
+        result = prime * result + ((this.modul == null) ? 0 : this.modul.hashCode());
+        result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
+        result = prime * result + ((this.presentationText == null) ? 0 : this.presentationText.hashCode());
         return result;
     }
 
@@ -128,6 +232,10 @@ public class JudgePojo implements IJudge {
         sb.append(id);
         sb.append(", ").append(email);
         sb.append(", ").append(name);
+        sb.append(", ").append(firstName);
+        sb.append(", ").append(modul);
+        sb.append(", ").append(cloudflareId);
+        sb.append(", ").append(presentationText);
 
         sb.append(")");
         return sb.toString();
@@ -142,6 +250,10 @@ public class JudgePojo implements IJudge {
         setId(from.getId());
         setEmail(from.getEmail());
         setName(from.getName());
+        setFirstName(from.getFirstName());
+        setModul(from.getModul());
+        setCloudflareId(from.getCloudflareId());
+        setPresentationText(from.getPresentationText());
     }
 
     @Override

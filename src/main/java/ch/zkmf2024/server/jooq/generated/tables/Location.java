@@ -136,7 +136,7 @@ public class Location extends TableImpl<LocationRecord> {
     /**
      * The column <code>location.map_id</code>.
      */
-    public final TableField<LocationRecord, String> MAP_ID = createField(DSL.name("map_id"), SQLDataType.VARCHAR(3), this, "");
+    public final TableField<LocationRecord, String> MAP_ID = createField(DSL.name("map_id"), SQLDataType.VARCHAR(5), this, "");
 
     private Location(Name alias, Table<LocationRecord> aliased) {
         this(alias, aliased, null);

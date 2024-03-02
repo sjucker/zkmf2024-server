@@ -12,6 +12,7 @@ export class JuryLoginCreateComponent {
     dto: JuryLoginCreateDTO = {
         email: '',
         name: '',
+        firstName: '',
         password: ''
     };
 
