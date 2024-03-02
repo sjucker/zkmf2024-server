@@ -127,34 +127,22 @@
                     <div>Grundlage 2: {{ programm.tambourenKatAGrundlage2 }}</div>
 
                     <div class="pt-3"><b>Frei gewählter Baslermarsch (BM) oder Marsch (M)</b></div>
-                    <div>{{ programm.tambourenKatATitel1.titelName }}</div>
-                    <div>{{ programm.tambourenKatATitel1.composer }}</div>
-                    <div>{{ programm.tambourenKatATitel1.arrangeur }}</div>
-                    <div>{{ formatDuration(programm.tambourenKatATitel1.durationInSeconds) }}</div>
+                    <div>{{ programm.tambourenKatATitel1.titelName }}, {{ programm.tambourenKatATitel1.composer }}, Klasse: {{ programm.tambourenKatATitel1.grad }}</div>
 
                     <div class="pt-3"><b>Frei gewählte Komposition</b></div>
-                    <div>{{ programm.tambourenKatATitel2.titelName }}</div>
-                    <div>{{ programm.tambourenKatATitel2.composer }}</div>
-                    <div>{{ programm.tambourenKatATitel2.arrangeur }}</div>
-                    <div>{{ formatDuration(programm.tambourenKatATitel2.durationInSeconds) }}</div>
+                    <div>{{ programm.tambourenKatATitel2.titelName }}, {{ programm.tambourenKatATitel2.composer }}, Klasse: {{ programm.tambourenKatATitel2.grad }}</div>
                 </div>
 
                 <div *ngIf="programm.tambourenKatB">
                     <div><b>Kategorie B</b></div>
                     <div><b>Komposition</b></div>
-                    <div>{{ programm.tambourenKatBTitel.titelName }}</div>
-                    <div>{{ programm.tambourenKatBTitel.composer }}</div>
-                    <div>{{ programm.tambourenKatBTitel.arrangeur }}</div>
-                    <div>{{ formatDuration(programm.tambourenKatBTitel.durationInSeconds) }}</div>
+                    <div>{{ programm.tambourenKatBTitel.titelName }}, {{ programm.tambourenKatBTitel.composer }}, >Klasse: {{ programm.tambourenKatBTitel.grad }}</div>
                 </div>
 
                 <div *ngIf="programm.tambourenKatC">
                     <div><b>Kategorie C</b></div>
                     <div><b>Komposition</b></div>
-                    <div>{{ programm.tambourenKatCTitel.titelName }}</div>
-                    <div>{{ programm.tambourenKatCTitel.composer }}</div>
-                    <div>{{ programm.tambourenKatCTitel.arrangeur }}</div>
-                    <div>{{ formatDuration(programm.tambourenKatCTitel.durationInSeconds) }}</div>
+                    <div>{{ programm.tambourenKatCTitel.titelName }}, {{ programm.tambourenKatCTitel.composer }}, Klasse: {{ programm.tambourenKatCTitel.grad }}</div>
                 </div>
             </div>
 

@@ -167,18 +167,18 @@ public class ExportService {
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatAGrundlage2(), wb);
 
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatATitel1()), wb);
-                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatATitel1().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatATitel1().grad(), wb);
 
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatATitel2()), wb);
-                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatATitel2().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatATitel2().grad(), wb);
 
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatB(), wb);
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatBTitel()), wb);
-                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatBTitel().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatBTitel().grad(), wb);
 
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatC(), wb);
                 columnIndex = setCellValue(columnIndex, row, getFormattedTitel(vereinProgrammDTO.tambourenKatCTitel()), wb);
-                columnIndex = setCellValue(columnIndex, row, getDuration(vereinProgrammDTO.tambourenKatCTitel().durationInSeconds()), wb);
+                columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.tambourenKatCTitel().grad(), wb);
             }
             case H -> {
                 columnIndex = setCellValue(columnIndex, row, vereinProgrammDTO.klasse(), wb);
@@ -265,15 +265,15 @@ public class ExportService {
                 headerRow.createCell(columnIndex++).setCellValue("Grundlage 1");
                 headerRow.createCell(columnIndex++).setCellValue("Grundlage 2");
                 headerRow.createCell(columnIndex++).setCellValue("Frei gewählter Baslermarsch (BM) oder Marsch (M)");
-                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Klasse");
                 headerRow.createCell(columnIndex++).setCellValue("Frei gewählte Komposition");
-                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Klasse");
                 headerRow.createCell(columnIndex++).setCellValue("Kategorie B");
                 headerRow.createCell(columnIndex++).setCellValue("Komposition");
-                headerRow.createCell(columnIndex++).setCellValue("Dauer");
+                headerRow.createCell(columnIndex++).setCellValue("Klasse");
                 headerRow.createCell(columnIndex++).setCellValue("Kategorie C");
                 headerRow.createCell(columnIndex++).setCellValue("Komposition");
-                headerRow.createCell(columnIndex).setCellValue("Dauer");
+                headerRow.createCell(columnIndex).setCellValue("Klasse");
             }
             case H -> {
                 headerRow.createCell(columnIndex++).setCellValue("Klasse");
