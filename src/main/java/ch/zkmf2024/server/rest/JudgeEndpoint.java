@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/judge")
+@RequestMapping("/public/judge")
 public class JudgeEndpoint {
 
     private final JudgeService judgeService;
@@ -23,7 +23,7 @@ public class JudgeEndpoint {
 
     @GetMapping
     public ResponseEntity<List<JudgePresentationDTO>> getAll() {
-        log.info("GET /secured/judge");
+        log.info("GET /public/judge");
         return ResponseEntity.ok(judgeService.getJudgePresentations());
     }
 
