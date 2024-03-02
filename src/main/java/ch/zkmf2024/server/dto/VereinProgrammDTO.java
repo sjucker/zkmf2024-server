@@ -70,6 +70,10 @@ public record VereinProgrammDTO(long id,
     }
 
     public boolean hasAddedTitel() {
-        return ablauf.stream().anyMatch(programmTitel -> !programmTitel.titel().pflichtStueck());
+        return switch (modul) {
+            case A, B, C, E, F, H -> ablauf.stream().anyMatch(programmTitel -> !programmTitel.titel().pflichtStueck());
+            case D -> parademusikTitel1.isNotEmpty() || parademusikTitel2.isNotEmpty();
+            case G -> tambourenKatATitel1.isNotEmpty() || tambourenKatATitel2.isNotEmpty() || tambourenKatBTitel.isNotEmpty() || tambourenKatCTitel.isNotEmpty();
+        };
     }
 }

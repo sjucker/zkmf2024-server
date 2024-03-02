@@ -36,4 +36,7 @@ public record TitelDTO(Long id,
         return new TitelDTO(null, modul, null, null, null, null, null, 0, false, null);
     }
 
+    public boolean isNotEmpty() {
+        return isNotBlank(titelName) || isNotBlank(composer) || durationInSeconds > 0;
+    }
 }
