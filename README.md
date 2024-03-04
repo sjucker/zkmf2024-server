@@ -19,10 +19,10 @@
   `heroku pg:backups:download --app zkmf2024-server`
 
 * Restore Prod to Staging:
-    * Create and download backup-dump as described above
-    * Upload `latest.dump` to a publicly accessible URL
-    * `heroku pg:backups:restore 'https://<SERVER>/latest.dump' DATABASE_URL --app zkmf2024-server-staging`
+    * Create a backup-dump as described above
+    * Find out the ID of the current backup: `heroku pg:backups --app zkmf2024-server`
+    * `heroku pg:backups:restore zkmf2024-server::<BACKUP-ID> DATABASE_URL --app zkmf2024-server-staging`
 
-
-* Restore locally:  
-  `pg_restore --verbose --clean --no-acl --no-owner --disable-triggers -h localhost -U zkmf2024 -d zkmf2024 latest.dump`
+* Restore locally:
+* Drop all tables
+* `pg_restore --no-owner -h localhost -U zkmf2024 -d zkmf2024 -W latest.dump`
