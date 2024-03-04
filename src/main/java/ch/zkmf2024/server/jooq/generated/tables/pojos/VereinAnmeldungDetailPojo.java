@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated.tables.pojos;
 
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IVereinAnmeldungDetail;
+import org.jooq.JSONB;
 
 import java.time.LocalDate;
 
@@ -39,6 +40,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
     private String verpflegungHelper_4;
     private String verpflegungHelper_5;
     private String verpflegungHelper_6;
+    private JSONB stageSetup;
 
     public VereinAnmeldungDetailPojo() {
     }
@@ -68,6 +70,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.verpflegungHelper_4 = value.getVerpflegungHelper_4();
         this.verpflegungHelper_5 = value.getVerpflegungHelper_5();
         this.verpflegungHelper_6 = value.getVerpflegungHelper_6();
+        this.stageSetup = value.getStageSetup();
     }
 
     public VereinAnmeldungDetailPojo(
@@ -94,7 +97,8 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
             String verpflegungHelper_3,
             String verpflegungHelper_4,
             String verpflegungHelper_5,
-            String verpflegungHelper_6
+            String verpflegungHelper_6,
+            JSONB stageSetup
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -120,6 +124,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.verpflegungHelper_4 = verpflegungHelper_4;
         this.verpflegungHelper_5 = verpflegungHelper_5;
         this.verpflegungHelper_6 = verpflegungHelper_6;
+        this.stageSetup = stageSetup;
     }
 
     /**
@@ -512,6 +517,22 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.verpflegungHelper_6 = verpflegungHelper_6;
     }
 
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    @Override
+    public JSONB getStageSetup() {
+        return this.stageSetup;
+    }
+
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    @Override
+    public void setStageSetup(JSONB stageSetup) {
+        this.stageSetup = stageSetup;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -641,6 +662,11 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
                 return false;
         } else if (!this.verpflegungHelper_6.equals(other.verpflegungHelper_6))
             return false;
+        if (this.stageSetup == null) {
+            if (other.stageSetup != null)
+                return false;
+        } else if (!this.stageSetup.equals(other.stageSetup))
+            return false;
         return true;
     }
 
@@ -672,6 +698,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         result = prime * result + ((this.verpflegungHelper_4 == null) ? 0 : this.verpflegungHelper_4.hashCode());
         result = prime * result + ((this.verpflegungHelper_5 == null) ? 0 : this.verpflegungHelper_5.hashCode());
         result = prime * result + ((this.verpflegungHelper_6 == null) ? 0 : this.verpflegungHelper_6.hashCode());
+        result = prime * result + ((this.stageSetup == null) ? 0 : this.stageSetup.hashCode());
         return result;
     }
 
@@ -703,6 +730,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         sb.append(", ").append(verpflegungHelper_4);
         sb.append(", ").append(verpflegungHelper_5);
         sb.append(", ").append(verpflegungHelper_6);
+        sb.append(", ").append(stageSetup);
 
         sb.append(")");
         return sb.toString();
@@ -738,6 +766,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         setVerpflegungHelper_4(from.getVerpflegungHelper_4());
         setVerpflegungHelper_5(from.getVerpflegungHelper_5());
         setVerpflegungHelper_6(from.getVerpflegungHelper_6());
+        setStageSetup(from.getStageSetup());
     }
 
     @Override

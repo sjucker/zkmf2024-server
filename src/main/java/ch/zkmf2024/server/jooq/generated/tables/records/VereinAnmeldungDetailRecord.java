@@ -6,6 +6,7 @@ package ch.zkmf2024.server.jooq.generated.tables.records;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IVereinAnmeldungDetail;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
+import org.jooq.JSONB;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -409,6 +410,22 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         return (String) get(23);
     }
 
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    @Override
+    public void setStageSetup(JSONB value) {
+        set(24, value);
+    }
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    @Override
+    public JSONB getStageSetup() {
+        return (JSONB) get(24);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -448,6 +465,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setVerpflegungHelper_4(from.getVerpflegungHelper_4());
         setVerpflegungHelper_5(from.getVerpflegungHelper_5());
         setVerpflegungHelper_6(from.getVerpflegungHelper_6());
+        setStageSetup(from.getStageSetup());
         resetChangedOnNotNull();
     }
 
@@ -471,7 +489,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
     /**
      * Create a detached, initialised VereinAnmeldungDetailRecord
      */
-    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6) {
+    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6, JSONB stageSetup) {
         super(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL);
 
         setId(id);
@@ -498,6 +516,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setVerpflegungHelper_4(verpflegungHelper_4);
         setVerpflegungHelper_5(verpflegungHelper_5);
         setVerpflegungHelper_6(verpflegungHelper_6);
+        setStageSetup(stageSetup);
         resetChangedOnNotNull();
     }
 
@@ -532,6 +551,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
             setVerpflegungHelper_4(value.getVerpflegungHelper_4());
             setVerpflegungHelper_5(value.getVerpflegungHelper_5());
             setVerpflegungHelper_6(value.getVerpflegungHelper_6());
+            setStageSetup(value.getStageSetup());
             resetChangedOnNotNull();
         }
     }

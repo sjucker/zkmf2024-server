@@ -3,6 +3,8 @@
  */
 package ch.zkmf2024.server.jooq.generated.tables.interfaces;
 
+import org.jooq.JSONB;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -257,6 +259,16 @@ public interface IVereinAnmeldungDetail extends Serializable {
      * Getter for <code>verein_anmeldung_detail.verpflegung_helper_6</code>.
      */
     public String getVerpflegungHelper_6();
+
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    public void setStageSetup(JSONB value);
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    public JSONB getStageSetup();
 
     // -------------------------------------------------------------------------
     // FROM and INTO

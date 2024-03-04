@@ -11,12 +11,14 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungAdhocOrches
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungNichtmitgliederPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinPojo;
+import org.jooq.JSONB;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface VereinMapper {
@@ -135,6 +137,14 @@ public interface VereinMapper {
         pojo.setTambourenKatA(dto.modulG() && dto.tambourenKatA());
         pojo.setTambourenKatB(dto.modulG() && dto.tambourenKatB());
         pojo.setTambourenKatC(dto.modulG() && dto.tambourenKatC());
+    }
+
+    default JSONB toJson(String value) {
+        return JSONB.jsonbOrNull(value);
+    }
+
+    default String fromJson(JSONB json) {
+        return Optional.ofNullable(json).map(JSONB::data).orElse(null);
     }
 
 }

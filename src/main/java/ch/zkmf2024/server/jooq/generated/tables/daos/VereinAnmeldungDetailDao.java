@@ -7,6 +7,7 @@ import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinAnmeldungDetailPojo;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinAnmeldungDetailRecord;
 import org.jooq.Configuration;
+import org.jooq.JSONB;
 import org.jooq.impl.DAOImpl;
 
 import java.time.LocalDate;
@@ -413,5 +414,20 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
      */
     public List<VereinAnmeldungDetailPojo> fetchByVerpflegungHelper_6(String... values) {
         return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_HELPER_6, values);
+    }
+
+    /**
+     * Fetch records that have <code>stage_setup BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfStageSetup(JSONB lowerInclusive, JSONB upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_setup IN (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByStageSetup(JSONB... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP, values);
     }
 }

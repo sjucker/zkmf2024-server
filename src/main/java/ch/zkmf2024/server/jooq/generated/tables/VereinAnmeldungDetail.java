@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.VereinAnmeldungDetailRec
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.JSONB;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Schema;
@@ -167,6 +168,11 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
      * The column <code>verein_anmeldung_detail.verpflegung_helper_6</code>.
      */
     public final TableField<VereinAnmeldungDetailRecord, String> VERPFLEGUNG_HELPER_6 = createField(DSL.name("verpflegung_helper_6"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>verein_anmeldung_detail.stage_setup</code>.
+     */
+    public final TableField<VereinAnmeldungDetailRecord, JSONB> STAGE_SETUP = createField(DSL.name("stage_setup"), SQLDataType.JSONB, this, "");
 
     private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased) {
         this(alias, aliased, null);

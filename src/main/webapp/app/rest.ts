@@ -426,6 +426,7 @@ export interface VereinsanmeldungDetailDTO extends IsValid {
     verpflegungHelper4?: string;
     verpflegungHelper5?: string;
     verpflegungHelper6?: string;
+    stageSetup?: string;
 }
 
 export interface VereinsinfoDTO extends IsValid {

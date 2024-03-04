@@ -31,7 +31,8 @@ public record VereinsanmeldungDetailDTO(
         String verpflegungHelper3,
         String verpflegungHelper4,
         String verpflegungHelper5,
-        String verpflegungHelper6
+        String verpflegungHelper6,
+        String stageSetup // JSON
 ) implements IsValid {
     @Override
     public boolean isValid() {
