@@ -1,5 +1,7 @@
 package ch.zkmf2024.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotNull;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -36,6 +38,7 @@ public record TitelDTO(Long id,
         return new TitelDTO(null, modul, null, null, null, null, null, 0, false, null);
     }
 
+    @JsonIgnore
     public boolean isNotEmpty() {
         return isNotBlank(titelName) || isNotBlank(composer) || durationInSeconds > 0;
     }
