@@ -56,7 +56,7 @@ import static java.math.RoundingMode.HALF_UP;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsLast;
+import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -439,7 +439,8 @@ public class JudgeRepository {
                           var overallScore = overallScore(record1, record2, record3, record4, modul);
                           return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore);
                       })
-                      .sorted(comparing(JudgeRankingEntryDTO::score, nullsLast(naturalOrder())).reversed())
+                      .sorted(comparing(JudgeRankingEntryDTO::score, nullsFirst(naturalOrder())).reversed()
+                                                                                                .thenComparing(JudgeRankingEntryDTO::verein))
                       .toList();
     }
 
