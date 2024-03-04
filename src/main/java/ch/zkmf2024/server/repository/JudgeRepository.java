@@ -27,6 +27,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
@@ -57,6 +58,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.defaultString;
@@ -356,7 +358,7 @@ public class JudgeRepository {
                                   Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
                                   Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
                                   record1.get(VEREIN.VEREINSNAME),
-                                  overallScore(record1, record2, record3, record4, modul),
+                                  overallScore(record1, record2, record3, record4, modul).orElse(null),
                                   values.stream()
                                         .map(it -> new JudgeReportScoreDTO(
                                                 it.get(JUDGE_REPORT.ID),
@@ -384,26 +386,30 @@ public class JudgeRepository {
                 JudgeReportStatus.valueOf(record3.get(JUDGE_REPORT.STATUS)) == DONE;
     }
 
-    private BigDecimal overallScore(Record record1, Record record2, Record record3, Record record4, Modul modul) {
+    private Optional<BigDecimal> overallScore(Record record1, Record record2, Record record3, Record record4, Modul modul) {
         var score1 = record1.get(JUDGE_REPORT.SCORE);
         var score2 = record2.get(JUDGE_REPORT.SCORE);
         var score3 = record3.get(JUDGE_REPORT.SCORE);
         if (modul.isParademusik()) {
             var score4 = record4.get(JUDGE_REPORT.SCORE);
             if (score1 != null && score2 != null && score3 != null && score4 != null) {
-                return BigDecimal.valueOf(score1).add(BigDecimal.valueOf(score2)).add(BigDecimal.valueOf(score3)).add(BigDecimal.valueOf(score4))
-                                 .divide(BigDecimal.valueOf(4), 2, HALF_UP);
+                return Optional.of(BigDecimal.valueOf(score1).add(BigDecimal.valueOf(score2)).add(BigDecimal.valueOf(score3)).add(BigDecimal.valueOf(score4))
+                                             .divide(BigDecimal.valueOf(4), 2, HALF_UP));
             }
         } else {
             if (score1 != null && score2 != null && score3 != null) {
-                return BigDecimal.valueOf(score1).add(BigDecimal.valueOf(score2)).add(BigDecimal.valueOf(score3))
-                                 .divide(BigDecimal.valueOf(3), 2, HALF_UP);
+                return Optional.of(BigDecimal.valueOf(score1).add(BigDecimal.valueOf(score2)).add(BigDecimal.valueOf(score3))
+                                             .divide(BigDecimal.valueOf(3), 2, HALF_UP));
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<JudgeRankingEntryDTO> getRanking(Long reportId) {
+        return getRanking(reportId, null);
+    }
+
+    public List<JudgeRankingEntryDTO> getRanking(Long reportId, Long judgeId) {
         var modulKlasseBesetzung = jooqDsl.select(VEREIN_PROGRAMM.MODUL,
                                                   VEREIN_PROGRAMM.KLASSE,
                                                   VEREIN_PROGRAMM.BESETZUNG)
@@ -421,23 +427,31 @@ public class JudgeRepository {
                               VEREIN_PROGRAMM.MODUL,
                               JUDGE_REPORT.SCORE)
                       .from(JUDGE_REPORT)
+                      .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
                       .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
                       .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
                       .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
                       .where(VEREIN_PROGRAMM.MODUL.eq(modulKlasseBesetzung.get(VEREIN_PROGRAMM.MODUL)),
                              klasse != null ? VEREIN_PROGRAMM.KLASSE.eq(klasse) : VEREIN_PROGRAMM.KLASSE.isNull(),
                              besetzung != null ? VEREIN_PROGRAMM.BESETZUNG.eq(besetzung) : VEREIN_PROGRAMM.BESETZUNG.isNull())
+                      .and(judgeId != null ? JUDGE.ID.eq(judgeId) : DSL.noCondition())
                       .stream()
                       .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
                       .values().stream()
                       .map(values -> {
-                          var record1 = values.get(0);
-                          var record2 = values.get(1);
-                          var record3 = values.get(2);
-                          var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
-                          var record4 = modul.isParademusik() ? values.get(3) : null;
-                          var overallScore = overallScore(record1, record2, record3, record4, modul);
-                          return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore);
+                          if (judgeId != null) {
+                              var record1 = values.getFirst();
+                              return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME),
+                                                              ofNullable(record1.get(JUDGE_REPORT.SCORE)).map(BigDecimal::valueOf).orElse(null));
+                          } else {
+                              var record1 = values.get(0);
+                              var record2 = values.get(1);
+                              var record3 = values.get(2);
+                              var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
+                              var record4 = modul.isParademusik() ? values.get(3) : null;
+                              var overallScore = overallScore(record1, record2, record3, record4, modul);
+                              return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore.orElse(null));
+                          }
                       })
                       .sorted(comparing(JudgeRankingEntryDTO::score, nullsFirst(naturalOrder())).reversed()
                                                                                                 .thenComparing(JudgeRankingEntryDTO::verein))
