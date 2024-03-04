@@ -111,6 +111,15 @@ public class SecuredJudgeEndpoint {
         return ResponseEntity.ok(judgeService.getRanking(reportId));
     }
 
+    @GetMapping("/ranking/own/{reportId}")
+    @Secured({"JUDGE", "IMPERSONATE"})
+    public ResponseEntity<List<JudgeRankingEntryDTO>> rankingOwn(@AuthenticationPrincipal UserDetails userDetails,
+                                                                 @PathVariable("reportId") Long reportId) {
+        log.info("GET /secured/judge/ranking/own/{} {}", reportId, userDetails.getUsername());
+
+        return ResponseEntity.ok(judgeService.getRankingOwnOnly(reportId, userDetails.getUsername()));
+    }
+
     @GetMapping("/modul-d")
     @Secured({"JUDGE", "IMPERSONATE"})
     public ResponseEntity<List<ModulDSelectionDTO>> modulD() {

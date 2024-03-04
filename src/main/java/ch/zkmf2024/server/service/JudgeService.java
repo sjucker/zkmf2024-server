@@ -189,6 +189,10 @@ public class JudgeService {
         return judgeRepository.getRanking(reportId);
     }
 
+    public List<JudgeRankingEntryDTO> getRankingOwnOnly(Long reportId, String username) {
+        return judgeRepository.getRanking(reportId, judgeRepository.findByEmail(username).map(JudgePojo::getId).orElseThrow());
+    }
+
     public void confirmScores(String username, Long programmId) {
         vereinRepository.confirmScores(username, programmId);
         mailService.sendScoresConfirmation(vereinRepository.getEmailByProgrammId(programmId).orElseThrow());
