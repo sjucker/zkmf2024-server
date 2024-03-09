@@ -9,13 +9,13 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function9;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -92,6 +92,11 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
      */
     public final TableField<JudgeReportRecord, String> ROLE = createField(DSL.name("role"), SQLDataType.VARCHAR(255).defaultValue(DSL.field(DSL.raw("''::character varying"), SQLDataType.VARCHAR)), this, "");
 
+    /**
+     * The column <code>judge_report.category</code>.
+     */
+    public final TableField<JudgeReportRecord, String> CATEGORY = createField(DSL.name("category"), SQLDataType.VARCHAR(255), this, "");
+
     private JudgeReport(Name alias, Table<JudgeReportRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -147,7 +152,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
 
     @Override
     public List<UniqueKey<JudgeReportRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.JUDGE_REPORT_FK_JUDGE_FK_TIMETABLE_ENTRY_KEY);
+        return Arrays.asList(Keys.UQ_JUDGE_REPORT);
     }
 
     @Override
@@ -219,18 +224,18 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Long, Long, Integer, String, LocalDateTime, Boolean, String> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Long, Long, Long, Integer, String, LocalDateTime, Boolean, String, String> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -238,7 +243,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

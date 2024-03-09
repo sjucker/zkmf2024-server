@@ -92,6 +92,16 @@ public interface IJudgeReport extends Serializable {
      */
     public String getRole();
 
+    /**
+     * Setter for <code>judge_report.category</code>.
+     */
+    public void setCategory(String value);
+
+    /**
+     * Getter for <code>judge_report.category</code>.
+     */
+    public String getCategory();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

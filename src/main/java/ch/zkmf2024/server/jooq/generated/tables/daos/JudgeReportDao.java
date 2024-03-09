@@ -171,4 +171,19 @@ public class JudgeReportDao extends DAOImpl<JudgeReportRecord, JudgeReportPojo, 
     public List<JudgeReportPojo> fetchByRole(String... values) {
         return fetch(JudgeReport.JUDGE_REPORT.ROLE, values);
     }
+
+    /**
+     * Fetch records that have <code>category BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<JudgeReportPojo> fetchRangeOfCategory(String lowerInclusive, String upperInclusive) {
+        return fetchRange(JudgeReport.JUDGE_REPORT.CATEGORY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>category IN (values)</code>
+     */
+    public List<JudgeReportPojo> fetchByCategory(String... values) {
+        return fetch(JudgeReport.JUDGE_REPORT.CATEGORY, values);
+    }
 }
