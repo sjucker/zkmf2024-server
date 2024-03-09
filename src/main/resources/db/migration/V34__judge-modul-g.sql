@@ -1,5 +1,5 @@
 alter table judge_report
-    drop constraint judge_report_fk_judge_fk_timetable_entry_key;
+    drop constraint if exists judge_report_fk_judge_fk_timetable_entry_key;
 
 alter table judge_report
     add column category varchar(255) null;
