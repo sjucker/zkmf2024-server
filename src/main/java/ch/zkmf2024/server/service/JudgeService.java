@@ -174,14 +174,16 @@ public class JudgeService {
 
     public void createReports(Long timetableEntryId, JudgeReportCreateDTO dto) {
         if (dto.modul().isParademusik()) {
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_1_OPTISCH.name()));
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_2_MUSIKALISCH.name()));
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_3_MUSIKALISCH.name()));
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge4Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_4_OPTISCH.name()));
+            for (var modulGCategory : judgeRepository.getModulGCategories(timetableEntryId)) {
+                judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_1_OPTISCH.name(), modulGCategory.name()));
+                judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_2_MUSIKALISCH.name(), modulGCategory.name()));
+                judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_3_MUSIKALISCH.name(), modulGCategory.name()));
+                judgeRepository.insert(new JudgeReportPojo(null, dto.judge4Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_4_OPTISCH.name(), modulGCategory.name()));
+            }
         } else {
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_1.name()));
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_2.name()));
-            judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_3.name()));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge1Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_1.name(), null));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge2Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_2.name(), null));
+            judgeRepository.insert(new JudgeReportPojo(null, dto.judge3Id(), timetableEntryId, null, NEW.name(), null, false, JUROR_3.name(), null));
         }
     }
 

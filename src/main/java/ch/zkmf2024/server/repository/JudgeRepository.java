@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportCategory;
 import ch.zkmf2024.server.dto.JudgeReportCategoryRating;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
+import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportScoreDTO;
@@ -34,10 +35,15 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static ch.zkmf2024.server.dto.JudgeReportCategoryRating.NEUTRAL;
+import static ch.zkmf2024.server.dto.JudgeReportModulCategory.MODUL_G_KAT_A;
+import static ch.zkmf2024.server.dto.JudgeReportModulCategory.MODUL_G_KAT_B;
+import static ch.zkmf2024.server.dto.JudgeReportModulCategory.MODUL_G_KAT_C;
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
 import static ch.zkmf2024.server.dto.Modul.D;
 import static ch.zkmf2024.server.dto.ModulDSelection.TITEL_1;
@@ -477,5 +483,26 @@ public class JudgeRepository {
                               ModulDSelection.valueOf(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION)),
                               LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME))
                       ));
+    }
+
+    public Set<JudgeReportModulCategory> getModulGCategories(Long timetableEntryId) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                      .where(TIMETABLE_ENTRY.ID.eq(timetableEntryId))
+                      .fetchOptional(it -> {
+                          Set<JudgeReportModulCategory> result = new HashSet<>();
+                          if (it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID) != null) {
+                              result.add(MODUL_G_KAT_A);
+                          }
+                          if (it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID) != null) {
+                              result.add(MODUL_G_KAT_B);
+                          }
+                          if (it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID) != null) {
+                              result.add(MODUL_G_KAT_C);
+                          }
+                          return result;
+                      })
+                      .orElse(Set.of());
     }
 }
