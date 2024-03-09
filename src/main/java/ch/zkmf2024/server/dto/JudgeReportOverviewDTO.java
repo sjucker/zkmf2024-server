@@ -14,6 +14,8 @@ public record JudgeReportOverviewDTO(
         @NotNull String roleDescription,
         String klasse,
         String besetzung,
+        JudgeReportModulCategory category,
+        String categoryDescription,
         @NotNull LocalDateTime start,
         @NotNull LocalDateTime end,
         @NotNull JudgeReportStatus status

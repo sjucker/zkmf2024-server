@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRatingRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,5 +140,20 @@ public class JudgeReportRatingDao extends DAOImpl<JudgeReportRatingRecord, Judge
      */
     public List<JudgeReportRatingPojo> fetchByComment(String... values) {
         return fetch(JudgeReportRating.JUDGE_REPORT_RATING.COMMENT, values);
+    }
+
+    /**
+     * Fetch records that have <code>score BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<JudgeReportRatingPojo> fetchRangeOfScore(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+        return fetchRange(JudgeReportRating.JUDGE_REPORT_RATING.SCORE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>score IN (values)</code>
+     */
+    public List<JudgeReportRatingPojo> fetchByScore(BigDecimal... values) {
+        return fetch(JudgeReportRating.JUDGE_REPORT_RATING.SCORE, values);
     }
 }

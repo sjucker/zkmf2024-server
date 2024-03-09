@@ -26,6 +26,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -70,7 +71,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     /**
      * The column <code>judge_report.score</code>.
      */
-    public final TableField<JudgeReportRecord, Integer> SCORE = createField(DSL.name("score"), SQLDataType.INTEGER, this, "");
+    public final TableField<JudgeReportRecord, BigDecimal> SCORE = createField(DSL.name("score"), SQLDataType.NUMERIC(4, 1), this, "");
 
     /**
      * The column <code>judge_report.status</code>.
@@ -228,14 +229,14 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, Long, Long, Integer, String, LocalDateTime, Boolean, String, String> fieldsRow() {
+    public Row9<Long, Long, Long, BigDecimal, String, LocalDateTime, Boolean, String, String> fieldsRow() {
         return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function9<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super Long, ? super Long, ? super Long, ? super BigDecimal, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -243,7 +244,7 @@ public class JudgeReport extends TableImpl<JudgeReportRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super Long, ? super Long, ? super Integer, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Long, ? super Long, ? super Long, ? super BigDecimal, ? super String, ? super LocalDateTime, ? super Boolean, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
