@@ -34,6 +34,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Locale.GERMAN;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED;
+import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE_NO;
 
 @Slf4j
 @Service
@@ -253,7 +254,7 @@ public class MailService {
             helper.setText("Neue Nachricht vom Verein: %s".formatted(verein.getVereinsname()));
             mailSender.send(mimeMessage);
         } catch (RuntimeException | MessagingException e) {
-            log.error("could not send new message mail to %s".formatted(applicationProperties.getBccMail()), e);
+            log.error("could not send new message mail to %s".formatted(applicationProperties.getChatMail()), e);
         }
     }
 
@@ -294,6 +295,20 @@ public class MailService {
             mailSender.send(mimeMessage);
         } catch (RuntimeException | MessagingException e) {
             log.error("could not send helper registration mail for %s".formatted(helperRegistration.getEmail()), e);
+        }
+    }
+
+    public void sendWebhookEmail(String action, String resource, String status, String name, String version) {
+        try {
+            var mimeMessage = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_NO, UTF_8.name());
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setTo(applicationProperties.getBccMail());
+            helper.setSubject("[%s] Webhook".formatted(getSubjectPrefix()));
+            helper.setText("Action: %s %nResource: %s %nStatus: %s %nApp: %s %nCommit: %s %n".formatted(action, resource, status, name, version));
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send webhook message to %s".formatted(applicationProperties.getBccMail()), e);
         }
     }
 
