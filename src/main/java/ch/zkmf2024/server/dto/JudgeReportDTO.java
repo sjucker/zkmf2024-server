@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.dto;
 
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 public record JudgeReportDTO(
@@ -11,6 +12,8 @@ public record JudgeReportDTO(
         @NotNull String roleDescription,
         String klasse,
         String besetzung,
+        JudgeReportModulCategory category,
+        String categoryDescription,
         @NotNull String location,
         @NotNull String verein,
         @NotNull String dirigent,
@@ -18,7 +21,9 @@ public record JudgeReportDTO(
         String programmInfo,
         Integer minDurationInSeconds,
         Integer maxDurationInSeconds,
-        Integer score,
+        String modulGKatA1,
+        String modulGKatA2,
+        BigDecimal score,
         boolean ratingFixed,
         @NotNull JudgeReportStatus status,
         @NotNull List<JudgeReportTitleDTO> titles,

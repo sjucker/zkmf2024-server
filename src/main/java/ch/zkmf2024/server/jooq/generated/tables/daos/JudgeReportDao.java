@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.JudgeReportRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -101,14 +102,14 @@ public class JudgeReportDao extends DAOImpl<JudgeReportRecord, JudgeReportPojo, 
      * Fetch records that have <code>score BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<JudgeReportPojo> fetchRangeOfScore(Integer lowerInclusive, Integer upperInclusive) {
+    public List<JudgeReportPojo> fetchRangeOfScore(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
         return fetchRange(JudgeReport.JUDGE_REPORT.SCORE, lowerInclusive, upperInclusive);
     }
 
     /**
      * Fetch records that have <code>score IN (values)</code>
      */
-    public List<JudgeReportPojo> fetchByScore(Integer... values) {
+    public List<JudgeReportPojo> fetchByScore(BigDecimal... values) {
         return fetch(JudgeReport.JUDGE_REPORT.SCORE, values);
     }
 

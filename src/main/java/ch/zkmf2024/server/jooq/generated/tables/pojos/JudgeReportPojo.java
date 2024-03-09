@@ -5,6 +5,7 @@ package ch.zkmf2024.server.jooq.generated.tables.pojos;
 
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IJudgeReport;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -18,7 +19,7 @@ public class JudgeReportPojo implements IJudgeReport {
     private Long id;
     private Long fkJudge;
     private Long fkTimetableEntry;
-    private Integer score;
+    private BigDecimal score;
     private String status;
     private LocalDateTime finishedAt;
     private Boolean ratingFixed;
@@ -44,7 +45,7 @@ public class JudgeReportPojo implements IJudgeReport {
             Long id,
             Long fkJudge,
             Long fkTimetableEntry,
-            Integer score,
+            BigDecimal score,
             String status,
             LocalDateTime finishedAt,
             Boolean ratingFixed,
@@ -114,7 +115,7 @@ public class JudgeReportPojo implements IJudgeReport {
      * Getter for <code>judge_report.score</code>.
      */
     @Override
-    public Integer getScore() {
+    public BigDecimal getScore() {
         return this.score;
     }
 
@@ -122,7 +123,7 @@ public class JudgeReportPojo implements IJudgeReport {
      * Setter for <code>judge_report.score</code>.
      */
     @Override
-    public void setScore(Integer score) {
+    public void setScore(BigDecimal score) {
         this.score = score;
     }
 

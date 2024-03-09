@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated.tables.interfaces;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -45,12 +46,12 @@ public interface IJudgeReport extends Serializable {
     /**
      * Setter for <code>judge_report.score</code>.
      */
-    public void setScore(Integer value);
+    public void setScore(BigDecimal value);
 
     /**
      * Getter for <code>judge_report.score</code>.
      */
-    public Integer getScore();
+    public BigDecimal getScore();
 
     /**
      * Setter for <code>judge_report.status</code>.

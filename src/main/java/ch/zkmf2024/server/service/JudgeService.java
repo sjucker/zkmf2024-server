@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +42,7 @@ import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3_MUSIKALISCH;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_4_OPTISCH;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
 import static ch.zkmf2024.server.util.DateUtil.now;
+import static java.math.RoundingMode.HALF_UP;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -88,7 +91,7 @@ public class JudgeService {
             throw new IllegalArgumentException("tried to update report with id %d that was already done".formatted(reportId));
         }
 
-        reportPojo.setScore(dto.score());
+        reportPojo.setScore(getScore(dto.score(), dto.modul()));
         reportPojo.setStatus(IN_PROGRESS.name());
         judgeRepository.update(reportPojo);
 
@@ -105,6 +108,17 @@ public class JudgeService {
         updateRatings(dto.overallRatings(), reportId, null);
     }
 
+    private BigDecimal getScore(BigDecimal score, Modul modul) {
+        if (score == null) {
+            return null;
+        }
+
+        return switch (modul) {
+            case G -> score.setScale(1, HALF_UP);
+            default -> score.setScale(0, HALF_UP);
+        };
+    }
+
     private void updateRatings(List<JudgeReportRatingDTO> reportTitle, Long reportId, Long titleId) {
         for (var rating : reportTitle) {
             judgeRepository.insert(
@@ -114,7 +128,8 @@ public class JudgeService {
                             titleId,
                             rating.category().name(),
                             rating.rating().name(),
-                            rating.comment()
+                            rating.comment(),
+                            rating.score()
                     )
             );
         }
@@ -144,6 +159,7 @@ public class JudgeService {
             throw new IllegalArgumentException("tried to finish report with id %d that was already done".formatted(reportId));
         }
 
+        reportPojo.setRatingFixed(true);
         reportPojo.setStatus(DONE.name());
         reportPojo.setFinishedAt(now());
         judgeRepository.update(reportPojo);

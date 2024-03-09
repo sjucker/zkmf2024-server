@@ -44,7 +44,7 @@ public class SecuredJudgeEndpoint {
     public ResponseEntity<JudgeReportDTO> get(@AuthenticationPrincipal UserDetails userDetails,
                                               @PathVariable Long id) {
 
-        log.info("GET /secured/judge/" + id);
+        log.info("GET /secured/judge/{}", id);
 
         return judgeService.getReport(userDetails.getUsername(), id)
                            .map(ResponseEntity::ok)
