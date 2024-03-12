@@ -2,6 +2,7 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
+import ch.zkmf2024.server.dto.VereinStageSetupDTO;
 import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +44,32 @@ public class SecuredVereinEndpoint {
                             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/stage")
+    @Secured({"VEREIN", "IMPERSONATE"})
+    public ResponseEntity<VereinStageSetupDTO> getStageSetup(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("GET /secured/verein/stage");
+
+        return vereinService.findStageSetup(userDetails.getUsername())
+                            .map(ResponseEntity::ok)
+                            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping
     @Secured({"VEREIN"})
     public ResponseEntity<VereinDTO> update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody VereinDTO dto) {
         log.info("PUT /secured/verein {}", dto);
 
         return ResponseEntity.ok(vereinService.update(userDetails.getUsername(), dto));
+    }
+
+    @PutMapping("/stage")
+    @Secured({"VEREIN"})
+    public ResponseEntity<Void> update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody VereinStageSetupDTO dto) {
+        log.info("PUT /secured/verein/stage {}", dto);
+
+        vereinService.updateStage(userDetails.getUsername(), dto);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/confirm")
