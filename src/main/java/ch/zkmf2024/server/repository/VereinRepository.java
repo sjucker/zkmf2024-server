@@ -78,6 +78,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_ANMELDUNG_DETAIL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_DOPPELEINSATZ;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_MESSAGE;
@@ -520,6 +521,14 @@ public class VereinRepository {
         return jooqDsl.selectFrom(VEREIN)
                       .where(VEREIN.EMAIL.equalIgnoreCase(email))
                       .fetchOptionalInto(VereinPojo.class);
+    }
+
+    public Optional<VereinAnmeldungDetailPojo> findAnmeldungDetailByEmail(String email) {
+        return jooqDsl.select(VEREIN_ANMELDUNG_DETAIL.asterisk())
+                      .from(VEREIN_ANMELDUNG_DETAIL)
+                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_ANMELDUNG_DETAIL.FK_VEREIN))
+                      .where(VEREIN.EMAIL.equalIgnoreCase(email))
+                      .fetchOptionalInto(VereinAnmeldungDetailPojo.class);
     }
 
     public Optional<VereinPojo> findById(Long id) {
