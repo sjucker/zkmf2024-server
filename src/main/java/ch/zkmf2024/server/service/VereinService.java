@@ -15,6 +15,7 @@ import ch.zkmf2024.server.dto.VereinPresentationDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.VereinStageSetupDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinsanmeldungDetailDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
@@ -44,6 +45,7 @@ import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
+import org.jooq.JSONB;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,6 +53,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -104,6 +107,12 @@ public class VereinService {
     public Optional<VereinDTO> find(String email) {
         return vereinRepository.findByEmail(email)
                                .map(this::toDTO);
+    }
+
+    public Optional<VereinStageSetupDTO> findStageSetup(String email) {
+        return vereinRepository.findAnmeldungDetailByEmail(email)
+                               .map(pojo -> new VereinStageSetupDTO(Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}")));
+
     }
 
     public Optional<VereinDTO> findById(Long id) {
@@ -257,7 +266,7 @@ public class VereinService {
 
     public VereinDTO update(String email, VereinDTO dto) {
         // TODO verify user is allowed to update
-        var verein = vereinRepository.findByEmail(email).orElseThrow();
+        var verein = vereinRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
 
         MAPPER.updateVereinsangaben(verein, dto.angaben());
         if (verein.getConfirmedAt() == null) {
@@ -306,6 +315,13 @@ public class VereinService {
         updateStatus(verein.getId(), dto);
 
         return dto;
+    }
+
+    public void updateStage(String email, VereinStageSetupDTO dto) {
+        // TODO check if not fixed
+        var detail = vereinRepository.findAnmeldungDetailByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
+        detail.setStageSetup(JSONB.jsonbOrNull(dto.stageSetup()));
+        vereinRepository.update(detail);
     }
 
     private void updateDoppeleinsatz(Long vereinId, List<DoppelEinsatzDTO> doppeleinsatz, boolean mitspielerDoppeleinsatz) {
