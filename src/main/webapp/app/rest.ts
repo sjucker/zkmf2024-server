@@ -350,6 +350,10 @@ export interface VereinSelectionDTO {
     name: string;
 }
 
+export interface VereinStageSetupDTO {
+    stageSetup: string;
+}
+
 export interface VereinTeilnahmeDTO {
     id: number;
     identifier: string;
@@ -435,7 +439,6 @@ export interface VereinsanmeldungDetailDTO extends IsValid {
     verpflegungHelper4?: string;
     verpflegungHelper5?: string;
     verpflegungHelper6?: string;
-    stageSetup?: string;
 }
 
 export interface VereinsinfoDTO extends IsValid {
