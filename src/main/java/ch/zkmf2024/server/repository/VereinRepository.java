@@ -53,6 +53,7 @@ import ch.zkmf2024.server.util.DateUtil;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record8;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.tools.StopWatch;
@@ -91,6 +92,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.notExists;
 import static org.jooq.impl.DSL.selectCount;
@@ -181,6 +183,7 @@ public class VereinRepository {
                               vereinBild.CLOUDFLARE_ID
                       )
                       .from(VEREIN)
+                      .join(KONTAKT).on(KONTAKT.ID.eq(VEREIN.DIREKTION_KONTAKT_ID))
                       .leftJoin(vereinLogo).on(vereinLogo.FOREIGN_KEY.eq(VEREIN.ID).and(vereinLogo.TYPE.eq(VEREIN_LOGO.name())))
                       .leftJoin(vereinBild).on(vereinBild.FOREIGN_KEY.eq(VEREIN.ID).and(vereinBild.TYPE.eq(VEREIN_BILD.name())))
                       .where(
@@ -190,6 +193,7 @@ public class VereinRepository {
                       .fetchOptional(it -> new VereinPresentationDTO(
                               it.get(VEREIN.ID),
                               it.get(VEREIN.VEREINSNAME),
+                              getDirektionName(it).orElse(null),
                               it.get(vereinLogo.CLOUDFLARE_ID),
                               it.get(vereinBild.CLOUDFLARE_ID),
                               it.get(VEREIN.HOMEPAGE),
@@ -198,6 +202,15 @@ public class VereinRepository {
                               it.get(VEREIN.WEBSITE_TEXT),
                               findTimetableEntriesByVereinId(it.get(VEREIN.ID))
                       ));
+    }
+
+    private Optional<String> getDirektionName(Record8<Long, String, String, String, String, String, String, String> it) {
+        var vorname = it.get(KONTAKT.VORNAME);
+        var nachname = it.get(KONTAKT.NACHNAME);
+        if (isNotBlank(vorname) && isNotBlank(nachname)) {
+            return Optional.of("%s %s".formatted(vorname, nachname));
+        }
+        return Optional.empty();
     }
 
     private List<VereinTimetableEntryDTO> findTimetableEntriesByVereinId(Long id) {

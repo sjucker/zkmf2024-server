@@ -299,6 +299,7 @@ export interface VereinMessageDTO {
 export interface VereinPresentationDTO {
     id: number;
     name: string;
+    direktionName?: string;
     logoImgId?: string;
     bildImgId?: string;
     homepage?: string;

@@ -5,6 +5,7 @@ import java.util.List;
 
 public record VereinPresentationDTO(@NotNull Long id,
                                     @NotNull String name,
+                                    String direktionName,
                                     String logoImgId,
                                     String bildImgId,
                                     String homepage,
