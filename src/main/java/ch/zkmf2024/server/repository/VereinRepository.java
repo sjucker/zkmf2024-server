@@ -53,7 +53,6 @@ import ch.zkmf2024.server.util.DateUtil;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Record8;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.tools.StopWatch;
@@ -180,7 +179,9 @@ public class VereinRepository {
                               VEREIN.FACEBOOK,
                               VEREIN.INSTAGRAM,
                               vereinLogo.CLOUDFLARE_ID,
-                              vereinBild.CLOUDFLARE_ID
+                              vereinBild.CLOUDFLARE_ID,
+                              KONTAKT.VORNAME,
+                              KONTAKT.NACHNAME
                       )
                       .from(VEREIN)
                       .join(KONTAKT).on(KONTAKT.ID.eq(VEREIN.DIREKTION_KONTAKT_ID))
@@ -204,7 +205,7 @@ public class VereinRepository {
                       ));
     }
 
-    private Optional<String> getDirektionName(Record8<Long, String, String, String, String, String, String, String> it) {
+    private Optional<String> getDirektionName(Record it) {
         var vorname = it.get(KONTAKT.VORNAME);
         var nachname = it.get(KONTAKT.NACHNAME);
         if (isNotBlank(vorname) && isNotBlank(nachname)) {
