@@ -6,6 +6,8 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import org.springframework.stereotype.Service;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 @Service
 public class FirebaseMessagingService {
     public static final String EMERGENCY_TOPIC = "emergency";
@@ -17,15 +19,15 @@ public class FirebaseMessagingService {
         this.firebaseMessaging = firebaseMessaging;
     }
 
-    public void sendToEmergencyTopic(String title, String body) throws FirebaseMessagingException {
-        sendToTopic(EMERGENCY_TOPIC, title, body);
+    public void sendToEmergencyTopic(String title, String body, String route) throws FirebaseMessagingException {
+        sendToTopic(EMERGENCY_TOPIC, title, body, route);
     }
 
     public void sendToGeneralTopic(String title, String body) throws FirebaseMessagingException {
-        sendToTopic(GENERAL_TOPIC, title, body);
+        sendToTopic(GENERAL_TOPIC, title, body, null);
     }
 
-    public void sendToTopic(String topic, String title, String body) throws FirebaseMessagingException {
+    public void sendToTopic(String topic, String title, String body, String route) throws FirebaseMessagingException {
         var notification = Notification.builder()
                                        .setTitle(title)
                                        .setBody(body)
@@ -33,24 +35,12 @@ public class FirebaseMessagingService {
 
         var message = Message.builder()
                              .setTopic(topic)
-                             .setNotification(notification)
-                             .build();
+                             .setNotification(notification);
 
-        firebaseMessaging.send(message);
-    }
+        if (isNotBlank(route)) {
+            message.putData("route", route);
+        }
 
-    public String sendNotification(String title, String body, String token) throws FirebaseMessagingException {
-
-        var notification = Notification.builder()
-                                       .setTitle(title)
-                                       .setBody(body)
-                                       .build();
-
-        var message = Message.builder()
-                             .setToken(token)
-                             .setNotification(notification)
-                             .build();
-
-        return firebaseMessaging.send(message);
+        firebaseMessaging.send(message.build());
     }
 }

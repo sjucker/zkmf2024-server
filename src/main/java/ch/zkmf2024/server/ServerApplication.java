@@ -24,7 +24,7 @@ public class ServerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        firebaseMessagingService.sendToEmergencyTopic("test emergency", LocalDateTime.now().toString());
+        firebaseMessagingService.sendToEmergencyTopic("test emergency", LocalDateTime.now().toString(), "/zeitplan");
 //        firebaseMessagingService.sendToGeneralTopic("test general", LocalDateTime.now().toString());
     }
 }
