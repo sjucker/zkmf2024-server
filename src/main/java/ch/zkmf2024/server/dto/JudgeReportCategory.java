@@ -72,7 +72,7 @@ public enum JudgeReportCategory implements HasDescription {
     MUSIK_DYNAMIK("Dynamik und Klangausgleich", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
     MUSIK_TECHNIK("Technik und Artikulation", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
     MUSIK_AUSDRUCK("Musikalischer Ausdruck", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
-    MUSIK_INTERPRETATION("Musikalischer Ausdruck", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_INTERPRETATION("Interpretation", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
     OPTISCH_GESAMTWIRKUNG("Gesamtwirkung", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "optischer Faktor", false),
 
     SCHLUSSPHASE_KOMMANDI("Kommandi", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("klar", "unsauber", "unklar", "fehlen"), "Schlussphase", false),
