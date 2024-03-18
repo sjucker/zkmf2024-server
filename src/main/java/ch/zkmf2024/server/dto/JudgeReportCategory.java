@@ -44,46 +44,43 @@ public enum JudgeReportCategory implements HasDescription {
     PROGRAMMWAHL("Programmwahl", Set.of(B), true),
     GESAMTEINDRUCK("Gesamteindruck", Set.of(A, B, H), true),
 
-    // TODO braucht es jeweils ++ und -- Beschreibung (z.B. "korrekt"- "fehlt")?
-    PRAESENTATION_MELDUNG("Meldung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    PRAESENTATION_VERHALTEN("Verhalten", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    PRAESENTATION_AUSSTRAHLUNG("Ausstrahlung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    PRAESENTATION_AUFSTELLUNG("Aufstellung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    PRAESENTATION_INSTRUMENTENHALTUNG("Instrumentenhaltung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    PRAESENTATION_AUSRICHTUNG("Ausrichtung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    PRAESENTATION_ABSTAENDE("Abstände/Diagonalen", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Präsentation", false),
-    ABMARSCH_KOMMANDI("Kommandi", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Abmarsch", false),
-    ABMARSCH_ABMARSCH("Abmarsch", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Abmarsch", false),
-    ABMARSCH_TAMBOURBEGINN("Tambourbeginn", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Abmarsch", false),
-    ABMARSCH_INSTRUMENTE_ANHEBEN("Instrumente anheben", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Abmarsch", false),
-    ABMARSCH_SPIELWECHSEL_SPIEL("Spielwechsel-Spiel", Set.of(D, E), Set.of(JUROR_1_OPTISCH), "Abmarsch", false),
+    PRAESENTATION_MELDUNG("Meldung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("korrekt", "zögerlich", "unklar", "fehlt"), "Präsentation", false),
+    PRAESENTATION_VERHALTEN("Verhalten", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("überzeugend", "gespannt", "zappelig", "unruhig"), "Präsentation", false),
+    PRAESENTATION_AUSSTRAHLUNG("Ausstrahlung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("sicher", "mit einem Lächeln", "zaghaft", "zurückhaltend"), "Präsentation", false),
+    PRAESENTATION_AUFSTELLUNG("Aufstellung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("korrekt", "Perkussion falsch", "letzte Reihe nicht vollständig", "ungeeignet"), "Präsentation", false),
+    PRAESENTATION_INSTRUMENTENHALTUNG("Instrumentenhaltung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("einheitlich", "einzelne Fehler", "viele Fehler", "unterschiedlich"), "Präsentation", false),
+    PRAESENTATION_AUSRICHTUNG("Ausrichtung", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("genau", "klar", "unordentlich", "ungenau"), "Präsentation", false),
+    PRAESENTATION_ABSTAENDE("Abstände/Diagonalen", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("gleichmässig", "exakt", "ungenau", "ungleichmässig"), "Präsentation", false),
+    ABMARSCH_KOMMANDI("Kommandi", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("klar", "unsauber", "unklar", "fehlen"), "Abmarsch", false),
+    ABMARSCH_ABMARSCH("Abmarsch", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("perfekt", "schwungvoll", "wacklig", "ungeordnet"), "Abmarsch", false),
+    ABMARSCH_TAMBOURBEGINN("Tambourbeginn", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("überzeugend", "kleine Fehler", "unrhythmisch", "wacklig"), "Abmarsch", false),
+    ABMARSCH_INSTRUMENTE_ANHEBEN("Instrumente anheben", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("präzis", "ordentlich", "chaotisch", "unpräzis"), "Abmarsch", false),
+    ABMARSCH_SPIELWECHSEL_SPIEL("Spielwechsel-Spiel", Set.of(D, E), Set.of(JUROR_1_OPTISCH), List.of("bestimmt", "prägnant", "ungeordnet", "misslungen"), "Abmarsch", false),
 
-    PARADE_TEMPO("Tempo", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    PARADE_SCHRITTLAENGE("Schrittlänge", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    PARADE_GLEICHSCHRITT("Gleichschritt", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    PARADE_INSTRUMENTENHALTUNG("Instrumentenhaltung", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    PARADE_AUSRICHTUNG("Ausrichtung", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    PARADE_ABSTAENDE("Abstände/Diagonalen", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    PARADE_GESAMTWIRKUNG("Gesamtwirkung", Set.of(D), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), "Parade", false),
-    MUSIKALISCH_GESAMTEINDRUCK1("Gesamteindruck", Set.of(D), Set.of(JUROR_1_OPTISCH), "musikalischer Faktor", false),
+    PARADE_TEMPO("Tempo", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("passend", "zu schnell", "zu langsam", "unpassend"), "Parade", false),
+    PARADE_SCHRITTLAENGE("Schrittlänge", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("optimal", "zu kurz", "zu lang", "ungeeignet"), "Parade", false),
+    PARADE_GLEICHSCHRITT("Gleichschritt", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("präzis", "genau", "wacklig", "nicht im Schritt"), "Parade", false),
+    PARADE_INSTRUMENTENHALTUNG("Instrumentenhaltung", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("einheitlich", "einzelne Fehler", "viele Fehler", "unterschiedlich"), "Parade", false),
+    PARADE_AUSRICHTUNG("Ausrichtung", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("genau", "klar", "unordentlich", "ungenau"), "Parade", false),
+    PARADE_ABSTAENDE("Abstände/Diagonalen", Set.of(D, E), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("exakt", "gleichmässig", "ungenau", "ungleichmässig"), "Parade", false),
+    PARADE_GESAMTWIRKUNG("Gesamtwirkung", Set.of(D), Set.of(JUROR_1_OPTISCH, JUROR_4_OPTISCH), List.of("packend", "schwungvoll", "fahl", "blass"), "Parade", false),
+    MUSIKALISCH_GESAMTEINDRUCK1("Gesamteindruck", Set.of(D), Set.of(JUROR_1_OPTISCH), List.of("mitreissend", "aufheiternd", "langweilig", "monoton"), "musikalischer Faktor", false),
 
-    // TODO add modul E & F specifics
+    MUSIK_STIMMUNG("Stimmung und Intonation", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_TONKULTUR("Tonkultur", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_RHYTHMUS("Rhythmus und Metrum", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_DYNAMIK("Dynamik und Klangausgleich", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_TECHNIK("Technik und Artikulation", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_AUSDRUCK("Musikalischer Ausdruck", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    MUSIK_INTERPRETATION("Musikalischer Ausdruck", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "Musik", false),
+    OPTISCH_GESAMTWIRKUNG("Gesamtwirkung", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), List.of(), "optischer Faktor", false),
 
-    MUSIK_STIMMUNG("Stimmung und Intonation", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    MUSIK_TONKULTUR("Tonkultur", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    MUSIK_RHYTHMUS("Rhythmus und Metrum", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    MUSIK_DYNAMIK("Dynamik und Klangausgleich", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    MUSIK_TECHNIK("Technik und Artikulation", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    MUSIK_AUSDRUCK("Musikalischer Ausdruck", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    MUSIK_INTERPRETATION("Musikalischer Ausdruck", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "Musik", false),
-    OPTISCH_GESAMTWIRKUNG("Gesamtwirkung", Set.of(D), Set.of(JUROR_2_MUSIKALISCH, JUROR_3_MUSIKALISCH), "optischer Faktor", false),
-
-    SCHLUSSPHASE_KOMMANDI("Kommandi", Set.of(D), Set.of(JUROR_4_OPTISCH), "Schlussphase", false),
-    SCHLUSSPHASE_SPIELWECHSEL("Spielwechsel-Tamb", Set.of(D), Set.of(JUROR_4_OPTISCH), "Schlussphase", false),
-    SCHLUSSPHASE_INSTRUMENTE_SENKEN("Instrumente senken", Set.of(D), Set.of(JUROR_4_OPTISCH), "Schlussphase", false),
-    SCHLUSSPHASE_ARME_SCHWINGEN("Arme schwingen", Set.of(D), Set.of(JUROR_4_OPTISCH), "Schlussphase", false),
-    SCHLUSSPHASE_ANHALTEN("Anhalten der Formation", Set.of(D), Set.of(JUROR_4_OPTISCH), "Schlussphase", false),
-    MUSIKALISCH_GESAMTEINDRUCK4("Gesamteindruck", Set.of(D), Set.of(JUROR_4_OPTISCH), "musikalischer Faktor", false),
+    SCHLUSSPHASE_KOMMANDI("Kommandi", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("klar", "unsauber", "unklar", "fehlen"), "Schlussphase", false),
+    SCHLUSSPHASE_SPIELWECHSEL("Spielwechsel-Tamb", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("bestimmt", "prägnant", "ungeordnet", "misslungen"), "Schlussphase", false),
+    SCHLUSSPHASE_INSTRUMENTE_SENKEN("Instrumente senken", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("präzis", "ordentlich", "chaotisch", "unpräzis"), "Schlussphase", false),
+    SCHLUSSPHASE_ARME_SCHWINGEN("Arme schwingen", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("synchron", "unsauber", "mechanisch", "wacklig"), "Schlussphase", false),
+    SCHLUSSPHASE_ANHALTEN("Anhalten der Formation", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("perfekt", "ordentlich", "chaotisch", "ungeordnet"), "Schlussphase", false),
+    MUSIKALISCH_GESAMTEINDRUCK4("Gesamteindruck", Set.of(D), Set.of(JUROR_4_OPTISCH), List.of("mitreissend", "aufheiternd", "langweilig", "monoton"), "musikalischer Faktor", false),
 
     // Modul G
     GRUNDLAGE_1("Grundlage 1 - Technische Ausführung", Set.of(G), Set.of(MODUL_G_KAT_A), true),
@@ -106,26 +103,29 @@ public enum JudgeReportCategory implements HasDescription {
     private final Set<Modul> modules;
     private final Set<JudgeReportModulCategory> categories;
     private final Set<JudgeRole> roles;
+    // if set should always have 4 items, in following order: ++, +, -, --
+    private final List<String> ratingDescriptions;
     private final String group;
     private final boolean overall;
 
     JudgeReportCategory(String description, Set<Modul> modules, Set<JudgeReportModulCategory> categories, boolean overall) {
-        this(description, modules, categories, Set.of(JUROR_1, JUROR_2, JUROR_3), "", overall);
+        this(description, modules, categories, Set.of(JUROR_1, JUROR_2, JUROR_3), List.of(), "", overall);
     }
 
     JudgeReportCategory(String description, Set<Modul> modules, boolean overall) {
-        this(description, modules, Set.of(), Set.of(JUROR_1, JUROR_2, JUROR_3), "", overall);
+        this(description, modules, Set.of(), Set.of(JUROR_1, JUROR_2, JUROR_3), List.of(), "", overall);
     }
 
-    JudgeReportCategory(String description, Set<Modul> modules, Set<JudgeRole> roles, String group, boolean overall) {
-        this(description, modules, Set.of(), roles, group, overall);
+    JudgeReportCategory(String description, Set<Modul> modules, Set<JudgeRole> roles, List<String> ratingDescriptions, String group, boolean overall) {
+        this(description, modules, Set.of(), roles, ratingDescriptions, group, overall);
     }
 
-    JudgeReportCategory(String description, Set<Modul> modules, Set<JudgeReportModulCategory> categories, Set<JudgeRole> roles, String group, boolean overall) {
+    JudgeReportCategory(String description, Set<Modul> modules, Set<JudgeReportModulCategory> categories, Set<JudgeRole> roles, List<String> ratingDescriptions, String group, boolean overall) {
         this.description = description;
         this.modules = modules;
         this.categories = categories;
         this.roles = roles;
+        this.ratingDescriptions = ratingDescriptions;
         this.group = group;
         this.overall = overall;
     }

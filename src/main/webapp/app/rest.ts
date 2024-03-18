@@ -80,6 +80,7 @@ export interface JudgeReportRatingDTO {
     category: JudgeReportCategory;
     categoryDescription: string;
     group: string;
+    ratingDescriptions: string[];
     comment?: string;
     rating: JudgeReportCategoryRating;
     score?: number;
