@@ -415,6 +415,7 @@ public class VereinRepository {
                                     List.of(),
                                     List.of(),
                                     List.of(),
+                                    it.get(VEREIN.LUNCH_TIME),
                                     false
                             ));
 

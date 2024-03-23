@@ -177,6 +177,7 @@ public class VereinService {
                 findTimetableEntriesByVereinId(verein.getId()),
                 findMessagesByVereinId(verein.getId(), verein.getEmail()),
                 findErrata(verein.getId()),
+                verein.getLunchTime(),
                 false
         );
     }

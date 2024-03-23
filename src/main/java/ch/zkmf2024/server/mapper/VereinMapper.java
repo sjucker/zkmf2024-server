@@ -67,6 +67,7 @@ public interface VereinMapper {
                                                    List<VereinAnmeldungAdhocOrchesterPojo> adhocOrchesterTeilnehmer,
                                                    List<VereinAnmeldungNichtmitgliederPojo> nichtmitglieder);
 
+    @Mapping(target = "lunchTime", ignore = true)
     @Mapping(target = "provWettspiel", ignore = true)
     @Mapping(target = "provPlatzkonzert", ignore = true)
     @Mapping(target = "provParademusik", ignore = true)

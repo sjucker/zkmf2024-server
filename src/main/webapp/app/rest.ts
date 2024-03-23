@@ -283,6 +283,7 @@ export interface VereinDTO {
     timetableEntries: TimetableOverviewEntryDTO[];
     messages: VereinMessageDTO[];
     errata: VereinErrataDTO[];
+    lunchTime: DateAsString;
     programmUpdated: boolean;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;

@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.admin.VereinErrataDTO;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ch.zkmf2024.server.util.ValidationUtil.isValidEmail;
@@ -27,6 +28,7 @@ public record VereinDTO(
         @NotNull List<TimetableOverviewEntryDTO> timetableEntries,
         @NotNull List<VereinMessageDTO> messages,
         @NotNull List<VereinErrataDTO> errata,
+        @NotNull LocalTime lunchTime,
         // used for client to signal that programm was updated
         boolean programmUpdated
 ) {
