@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
+import ch.zkmf2024.server.util.FormatUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +109,7 @@ public class ExportService {
             }
 
             if (maxColumnIndex > 0) {
-                sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, maxColumnIndex - 1));
+                sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, maxColumnIndex - 2));
             }
         }
     }
@@ -349,6 +351,7 @@ public class ExportService {
         headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. A");
         headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. B");
         headerRow.createCell(columnIndex++).setCellValue("Tambouren Kat. C");
+        headerRow.createCell(columnIndex++).setCellValue("Mittagessen");
 
         for (var vereinDTO : vereine) {
             var row = sheet.createRow(rowIndex++);
@@ -406,6 +409,8 @@ public class ExportService {
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.anmeldung().tambourenKatA());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.anmeldung().tambourenKatB());
             columnIndex = setCellValue(columnIndex, vereinDTO, row, dto -> dto.anmeldung().tambourenKatC());
+
+            columnIndex = setCellValue(columnIndex, vereinDTO, row, VereinDTO::lunchTime);
         }
 
         for (int i = 0; i < columnIndex; i++) {
@@ -555,6 +560,8 @@ public class ExportService {
 
                 cell.setCellValue(date);
                 cell.setCellStyle(dateCellStyle);
+            } else if (value instanceof LocalTime time) {
+                cell.setCellValue(FormatUtil.formatTime(time));
             }
         }
         return columnIndex;
