@@ -119,6 +119,6 @@ public class LocationRepository {
     }
 
     private static String getGoogleMapsCoordinates(BigDecimal latitude, BigDecimal longitude) {
-        return "http://www.google.com/maps?q=%s,%s".formatted(latitude, longitude);
+        return "https://www.google.com/maps?q=%s,%s".formatted(latitude, longitude);
     }
 }
