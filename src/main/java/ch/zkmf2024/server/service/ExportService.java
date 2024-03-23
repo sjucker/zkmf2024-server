@@ -109,7 +109,7 @@ public class ExportService {
             }
 
             if (maxColumnIndex > 0) {
-                sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, maxColumnIndex - 2));
+                sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, maxColumnIndex - 1));
             }
         }
     }
@@ -416,7 +416,7 @@ public class ExportService {
         for (int i = 0; i < columnIndex; i++) {
             sheet.autoSizeColumn(i);
         }
-        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex));
+        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex - 1));
     }
 
     private void fillVereineDetailsSheet(XSSFWorkbook wb, List<VereinDTO> vereine) {
@@ -495,7 +495,7 @@ public class ExportService {
         for (int i = 0; i < columnIndex; i++) {
             sheet.autoSizeColumn(i);
         }
-        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex));
+        sheet.setAutoFilter(new CellRangeAddress(0, 0, 0, columnIndex - 1));
     }
 
     private void fillDoppeleinsatzSheet(XSSFWorkbook wb, List<VereinDTO> vereine) {
