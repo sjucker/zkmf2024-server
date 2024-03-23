@@ -23,6 +23,7 @@ import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -261,6 +262,11 @@ public class Verein extends TableImpl<VereinRecord> {
      * The column <code>verein.identifier</code>.
      */
     public final TableField<VereinRecord, String> IDENTIFIER = createField(DSL.name("identifier"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("''::character varying"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>verein.lunch_time</code>.
+     */
+    public final TableField<VereinRecord, LocalTime> LUNCH_TIME = createField(DSL.name("lunch_time"), SQLDataType.LOCALTIME(6), this, "");
 
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);

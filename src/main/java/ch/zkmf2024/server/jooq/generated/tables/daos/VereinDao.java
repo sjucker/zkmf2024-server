@@ -10,6 +10,7 @@ import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -710,5 +711,20 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
      */
     public Optional<VereinPojo> fetchOptionalByIdentifier(String value) {
         return fetchOptional(Verein.VEREIN.IDENTIFIER, value);
+    }
+
+    /**
+     * Fetch records that have <code>lunch_time BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfLunchTime(LocalTime lowerInclusive, LocalTime upperInclusive) {
+        return fetchRange(Verein.VEREIN.LUNCH_TIME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>lunch_time IN (values)</code>
+     */
+    public List<VereinPojo> fetchByLunchTime(LocalTime... values) {
+        return fetch(Verein.VEREIN.LUNCH_TIME, values);
     }
 }
