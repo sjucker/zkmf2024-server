@@ -6,7 +6,6 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.FestprogrammEntryPojo;
 import ch.zkmf2024.server.repository.FestprogrammRepository;
 import ch.zkmf2024.server.util.FormatUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +13,15 @@ import java.util.List;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.contains;
+import static org.apache.commons.lang3.StringUtils.substringAfter;
+import static org.apache.commons.lang3.StringUtils.substringBefore;
 
 @Slf4j
 @Service
 public class FestprogrammService {
 
+    private static final String TIME_SEPARATOR = " - ";
     private final FestprogrammRepository festprogrammRepository;
 
     public FestprogrammService(FestprogrammRepository festprogrammRepository) {
@@ -45,10 +48,10 @@ public class FestprogrammService {
     }
 
     private String getTimeFrom(FestprogrammEntryPojo pojo) {
-        return StringUtils.contains(pojo.getTimeDescription(), " - ") ? StringUtils.substringBefore(pojo.getTimeDescription(), " - ") : pojo.getTimeDescription();
+        return contains(pojo.getTimeDescription(), TIME_SEPARATOR) ? substringBefore(pojo.getTimeDescription(), TIME_SEPARATOR) + TIME_SEPARATOR : pojo.getTimeDescription();
     }
 
     private String getTimeTo(FestprogrammEntryPojo pojo) {
-        return StringUtils.contains(pojo.getTimeDescription(), " - ") ? StringUtils.substringAfter(pojo.getTimeDescription(), " - ") : null;
+        return contains(pojo.getTimeDescription(), TIME_SEPARATOR) ? substringAfter(pojo.getTimeDescription(), TIME_SEPARATOR) : null;
     }
 }
