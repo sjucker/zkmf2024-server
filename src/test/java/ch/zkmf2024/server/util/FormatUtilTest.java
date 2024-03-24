@@ -23,4 +23,10 @@ class FormatUtilTest {
         assertThat(FormatUtil.formatTime(LocalTime.of(18, 45))).isEqualTo("18:45");
     }
 
+    @Test
+    void formatDateWritten() {
+        assertThat(FormatUtil.formatDateWritten(null)).isEmpty();
+        assertThat(FormatUtil.formatDateWritten(LocalDate.of(2023, 10, 23))).isEqualTo("Montag, 23. Oktober 2023");
+    }
+
 }
