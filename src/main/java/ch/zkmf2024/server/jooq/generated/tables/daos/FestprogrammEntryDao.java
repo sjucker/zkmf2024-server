@@ -142,4 +142,19 @@ public class FestprogrammEntryDao extends DAOImpl<FestprogrammEntryRecord, Festp
     public List<FestprogrammEntryPojo> fetchByImportant(Boolean... values) {
         return fetch(FestprogrammEntry.FESTPROGRAMM_ENTRY.IMPORTANT, values);
     }
+
+    /**
+     * Fetch records that have <code>end_time BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<FestprogrammEntryPojo> fetchRangeOfEndTime(LocalTime lowerInclusive, LocalTime upperInclusive) {
+        return fetchRange(FestprogrammEntry.FESTPROGRAMM_ENTRY.END_TIME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>end_time IN (values)</code>
+     */
+    public List<FestprogrammEntryPojo> fetchByEndTime(LocalTime... values) {
+        return fetch(FestprogrammEntry.FESTPROGRAMM_ENTRY.END_TIME, values);
+    }
 }

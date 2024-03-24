@@ -23,6 +23,7 @@ export interface FestprogrammDayDTO {
 
 export interface FestprogrammEntryDTO {
     start: DateAsString;
+    end?: DateAsString;
     description: string;
     location: string;
     important: boolean;
