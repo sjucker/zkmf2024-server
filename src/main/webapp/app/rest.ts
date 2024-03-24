@@ -22,12 +22,12 @@ export interface FestprogrammDayDTO {
 }
 
 export interface FestprogrammEntryDTO {
-    start: DateAsString;
-    end?: DateAsString;
+    date: DateAsString;
+    timeFrom: string;
+    timeTo?: string;
     description: string;
     location: string;
     important: boolean;
-    date?: DateAsString;
 }
 
 export interface ForgotPasswordRequestDTO {
@@ -277,6 +277,24 @@ export interface TitelDTO extends IsValid {
     durationInSeconds: number;
     pflichtStueck: boolean;
     infoModeration?: string;
+}
+
+export interface UnterhaltungTypeDTO {
+    type: UnterhaltungEntryType;
+    entries: UnterhaltungsEntryDTO[];
+}
+
+export interface UnterhaltungsEntryDTO {
+    type: UnterhaltungEntryType;
+    date: DateAsString;
+    start: DateAsString;
+    end?: DateAsString;
+    title: string;
+    subtitle?: string;
+    location: LocationDTO;
+    cloudflareId?: string;
+    vereinIdentifier?: string;
+    unterhaltungIdentifier?: string;
 }
 
 export interface VereinDTO {
@@ -802,6 +820,13 @@ export enum Einsatzzeit {
     NACHMITTAG = "NACHMITTAG",
     ABEND = "ABEND",
     NACHT = "NACHT",
+}
+
+export enum UnterhaltungEntryType {
+    FREITAG_ABEND = "FREITAG_ABEND",
+    SAMSTAG_TAG = "SAMSTAG_TAG",
+    SAMSTAG_ABEND = "SAMSTAG_ABEND",
+    SONNTAG = "SONNTAG",
 }
 
 export enum PhaseStatus {

@@ -13,6 +13,7 @@ import org.jooq.DSLContext;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,16 +106,22 @@ public class TimetableRepository {
     }
 
     public List<TimetableOverviewEntryDTO> findAllForPublic() {
+        return findAllByTypes(List.of(MARSCHMUSIK, PLATZKONZERT, WETTSPIEL));
+    }
 
+    public List<TimetableOverviewEntryDTO> findAllPlatzkonzzerte() {
+        return findAllByTypes(List.of(PLATZKONZERT));
+    }
+
+    private List<TimetableOverviewEntryDTO> findAllByTypes(Collection<ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType> types) {
         return jooqDsl.select()
                       .from(TIMETABLE_ENTRY)
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
-                      .where(TIMETABLE_ENTRY.ENTRY_TYPE.in(MARSCHMUSIK, PLATZKONZERT, WETTSPIEL))
+                      .where(TIMETABLE_ENTRY.ENTRY_TYPE.in(types))
                       .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME)
                       .fetch(TimetableRepository::toOverviewDTO);
-
     }
 
     private static TimetableOverviewEntryDTO toOverviewDTO(org.jooq.Record it) {
