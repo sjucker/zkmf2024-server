@@ -8,12 +8,12 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.FestprogrammEntryRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function6;
+import org.jooq.Function7;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -78,6 +78,11 @@ public class FestprogrammEntry extends TableImpl<FestprogrammEntryRecord> {
      * The column <code>festprogramm_entry.important</code>.
      */
     public final TableField<FestprogrammEntryRecord, Boolean> IMPORTANT = createField(DSL.name("important"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>festprogramm_entry.end_time</code>.
+     */
+    public final TableField<FestprogrammEntryRecord, LocalTime> END_TIME = createField(DSL.name("end_time"), SQLDataType.LOCALTIME(6), this, "");
 
     private FestprogrammEntry(Name alias, Table<FestprogrammEntryRecord> aliased) {
         this(alias, aliased, null);
@@ -167,18 +172,18 @@ public class FestprogrammEntry extends TableImpl<FestprogrammEntryRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, LocalDate, LocalTime, String, String, Boolean> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<Long, LocalDate, LocalTime, String, String, Boolean, LocalTime> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Long, ? super LocalDate, ? super LocalTime, ? super String, ? super String, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Long, ? super LocalDate, ? super LocalTime, ? super String, ? super String, ? super Boolean, ? super LocalTime, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -186,7 +191,7 @@ public class FestprogrammEntry extends TableImpl<FestprogrammEntryRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Long, ? super LocalDate, ? super LocalTime, ? super String, ? super String, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Long, ? super LocalDate, ? super LocalTime, ? super String, ? super String, ? super Boolean, ? super LocalTime, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

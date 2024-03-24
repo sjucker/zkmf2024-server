@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -28,11 +30,12 @@ public class FestprogrammService {
         var perDay = festprogrammRepository.findAll().stream()
                                            .map(pojo -> new FestprogrammEntryDTO(
                                                    LocalDateTime.of(pojo.getDate(), pojo.getStartTime()),
+                                                   pojo.getEndTime() != null ? LocalDateTime.of(pojo.getDate(), pojo.getEndTime()) : null,
                                                    pojo.getDescription(),
                                                    pojo.getLocation(),
                                                    pojo.getImportant()
                                            ))
-                                           .sorted(comparing(FestprogrammEntryDTO::start))
+                                           .sorted(comparing(FestprogrammEntryDTO::start).thenComparing(FestprogrammEntryDTO::end, nullsFirst(naturalOrder())))
                                            .collect(groupingBy(FestprogrammEntryDTO::getDate, toList()));
 
         return perDay.keySet().stream()

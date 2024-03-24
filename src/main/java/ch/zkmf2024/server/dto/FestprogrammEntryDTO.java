@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record FestprogrammEntryDTO(@NotNull LocalDateTime start,
+                                   LocalDateTime end,
                                    @NotNull String description,
                                    @NotNull String location,
                                    boolean important) {

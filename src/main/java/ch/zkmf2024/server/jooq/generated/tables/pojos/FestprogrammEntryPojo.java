@@ -22,6 +22,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
     private String description;
     private String location;
     private Boolean important;
+    private LocalTime endTime;
 
     public FestprogrammEntryPojo() {
     }
@@ -33,6 +34,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         this.description = value.getDescription();
         this.location = value.getLocation();
         this.important = value.getImportant();
+        this.endTime = value.getEndTime();
     }
 
     public FestprogrammEntryPojo(
@@ -41,7 +43,8 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
             LocalTime startTime,
             String description,
             String location,
-            Boolean important
+            Boolean important,
+            LocalTime endTime
     ) {
         this.id = id;
         this.date = date;
@@ -49,6 +52,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         this.description = description;
         this.location = location;
         this.important = important;
+        this.endTime = endTime;
     }
 
     /**
@@ -147,6 +151,22 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         this.important = important;
     }
 
+    /**
+     * Getter for <code>festprogramm_entry.end_time</code>.
+     */
+    @Override
+    public LocalTime getEndTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Setter for <code>festprogramm_entry.end_time</code>.
+     */
+    @Override
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -186,6 +206,11 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
                 return false;
         } else if (!this.important.equals(other.important))
             return false;
+        if (this.endTime == null) {
+            if (other.endTime != null)
+                return false;
+        } else if (!this.endTime.equals(other.endTime))
+            return false;
         return true;
     }
 
@@ -199,6 +224,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.location == null) ? 0 : this.location.hashCode());
         result = prime * result + ((this.important == null) ? 0 : this.important.hashCode());
+        result = prime * result + ((this.endTime == null) ? 0 : this.endTime.hashCode());
         return result;
     }
 
@@ -212,6 +238,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         sb.append(", ").append(description);
         sb.append(", ").append(location);
         sb.append(", ").append(important);
+        sb.append(", ").append(endTime);
 
         sb.append(")");
         return sb.toString();
@@ -229,6 +256,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         setDescription(from.getDescription());
         setLocation(from.getLocation());
         setImportant(from.getImportant());
+        setEndTime(from.getEndTime());
     }
 
     @Override
