@@ -9,12 +9,12 @@ import ch.zkmf2024.server.jooq.generated.enums.UnterhaltungEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.records.UnterhaltungEntryRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function10;
+import org.jooq.Function11;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row10;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -101,6 +101,11 @@ public class UnterhaltungEntry extends TableImpl<UnterhaltungEntryRecord> {
      * The column <code>unterhaltung_entry.text</code>.
      */
     public final TableField<UnterhaltungEntryRecord, String> TEXT = createField(DSL.name("text"), SQLDataType.VARCHAR(4096), this, "");
+
+    /**
+     * The column <code>unterhaltung_entry.identifier</code>.
+     */
+    public final TableField<UnterhaltungEntryRecord, String> IDENTIFIER = createField(DSL.name("identifier"), SQLDataType.VARCHAR(255), this, "");
 
     private UnterhaltungEntry(Name alias, Table<UnterhaltungEntryRecord> aliased) {
         this(alias, aliased, null);
@@ -207,18 +212,18 @@ public class UnterhaltungEntry extends TableImpl<UnterhaltungEntryRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Long, UnterhaltungEntryType, LocalDate, LocalTime, LocalTime, String, String, Long, String, String> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row11<Long, UnterhaltungEntryType, LocalDate, LocalTime, LocalTime, String, String, Long, String, String, String> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function10<? super Long, ? super UnterhaltungEntryType, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? super String, ? super String, ? super Long, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Long, ? super UnterhaltungEntryType, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? super String, ? super String, ? super Long, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -226,7 +231,7 @@ public class UnterhaltungEntry extends TableImpl<UnterhaltungEntryRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super Long, ? super UnterhaltungEntryType, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? super String, ? super String, ? super Long, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Long, ? super UnterhaltungEntryType, ? super LocalDate, ? super LocalTime, ? super LocalTime, ? super String, ? super String, ? super Long, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
