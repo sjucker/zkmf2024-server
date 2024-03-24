@@ -115,6 +115,16 @@ public interface IUnterhaltungEntry extends Serializable {
      */
     public String getText();
 
+    /**
+     * Setter for <code>unterhaltung_entry.identifier</code>.
+     */
+    public void setIdentifier(String value);
+
+    /**
+     * Getter for <code>unterhaltung_entry.identifier</code>.
+     */
+    public String getIdentifier();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
