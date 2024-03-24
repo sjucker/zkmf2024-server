@@ -40,7 +40,7 @@ public class FestprogrammService {
 
         return perDay.keySet().stream()
                      .sorted()
-                     .map(day -> new FestprogrammDayDTO(FormatUtil.formatDate(day, true), perDay.get(day)))
+                     .map(day -> new FestprogrammDayDTO(FormatUtil.formatDateWritten(day), perDay.get(day)))
                      .toList();
     }
 
