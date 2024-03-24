@@ -6,6 +6,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.FestprogrammEntryPojo;
 import ch.zkmf2024.server.repository.FestprogrammRepository;
 import ch.zkmf2024.server.util.FormatUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class FestprogrammService {
                                            .sorted(comparing(FestprogrammEntryPojo::getDate).thenComparing(FestprogrammEntryPojo::getStartTime))
                                            .map(pojo -> new FestprogrammEntryDTO(
                                                    pojo.getDate(),
-                                                   pojo.getTimeDescription(),
-                                                   null,
+                                                   getTimeFrom(pojo),
+                                                   getTimeTo(pojo),
                                                    pojo.getDescription(),
                                                    pojo.getLocation(),
                                                    pojo.getImportant()
@@ -41,5 +42,13 @@ public class FestprogrammService {
                      .sorted()
                      .map(day -> new FestprogrammDayDTO(FormatUtil.formatDate(day, true), perDay.get(day)))
                      .toList();
+    }
+
+    private String getTimeFrom(FestprogrammEntryPojo pojo) {
+        return StringUtils.contains(pojo.getTimeDescription(), " - ") ? StringUtils.substringBefore(pojo.getTimeDescription(), " - ") : pojo.getTimeDescription();
+    }
+
+    private String getTimeTo(FestprogrammEntryPojo pojo) {
+        return StringUtils.contains(pojo.getTimeDescription(), " - ") ? StringUtils.substringAfter(pojo.getTimeDescription(), " - ") : null;
     }
 }
