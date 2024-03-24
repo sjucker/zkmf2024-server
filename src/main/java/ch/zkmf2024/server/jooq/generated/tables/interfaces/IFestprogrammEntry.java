@@ -73,6 +73,16 @@ public interface IFestprogrammEntry extends Serializable {
      */
     public Boolean getImportant();
 
+    /**
+     * Setter for <code>festprogramm_entry.end_time</code>.
+     */
+    public void setEndTime(LocalTime value);
+
+    /**
+     * Getter for <code>festprogramm_entry.end_time</code>.
+     */
+    public LocalTime getEndTime();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
