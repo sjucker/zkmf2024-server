@@ -144,17 +144,17 @@ public class FestprogrammEntryDao extends DAOImpl<FestprogrammEntryRecord, Festp
     }
 
     /**
-     * Fetch records that have <code>end_time BETWEEN lowerInclusive AND
+     * Fetch records that have <code>time_description BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<FestprogrammEntryPojo> fetchRangeOfEndTime(LocalTime lowerInclusive, LocalTime upperInclusive) {
-        return fetchRange(FestprogrammEntry.FESTPROGRAMM_ENTRY.END_TIME, lowerInclusive, upperInclusive);
+    public List<FestprogrammEntryPojo> fetchRangeOfTimeDescription(String lowerInclusive, String upperInclusive) {
+        return fetchRange(FestprogrammEntry.FESTPROGRAMM_ENTRY.TIME_DESCRIPTION, lowerInclusive, upperInclusive);
     }
 
     /**
-     * Fetch records that have <code>end_time IN (values)</code>
+     * Fetch records that have <code>time_description IN (values)</code>
      */
-    public List<FestprogrammEntryPojo> fetchByEndTime(LocalTime... values) {
-        return fetch(FestprogrammEntry.FESTPROGRAMM_ENTRY.END_TIME, values);
+    public List<FestprogrammEntryPojo> fetchByTimeDescription(String... values) {
+        return fetch(FestprogrammEntry.FESTPROGRAMM_ENTRY.TIME_DESCRIPTION, values);
     }
 }
