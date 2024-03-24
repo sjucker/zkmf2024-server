@@ -19,6 +19,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
+import ch.zkmf2024.server.jooq.generated.tables.UnterhaltungEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
@@ -131,6 +132,11 @@ public class DefaultSchema extends SchemaImpl {
     public final Titel TITEL = Titel.TITEL;
 
     /**
+     * The table <code>unterhaltung_entry</code>.
+     */
+    public final UnterhaltungEntry UNTERHALTUNG_ENTRY = UnterhaltungEntry.UNTERHALTUNG_ENTRY;
+
+    /**
      * The table <code>verein</code>.
      */
     public final Verein VEREIN = Verein.VEREIN;
@@ -216,6 +222,7 @@ public class DefaultSchema extends SchemaImpl {
                 SurveyAnswer.SURVEY_ANSWER,
                 TimetableEntry.TIMETABLE_ENTRY,
                 Titel.TITEL,
+                UnterhaltungEntry.UNTERHALTUNG_ENTRY,
                 Verein.VEREIN,
                 VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER,
                 VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL,
