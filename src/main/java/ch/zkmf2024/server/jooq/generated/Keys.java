@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
+import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
@@ -30,6 +31,7 @@ import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
 import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import ch.zkmf2024.server.jooq.generated.tables.records.ErrataRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.FestprogrammEntryRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.HelperRegistrationRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ImageRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeRecord;
@@ -74,6 +76,7 @@ public class Keys {
 
     public static final UniqueKey<ErrataRecord> PK_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("pk_errata"), new TableField[]{Errata.ERRATA.ID}, true);
     public static final UniqueKey<ErrataRecord> UQ_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("uq_errata"), new TableField[]{Errata.ERRATA.MODUL, Errata.ERRATA.KLASSE, Errata.ERRATA.BESETZUNG}, true);
+    public static final UniqueKey<FestprogrammEntryRecord> PK_FESTPROGRAMM_ENTRY = Internal.createUniqueKey(FestprogrammEntry.FESTPROGRAMM_ENTRY, DSL.name("pk_festprogramm_entry"), new TableField[]{FestprogrammEntry.FESTPROGRAMM_ENTRY.ID}, true);
     public static final UniqueKey<HelperRegistrationRecord> HELPER_REGISTRATION_EMAIL_KEY = Internal.createUniqueKey(HelperRegistration.HELPER_REGISTRATION, DSL.name("helper_registration_email_key"), new TableField[]{HelperRegistration.HELPER_REGISTRATION.EMAIL}, true);
     public static final UniqueKey<HelperRegistrationRecord> PK_HELPER_REGISTRATION = Internal.createUniqueKey(HelperRegistration.HELPER_REGISTRATION, DSL.name("pk_helper_registration"), new TableField[]{HelperRegistration.HELPER_REGISTRATION.ID}, true);
     public static final UniqueKey<ImageRecord> PK_IMAGE = Internal.createUniqueKey(Image.IMAGE, DSL.name("pk_image"), new TableField[]{Image.IMAGE.ID}, true);
