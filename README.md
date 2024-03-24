@@ -24,5 +24,5 @@
     * `heroku pg:backups:restore zkmf2024-server::<BACKUP-ID> DATABASE_URL --app zkmf2024-server-staging`
 
 * Restore locally:
-* Drop all tables
-* `pg_restore --no-owner -h localhost -U zkmf2024 -d zkmf2024 -W latest.dump`
+    * Drop all tables
+    * `pg_restore --no-owner -h localhost -U zkmf2024 -d zkmf2024 -W latest.dump`

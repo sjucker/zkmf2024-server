@@ -203,4 +203,19 @@ public class UnterhaltungEntryDao extends DAOImpl<UnterhaltungEntryRecord, Unter
     public List<UnterhaltungEntryPojo> fetchByText(String... values) {
         return fetch(UnterhaltungEntry.UNTERHALTUNG_ENTRY.TEXT, values);
     }
+
+    /**
+     * Fetch records that have <code>identifier BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<UnterhaltungEntryPojo> fetchRangeOfIdentifier(String lowerInclusive, String upperInclusive) {
+        return fetchRange(UnterhaltungEntry.UNTERHALTUNG_ENTRY.IDENTIFIER, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>identifier IN (values)</code>
+     */
+    public List<UnterhaltungEntryPojo> fetchByIdentifier(String... values) {
+        return fetch(UnterhaltungEntry.UNTERHALTUNG_ENTRY.IDENTIFIER, values);
+    }
 }

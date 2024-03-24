@@ -27,6 +27,7 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
     private Long fkLocation;
     private String cloudflareId;
     private String text;
+    private String identifier;
 
     public UnterhaltungEntryPojo() {
     }
@@ -42,6 +43,7 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
         this.fkLocation = value.getFkLocation();
         this.cloudflareId = value.getCloudflareId();
         this.text = value.getText();
+        this.identifier = value.getIdentifier();
     }
 
     public UnterhaltungEntryPojo(
@@ -54,7 +56,8 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
             String subtitle,
             Long fkLocation,
             String cloudflareId,
-            String text
+            String text,
+            String identifier
     ) {
         this.id = id;
         this.entryType = entryType;
@@ -66,6 +69,7 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
         this.fkLocation = fkLocation;
         this.cloudflareId = cloudflareId;
         this.text = text;
+        this.identifier = identifier;
     }
 
     /**
@@ -228,6 +232,22 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
         this.text = text;
     }
 
+    /**
+     * Getter for <code>unterhaltung_entry.identifier</code>.
+     */
+    @Override
+    public String getIdentifier() {
+        return this.identifier;
+    }
+
+    /**
+     * Setter for <code>unterhaltung_entry.identifier</code>.
+     */
+    @Override
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -287,6 +307,11 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
                 return false;
         } else if (!this.text.equals(other.text))
             return false;
+        if (this.identifier == null) {
+            if (other.identifier != null)
+                return false;
+        } else if (!this.identifier.equals(other.identifier))
+            return false;
         return true;
     }
 
@@ -304,6 +329,7 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
         result = prime * result + ((this.fkLocation == null) ? 0 : this.fkLocation.hashCode());
         result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
         result = prime * result + ((this.text == null) ? 0 : this.text.hashCode());
+        result = prime * result + ((this.identifier == null) ? 0 : this.identifier.hashCode());
         return result;
     }
 
@@ -321,6 +347,7 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
         sb.append(", ").append(fkLocation);
         sb.append(", ").append(cloudflareId);
         sb.append(", ").append(text);
+        sb.append(", ").append(identifier);
 
         sb.append(")");
         return sb.toString();
@@ -342,6 +369,7 @@ public class UnterhaltungEntryPojo implements IUnterhaltungEntry {
         setFkLocation(from.getFkLocation());
         setCloudflareId(from.getCloudflareId());
         setText(from.getText());
+        setIdentifier(from.getIdentifier());
     }
 
     @Override
