@@ -2,17 +2,15 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.FestprogrammDayDTO;
 import ch.zkmf2024.server.dto.FestprogrammEntryDTO;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.FestprogrammEntryPojo;
 import ch.zkmf2024.server.repository.FestprogrammRepository;
 import ch.zkmf2024.server.util.FormatUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -28,15 +26,16 @@ public class FestprogrammService {
 
     public List<FestprogrammDayDTO> get() {
         var perDay = festprogrammRepository.findAll().stream()
+                                           .sorted(comparing(FestprogrammEntryPojo::getDate).thenComparing(FestprogrammEntryPojo::getStartTime))
                                            .map(pojo -> new FestprogrammEntryDTO(
-                                                   LocalDateTime.of(pojo.getDate(), pojo.getStartTime()),
-                                                   pojo.getEndTime() != null ? LocalDateTime.of(pojo.getDate(), pojo.getEndTime()) : null,
+                                                   pojo.getDate(),
+                                                   pojo.getTimeDescription(),
+                                                   null,
                                                    pojo.getDescription(),
                                                    pojo.getLocation(),
                                                    pojo.getImportant()
                                            ))
-                                           .sorted(comparing(FestprogrammEntryDTO::start).thenComparing(FestprogrammEntryDTO::end, nullsFirst(naturalOrder())))
-                                           .collect(groupingBy(FestprogrammEntryDTO::getDate, toList()));
+                                           .collect(groupingBy(FestprogrammEntryDTO::date, toList()));
 
         return perDay.keySet().stream()
                      .sorted()
