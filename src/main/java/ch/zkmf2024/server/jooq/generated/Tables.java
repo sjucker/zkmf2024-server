@@ -19,6 +19,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
+import ch.zkmf2024.server.jooq.generated.tables.UnterhaltungEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
@@ -116,6 +117,11 @@ public class Tables {
      * The table <code>titel</code>.
      */
     public static final Titel TITEL = Titel.TITEL;
+
+    /**
+     * The table <code>unterhaltung_entry</code>.
+     */
+    public static final UnterhaltungEntry UNTERHALTUNG_ENTRY = UnterhaltungEntry.UNTERHALTUNG_ENTRY;
 
     /**
      * The table <code>verein</code>.
