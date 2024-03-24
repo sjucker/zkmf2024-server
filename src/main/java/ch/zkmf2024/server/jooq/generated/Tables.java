@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
+import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
@@ -40,6 +41,11 @@ public class Tables {
      * The table <code>errata</code>.
      */
     public static final Errata ERRATA = Errata.ERRATA;
+
+    /**
+     * The table <code>festprogramm_entry</code>.
+     */
+    public static final FestprogrammEntry FESTPROGRAMM_ENTRY = FestprogrammEntry.FESTPROGRAMM_ENTRY;
 
     /**
      * The table <code>helper_registration</code>.

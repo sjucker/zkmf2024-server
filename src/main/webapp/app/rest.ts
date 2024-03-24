@@ -16,6 +16,19 @@ export interface DoppelEinsatzDTO {
     mitspielerName: string;
 }
 
+export interface FestprogrammDayDTO {
+    day: string;
+    entries: FestprogrammEntryDTO[];
+}
+
+export interface FestprogrammEntryDTO {
+    start: DateAsString;
+    description: string;
+    location: string;
+    important: boolean;
+    date?: DateAsString;
+}
+
 export interface ForgotPasswordRequestDTO {
     email: string;
 }
