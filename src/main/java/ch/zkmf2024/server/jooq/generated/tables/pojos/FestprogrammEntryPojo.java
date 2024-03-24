@@ -22,7 +22,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
     private String description;
     private String location;
     private Boolean important;
-    private LocalTime endTime;
+    private String timeDescription;
 
     public FestprogrammEntryPojo() {
     }
@@ -34,7 +34,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         this.description = value.getDescription();
         this.location = value.getLocation();
         this.important = value.getImportant();
-        this.endTime = value.getEndTime();
+        this.timeDescription = value.getTimeDescription();
     }
 
     public FestprogrammEntryPojo(
@@ -44,7 +44,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
             String description,
             String location,
             Boolean important,
-            LocalTime endTime
+            String timeDescription
     ) {
         this.id = id;
         this.date = date;
@@ -52,7 +52,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         this.description = description;
         this.location = location;
         this.important = important;
-        this.endTime = endTime;
+        this.timeDescription = timeDescription;
     }
 
     /**
@@ -152,19 +152,19 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
     }
 
     /**
-     * Getter for <code>festprogramm_entry.end_time</code>.
+     * Getter for <code>festprogramm_entry.time_description</code>.
      */
     @Override
-    public LocalTime getEndTime() {
-        return this.endTime;
+    public String getTimeDescription() {
+        return this.timeDescription;
     }
 
     /**
-     * Setter for <code>festprogramm_entry.end_time</code>.
+     * Setter for <code>festprogramm_entry.time_description</code>.
      */
     @Override
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setTimeDescription(String timeDescription) {
+        this.timeDescription = timeDescription;
     }
 
     @Override
@@ -206,10 +206,10 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
                 return false;
         } else if (!this.important.equals(other.important))
             return false;
-        if (this.endTime == null) {
-            if (other.endTime != null)
+        if (this.timeDescription == null) {
+            if (other.timeDescription != null)
                 return false;
-        } else if (!this.endTime.equals(other.endTime))
+        } else if (!this.timeDescription.equals(other.timeDescription))
             return false;
         return true;
     }
@@ -224,7 +224,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.location == null) ? 0 : this.location.hashCode());
         result = prime * result + ((this.important == null) ? 0 : this.important.hashCode());
-        result = prime * result + ((this.endTime == null) ? 0 : this.endTime.hashCode());
+        result = prime * result + ((this.timeDescription == null) ? 0 : this.timeDescription.hashCode());
         return result;
     }
 
@@ -238,7 +238,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         sb.append(", ").append(description);
         sb.append(", ").append(location);
         sb.append(", ").append(important);
-        sb.append(", ").append(endTime);
+        sb.append(", ").append(timeDescription);
 
         sb.append(")");
         return sb.toString();
@@ -256,7 +256,7 @@ public class FestprogrammEntryPojo implements IFestprogrammEntry {
         setDescription(from.getDescription());
         setLocation(from.getLocation());
         setImportant(from.getImportant());
-        setEndTime(from.getEndTime());
+        setTimeDescription(from.getTimeDescription());
     }
 
     @Override
