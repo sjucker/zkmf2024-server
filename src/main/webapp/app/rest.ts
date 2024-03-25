@@ -384,6 +384,8 @@ export interface VereinSelectionDTO {
 }
 
 export interface VereinStageSetupDTO {
+    modul: Modul;
+    locationIdentifier: string;
     stageSetup: string;
 }
 
