@@ -326,6 +326,8 @@ public class VereinService {
         // TODO check if not fixed
         var detail = vereinRepository.findAnmeldungDetailByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
         detail.setStageSetup(JSONB.jsonbOrNull(dto.stageSetup()));
+        detail.setStageDirigentenpodest(dto.dirigentenpodest());
+        detail.setStageAblagenAmount(dto.ablagenAmount());
         vereinRepository.update(detail);
     }
 
