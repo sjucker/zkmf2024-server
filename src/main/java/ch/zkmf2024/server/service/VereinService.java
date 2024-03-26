@@ -111,14 +111,12 @@ public class VereinService {
 
     public Optional<VereinStageSetupDTO> findStageSetup(String email) {
         return vereinRepository.findAnmeldungDetailByEmail(email)
-                               .map(pojo -> {
-                                   var modulAndLocation = vereinRepository.findRelevantModulAndLocationForStageSetup(pojo.getFkVerein());
-                                   return new VereinStageSetupDTO(
-                                           modulAndLocation.modul(),
-                                           modulAndLocation.locationIdentifier(),
-                                           Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}")
-                                   );
-                               });
+                               .map(pojo -> new VereinStageSetupDTO(
+                                       vereinRepository.findRelevantLocationIdentifierForStageSetup(pojo.getFkVerein()),
+                                       Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}"),
+                                       pojo.getStageDirigentenpodest(),
+                                       pojo.getStageAblagenAmount()
+                               ));
 
     }
 

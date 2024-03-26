@@ -551,7 +551,7 @@ public class VereinRepository {
                       .fetchOptionalInto(VereinAnmeldungDetailPojo.class);
     }
 
-    public ModulAndLocation findRelevantModulAndLocationForStageSetup(Long vereinId) {
+    public String findRelevantLocationIdentifierForStageSetup(Long vereinId) {
         return jooqDsl.select()
                       .from(VEREIN_PROGRAMM)
                       .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
@@ -560,10 +560,7 @@ public class VereinRepository {
                              // only those modules need a stage setup
                              VEREIN_PROGRAMM.MODUL.in(A.name(), B.name(), H.name()),
                              TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
-                      .fetchSingle(it -> new ModulAndLocation(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)), it.get(LOCATION.IDENTIFIER)));
-    }
-
-    public record ModulAndLocation(Modul modul, String locationIdentifier) {
+                      .fetchSingle(it -> it.get(LOCATION.IDENTIFIER));
     }
 
     public Optional<VereinPojo> findById(Long id) {

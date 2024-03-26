@@ -270,6 +270,26 @@ public interface IVereinAnmeldungDetail extends Serializable {
      */
     public JSONB getStageSetup();
 
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_dirigentenpodest</code>.
+     */
+    public void setStageDirigentenpodest(Boolean value);
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_dirigentenpodest</code>.
+     */
+    public Boolean getStageDirigentenpodest();
+
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_ablagen_amount</code>.
+     */
+    public void setStageAblagenAmount(Integer value);
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_ablagen_amount</code>.
+     */
+    public Integer getStageAblagenAmount();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

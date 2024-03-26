@@ -430,4 +430,34 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
     public List<VereinAnmeldungDetailPojo> fetchByStageSetup(JSONB... values) {
         return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP, values);
     }
+
+    /**
+     * Fetch records that have <code>stage_dirigentenpodest BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfStageDirigentenpodest(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_dirigentenpodest IN (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByStageDirigentenpodest(Boolean... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST, values);
+    }
+
+    /**
+     * Fetch records that have <code>stage_ablagen_amount BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfStageAblagenAmount(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_ablagen_amount IN (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByStageAblagenAmount(Integer... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT, values);
+    }
 }
