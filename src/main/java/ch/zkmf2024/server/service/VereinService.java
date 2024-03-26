@@ -115,7 +115,8 @@ public class VereinService {
                                        vereinRepository.findRelevantLocationIdentifierForStageSetup(pojo.getFkVerein()),
                                        Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}"),
                                        pojo.getStageDirigentenpodest(),
-                                       pojo.getStageAblagenAmount()
+                                       pojo.getStageAblagenAmount(),
+                                       pojo.getStageComment()
                                ));
 
     }
