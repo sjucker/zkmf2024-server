@@ -17,6 +17,7 @@
             <ul>
                 <li *ngFor="let entry of verein.timetableEntries">{{ entry.date | date: 'dd.MM.yyyy' }} {{ entry.time }}, {{ entry.competition }}, {{ entry.location.name }}</li>
             </ul>
+            <div><b>Mittagessen: </b>{{ verein.lunchTime | slice: 0 : 5 }}</div>
         </div>
 
         <div *ngFor="let programm of verein.programme; let last = last;">
