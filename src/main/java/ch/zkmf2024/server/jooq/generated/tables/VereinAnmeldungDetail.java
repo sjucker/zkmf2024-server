@@ -174,6 +174,16 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
      */
     public final TableField<VereinAnmeldungDetailRecord, JSONB> STAGE_SETUP = createField(DSL.name("stage_setup"), SQLDataType.JSONB, this, "");
 
+    /**
+     * The column <code>verein_anmeldung_detail.stage_dirigentenpodest</code>.
+     */
+    public final TableField<VereinAnmeldungDetailRecord, Boolean> STAGE_DIRIGENTENPODEST = createField(DSL.name("stage_dirigentenpodest"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>verein_anmeldung_detail.stage_ablagen_amount</code>.
+     */
+    public final TableField<VereinAnmeldungDetailRecord, Integer> STAGE_ABLAGEN_AMOUNT = createField(DSL.name("stage_ablagen_amount"), SQLDataType.INTEGER, this, "");
+
     private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased) {
         this(alias, aliased, null);
     }
