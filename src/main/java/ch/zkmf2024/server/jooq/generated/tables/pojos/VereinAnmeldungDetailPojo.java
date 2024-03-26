@@ -43,6 +43,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
     private JSONB stageSetup;
     private Boolean stageDirigentenpodest;
     private Integer stageAblagenAmount;
+    private String stageComment;
 
     public VereinAnmeldungDetailPojo() {
     }
@@ -75,6 +76,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.stageSetup = value.getStageSetup();
         this.stageDirigentenpodest = value.getStageDirigentenpodest();
         this.stageAblagenAmount = value.getStageAblagenAmount();
+        this.stageComment = value.getStageComment();
     }
 
     public VereinAnmeldungDetailPojo(
@@ -104,7 +106,8 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
             String verpflegungHelper_6,
             JSONB stageSetup,
             Boolean stageDirigentenpodest,
-            Integer stageAblagenAmount
+            Integer stageAblagenAmount,
+            String stageComment
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -133,6 +136,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.stageSetup = stageSetup;
         this.stageDirigentenpodest = stageDirigentenpodest;
         this.stageAblagenAmount = stageAblagenAmount;
+        this.stageComment = stageComment;
     }
 
     /**
@@ -573,6 +577,22 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         this.stageAblagenAmount = stageAblagenAmount;
     }
 
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    @Override
+    public String getStageComment() {
+        return this.stageComment;
+    }
+
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    @Override
+    public void setStageComment(String stageComment) {
+        this.stageComment = stageComment;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -717,6 +737,11 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
                 return false;
         } else if (!this.stageAblagenAmount.equals(other.stageAblagenAmount))
             return false;
+        if (this.stageComment == null) {
+            if (other.stageComment != null)
+                return false;
+        } else if (!this.stageComment.equals(other.stageComment))
+            return false;
         return true;
     }
 
@@ -751,6 +776,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         result = prime * result + ((this.stageSetup == null) ? 0 : this.stageSetup.hashCode());
         result = prime * result + ((this.stageDirigentenpodest == null) ? 0 : this.stageDirigentenpodest.hashCode());
         result = prime * result + ((this.stageAblagenAmount == null) ? 0 : this.stageAblagenAmount.hashCode());
+        result = prime * result + ((this.stageComment == null) ? 0 : this.stageComment.hashCode());
         return result;
     }
 
@@ -785,6 +811,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         sb.append(", ").append(stageSetup);
         sb.append(", ").append(stageDirigentenpodest);
         sb.append(", ").append(stageAblagenAmount);
+        sb.append(", ").append(stageComment);
 
         sb.append(")");
         return sb.toString();
@@ -823,6 +850,7 @@ public class VereinAnmeldungDetailPojo implements IVereinAnmeldungDetail {
         setStageSetup(from.getStageSetup());
         setStageDirigentenpodest(from.getStageDirigentenpodest());
         setStageAblagenAmount(from.getStageAblagenAmount());
+        setStageComment(from.getStageComment());
     }
 
     @Override

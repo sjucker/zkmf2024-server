@@ -290,6 +290,16 @@ public interface IVereinAnmeldungDetail extends Serializable {
      */
     public Integer getStageAblagenAmount();
 
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    public void setStageComment(String value);
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    public String getStageComment();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
