@@ -329,6 +329,7 @@ public class VereinService {
         detail.setStageSetup(JSONB.jsonbOrNull(dto.stageSetup()));
         detail.setStageDirigentenpodest(dto.dirigentenpodest());
         detail.setStageAblagenAmount(dto.ablagenAmount());
+        detail.setStageComment(dto.comment());
         vereinRepository.update(detail);
     }
 
