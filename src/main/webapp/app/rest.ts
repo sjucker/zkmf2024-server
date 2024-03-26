@@ -388,6 +388,7 @@ export interface VereinStageSetupDTO {
     stageSetup: string;
     dirigentenpodest: boolean;
     ablagenAmount?: number;
+    comment?: string;
 }
 
 export interface VereinTeilnahmeDTO {

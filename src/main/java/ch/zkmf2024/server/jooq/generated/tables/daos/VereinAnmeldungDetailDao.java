@@ -460,4 +460,19 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
     public List<VereinAnmeldungDetailPojo> fetchByStageAblagenAmount(Integer... values) {
         return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT, values);
     }
+
+    /**
+     * Fetch records that have <code>stage_comment BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfStageComment(String lowerInclusive, String upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_comment IN (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByStageComment(String... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT, values);
+    }
 }

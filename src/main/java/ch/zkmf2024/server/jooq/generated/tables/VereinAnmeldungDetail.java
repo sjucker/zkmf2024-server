@@ -184,6 +184,11 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
      */
     public final TableField<VereinAnmeldungDetailRecord, Integer> STAGE_ABLAGEN_AMOUNT = createField(DSL.name("stage_ablagen_amount"), SQLDataType.INTEGER, this, "");
 
+    /**
+     * The column <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    public final TableField<VereinAnmeldungDetailRecord, String> STAGE_COMMENT = createField(DSL.name("stage_comment"), SQLDataType.VARCHAR(4096), this, "");
+
     private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased) {
         this(alias, aliased, null);
     }
