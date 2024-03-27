@@ -285,6 +285,7 @@ public class JudgeRepository {
                 category,
                 category.getDescription(),
                 category.getGroup(),
+                category.getRatingDescriptions(),
                 null,
                 NEUTRAL,
                 null
@@ -297,6 +298,7 @@ public class JudgeRepository {
                 category,
                 category.getDescription(),
                 category.getGroup(),
+                category.getRatingDescriptions(),
                 it.get(JUDGE_REPORT_RATING.COMMENT),
                 JudgeReportCategoryRating.fromString(it.get(JUDGE_REPORT_RATING.RATING)).orElseThrow(),
                 it.get(JUDGE_REPORT_RATING.SCORE)

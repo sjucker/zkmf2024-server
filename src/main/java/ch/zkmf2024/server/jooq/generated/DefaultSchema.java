@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
+import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
@@ -18,6 +19,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
+import ch.zkmf2024.server.jooq.generated.tables.UnterhaltungEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
@@ -53,6 +55,11 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>errata</code>.
      */
     public final Errata ERRATA = Errata.ERRATA;
+
+    /**
+     * The table <code>festprogramm_entry</code>.
+     */
+    public final FestprogrammEntry FESTPROGRAMM_ENTRY = FestprogrammEntry.FESTPROGRAMM_ENTRY;
 
     /**
      * The table <code>helper_registration</code>.
@@ -125,6 +132,11 @@ public class DefaultSchema extends SchemaImpl {
     public final Titel TITEL = Titel.TITEL;
 
     /**
+     * The table <code>unterhaltung_entry</code>.
+     */
+    public final UnterhaltungEntry UNTERHALTUNG_ENTRY = UnterhaltungEntry.UNTERHALTUNG_ENTRY;
+
+    /**
      * The table <code>verein</code>.
      */
     public final Verein VEREIN = Verein.VEREIN;
@@ -195,6 +207,7 @@ public class DefaultSchema extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
                 Errata.ERRATA,
+                FestprogrammEntry.FESTPROGRAMM_ENTRY,
                 HelperRegistration.HELPER_REGISTRATION,
                 Image.IMAGE,
                 Judge.JUDGE,
@@ -209,6 +222,7 @@ public class DefaultSchema extends SchemaImpl {
                 SurveyAnswer.SURVEY_ANSWER,
                 TimetableEntry.TIMETABLE_ENTRY,
                 Titel.TITEL,
+                UnterhaltungEntry.UNTERHALTUNG_ENTRY,
                 Verein.VEREIN,
                 VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER,
                 VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL,

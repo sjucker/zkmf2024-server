@@ -426,6 +426,54 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         return (JSONB) get(24);
     }
 
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_dirigentenpodest</code>.
+     */
+    @Override
+    public void setStageDirigentenpodest(Boolean value) {
+        set(25, value);
+    }
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_dirigentenpodest</code>.
+     */
+    @Override
+    public Boolean getStageDirigentenpodest() {
+        return (Boolean) get(25);
+    }
+
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_ablagen_amount</code>.
+     */
+    @Override
+    public void setStageAblagenAmount(Integer value) {
+        set(26, value);
+    }
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_ablagen_amount</code>.
+     */
+    @Override
+    public Integer getStageAblagenAmount() {
+        return (Integer) get(26);
+    }
+
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    @Override
+    public void setStageComment(String value) {
+        set(27, value);
+    }
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_comment</code>.
+     */
+    @Override
+    public String getStageComment() {
+        return (String) get(27);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -466,6 +514,9 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setVerpflegungHelper_5(from.getVerpflegungHelper_5());
         setVerpflegungHelper_6(from.getVerpflegungHelper_6());
         setStageSetup(from.getStageSetup());
+        setStageDirigentenpodest(from.getStageDirigentenpodest());
+        setStageAblagenAmount(from.getStageAblagenAmount());
+        setStageComment(from.getStageComment());
         resetChangedOnNotNull();
     }
 
@@ -489,7 +540,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
     /**
      * Create a detached, initialised VereinAnmeldungDetailRecord
      */
-    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6, JSONB stageSetup) {
+    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6, JSONB stageSetup, Boolean stageDirigentenpodest, Integer stageAblagenAmount, String stageComment) {
         super(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL);
 
         setId(id);
@@ -517,6 +568,9 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setVerpflegungHelper_5(verpflegungHelper_5);
         setVerpflegungHelper_6(verpflegungHelper_6);
         setStageSetup(stageSetup);
+        setStageDirigentenpodest(stageDirigentenpodest);
+        setStageAblagenAmount(stageAblagenAmount);
+        setStageComment(stageComment);
         resetChangedOnNotNull();
     }
 
@@ -552,6 +606,9 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
             setVerpflegungHelper_5(value.getVerpflegungHelper_5());
             setVerpflegungHelper_6(value.getVerpflegungHelper_6());
             setStageSetup(value.getStageSetup());
+            setStageDirigentenpodest(value.getStageDirigentenpodest());
+            setStageAblagenAmount(value.getStageAblagenAmount());
+            setStageComment(value.getStageComment());
             resetChangedOnNotNull();
         }
     }

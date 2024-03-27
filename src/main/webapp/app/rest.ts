@@ -16,6 +16,20 @@ export interface DoppelEinsatzDTO {
     mitspielerName: string;
 }
 
+export interface FestprogrammDayDTO {
+    day: string;
+    entries: FestprogrammEntryDTO[];
+}
+
+export interface FestprogrammEntryDTO {
+    date: DateAsString;
+    timeFrom: string;
+    timeTo?: string;
+    description: string;
+    location: string;
+    important: boolean;
+}
+
 export interface ForgotPasswordRequestDTO {
     email: string;
 }
@@ -80,6 +94,7 @@ export interface JudgeReportRatingDTO {
     category: JudgeReportCategory;
     categoryDescription: string;
     group: string;
+    ratingDescriptions: string[];
     comment?: string;
     rating: JudgeReportCategoryRating;
     score?: number;
@@ -264,6 +279,24 @@ export interface TitelDTO extends IsValid {
     infoModeration?: string;
 }
 
+export interface UnterhaltungTypeDTO {
+    type: UnterhaltungEntryType;
+    entries: UnterhaltungsEntryDTO[];
+}
+
+export interface UnterhaltungsEntryDTO {
+    type: UnterhaltungEntryType;
+    date: DateAsString;
+    start: DateAsString;
+    end?: DateAsString;
+    title: string;
+    subtitle?: string;
+    location: LocationDTO;
+    cloudflareId?: string;
+    vereinIdentifier?: string;
+    unterhaltungIdentifier?: string;
+}
+
 export interface VereinDTO {
     email: string;
     angaben: VereinsangabenDTO;
@@ -348,6 +381,14 @@ export interface VereinProgrammTitelDTO {
 export interface VereinSelectionDTO {
     id: number;
     name: string;
+}
+
+export interface VereinStageSetupDTO {
+    locationIdentifier: string;
+    stageSetup: string;
+    dirigentenpodest: boolean;
+    ablagenAmount?: number;
+    comment?: string;
 }
 
 export interface VereinTeilnahmeDTO {
@@ -435,7 +476,6 @@ export interface VereinsanmeldungDetailDTO extends IsValid {
     verpflegungHelper4?: string;
     verpflegungHelper5?: string;
     verpflegungHelper6?: string;
-    stageSetup?: string;
 }
 
 export interface VereinsinfoDTO extends IsValid {
@@ -784,6 +824,13 @@ export enum Einsatzzeit {
     NACHMITTAG = "NACHMITTAG",
     ABEND = "ABEND",
     NACHT = "NACHT",
+}
+
+export enum UnterhaltungEntryType {
+    FREITAG_ABEND = "FREITAG_ABEND",
+    SAMSTAG_TAG = "SAMSTAG_TAG",
+    SAMSTAG_ABEND = "SAMSTAG_ABEND",
+    SONNTAG = "SONNTAG",
 }
 
 export enum PhaseStatus {

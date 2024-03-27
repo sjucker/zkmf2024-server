@@ -21,7 +21,6 @@ import ch.zkmf2024.server.dto.VereinsanmeldungDetailDTO;
 import ch.zkmf2024.server.dto.VereinsinfoDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.dto.admin.VereinProgrammSelectionDTO;
-import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.daos.KontaktDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TitelDao;
@@ -71,18 +70,25 @@ import java.util.StringJoiner;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
+import static ch.zkmf2024.server.dto.Modul.A;
+import static ch.zkmf2024.server.dto.Modul.B;
 import static ch.zkmf2024.server.dto.Modul.D;
+import static ch.zkmf2024.server.dto.Modul.H;
 import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_ANMELDUNG_DETAIL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_DOPPELEINSATZ;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_MESSAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.MARSCHMUSIK;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.PLATZKONZERT;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VEREIN_STATUS;
 import static ch.zkmf2024.server.service.VereinService.calculateTotalDurationInSeconds;
@@ -221,7 +227,7 @@ public class VereinRepository {
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
                       .where(
                               TIMETABLE_ENTRY.FK_VEREIN.eq(id),
-                              TIMETABLE_ENTRY.ENTRY_TYPE.in(TimetableEntryType.WETTSPIEL, TimetableEntryType.PLATZKONZERT, TimetableEntryType.MARSCHMUSIK)
+                              TIMETABLE_ENTRY.ENTRY_TYPE.in(WETTSPIEL, PLATZKONZERT, MARSCHMUSIK)
                       )
                       .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
                       .fetch(it -> new VereinTimetableEntryDTO(
@@ -535,6 +541,26 @@ public class VereinRepository {
         return jooqDsl.selectFrom(VEREIN)
                       .where(VEREIN.EMAIL.equalIgnoreCase(email))
                       .fetchOptionalInto(VereinPojo.class);
+    }
+
+    public Optional<VereinAnmeldungDetailPojo> findAnmeldungDetailByEmail(String email) {
+        return jooqDsl.select(VEREIN_ANMELDUNG_DETAIL.asterisk())
+                      .from(VEREIN_ANMELDUNG_DETAIL)
+                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_ANMELDUNG_DETAIL.FK_VEREIN))
+                      .where(VEREIN.EMAIL.equalIgnoreCase(email))
+                      .fetchOptionalInto(VereinAnmeldungDetailPojo.class);
+    }
+
+    public String findRelevantLocationIdentifierForStageSetup(Long vereinId) {
+        return jooqDsl.select()
+                      .from(VEREIN_PROGRAMM)
+                      .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
+                      .where(VEREIN_PROGRAMM.FK_VEREIN.eq(vereinId),
+                             // only those modules need a stage setup
+                             VEREIN_PROGRAMM.MODUL.in(A.name(), B.name(), H.name()),
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                      .fetchSingle(it -> it.get(LOCATION.IDENTIFIER));
     }
 
     public Optional<VereinPojo> findById(Long id) {

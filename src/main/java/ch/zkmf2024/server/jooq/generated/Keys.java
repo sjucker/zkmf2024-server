@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
+import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
 import ch.zkmf2024.server.jooq.generated.tables.Image;
 import ch.zkmf2024.server.jooq.generated.tables.Judge;
@@ -18,6 +19,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Titel;
+import ch.zkmf2024.server.jooq.generated.tables.UnterhaltungEntry;
 import ch.zkmf2024.server.jooq.generated.tables.Verein;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail;
@@ -30,6 +32,7 @@ import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
 import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import ch.zkmf2024.server.jooq.generated.tables.records.ErrataRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.FestprogrammEntryRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.HelperRegistrationRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ImageRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.JudgeRecord;
@@ -44,6 +47,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.SponsorRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.SurveyAnswerRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.TitelRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.UnterhaltungEntryRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinAnmeldungAdhocOrchesterRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinAnmeldungDetailRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinAnmeldungNichtmitgliederRecord;
@@ -74,6 +78,7 @@ public class Keys {
 
     public static final UniqueKey<ErrataRecord> PK_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("pk_errata"), new TableField[]{Errata.ERRATA.ID}, true);
     public static final UniqueKey<ErrataRecord> UQ_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("uq_errata"), new TableField[]{Errata.ERRATA.MODUL, Errata.ERRATA.KLASSE, Errata.ERRATA.BESETZUNG}, true);
+    public static final UniqueKey<FestprogrammEntryRecord> PK_FESTPROGRAMM_ENTRY = Internal.createUniqueKey(FestprogrammEntry.FESTPROGRAMM_ENTRY, DSL.name("pk_festprogramm_entry"), new TableField[]{FestprogrammEntry.FESTPROGRAMM_ENTRY.ID}, true);
     public static final UniqueKey<HelperRegistrationRecord> HELPER_REGISTRATION_EMAIL_KEY = Internal.createUniqueKey(HelperRegistration.HELPER_REGISTRATION, DSL.name("helper_registration_email_key"), new TableField[]{HelperRegistration.HELPER_REGISTRATION.EMAIL}, true);
     public static final UniqueKey<HelperRegistrationRecord> PK_HELPER_REGISTRATION = Internal.createUniqueKey(HelperRegistration.HELPER_REGISTRATION, DSL.name("pk_helper_registration"), new TableField[]{HelperRegistration.HELPER_REGISTRATION.ID}, true);
     public static final UniqueKey<ImageRecord> PK_IMAGE = Internal.createUniqueKey(Image.IMAGE, DSL.name("pk_image"), new TableField[]{Image.IMAGE.ID}, true);
@@ -93,6 +98,7 @@ public class Keys {
     public static final UniqueKey<SurveyAnswerRecord> PK_SURVEY_ANSWER = Internal.createUniqueKey(SurveyAnswer.SURVEY_ANSWER, DSL.name("pk_survey_answer"), new TableField[]{SurveyAnswer.SURVEY_ANSWER.ID}, true);
     public static final UniqueKey<TimetableEntryRecord> PK_TIMETABLE_ENTRY = Internal.createUniqueKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("pk_timetable_entry"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
     public static final UniqueKey<TitelRecord> PK_TITEL = Internal.createUniqueKey(Titel.TITEL, DSL.name("pk_titel"), new TableField[]{Titel.TITEL.ID}, true);
+    public static final UniqueKey<UnterhaltungEntryRecord> PK_UNTERHALTUNG_ENTRY = Internal.createUniqueKey(UnterhaltungEntry.UNTERHALTUNG_ENTRY, DSL.name("pk_unterhaltung_entry"), new TableField[]{UnterhaltungEntry.UNTERHALTUNG_ENTRY.ID}, true);
     public static final UniqueKey<VereinRecord> PK_VEREIN = Internal.createUniqueKey(Verein.VEREIN, DSL.name("pk_verein"), new TableField[]{Verein.VEREIN.ID}, true);
     public static final UniqueKey<VereinRecord> UQ_VEREIN_IDENTIFIER = Internal.createUniqueKey(Verein.VEREIN, DSL.name("uq_verein_identifier"), new TableField[]{Verein.VEREIN.IDENTIFIER}, true);
     public static final UniqueKey<VereinAnmeldungAdhocOrchesterRecord> PK_VEREIN_ANMELDUNG_ADHOC_ORCHESTER = Internal.createUniqueKey(VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER, DSL.name("pk_verein_anmeldung_adhoc_orchester"), new TableField[]{VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER.ID}, true);
@@ -124,6 +130,7 @@ public class Keys {
     public static final ForeignKey<TimetableEntryRecord, VereinProgrammRecord> TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM = Internal.createForeignKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("fk_timetable_programm"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM}, Keys.PK_VEREIN_PROGRAMM, new TableField[]{VereinProgramm.VEREIN_PROGRAMM.ID}, true);
     public static final ForeignKey<TimetableEntryRecord, VereinRecord> TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN = Internal.createForeignKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("fk_timetable_verein"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN}, Keys.PK_VEREIN, new TableField[]{Verein.VEREIN.ID}, true);
     public static final ForeignKey<TitelRecord, VereinRecord> TITEL__FK_TITEL_VEREIN = Internal.createForeignKey(Titel.TITEL, DSL.name("fk_titel_verein"), new TableField[]{Titel.TITEL.FK_VEREIN}, Keys.PK_VEREIN, new TableField[]{Verein.VEREIN.ID}, true);
+    public static final ForeignKey<UnterhaltungEntryRecord, LocationRecord> UNTERHALTUNG_ENTRY__FK_UNTERHALTUNG_LOCATION = Internal.createForeignKey(UnterhaltungEntry.UNTERHALTUNG_ENTRY, DSL.name("fk_unterhaltung_location"), new TableField[]{UnterhaltungEntry.UNTERHALTUNG_ENTRY.FK_LOCATION}, Keys.PK_LOCATION, new TableField[]{Location.LOCATION.ID}, true);
     public static final ForeignKey<VereinRecord, KontaktRecord> VEREIN__FK_VEREIN_DIREKTION_KONTAKT = Internal.createForeignKey(Verein.VEREIN, DSL.name("fk_verein_direktion_kontakt"), new TableField[]{Verein.VEREIN.DIREKTION_KONTAKT_ID}, Keys.PK_KONTAKT, new TableField[]{Kontakt.KONTAKT.ID}, true);
     public static final ForeignKey<VereinRecord, KontaktRecord> VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT = Internal.createForeignKey(Verein.VEREIN, DSL.name("fk_verein_praesident_kontakt"), new TableField[]{Verein.VEREIN.PRAESIDENT_KONTAKT_ID}, Keys.PK_KONTAKT, new TableField[]{Kontakt.KONTAKT.ID}, true);
     public static final ForeignKey<VereinAnmeldungAdhocOrchesterRecord, VereinRecord> VEREIN_ANMELDUNG_ADHOC_ORCHESTER__FK_VEREIN_ANMELDUNG_ADHOC_ORCHESTER_VEREIN = Internal.createForeignKey(VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER, DSL.name("fk_verein_anmeldung_adhoc_orchester_verein"), new TableField[]{VereinAnmeldungAdhocOrchester.VEREIN_ANMELDUNG_ADHOC_ORCHESTER.FK_VEREIN}, Keys.PK_VEREIN, new TableField[]{Verein.VEREIN.ID}, true);
