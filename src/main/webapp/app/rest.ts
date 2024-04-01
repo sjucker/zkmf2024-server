@@ -291,6 +291,7 @@ export interface UnterhaltungsEntryDTO {
     end?: DateAsString;
     title: string;
     subtitle?: string;
+    text?: string;
     location: LocationDTO;
     cloudflareId?: string;
     vereinIdentifier?: string;
