@@ -6,6 +6,7 @@ import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UnterhaltungRepository {
@@ -18,5 +19,9 @@ public class UnterhaltungRepository {
 
     public List<UnterhaltungEntryPojo> findAll() {
         return unterhaltungEntryDao.findAll();
+    }
+
+    public Optional<UnterhaltungEntryPojo> findByUnterhaltungIdentifier(String identifier) {
+        return unterhaltungEntryDao.fetchByIdentifier(identifier).stream().findFirst();
     }
 }

@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.LocationDTO;
 import ch.zkmf2024.server.dto.UnterhaltungEntryType;
 import ch.zkmf2024.server.dto.UnterhaltungTypeDTO;
 import ch.zkmf2024.server.dto.UnterhaltungsEntryDTO;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.UnterhaltungEntryPojo;
 import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.TimetableRepository.ModulKlasseBesetzung;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.Besetzung.BRASS_BAND;
 import static ch.zkmf2024.server.dto.Besetzung.HARMONIE;
@@ -49,18 +51,7 @@ public class UnterhaltungService {
                                               .collect(toMap(LocationDTO::id, identity()));
 
         var perType = unterhaltungRepository.findAll().stream()
-                                            .map(pojo -> new UnterhaltungsEntryDTO(
-                                                    UnterhaltungEntryType.from(pojo.getEntryType()),
-                                                    pojo.getDate(),
-                                                    pojo.getStartTime(),
-                                                    pojo.getEndTime(),
-                                                    pojo.getTitle(),
-                                                    pojo.getSubtitle(),
-                                                    locationPerId.get(pojo.getFkLocation()),
-                                                    pojo.getCloudflareId(),
-                                                    null,
-                                                    pojo.getIdentifier()
-                                            ))
+                                            .map(pojo -> toUnterhaltungsEntryDTO(pojo, locationPerId.get(pojo.getFkLocation())))
                                             .collect(groupingBy(UnterhaltungsEntryDTO::type, toCollection(ArrayList::new)));
 
         for (var platzkonzert : timetableRepository.findAllPlatzkonzzerte()) {
@@ -75,6 +66,7 @@ public class UnterhaltungService {
                     platzkonzert.end(),
                     platzkonzert.vereinsname(),
                     "Unterhaltungskonzert",
+                    null,
                     platzkonzert.location(),
                     null,
                     platzkonzert.vereinIdentifier(),
@@ -96,6 +88,7 @@ public class UnterhaltungService {
                     verein.end(),
                     verein.vereinsname(),
                     replace(verein.competition(), "Konzertmusik,", "Wettspiel"),
+                    null,
                     verein.location(),
                     null,
                     verein.vereinIdentifier(),
@@ -111,5 +104,27 @@ public class UnterhaltungService {
                                                                                         .thenComparing(UnterhaltungsEntryDTO::unterhaltungIdentifier, nullsFirst(naturalOrder())))
                                                                         .toList()))
                       .toList();
+    }
+
+    private UnterhaltungsEntryDTO toUnterhaltungsEntryDTO(UnterhaltungEntryPojo pojo, LocationDTO location) {
+        return new UnterhaltungsEntryDTO(
+                UnterhaltungEntryType.from(pojo.getEntryType()),
+                pojo.getDate(),
+                pojo.getStartTime(),
+                pojo.getEndTime(),
+                pojo.getTitle(),
+                pojo.getSubtitle(),
+                pojo.getText(),
+                location,
+                pojo.getCloudflareId(),
+                null,
+                pojo.getIdentifier()
+        );
+    }
+
+    public Optional<UnterhaltungsEntryDTO> getByUnterhaltungIdentifier(String identifier) {
+        return unterhaltungRepository.findByUnterhaltungIdentifier(identifier)
+                                     .map(pojo -> toUnterhaltungsEntryDTO(pojo, locationRepository.findById(pojo.getFkLocation())
+                                                                                                  .orElseThrow()));
     }
 }
