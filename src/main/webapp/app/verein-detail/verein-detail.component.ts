@@ -1,7 +1,10 @@
 import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
+import {combineLatestWith, delay} from "rxjs";
+import {fromPromise} from "rxjs/internal/observable/innerFrom";
+import init, {add_viewer} from "../../assets/stage/wasm_stage";
 import {environment} from "../../environments/environment";
-import {Modul, PhaseStatus, TitelDTO, VereinDTO, VereinProgrammDTO} from "../rest";
+import {Modul, PhaseStatus, TitelDTO, VereinDTO, VereinProgrammDTO, VereinStageSetupDTO} from "../rest";
 import {AuthenticationService} from "../service/authentication.service";
 import {VereineService} from "../service/vereine.service";
 
@@ -21,6 +24,9 @@ export class VereinDetailComponent {
     loading = true;
     confirming = false;
 
+    canvasId = 'stage-canvas';
+    stageSetup: VereinStageSetupDTO = {stageSetup: "{}", dirigentenpodest: false, locationIdentifier: ""};
+
     constructor(config: DynamicDialogConfig<VereinDetailInput>,
                 private authenticationService: AuthenticationService,
                 private vereineService: VereineService) {
@@ -35,6 +41,17 @@ export class VereinDetailComponent {
                 error: () => {
                     this.loading = false
                 }
+            });
+
+            const wasm$ = fromPromise(init("/assets/stage/stager.wasm"));
+            const stage$ = this.vereineService.getStageSetup(config.data.id);
+            wasm$.pipe(
+                combineLatestWith(stage$),
+                // wait some time, so canvas is available for sure
+                delay(1000)
+            ).subscribe((data) => {
+                this.stageSetup = data[1];
+                add_viewer(this.canvasId, 900, this.stageSetup.locationIdentifier, this.stageSetup.stageSetup)
             });
         }
     }

@@ -2,7 +2,7 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {BroadcastCreateDTO, VereinCommentCreateDTO, VereinCommentDTO, VereinDTO, VereinMessageCreateDTO, VereinMessageDTO, VereinOverviewDTO} from "../rest";
+import {BroadcastCreateDTO, VereinCommentCreateDTO, VereinCommentDTO, VereinDTO, VereinMessageCreateDTO, VereinMessageDTO, VereinOverviewDTO, VereinStageSetupDTO} from "../rest";
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +20,10 @@ export class VereineService {
 
     get(id: number): Observable<VereinDTO> {
         return this.httpClient.get<VereinDTO>(`${this.baseUrl}/secured/admin/vereine/${id}`)
+    }
+
+    getStageSetup(id: number): Observable<VereinStageSetupDTO> {
+        return this.httpClient.get<VereinStageSetupDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/stage`)
     }
 
     getComments(id: number): Observable<VereinCommentDTO[]> {

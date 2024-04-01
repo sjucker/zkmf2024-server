@@ -1,236 +1,247 @@
-<p-tabView *ngIf="verein">
-    <p-tabPanel header="Wettspielprogramm">
-        <p-button iconPos="right" icon="pi pi-check"
-                  label="Programm bestätigen"
-                  *ngIf="phase2Done && !phase2Confirmed"
-                  [loading]="confirming"
-                  (onClick)="confirm()"
-                  [disabled]="isReadOnly()"></p-button>
+@if (verein) {
+    <p-tabView>
+        <p-tabPanel header="Wettspielprogramm">
+            <p-button iconPos="right" icon="pi pi-check"
+                      label="Programm bestätigen"
+                      *ngIf="phase2Done && !phase2Confirmed"
+                      [loading]="confirming"
+                      (onClick)="confirm()"
+                      [disabled]="isReadOnly()"></p-button>
 
-        <div *ngIf="phase2Confirmed">
-            Programm bestätigt am {{ verein.phase2ConfirmedAt | date: 'dd.MM.yyyy HH:mm' }}
-            durch {{ verein.phase2ConfirmedBy }}
-        </div>
-
-        <div *ngIf="verein.timetableEntries?.length ?? 0 > 0">
-            <h3>Einsatzzeiten</h3>
-            <ul>
-                <li *ngFor="let entry of verein.timetableEntries">{{ entry.date | date: 'dd.MM.yyyy' }} {{ entry.time }}, {{ entry.competition }}, {{ entry.location.name }}</li>
-            </ul>
-            <div><b>Mittagessen: </b>{{ verein.lunchTime | slice: 0 : 5 }}</div>
-        </div>
-
-        <div *ngFor="let programm of verein.programme; let last = last;">
-            <h3>{{ programm.modulDescription }} {{ programm.klasse }} {{ programm.besetzung }}</h3>
-            <div *ngIf="hasVorgabeDauer(programm)"><b>Vorgabe Dauer</b>:
-                {{ formatDuration(programm.minDurationInSeconds) }} - {{ formatDuration(programm.maxDurationInSeconds) }}
+            <div *ngIf="phase2Confirmed">
+                Programm bestätigt am {{ verein.phase2ConfirmedAt | date: 'dd.MM.yyyy HH:mm' }}
+                durch {{ verein.phase2ConfirmedBy }}
             </div>
 
-            <div *ngIf="isModulAB(programm)">
-                <div [ngClass]="{'invalid': isBlank(programm.titel)}"><b>Programmtitel</b>: {{ programm.titel }}</div>
-                <div [ngClass]="{'invalid': isBlank(programm.infoModeration)}">
-                    <b>Erläuterungen zum Selbstwahlprogramm</b>: {{ programm.infoModeration }}
+            <div *ngIf="verein.timetableEntries?.length ?? 0 > 0">
+                <h3>Einsatzzeiten</h3>
+                <ul>
+                    <li *ngFor="let entry of verein.timetableEntries">{{ entry.date | date: 'dd.MM.yyyy' }} {{ entry.time }}, {{ entry.competition }}, {{ entry.location.name }}</li>
+                </ul>
+                <div><b>Mittagessen: </b>{{ verein.lunchTime | slice: 0 : 5 }}</div>
+            </div>
+
+            <div *ngFor="let programm of verein.programme; let last = last;">
+                <h3>{{ programm.modulDescription }} {{ programm.klasse }} {{ programm.besetzung }}</h3>
+                <div *ngIf="hasVorgabeDauer(programm)"><b>Vorgabe Dauer</b>:
+                    {{ formatDuration(programm.minDurationInSeconds) }} - {{ formatDuration(programm.maxDurationInSeconds) }}
                 </div>
-            </div>
 
-            <div *ngIf="isModulB(programm)">
-                <div><b>Weitere Angaben</b></div>
-                <div *ngIf="programm.unterhaltungPA">PA wird benötigt</div>
-                <div *ngIf="programm.unterhaltungEGitarre">E-Gitarre</div>
-                <div *ngIf="programm.unterhaltungEBass">E-Bass</div>
-                <div *ngIf="programm.unterhaltungKeyboard">Keyboard</div>
-                <div *ngIf="programm.unterhaltungGesang">Gesang</div>
-            </div>
+                <div *ngIf="isModulAB(programm)">
+                    <div [ngClass]="{'invalid': isBlank(programm.titel)}"><b>Programmtitel</b>: {{ programm.titel }}</div>
+                    <div [ngClass]="{'invalid': isBlank(programm.infoModeration)}">
+                        <b>Erläuterungen zum Selbstwahlprogramm</b>: {{ programm.infoModeration }}
+                    </div>
+                </div>
 
-            <div *ngIf="!isModulD(programm) && !isModulG(programm)" class="pt-5">
-                <div><b>Ablauf</b></div>
-                <table>
-                    <tr>
-                        <th class="pl-2 pr-2 text-left">Nr.</th>
-                        <th class="pl-2 pr-2 text-left">Musikstück</th>
-                        <th class="pl-2 pr-2 text-left"
-                            *ngIf="!isModulC(programm)">
-                            Dauer Stück
-                        </th>
-                        <th class="pl-2 pr-2 text-left"
-                            *ngIf="isModulAB(programm) || isModulH(programm)">
-                            Dauer Applaus
-                        </th>
-                        <th class="pl-2 pr-2 text-left"
-                            *ngIf="isModulAB(programm) || isModulH(programm)">
-                            Grad
-                        </th>
-                    </tr>
-                    <tr *ngFor="let entry of programm.ablauf; let i = index; let first = first; let last = last;">
-                        <td class="pl-2 pr-2">{{ i + 1 }}</td>
-                        <td class="pl-2 pr-2">
-                            {{ entry.titel.titelName }} ({{ entry.titel.composer }}<span *ngIf="entry.titel.arrangeur">, arr. {{ entry.titel.arrangeur }}</span>)
-                            <span *ngIf="entry.titel.pflichtStueck">*</span>
-                        </td>
-                        <td class="pl-2 pr-2"
-                            *ngIf="!isModulC(programm)">
-                            {{ formatDuration(entry.titel.durationInSeconds) }}
-                        </td>
-                        <td class="pl-2 pr-2"
-                            *ngIf="isModulAB(programm) || isModulH(programm)">
-                            {{ formatDuration(entry.applausInSeconds) }}
-                        </td>
-                        <td class="pl-2 pr-2" *ngIf="isModulAB(programm)">
-                            {{ entry.titel.grad }}
-                        </td>
-                        <td class="pl-2 pr-2"
-                            *ngIf="isModulH(programm)">
-                            {{ entry.titel.schwierigkeitsgrad }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td class="pl-2 pr-2"
-                            *ngIf="hasVorgabeDauer(programm) && !this.isModulC(programm) && programm.ablauf.length > 0">
+                <div *ngIf="isModulB(programm)">
+                    <div><b>Weitere Angaben</b></div>
+                    <div *ngIf="programm.unterhaltungPA">PA wird benötigt</div>
+                    <div *ngIf="programm.unterhaltungEGitarre">E-Gitarre</div>
+                    <div *ngIf="programm.unterhaltungEBass">E-Bass</div>
+                    <div *ngIf="programm.unterhaltungKeyboard">Keyboard</div>
+                    <div *ngIf="programm.unterhaltungGesang">Gesang</div>
+                </div>
+
+                <div *ngIf="!isModulD(programm) && !isModulG(programm)" class="pt-5">
+                    <div><b>Ablauf</b></div>
+                    <table>
+                        <tr>
+                            <th class="pl-2 pr-2 text-left">Nr.</th>
+                            <th class="pl-2 pr-2 text-left">Musikstück</th>
+                            <th class="pl-2 pr-2 text-left"
+                                *ngIf="!isModulC(programm)">
+                                Dauer Stück
+                            </th>
+                            <th class="pl-2 pr-2 text-left"
+                                *ngIf="isModulAB(programm) || isModulH(programm)">
+                                Dauer Applaus
+                            </th>
+                            <th class="pl-2 pr-2 text-left"
+                                *ngIf="isModulAB(programm) || isModulH(programm)">
+                                Grad
+                            </th>
+                        </tr>
+                        <tr *ngFor="let entry of programm.ablauf; let i = index; let first = first; let last = last;">
+                            <td class="pl-2 pr-2">{{ i + 1 }}</td>
+                            <td class="pl-2 pr-2">
+                                {{ entry.titel.titelName }} ({{ entry.titel.composer }}<span *ngIf="entry.titel.arrangeur">, arr. {{ entry.titel.arrangeur }}</span>)
+                                <span *ngIf="entry.titel.pflichtStueck">*</span>
+                            </td>
+                            <td class="pl-2 pr-2"
+                                *ngIf="!isModulC(programm)">
+                                {{ formatDuration(entry.titel.durationInSeconds) }}
+                            </td>
+                            <td class="pl-2 pr-2"
+                                *ngIf="isModulAB(programm) || isModulH(programm)">
+                                {{ formatDuration(entry.applausInSeconds) }}
+                            </td>
+                            <td class="pl-2 pr-2" *ngIf="isModulAB(programm)">
+                                {{ entry.titel.grad }}
+                            </td>
+                            <td class="pl-2 pr-2"
+                                *ngIf="isModulH(programm)">
+                                {{ entry.titel.schwierigkeitsgrad }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="pl-2 pr-2"
+                                *ngIf="hasVorgabeDauer(programm) && !this.isModulC(programm) && programm.ablauf.length > 0">
                             <span [ngClass]="{'valid': isInRange(programm), 'invalid': !isInRange(programm)}">
                                 <b>{{ formatDuration(programm.totalDurationInSeconds) }}</b>
                             </span>
-                        </td>
-                        <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
-                        <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
-                    </tr>
-                </table>
-            </div>
+                            </td>
+                            <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
+                            <td *ngIf="isModulAB(programm) || isModulH(programm)"></td>
+                        </tr>
+                    </table>
+                </div>
 
-            <div *ngIf="isModulAB(programm) || isModulH(programm)">
-                <div *ngFor="let titel of selbstwahlTitel(programm)" class="pt-3">
-                    <div [ngClass]="{'invalid': isBlank(titel.infoModeration)}">
-                        <b>Infos für die Moderation: {{ titel.titelName }}</b>
+                <div *ngIf="isModulAB(programm) || isModulH(programm)">
+                    <div *ngFor="let titel of selbstwahlTitel(programm)" class="pt-3">
+                        <div [ngClass]="{'invalid': isBlank(titel.infoModeration)}">
+                            <b>Infos für die Moderation: {{ titel.titelName }}</b>
+                        </div>
+                        <div>{{ titel.infoModeration }}</div>
                     </div>
-                    <div>{{ titel.infoModeration }}</div>
-                </div>
-            </div>
-
-            <div *ngIf="isModulD(programm)">
-                <div><b>Komposition 1 (Schweizer Marsch)</b></div>
-                <div>{{ programm.parademusikTitel1.titelName }}</div>
-                <div>{{ programm.parademusikTitel1.composer }}</div>
-                <div>{{ programm.parademusikTitel1.arrangeur }}</div>
-                <div>{{ formatDuration(programm.parademusikTitel1.durationInSeconds) }}</div>
-
-                <div class="pt-3"><b>Komposition 2</b></div>
-                <div>{{ programm.parademusikTitel2.titelName }}</div>
-                <div>{{ programm.parademusikTitel2.composer }}</div>
-                <div>{{ programm.parademusikTitel2.arrangeur }}</div>
-                <div>{{ formatDuration(programm.parademusikTitel2.durationInSeconds) }}</div>
-            </div>
-
-            <div *ngIf="isModulG(programm)">
-                <div *ngIf="programm.tambourenKatA">
-                    <div><b>Kategorie A</b></div>
-                    <div>Grundlage 1: {{ programm.tambourenKatAGrundlage1 }}</div>
-                    <div>Grundlage 2: {{ programm.tambourenKatAGrundlage2 }}</div>
-
-                    <div class="pt-3"><b>Frei gewählter Baslermarsch (BM) oder Marsch (M)</b></div>
-                    <div>{{ programm.tambourenKatATitel1.titelName }}, {{ programm.tambourenKatATitel1.composer }}, Klasse: {{ programm.tambourenKatATitel1.grad }}</div>
-
-                    <div class="pt-3"><b>Frei gewählte Komposition</b></div>
-                    <div>{{ programm.tambourenKatATitel2.titelName }}, {{ programm.tambourenKatATitel2.composer }}, Klasse: {{ programm.tambourenKatATitel2.grad }}</div>
                 </div>
 
-                <div *ngIf="programm.tambourenKatB">
-                    <div><b>Kategorie B</b></div>
-                    <div><b>Komposition</b></div>
-                    <div>{{ programm.tambourenKatBTitel.titelName }}, {{ programm.tambourenKatBTitel.composer }}, >Klasse: {{ programm.tambourenKatBTitel.grad }}</div>
+                <div *ngIf="isModulD(programm)">
+                    <div><b>Komposition 1 (Schweizer Marsch)</b></div>
+                    <div>{{ programm.parademusikTitel1.titelName }}</div>
+                    <div>{{ programm.parademusikTitel1.composer }}</div>
+                    <div>{{ programm.parademusikTitel1.arrangeur }}</div>
+                    <div>{{ formatDuration(programm.parademusikTitel1.durationInSeconds) }}</div>
+
+                    <div class="pt-3"><b>Komposition 2</b></div>
+                    <div>{{ programm.parademusikTitel2.titelName }}</div>
+                    <div>{{ programm.parademusikTitel2.composer }}</div>
+                    <div>{{ programm.parademusikTitel2.arrangeur }}</div>
+                    <div>{{ formatDuration(programm.parademusikTitel2.durationInSeconds) }}</div>
                 </div>
 
-                <div *ngIf="programm.tambourenKatC">
-                    <div><b>Kategorie C</b></div>
-                    <div><b>Komposition</b></div>
-                    <div>{{ programm.tambourenKatCTitel.titelName }}, {{ programm.tambourenKatCTitel.composer }}, Klasse: {{ programm.tambourenKatCTitel.grad }}</div>
+                <div *ngIf="isModulG(programm)">
+                    <div *ngIf="programm.tambourenKatA">
+                        <div><b>Kategorie A</b></div>
+                        <div>Grundlage 1: {{ programm.tambourenKatAGrundlage1 }}</div>
+                        <div>Grundlage 2: {{ programm.tambourenKatAGrundlage2 }}</div>
+
+                        <div class="pt-3"><b>Frei gewählter Baslermarsch (BM) oder Marsch (M)</b></div>
+                        <div>{{ programm.tambourenKatATitel1.titelName }}, {{ programm.tambourenKatATitel1.composer }}, Klasse: {{ programm.tambourenKatATitel1.grad }}</div>
+
+                        <div class="pt-3"><b>Frei gewählte Komposition</b></div>
+                        <div>{{ programm.tambourenKatATitel2.titelName }}, {{ programm.tambourenKatATitel2.composer }}, Klasse: {{ programm.tambourenKatATitel2.grad }}</div>
+                    </div>
+
+                    <div *ngIf="programm.tambourenKatB">
+                        <div><b>Kategorie B</b></div>
+                        <div><b>Komposition</b></div>
+                        <div>{{ programm.tambourenKatBTitel.titelName }}, {{ programm.tambourenKatBTitel.composer }}, >Klasse: {{ programm.tambourenKatBTitel.grad }}</div>
+                    </div>
+
+                    <div *ngIf="programm.tambourenKatC">
+                        <div><b>Kategorie C</b></div>
+                        <div><b>Komposition</b></div>
+                        <div>{{ programm.tambourenKatCTitel.titelName }}, {{ programm.tambourenKatCTitel.composer }}, Klasse: {{ programm.tambourenKatCTitel.grad }}</div>
+                    </div>
                 </div>
+
+                <div *ngIf="isModulC(programm)">
+                    <div><b>Kommentar:</b> {{ programm.infoModeration }}</div>
+                </div>
+
+                <hr *ngIf="!last"/>
             </div>
 
-            <div *ngIf="isModulC(programm)">
-                <div><b>Kommentar:</b> {{ programm.infoModeration }}</div>
+            <hr/>
+            <h3>Bühnenplan</h3>
+            <div class="stage-canvas-container">
+                <canvas [id]="canvasId"></canvas>
             </div>
-
-            <hr *ngIf="!last"/>
-        </div>
-    </p-tabPanel>
-    <p-tabPanel header="Vereinsangaben">
-        <div><span class="font-semibold">Email:</span> {{ verein.email }}</div>
-        <div><span class="font-semibold">Vereinsname:</span> {{ verein.angaben.vereinsname }}</div>
-        <div><span class="font-semibold">Adresse:</span> {{ verein.angaben.adresse }}</div>
-        <div><span class="font-semibold">PLZ:</span> {{ verein.angaben.plz }}</div>
-        <div><span class="font-semibold">Ort:</span> {{ verein.angaben.ort }}</div>
-        <div><span class="font-semibold">Homepage:</span> {{ verein.angaben.homepage }}</div>
-        <div><span class="font-semibold">IBAN:</span> {{ verein.angaben.iban }}</div>
-        <div *ngIf="verein.angaben.direktionDoppeleinsatz">
-            <span class="font-semibold">Dirigent/in - Doppelteilnahme:</span> ja
-            ({{ verein.angaben.direktionDoppeleinsatzVerein }})
-        </div>
-        <div *ngIf="verein.angaben.mitspielerDoppeleinsatz">
-            <span class="font-semibold"> Musikant/innen - Doppelteilnahme:</span> ja
-        </div>
-    </p-tabPanel>
-    <p-tabPanel header="Detailangaben">
-        <div><span class="font-semibold">Anzahl Festführer:</span> {{ verein.anmeldungDetail.festfuehrerAmount }}</div>
-        <div><span class="font-semibold">Anzahl Festkarten Musizierende:</span> {{ verein.anmeldungDetail.festkartenMusikerAmount }}</div>
-        <div><span class="font-semibold">Anzahl Festkarten Begleitpersonen:</span> {{ verein.anmeldungDetail.festkartenBegleiterAmount }}</div>
-        <div><span class="font-semibold">Anzahl Mittagessen "Klassisch":</span> {{ verein.anmeldungDetail.verpflegungMeat }}</div>
-        <div><span class="font-semibold">Anzahl Mittagessen "Vegan":</span> {{ verein.anmeldungDetail.verpflegungVegan }}</div>
-        <div><span class="font-semibold">Anzahl Mittagessen "Gluten- und Laktosefrei":</span> {{ verein.anmeldungDetail.verpflegungAllergies }}</div>
-        <div><span class="font-semibold">Anzahl Teilnehmer ohne Mittagessen:</span> {{ verein.anmeldungDetail.verpflegungNone }}</div>
-        <div><span class="font-semibold">Essenservice - 1. Person</span> {{ verein.anmeldungDetail.verpflegungHelper1 }}</div>
-        <div><span class="font-semibold">Essenservice - 2. Person</span> {{ verein.anmeldungDetail.verpflegungHelper2 }}</div>
-        <div><span class="font-semibold">Essenservice - 3. Person</span> {{ verein.anmeldungDetail.verpflegungHelper3 }}</div>
-        <div><span class="font-semibold">Essenservice - 4. Person</span> {{ verein.anmeldungDetail.verpflegungHelper4 }}</div>
-        <div><span class="font-semibold">Essenservice - 5. Person</span> {{ verein.anmeldungDetail.verpflegungHelper5 }}</div>
-        <div><span class="font-semibold">Essenservice - 6. Person</span> {{ verein.anmeldungDetail.verpflegungHelper6 }}</div>
-        <div><span class="font-semibold">Party Freitagabend: </span> {{ verein.anmeldungDetail.freitagabendAmount }}</div>
-        <div><span class="font-semibold">Anreise mit ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransport ? 'ja' : 'nein' }}</div>
-        @if (verein.anmeldungDetail.anreisePublicTransport) {
-            <div><span class="font-semibold">Kapazitätsplanung ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransportType }}</div>
-        } @else {
-            <div><span class="font-semibold">Andere Anreise:</span> {{ verein.anmeldungDetail.anreiseOtherwise }}</div>
-        }
-        <div><span class="font-semibold">Gehbehinderung:</span> {{ verein.anmeldungDetail.gehbehinderung ? 'ja' : 'nein' }}</div>
-        <div><span class="font-semibold">Partituren versandt:</span> {{ verein.anmeldungDetail.partiturenSent ? 'ja' : 'nein' }}</div>
-        <div><span class="font-semibold">Partituren versandt am:</span> {{ verein.anmeldungDetail.partiturenSentAt | date: 'dd.MM.yyyy' }}</div>
-        <div><span class="font-semibold">Gesamtchor:</span> {{ verein.anmeldungDetail.gesamtchor ? 'ja' : 'nein' }}</div>
-        <div><span class="font-semibold">Ad-hoc-Orchester:</span> {{ verein.anmeldungDetail.adhocOrchester ? 'ja' : 'nein' }}</div>
-        @if (verein.anmeldungDetail.adhocOrchester) {
-            @for (adhoc of verein.anmeldungDetail.adhocOrchesterTeilnehmer; track adhoc) {
-                <div>{{ adhoc.name }}, {{ adhoc.email }}, {{ adhoc.instrument }}</div>
+            <div><b>Dirigentenpodest benötigt:</b> {{ stageSetup.dirigentenpodest ? 'ja' : 'nein' }}</div>
+            <div><b>Anzahl Schlägelablagen:</b> {{ stageSetup.ablagenAmount }}</div>
+            <div><b>Erläuterungen zum Bühnenplan:</b> {{ stageSetup.comment }}</div>
+        </p-tabPanel>
+        <p-tabPanel header="Vereinsangaben">
+            <div><span class="font-semibold">Email:</span> {{ verein.email }}</div>
+            <div><span class="font-semibold">Vereinsname:</span> {{ verein.angaben.vereinsname }}</div>
+            <div><span class="font-semibold">Adresse:</span> {{ verein.angaben.adresse }}</div>
+            <div><span class="font-semibold">PLZ:</span> {{ verein.angaben.plz }}</div>
+            <div><span class="font-semibold">Ort:</span> {{ verein.angaben.ort }}</div>
+            <div><span class="font-semibold">Homepage:</span> {{ verein.angaben.homepage }}</div>
+            <div><span class="font-semibold">IBAN:</span> {{ verein.angaben.iban }}</div>
+            <div *ngIf="verein.angaben.direktionDoppeleinsatz">
+                <span class="font-semibold">Dirigent/in - Doppelteilnahme:</span> ja
+                ({{ verein.angaben.direktionDoppeleinsatzVerein }})
+            </div>
+            <div *ngIf="verein.angaben.mitspielerDoppeleinsatz">
+                <span class="font-semibold"> Musikant/innen - Doppelteilnahme:</span> ja
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Detailangaben">
+            <div><span class="font-semibold">Anzahl Festführer:</span> {{ verein.anmeldungDetail.festfuehrerAmount }}</div>
+            <div><span class="font-semibold">Anzahl Festkarten Musizierende:</span> {{ verein.anmeldungDetail.festkartenMusikerAmount }}</div>
+            <div><span class="font-semibold">Anzahl Festkarten Begleitpersonen:</span> {{ verein.anmeldungDetail.festkartenBegleiterAmount }}</div>
+            <div><span class="font-semibold">Anzahl Mittagessen "Klassisch":</span> {{ verein.anmeldungDetail.verpflegungMeat }}</div>
+            <div><span class="font-semibold">Anzahl Mittagessen "Vegan":</span> {{ verein.anmeldungDetail.verpflegungVegan }}</div>
+            <div><span class="font-semibold">Anzahl Mittagessen "Gluten- und Laktosefrei":</span> {{ verein.anmeldungDetail.verpflegungAllergies }}</div>
+            <div><span class="font-semibold">Anzahl Teilnehmer ohne Mittagessen:</span> {{ verein.anmeldungDetail.verpflegungNone }}</div>
+            <div><span class="font-semibold">Essenservice - 1. Person</span> {{ verein.anmeldungDetail.verpflegungHelper1 }}</div>
+            <div><span class="font-semibold">Essenservice - 2. Person</span> {{ verein.anmeldungDetail.verpflegungHelper2 }}</div>
+            <div><span class="font-semibold">Essenservice - 3. Person</span> {{ verein.anmeldungDetail.verpflegungHelper3 }}</div>
+            <div><span class="font-semibold">Essenservice - 4. Person</span> {{ verein.anmeldungDetail.verpflegungHelper4 }}</div>
+            <div><span class="font-semibold">Essenservice - 5. Person</span> {{ verein.anmeldungDetail.verpflegungHelper5 }}</div>
+            <div><span class="font-semibold">Essenservice - 6. Person</span> {{ verein.anmeldungDetail.verpflegungHelper6 }}</div>
+            <div><span class="font-semibold">Party Freitagabend: </span> {{ verein.anmeldungDetail.freitagabendAmount }}</div>
+            <div><span class="font-semibold">Anreise mit ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransport ? 'ja' : 'nein' }}</div>
+            @if (verein.anmeldungDetail.anreisePublicTransport) {
+                <div><span class="font-semibold">Kapazitätsplanung ÖV:</span> {{ verein.anmeldungDetail.anreisePublicTransportType }}</div>
+            } @else {
+                <div><span class="font-semibold">Andere Anreise:</span> {{ verein.anmeldungDetail.anreiseOtherwise }}</div>
             }
-        }
-    </p-tabPanel>
-    <p-tabPanel header="Kontaktangaben - Präsident/in">
-        <div><span class="font-semibold">Vorname:</span> {{ verein.praesident.vorname }}</div>
-        <div><span class="font-semibold">Name:</span> {{ verein.praesident.nachname }}</div>
-        <div><span class="font-semibold">Adresse:</span> {{ verein.praesident.adresse }}</div>
-        <div><span class="font-semibold">PLZ:</span> {{ verein.praesident.plz }}</div>
-        <div><span class="font-semibold">Ort:</span> {{ verein.praesident.ort }}</div>
-        <div><span class="font-semibold">Email:</span> {{ verein.praesident.email }}</div>
-        <div><span class="font-semibold">Telefon privat:</span> {{ verein.praesident.telefonPrivat }}</div>
-        <div><span class="font-semibold">Telefon mobile:</span> {{ verein.praesident.telefonMobile }}</div>
-    </p-tabPanel>
-    <p-tabPanel header="Kontaktangaben - Dirigent/in">
-        <div><span class="font-semibold">Vorname:</span> {{ verein.direktion.vorname }}</div>
-        <div><span class="font-semibold">Name:</span> {{ verein.direktion.nachname }}</div>
-        <div><span class="font-semibold">Adresse:</span> {{ verein.direktion.adresse }}</div>
-        <div><span class="font-semibold">PLZ:</span> {{ verein.direktion.plz }}</div>
-        <div><span class="font-semibold">Ort:</span> {{ verein.direktion.ort }}</div>
-        <div><span class="font-semibold">Email:</span> {{ verein.direktion.email }}</div>
-        <div><span class="font-semibold">Telefon privat:</span> {{ verein.direktion.telefonPrivat }}</div>
-        <div><span class="font-semibold">Telefon mobile:</span> {{ verein.direktion.telefonMobile }}</div>
-    </p-tabPanel>
-    <p-tabPanel header="Vereinsinfo (Website)">
-        <div><span class="font-semibold">Vorstellungstext:</span> {{ verein.info.websiteText }}</div>
-        <div *ngIf="verein.info.logoImgId">
-            <img [src]="logoImgSrc" alt="Vereinslogo" class="max-w-20rem"/>
-        </div>
-        <div *ngIf="verein.info.bildImgId">
-            <img [src]="bildImgSrc" alt="Vereinsbild" class="max-w-30rem"/>
-        </div>
-    </p-tabPanel>
-</p-tabView>
+            <div><span class="font-semibold">Gehbehinderung:</span> {{ verein.anmeldungDetail.gehbehinderung ? 'ja' : 'nein' }}</div>
+            <div><span class="font-semibold">Partituren versandt:</span> {{ verein.anmeldungDetail.partiturenSent ? 'ja' : 'nein' }}</div>
+            <div><span class="font-semibold">Partituren versandt am:</span> {{ verein.anmeldungDetail.partiturenSentAt | date: 'dd.MM.yyyy' }}</div>
+            <div><span class="font-semibold">Gesamtchor:</span> {{ verein.anmeldungDetail.gesamtchor ? 'ja' : 'nein' }}</div>
+            <div><span class="font-semibold">Ad-hoc-Orchester:</span> {{ verein.anmeldungDetail.adhocOrchester ? 'ja' : 'nein' }}</div>
+            @if (verein.anmeldungDetail.adhocOrchester) {
+                @for (adhoc of verein.anmeldungDetail.adhocOrchesterTeilnehmer; track adhoc) {
+                    <div>{{ adhoc.name }}, {{ adhoc.email }}, {{ adhoc.instrument }}</div>
+                }
+            }
+        </p-tabPanel>
+        <p-tabPanel header="Kontaktangaben - Präsident/in">
+            <div><span class="font-semibold">Vorname:</span> {{ verein.praesident.vorname }}</div>
+            <div><span class="font-semibold">Name:</span> {{ verein.praesident.nachname }}</div>
+            <div><span class="font-semibold">Adresse:</span> {{ verein.praesident.adresse }}</div>
+            <div><span class="font-semibold">PLZ:</span> {{ verein.praesident.plz }}</div>
+            <div><span class="font-semibold">Ort:</span> {{ verein.praesident.ort }}</div>
+            <div><span class="font-semibold">Email:</span> {{ verein.praesident.email }}</div>
+            <div><span class="font-semibold">Telefon privat:</span> {{ verein.praesident.telefonPrivat }}</div>
+            <div><span class="font-semibold">Telefon mobile:</span> {{ verein.praesident.telefonMobile }}</div>
+        </p-tabPanel>
+        <p-tabPanel header="Kontaktangaben - Dirigent/in">
+            <div><span class="font-semibold">Vorname:</span> {{ verein.direktion.vorname }}</div>
+            <div><span class="font-semibold">Name:</span> {{ verein.direktion.nachname }}</div>
+            <div><span class="font-semibold">Adresse:</span> {{ verein.direktion.adresse }}</div>
+            <div><span class="font-semibold">PLZ:</span> {{ verein.direktion.plz }}</div>
+            <div><span class="font-semibold">Ort:</span> {{ verein.direktion.ort }}</div>
+            <div><span class="font-semibold">Email:</span> {{ verein.direktion.email }}</div>
+            <div><span class="font-semibold">Telefon privat:</span> {{ verein.direktion.telefonPrivat }}</div>
+            <div><span class="font-semibold">Telefon mobile:</span> {{ verein.direktion.telefonMobile }}</div>
+        </p-tabPanel>
+        <p-tabPanel header="Vereinsinfo (Website)">
+            <div><span class="font-semibold">Vorstellungstext:</span> {{ verein.info.websiteText }}</div>
+            <div *ngIf="verein.info.logoImgId">
+                <img [src]="logoImgSrc" alt="Vereinslogo" class="max-w-20rem"/>
+            </div>
+            <div *ngIf="verein.info.bildImgId">
+                <img [src]="bildImgSrc" alt="Vereinsbild" class="max-w-30rem"/>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+}
 <p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
 <p *ngIf="!loading && !verein">Ein Fehler ist aufgetreten...</p>

@@ -543,6 +543,10 @@ public class VereinRepository {
                       .fetchOptionalInto(VereinPojo.class);
     }
 
+    public Optional<VereinAnmeldungDetailPojo> findAnmeldungDetailById(Long vereinId) {
+        return vereinAnmeldungDetailDao.fetchByFkVerein(vereinId).stream().findFirst();
+    }
+
     public Optional<VereinAnmeldungDetailPojo> findAnmeldungDetailByEmail(String email) {
         return jooqDsl.select(VEREIN_ANMELDUNG_DETAIL.asterisk())
                       .from(VEREIN_ANMELDUNG_DETAIL)

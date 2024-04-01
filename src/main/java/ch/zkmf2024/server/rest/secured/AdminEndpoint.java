@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.VereinStageSetupDTO;
 import ch.zkmf2024.server.dto.admin.BroadcastCreateDTO;
 import ch.zkmf2024.server.dto.admin.ErrataDTO;
 import ch.zkmf2024.server.dto.admin.ErrataSendDTO;
@@ -175,6 +176,14 @@ public class AdminEndpoint {
         log.info("GET /secured/admin/vereine/{}", id);
 
         return ResponseEntity.ok(vereinService.findById(id).orElseThrow());
+    }
+
+    @GetMapping(path = "/vereine/{id}/stage")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<VereinStageSetupDTO> stageByVereinId(@PathVariable Long id) {
+        log.info("GET /secured/admin/vereine/{}/stage", id);
+
+        return ResponseEntity.of(vereinService.findStageSetupByVereinId(id));
     }
 
     @GetMapping(path = "/vereine/{id}/comments")

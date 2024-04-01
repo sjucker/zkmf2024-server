@@ -57,6 +57,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.LongFunction;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
@@ -111,14 +112,23 @@ public class VereinService {
 
     public Optional<VereinStageSetupDTO> findStageSetup(String email) {
         return vereinRepository.findAnmeldungDetailByEmail(email)
-                               .map(pojo -> new VereinStageSetupDTO(
-                                       vereinRepository.findRelevantLocationIdentifierForStageSetup(pojo.getFkVerein()),
-                                       Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}"),
-                                       pojo.getStageDirigentenpodest(),
-                                       pojo.getStageAblagenAmount(),
-                                       pojo.getStageComment()
-                               ));
+                               .map(pojo -> toVereinStageSetupDTO(pojo, vereinRepository::findRelevantLocationIdentifierForStageSetup));
 
+    }
+
+    public Optional<VereinStageSetupDTO> findStageSetupByVereinId(Long vereinId) {
+        return vereinRepository.findAnmeldungDetailById(vereinId)
+                               .map(pojo -> toVereinStageSetupDTO(pojo, vereinRepository::findRelevantLocationIdentifierForStageSetup));
+    }
+
+    private VereinStageSetupDTO toVereinStageSetupDTO(VereinAnmeldungDetailPojo pojo, LongFunction<String> locationIdentifierGetter) {
+        return new VereinStageSetupDTO(
+                locationIdentifierGetter.apply(pojo.getFkVerein()),
+                Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}"),
+                pojo.getStageDirigentenpodest(),
+                pojo.getStageAblagenAmount(),
+                pojo.getStageComment()
+        );
     }
 
     public Optional<VereinDTO> findById(Long id) {
