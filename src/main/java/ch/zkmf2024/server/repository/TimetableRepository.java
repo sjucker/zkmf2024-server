@@ -10,6 +10,7 @@ import ch.zkmf2024.server.jooq.generated.tables.daos.TimetableEntryDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
@@ -150,7 +151,29 @@ public class TimetableRepository {
         return timetableEntryDao.findOptionalById(id);
     }
 
+    public List<TimetableOverviewEntryDTO> find(List<ModulKlasseBesetzung> modulKlasseBesetzungen) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .where(
+                              DSL.or(modulKlasseBesetzungen.stream()
+                                                           .map(modulKlasseBesetzung -> DSL.and(
+                                                                   VEREIN_PROGRAMM.MODUL.eq(modulKlasseBesetzung.modul().name()),
+                                                                   VEREIN_PROGRAMM.KLASSE.eq(modulKlasseBesetzung.klasse().name()),
+                                                                   VEREIN_PROGRAMM.BESETZUNG.eq(modulKlasseBesetzung.besetzung().name())
+                                                           ))
+                                                           .toList()),
+                              TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL)
+                      )
+                      .fetch(TimetableRepository::toOverviewDTO);
+    }
+
     public void update(TimetableEntryPojo entry) {
         timetableEntryDao.update(entry);
+    }
+
+    public record ModulKlasseBesetzung(Modul modul, Klasse klasse, Besetzung besetzung) {
     }
 }
