@@ -155,14 +155,16 @@
                 <hr *ngIf="!last"/>
             </div>
 
-            <hr/>
-            <h3>Bühnenplan</h3>
-            <div class="stage-canvas-container">
-                <canvas [id]="canvasId"></canvas>
-            </div>
-            <div><b>Dirigentenpodest benötigt:</b> {{ stageSetup.dirigentenpodest ? 'ja' : 'nein' }}</div>
-            <div><b>Anzahl Schlägelablagen:</b> {{ stageSetup.ablagenAmount }}</div>
-            <div><b>Erläuterungen zum Bühnenplan:</b> {{ stageSetup.comment }}</div>
+            @if (hasStageSetup()) {
+                <hr/>
+                <h3>Bühnenplan</h3>
+                <div class="stage-canvas-container">
+                    <canvas [id]="canvasId"></canvas>
+                </div>
+                <div><b>Dirigentenpodest benötigt:</b> {{ stageSetup.dirigentenpodest ? 'ja' : 'nein' }}</div>
+                <div><b>Anzahl Schlägelablagen:</b> {{ stageSetup.ablagenAmount }}</div>
+                <div><b>Erläuterungen zum Bühnenplan:</b> {{ stageSetup.comment }}</div>
+            }
         </p-tabPanel>
         <p-tabPanel header="Vereinsangaben">
             <div><span class="font-semibold">Email:</span> {{ verein.email }}</div>

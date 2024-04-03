@@ -37,9 +37,7 @@ export class VereinDetailComponent {
                 next: value => {
                     this.verein = value;
                     this.loading = false
-                    if (this.verein.anmeldung.modulA ||
-                        this.verein.anmeldung.modulB ||
-                        this.verein.anmeldung.modulH) {
+                    if (this.hasStageSetup()) {
                         this.loadStageSetup(this.vereinId!);
                     }
                 },
@@ -48,6 +46,14 @@ export class VereinDetailComponent {
                 }
             });
         }
+    }
+
+    public hasStageSetup(): boolean {
+        if (this.verein) {
+            return this.verein.anmeldung.modulA || this.verein.anmeldung.modulB || this.verein.anmeldung.modulH;
+        }
+
+        return false;
     }
 
     private loadStageSetup(id: number) {
