@@ -37,23 +37,30 @@ export class VereinDetailComponent {
                 next: value => {
                     this.verein = value;
                     this.loading = false
+                    if (this.verein.anmeldung.modulA ||
+                        this.verein.anmeldung.modulB ||
+                        this.verein.anmeldung.modulH) {
+                        this.loadStageSetup(this.vereinId!);
+                    }
                 },
                 error: () => {
                     this.loading = false
                 }
             });
-
-            const wasm$ = fromPromise(init("/assets/stage/stager.wasm"));
-            const stage$ = this.vereineService.getStageSetup(config.data.id);
-            wasm$.pipe(
-                combineLatestWith(stage$),
-                // wait some time, so canvas is available for sure
-                delay(1000)
-            ).subscribe((data) => {
-                this.stageSetup = data[1];
-                add_viewer(this.canvasId, 900, this.stageSetup.locationIdentifier, this.stageSetup.stageSetup)
-            });
         }
+    }
+
+    private loadStageSetup(id: number) {
+        const wasm$ = fromPromise(init("/assets/stage/stager.wasm"));
+        const stage$ = this.vereineService.getStageSetup(id);
+        wasm$.pipe(
+            combineLatestWith(stage$),
+            // wait some time, so canvas is available for sure
+            delay(500)
+        ).subscribe((data) => {
+            this.stageSetup = data[1];
+            add_viewer(this.canvasId, 900, this.stageSetup.locationIdentifier, this.stageSetup.stageSetup)
+        });
     }
 
     get logoImgSrc(): string {
