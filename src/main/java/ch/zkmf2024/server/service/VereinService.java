@@ -307,9 +307,11 @@ public class VereinService {
 
         updateDoppeleinsatz(verein.getId(), dto.doppelEinsatz(), dto.angaben().mitspielerDoppeleinsatz());
 
-        var anmeldungDetail = vereinRepository.findAnmeldungDetail(verein.getId()).orElseThrow();
-        MAPPER.updateAnmeldungDetail(anmeldungDetail, dto.anmeldungDetail());
-        vereinRepository.update(anmeldungDetail);
+        if (verein.getPhase4ConfirmedAt() == null) {
+            var anmeldungDetail = vereinRepository.findAnmeldungDetail(verein.getId()).orElseThrow();
+            MAPPER.updateAnmeldungDetail(anmeldungDetail, dto.anmeldungDetail());
+            vereinRepository.update(anmeldungDetail);
+        }
 
         vereinRepository.deleteAdhocOrchester(verein.getId());
         vereinRepository.insertAdhocOrchester(dto.anmeldungDetail().adhocOrchesterTeilnehmer().stream()
