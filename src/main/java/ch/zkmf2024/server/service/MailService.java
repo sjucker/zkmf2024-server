@@ -176,8 +176,12 @@ public class MailService {
 
             helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
             helper.setReplyTo(applicationProperties.getInfoMail());
-            helper.setTo(to);
-            helper.setBcc(applicationProperties.getBccMail());
+            if (applicationProperties.isOverrideRecipient()) {
+                helper.setTo(applicationProperties.getBccMail());
+            } else {
+                helper.setTo(to);
+                helper.setBcc(applicationProperties.getBccMail());
+            }
             helper.setSubject("[%s] Neue Nachricht".formatted(getSubjectPrefix()));
             helper.setText(mjmlService.render(mjml), true);
 

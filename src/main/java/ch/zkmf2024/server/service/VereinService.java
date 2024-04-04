@@ -672,6 +672,7 @@ public class VereinService {
 
     public List<VereinMessageDTO> broadcast(String username, List<Long> ids, String message) {
         return ids.stream()
+                  .distinct()
                   .map(vereinId -> saveMessage(username, vereinId, message))
                   .toList();
     }
