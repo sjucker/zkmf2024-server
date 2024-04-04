@@ -27,9 +27,10 @@ public class StatusUpdateJob {
             var status = vereinService.findStatus(id);
 
             if (PhaseStatus.valueOf(status.getPhase1()) != verein.getPhase1Status() ||
-                    PhaseStatus.valueOf(status.getPhase2()) != verein.getPhase2Status()) {
-                log.info("updating status of verein with id={}, old phase 1={}, new phase 1={}, old phase 2={}, new phase 2={}",
-                         id, status.getPhase1(), verein.getPhase1Status(), status.getPhase2(), verein.getPhase2Status());
+                    PhaseStatus.valueOf(status.getPhase2()) != verein.getPhase2Status() ||
+                    PhaseStatus.valueOf(status.getPhase4()) != verein.getPhase4Status()) {
+                log.info("updating status of verein with id={}, old phase 1={}, new phase 1={}, old phase 2={}, new phase 2={}, old phase 4={}, new phase 4={}",
+                         id, status.getPhase1(), verein.getPhase1Status(), status.getPhase2(), verein.getPhase2Status(), status.getPhase4(), verein.getPhase4Status());
 
                 vereinService.updateStatus(id, verein);
             }
