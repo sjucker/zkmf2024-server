@@ -22,7 +22,6 @@ import ch.zkmf2024.server.repository.JudgeRepository;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +45,7 @@ import static java.math.RoundingMode.HALF_UP;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Slf4j
 @Service
@@ -237,8 +237,8 @@ public class JudgeService {
 
     public List<JudgePresentationDTO> getJudgePresentations() {
         return judgeRepository.findAll().stream()
-                              .filter(judge -> StringUtils.isNotBlank(judge.getModul()))
-                              .sorted(comparing(JudgePojo::getName).thenComparing(JudgePojo::getFirstName))
+                              .filter(judge -> isNotBlank(judge.getModul()))
+                              .sorted(comparing(JudgePojo::getModul).thenComparing(JudgePojo::getName).thenComparing(JudgePojo::getFirstName))
                               .map(judge -> new JudgePresentationDTO("%s %s".formatted(judge.getName(), judge.getFirstName()),
                                                                      judge.getModul(),
                                                                      judge.getCloudflareId(),
