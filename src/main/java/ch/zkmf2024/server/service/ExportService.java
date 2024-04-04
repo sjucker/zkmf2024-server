@@ -429,6 +429,7 @@ public class ExportService {
 
         var columnIndex = 0;
         headerRow.createCell(columnIndex++).setCellValue("Vereinsname");
+        headerRow.createCell(columnIndex++).setCellValue("Phase 4");
         headerRow.createCell(columnIndex++).setCellValue("Festführer");
         headerRow.createCell(columnIndex++).setCellValue("Festkarten Musizierende");
         headerRow.createCell(columnIndex++).setCellValue("Festkarten Begleitpersonen");
@@ -461,6 +462,7 @@ public class ExportService {
             columnIndex = 0;
 
             columnIndex = setCellValue(columnIndex, row, dto.angaben().vereinsname(), wb);
+            columnIndex = setCellValue(columnIndex, row, dto.phase4Done(), wb);
             columnIndex = setCellValue(columnIndex, row, detail.festfuehrerAmount(), wb);
             columnIndex = setCellValue(columnIndex, row, detail.festkartenMusikerAmount(), wb);
             columnIndex = setCellValue(columnIndex, row, detail.festkartenBegleiterAmount(), wb);
