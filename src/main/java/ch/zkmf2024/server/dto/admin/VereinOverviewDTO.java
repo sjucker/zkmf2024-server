@@ -30,6 +30,7 @@ public record VereinOverviewDTO(
         boolean perkussionsensemble,
         boolean registrationConfirmed,
         boolean phase2Confirmed,
+        boolean phase4Confirmed,
         @NotNull PhaseStatus phase1,
         @NotNull PhaseStatus phase2,
         @NotNull PhaseStatus phase4,

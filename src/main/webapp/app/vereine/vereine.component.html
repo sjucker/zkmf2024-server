@@ -96,7 +96,9 @@
             <td [ngClass]="{'confirmed': dto.phase2Confirmed}">
                 <i [ngClass]="getPhaseStatusIcon(dto.phase2)"></i>
             </td>
-            <td><i [ngClass]="getPhaseStatusIcon(dto.phase4)"></i></td>
+            <td [ngClass]="{'confirmed': dto.phase4Confirmed}">
+                <i [ngClass]="getPhaseStatusIcon(dto.phase4)"></i>
+            </td>
             <td>{{dto.programmLastUpdated | date: 'dd.MM.yyyy HH:mm'}}</td>
             <td>{{formatBoolean(dto.modulA)}}</td>
             <td>{{formatBoolean(dto.modulB)}}</td>

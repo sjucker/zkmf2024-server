@@ -60,6 +60,7 @@ public class VereinPojo implements IVerein {
     private LocalDateTime programmLastUpdated;
     private String identifier;
     private LocalTime lunchTime;
+    private LocalDateTime phase4ConfirmedAt;
 
     public VereinPojo() {
     }
@@ -109,6 +110,7 @@ public class VereinPojo implements IVerein {
         this.programmLastUpdated = value.getProgrammLastUpdated();
         this.identifier = value.getIdentifier();
         this.lunchTime = value.getLunchTime();
+        this.phase4ConfirmedAt = value.getPhase4ConfirmedAt();
     }
 
     public VereinPojo(
@@ -155,7 +157,8 @@ public class VereinPojo implements IVerein {
             String provPlatzkonzert,
             LocalDateTime programmLastUpdated,
             String identifier,
-            LocalTime lunchTime
+            LocalTime lunchTime,
+            LocalDateTime phase4ConfirmedAt
     ) {
         this.id = id;
         this.email = email;
@@ -201,6 +204,7 @@ public class VereinPojo implements IVerein {
         this.programmLastUpdated = programmLastUpdated;
         this.identifier = identifier;
         this.lunchTime = lunchTime;
+        this.phase4ConfirmedAt = phase4ConfirmedAt;
     }
 
     /**
@@ -907,6 +911,22 @@ public class VereinPojo implements IVerein {
         this.lunchTime = lunchTime;
     }
 
+    /**
+     * Getter for <code>verein.phase4_confirmed_at</code>.
+     */
+    @Override
+    public LocalDateTime getPhase4ConfirmedAt() {
+        return this.phase4ConfirmedAt;
+    }
+
+    /**
+     * Setter for <code>verein.phase4_confirmed_at</code>.
+     */
+    @Override
+    public void setPhase4ConfirmedAt(LocalDateTime phase4ConfirmedAt) {
+        this.phase4ConfirmedAt = phase4ConfirmedAt;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -1136,6 +1156,11 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.lunchTime.equals(other.lunchTime))
             return false;
+        if (this.phase4ConfirmedAt == null) {
+            if (other.phase4ConfirmedAt != null)
+                return false;
+        } else if (!this.phase4ConfirmedAt.equals(other.phase4ConfirmedAt))
+            return false;
         return true;
     }
 
@@ -1187,6 +1212,7 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.programmLastUpdated == null) ? 0 : this.programmLastUpdated.hashCode());
         result = prime * result + ((this.identifier == null) ? 0 : this.identifier.hashCode());
         result = prime * result + ((this.lunchTime == null) ? 0 : this.lunchTime.hashCode());
+        result = prime * result + ((this.phase4ConfirmedAt == null) ? 0 : this.phase4ConfirmedAt.hashCode());
         return result;
     }
 
@@ -1238,6 +1264,7 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(programmLastUpdated);
         sb.append(", ").append(identifier);
         sb.append(", ").append(lunchTime);
+        sb.append(", ").append(phase4ConfirmedAt);
 
         sb.append(")");
         return sb.toString();
@@ -1293,6 +1320,7 @@ public class VereinPojo implements IVerein {
         setProgrammLastUpdated(from.getProgrammLastUpdated());
         setIdentifier(from.getIdentifier());
         setLunchTime(from.getLunchTime());
+        setPhase4ConfirmedAt(from.getPhase4ConfirmedAt());
     }
 
     @Override

@@ -453,6 +453,16 @@ public interface IVerein extends Serializable {
      */
     public LocalTime getLunchTime();
 
+    /**
+     * Setter for <code>verein.phase4_confirmed_at</code>.
+     */
+    public void setPhase4ConfirmedAt(LocalDateTime value);
+
+    /**
+     * Getter for <code>verein.phase4_confirmed_at</code>.
+     */
+    public LocalDateTime getPhase4ConfirmedAt();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

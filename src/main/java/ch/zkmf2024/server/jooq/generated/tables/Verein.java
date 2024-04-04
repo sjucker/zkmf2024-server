@@ -268,6 +268,11 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, LocalTime> LUNCH_TIME = createField(DSL.name("lunch_time"), SQLDataType.LOCALTIME(6), this, "");
 
+    /**
+     * The column <code>verein.phase4_confirmed_at</code>.
+     */
+    public final TableField<VereinRecord, LocalDateTime> PHASE4_CONFIRMED_AT = createField(DSL.name("phase4_confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, null);
     }

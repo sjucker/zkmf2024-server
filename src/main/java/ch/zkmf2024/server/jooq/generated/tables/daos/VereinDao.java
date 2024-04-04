@@ -727,4 +727,19 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByLunchTime(LocalTime... values) {
         return fetch(Verein.VEREIN.LUNCH_TIME, values);
     }
+
+    /**
+     * Fetch records that have <code>phase4_confirmed_at BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfPhase4ConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(Verein.VEREIN.PHASE4_CONFIRMED_AT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>phase4_confirmed_at IN (values)</code>
+     */
+    public List<VereinPojo> fetchByPhase4ConfirmedAt(LocalDateTime... values) {
+        return fetch(Verein.VEREIN.PHASE4_CONFIRMED_AT, values);
+    }
 }
