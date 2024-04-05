@@ -46,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.jooq.JSONB;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -670,11 +671,11 @@ public class VereinService {
         return new VereinMessageDTO(pojo.getMessage(), pojo.getCreatedAt(), pojo.getCreatedBy(), true);
     }
 
-    public List<VereinMessageDTO> broadcast(String username, List<Long> ids, String message) {
-        return ids.stream()
-                  .distinct()
-                  .map(vereinId -> saveMessage(username, vereinId, message))
-                  .toList();
+    @Async
+    public void broadcast(String username, List<Long> ids, String message) {
+        ids.stream()
+           .distinct()
+           .forEach(vereinId -> saveMessage(username, vereinId, message));
     }
 
     public void confirmProgramm(String username, Long vereinId) {

@@ -28,12 +28,13 @@ export class BroadcastComponent {
     broadcast() {
         if (this.config.data) {
             this.saving = true;
-            this.vereineService.broadcast(this.config.data.ids, this.message).subscribe({
-                next: value => {
+            const ids = this.config.data.ids;
+            this.vereineService.broadcast(ids, this.message).subscribe({
+                next: () => {
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Gesendet',
-                        detail: `Broadcast erfolgreich an ${value.length} Vereine gesendet!`,
+                        detail: `Broadcast an ${ids.length} Vereine wurde erfolgreich getriggert!`,
                         life: 5000,
                     });
                     this.saving = false;

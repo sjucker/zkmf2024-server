@@ -225,11 +225,12 @@ public class AdminEndpoint {
 
     @PostMapping(path = "/vereine/broadcast")
     @Secured({"ADMIN"})
-    public ResponseEntity<List<VereinMessageDTO>> broadcast(@AuthenticationPrincipal UserDetails userDetails,
-                                                            @RequestBody BroadcastCreateDTO dto) {
+    public ResponseEntity<Void> broadcast(@AuthenticationPrincipal UserDetails userDetails,
+                                          @RequestBody BroadcastCreateDTO dto) {
         log.info("POST /secured/admin/vereine/broadcast {}", dto);
+        vereinService.broadcast(userDetails.getUsername(), dto.ids(), dto.message());
 
-        return ResponseEntity.ok(vereinService.broadcast(userDetails.getUsername(), dto.ids(), dto.message()));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/vereine/{id}/confirm-programm")
