@@ -58,11 +58,11 @@ export class VereineService {
         return this.httpClient.post<VereinDTO>(`${this.baseUrl}/secured/admin/vereine/${id}/confirm-programm`, undefined);
     }
 
-    broadcast(ids: number[], message: string): Observable<VereinMessageDTO[]> {
+    broadcast(ids: number[], message: string): Observable<void> {
         const request: BroadcastCreateDTO = {
             ids: ids,
             message: message,
         };
-        return this.httpClient.post<VereinMessageDTO[]>(`${this.baseUrl}/secured/admin/vereine/broadcast`, request);
+        return this.httpClient.post<void>(`${this.baseUrl}/secured/admin/vereine/broadcast`, request);
     }
 }
