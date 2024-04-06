@@ -179,13 +179,15 @@ public class VereinService {
         var logoImg = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_LOGO);
         var bildImg = imageRepository.findImageByForeignKeyAndType(verein.getId(), VEREIN_BILD);
 
+        var vereinsanmeldung = MAPPER.toVereinsanmeldungDTO(verein);
+
         return new VereinDTO(
                 verein.getEmail(),
                 MAPPER.toDTO(verein),
                 getDoppeleinsatz(verein.getId()),
                 MAPPER.toDTO(praesident),
                 MAPPER.toDTO(direktion),
-                MAPPER.toVereinsanmeldungDTO(verein),
+                vereinsanmeldung,
                 new VereinsinfoDTO(logoImg.map(ImagePojo::getId).orElse(null),
                                    bildImg.map(ImagePojo::getId).orElse(null),
                                    logoImg.map(ImagePojo::getCloudflareId).orElse(null),
@@ -193,7 +195,7 @@ public class VereinService {
                                    verein.getWebsiteText()),
                 verein.getConfirmedAt() != null,
                 getProgramme(verein.getId()),
-                getAnmeldungDetail(verein.getId()),
+                getAnmeldungDetail(verein.getId(), vereinsanmeldung.hasPartituren()),
                 // only used for export, not important here
                 false,
                 false,
@@ -209,8 +211,8 @@ public class VereinService {
         );
     }
 
-    private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId) {
-        var anmeldungDetail = vereinRepository.getAnmeldungDetail(vereinId);
+    private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId, boolean hasPartituren) {
+        var anmeldungDetail = vereinRepository.getAnmeldungDetail(vereinId, hasPartituren);
         if (anmeldungDetail.adhocOrchesterTeilnehmer().isEmpty()) {
             anmeldungDetail.adhocOrchesterTeilnehmer().add(new AdhocOrchesterTeilnehmerDTO(null, null, null));
         }

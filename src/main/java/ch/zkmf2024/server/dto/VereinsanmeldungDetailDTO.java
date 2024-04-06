@@ -32,7 +32,8 @@ public record VereinsanmeldungDetailDTO(
         String verpflegungHelper3,
         String verpflegungHelper4,
         String verpflegungHelper5,
-        String verpflegungHelper6
+        String verpflegungHelper6,
+        boolean hasPartituren
 ) implements IsValid {
     @Override
     public boolean isValid() {
@@ -40,7 +41,7 @@ public record VereinsanmeldungDetailDTO(
                 isPositive(festkartenMusikerAmount) && isValidAmount() &&
                 (!needsVerpflegungHelfer() || (isNotBlank(verpflegungHelper1) && isNotBlank(verpflegungHelper2) && isNotBlank(verpflegungHelper3) && isNotBlank(verpflegungHelper4))) &&
                 (isNotBlank(anreisePublicTransportType) || isNotBlank(anreiseOtherwise)) &&
-                partiturenSent && partiturenSentAt != null;
+                (!hasPartituren || (partiturenSent && partiturenSentAt != null));
     }
 
     private boolean isValidAmount() {

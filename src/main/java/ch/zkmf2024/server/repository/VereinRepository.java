@@ -859,11 +859,12 @@ public class VereinRepository {
         vereinAnmeldungNichtmitgliederDao.insert(pojos);
     }
 
-    public VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId) {
+    public VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId, boolean hasPartituren) {
         return vereinAnmeldungDetailDao.fetchByFkVerein(vereinId).stream().findFirst()
                                        .map(pojo -> MAPPER.toAnmeldungDetailDto(pojo,
                                                                                 vereinAnmeldungAdhocOrchesterDao.fetchByFkVerein(pojo.getFkVerein()),
-                                                                                vereinAnmeldungNichtmitgliederDao.fetchByFkVerein(pojo.getFkVerein())))
+                                                                                vereinAnmeldungNichtmitgliederDao.fetchByFkVerein(pojo.getFkVerein()),
+                                                                                hasPartituren))
                                        .orElseThrow(() -> new NoSuchElementException("no VereinAnmeldungDetail found for vereinId: " + vereinId));
     }
 
@@ -880,7 +881,8 @@ public class VereinRepository {
                                        .collect(toMap(VereinAnmeldungDetailPojo::getFkVerein,
                                                       pojo -> MAPPER.toAnmeldungDetailDto(pojo,
                                                                                           adhocPerVerein.getOrDefault(pojo.getFkVerein(), List.of()),
-                                                                                          nichtmitgliederPerVerein.getOrDefault(pojo.getFkVerein(), List.of()))));
+                                                                                          nichtmitgliederPerVerein.getOrDefault(pojo.getFkVerein(), List.of()),
+                                                                                          true)));
     }
 
     public void insert(VereinAnmeldungDetailPojo anmeldungDetail) {

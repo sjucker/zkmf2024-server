@@ -63,7 +63,8 @@ public interface VereinMapper {
     @Mapping(target = "verpflegungHelper6", source = "pojo.verpflegungHelper_6")
     VereinsanmeldungDetailDTO toAnmeldungDetailDto(VereinAnmeldungDetailPojo pojo,
                                                    List<VereinAnmeldungAdhocOrchesterPojo> adhocOrchesterTeilnehmer,
-                                                   List<VereinAnmeldungNichtmitgliederPojo> nichtmitglieder);
+                                                   List<VereinAnmeldungNichtmitgliederPojo> nichtmitglieder,
+                                                   boolean hasPartituren);
 
     @Mapping(target = "lunchTime", ignore = true)
     @Mapping(target = "provWettspiel", ignore = true)
@@ -72,6 +73,7 @@ public interface VereinMapper {
     @Mapping(target = "programmLastUpdated", ignore = true)
     @Mapping(target = "phase2ConfirmedBy", ignore = true)
     @Mapping(target = "phase2ConfirmedAt", ignore = true)
+    @Mapping(target = "phase4ConfirmedAt", ignore = true)
     @Mapping(target = "identifier", ignore = true)
     @Mapping(target = "tambouren", ignore = true)
     @Mapping(target = "praesidentKontaktId", ignore = true)
@@ -105,6 +107,10 @@ public interface VereinMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "fkVerein", ignore = true)
+    @Mapping(target = "stageSetup", ignore = true)
+    @Mapping(target = "stageDirigentenpodest", ignore = true)
+    @Mapping(target = "stageAblagenAmount", ignore = true)
+    @Mapping(target = "stageComment", ignore = true)
     @Mapping(target = "verpflegungHelper_1", source = "verpflegungHelper1")
     @Mapping(target = "verpflegungHelper_2", source = "verpflegungHelper2")
     @Mapping(target = "verpflegungHelper_3", source = "verpflegungHelper3")

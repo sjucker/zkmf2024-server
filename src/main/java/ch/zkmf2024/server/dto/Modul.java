@@ -12,21 +12,24 @@ import static ch.zkmf2024.server.dto.Besetzung.TAMBOUREN;
 
 @Getter
 public enum Modul implements HasDescription {
-    A("Konzertmusik", false),
-    B("Unterhaltungsmusik", false),
-    C("Platzkonzerte", false),
-    D("Parademusik traditionell", true),
-    E("Parademusik mit Evolutionen", true),
-    F("Hallen-/Rasenshow", true),
-    G("Tambouren", false),
-    H("Perkussionsensembles", false);
+    A("Konzertmusik", false, true),
+    B("Unterhaltungsmusik", false, true),
+    C("Platzkonzerte", false, false),
+    D("Parademusik traditionell", true, true),
+    E("Parademusik mit Evolutionen", true, true),
+    F("Hallen-/Rasenshow", true, true),
+    G("Tambouren", false, true),
+    H("Perkussionsensembles", false, true);
 
     private final String description;
     private final boolean parademusik;
+    // whether Partituren need to be sent or not
+    private final boolean partituren;
 
-    Modul(String description, boolean parademusik) {
+    Modul(String description, boolean parademusik, boolean partituren) {
         this.description = description;
         this.parademusik = parademusik;
+        this.partituren = partituren;
     }
 
     public Optional<Klasse> getRelevantKlasse(String klasseA, String klasseB, String klasseH) {

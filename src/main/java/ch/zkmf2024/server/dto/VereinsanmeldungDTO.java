@@ -65,6 +65,10 @@ public record VereinsanmeldungDTO(
         return module;
     }
 
+    public boolean hasPartituren() {
+        return getModule().stream().anyMatch(Modul::isPartituren);
+    }
+
     public @NotNull List<Besetzung> getBesetzungen() {
         var besetzungen = new ArrayList<Besetzung>();
         if (harmonie) besetzungen.add(Besetzung.HARMONIE);
