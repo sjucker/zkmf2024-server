@@ -39,6 +39,7 @@ public class SponsoringRepository {
 
     public SponsorDTO getRandom() {
         return jooqDsl.selectFrom(SPONSOR)
+                      .where(SPONSOR.CLOUDFLARE_ID.isNotNull(), SPONSOR.URL.isNotNull())
                       .orderBy(rand())
                       .limit(1)
                       .fetchSingle(it -> new SponsorDTO(it.getName(), it.getCloudflareId(), it.getUrl()));
