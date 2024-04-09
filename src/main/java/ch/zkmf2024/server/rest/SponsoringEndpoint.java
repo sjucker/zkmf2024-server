@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.rest;
 
+import ch.zkmf2024.server.dto.SponsorDTO;
 import ch.zkmf2024.server.dto.SponsoringDTO;
 import ch.zkmf2024.server.service.SponsoringService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,12 @@ public class SponsoringEndpoint {
         log.info("GET /public/sponsoring");
 
         return ResponseEntity.ok(sponsoringService.getSponsoring());
+    }
+
+    @GetMapping("/random")
+    public ResponseEntity<SponsorDTO> getRandom() {
+        log.info("GET /public/sponsoring/random");
+
+        return ResponseEntity.ok(sponsoringService.getRandom());
     }
 }

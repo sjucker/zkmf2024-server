@@ -59,4 +59,8 @@ public class SponsoringService {
             return list;
         }
     }
+
+    public SponsorDTO getRandom() {
+        return sponsoringRepository.getRandom();
+    }
 }
