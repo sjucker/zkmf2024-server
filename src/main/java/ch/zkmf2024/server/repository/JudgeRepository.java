@@ -382,39 +382,55 @@ public class JudgeRepository {
                       .stream()
                       .collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
                       .values().stream()
-                      .map(values -> {
-                          var record1 = values.get(0);
-                          var record2 = values.get(1);
-                          var record3 = values.get(2);
-                          var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
-                          var record4 = modul.isParademusik() ? values.get(3) : null;
+                      .<JudgeReportSummaryDTO>mapMulti((values, consumer) -> {
+                          var modul = Modul.valueOf(values.getFirst().get(VEREIN_PROGRAMM.MODUL));
+                          var valuesPerCategory = values.stream().collect(groupingBy(r -> defaultString(r.get(JUDGE_REPORT.CATEGORY)), toList()));
 
-                          return new JudgeReportSummaryDTO(
-                                  record1.get(VEREIN_PROGRAMM.ID),
-                                  modul.getFullDescription(),
-                                  Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
-                                  Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
-                                  record1.get(VEREIN.VEREINSNAME),
-                                  overallScore(record1, record2, record3, record4, modul).orElse(null),
-                                  values.stream()
-                                        .map(it -> new JudgeReportScoreDTO(
-                                                it.get(JUDGE_REPORT.ID),
-                                                it.get(JUDGE.NAME),
-                                                JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE)).getDescription(),
-                                                it.get(JUDGE_REPORT.SCORE),
-                                                it.get(JUDGE_REPORT.RATING_FIXED),
-                                                JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)) == DONE
-                                        ))
-                                        .toList(),
-                                  isDone(record1, record2, record3),
-                                  record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT) != null,
-                                  record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY),
-                                  record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT)
+                          for (var e : valuesPerCategory.entrySet()) {
+                              // only relevant for Modul G, where there are multiple categories and therefore reports for single timeslot
+                              var category = e.getKey();
+                              var records = e.getValue();
 
-                          );
+                              var record1 = records.get(0);
+                              var record2 = records.get(1);
+                              var record3 = records.get(2);
+                              var record4 = modul.isParademusik() ? records.get(3) : null;
+
+                              consumer.accept(new JudgeReportSummaryDTO(
+                                      record1.get(VEREIN_PROGRAMM.ID),
+                                      getFullDescription(modul, category),
+                                      Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                                      Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                                      record1.get(VEREIN.VEREINSNAME),
+                                      overallScore(record1, record2, record3, record4, modul).orElse(null),
+                                      records.stream()
+                                             .sorted(comparing(it -> it.get(JUDGE_REPORT.ID)))
+                                             .map(it -> new JudgeReportScoreDTO(
+                                                     it.get(JUDGE_REPORT.ID),
+                                                     "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME)),
+                                                     JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE)).getDescription(),
+                                                     it.get(JUDGE_REPORT.SCORE),
+                                                     it.get(JUDGE_REPORT.RATING_FIXED),
+                                                     JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)) == DONE
+                                             ))
+                                             .toList(),
+                                      isDone(record1, record2, record3),
+                                      record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT) != null,
+                                      record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY),
+                                      record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT)
+                              ));
+                          }
                       })
+                      .sorted(comparing(JudgeReportSummaryDTO::modul).thenComparing(JudgeReportSummaryDTO::verein))
                       .toList();
 
+    }
+
+    private String getFullDescription(Modul modul, String category) {
+        return JudgeReportModulCategory.fromString(category)
+                                       .map(JudgeReportModulCategory::getDescription)
+                                       .map(desc -> "%s (%s)".formatted(modul.getFullDescription(), desc))
+                                       .orElse(modul.getFullDescription());
     }
 
     private boolean isDone(Record record1, Record record2, Record record3) {
