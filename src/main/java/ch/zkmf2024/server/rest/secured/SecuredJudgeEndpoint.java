@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
+import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.service.JudgeService;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,14 @@ public class SecuredJudgeEndpoint {
                            .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/view/{id}")
+    @Secured({"JUDGE", "ADMIN", "IMPERSONATE"})
+    public ResponseEntity<JudgeReportViewDTO> get(@PathVariable Long id) {
+        log.info("GET /secured/judge/view/{}", id);
+
+        return ResponseEntity.of(judgeService.getReport(id));
+    }
+
     @PutMapping("/{id}")
     @Secured({"JUDGE"})
     public ResponseEntity<JudgeReportDTO> update(@AuthenticationPrincipal UserDetails userDetails,
@@ -96,7 +105,7 @@ public class SecuredJudgeEndpoint {
     @Secured({"ADMIN"})
     public ResponseEntity<?> confirmScores(@AuthenticationPrincipal UserDetails userDetails,
                                            @PathVariable("programmId") Long programmId) {
-        log.info("GET /secured/judge/confirm-scores/{} {}", programmId, userDetails.getUsername());
+        log.info("POST /secured/judge/confirm-scores/{} {}", programmId, userDetails.getUsername());
 
         judgeService.confirmScores(userDetails.getUsername(), programmId);
 

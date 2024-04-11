@@ -12,6 +12,7 @@ import ch.zkmf2024.server.dto.JudgeReportScoreDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportTitleDTO;
+import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.JudgeRole;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
@@ -68,6 +69,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
+import static java.util.Comparator.nullsLast;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -192,6 +194,38 @@ public class JudgeRepository {
                                   TambourenGrundlage.fromString(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).map(TambourenGrundlage::getDescription).orElse(null),
                                   it.get(JUDGE_REPORT.SCORE),
                                   it.get(JUDGE_REPORT.RATING_FIXED),
+                                  JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
+                                  findTitles(reportId, modul, category.orElse(null)),
+                                  findOverallRatings(reportId, modul, category.orElse(null), role)
+                          );
+                      });
+    }
+
+    public Optional<JudgeReportViewDTO> getReport(Long reportId) {
+        return jooqDsl.select()
+                      .from(JUDGE_REPORT)
+                      .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
+                      .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .where(JUDGE_REPORT.ID.eq(reportId))
+                      .fetchOptional(it -> {
+                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+                          var category = JudgeReportModulCategory.fromString(it.get(JUDGE_REPORT.CATEGORY));
+                          var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
+                          var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE));
+                          var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG));
+
+                          return new JudgeReportViewDTO(
+                                  "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME)),
+                                  modul,
+                                  modul.getFullDescription(),
+                                  klasse.map(Klasse::getDescription).orElse(null),
+                                  besetzung.map(Besetzung::getDescription).orElse(null),
+                                  category.orElse(null),
+                                  category.map(JudgeReportModulCategory::getDescription).orElse(null),
+                                  it.get(VEREIN.VEREINSNAME),
+                                  it.get(JUDGE_REPORT.SCORE),
                                   JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
                                   findTitles(reportId, modul, category.orElse(null)),
                                   findOverallRatings(reportId, modul, category.orElse(null), role)
@@ -421,7 +455,10 @@ public class JudgeRepository {
                               ));
                           }
                       })
-                      .sorted(comparing(JudgeReportSummaryDTO::modul).thenComparing(JudgeReportSummaryDTO::verein))
+                      .sorted(comparing(JudgeReportSummaryDTO::modul)
+                                      .thenComparing(JudgeReportSummaryDTO::klasse, nullsLast(naturalOrder()))
+                                      .thenComparing(JudgeReportSummaryDTO::besetzung, nullsLast(naturalOrder()))
+                                      .thenComparing(JudgeReportSummaryDTO::overallScore, nullsLast(naturalOrder())))
                       .toList();
 
     }
