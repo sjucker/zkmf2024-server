@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
+import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
@@ -79,6 +80,10 @@ public class JudgeService {
         return judgeRepository.findByEmail(username)
                               .flatMap(judge -> judgeRepository.getReport(judge.getId(), reportId));
 
+    }
+
+    public Optional<JudgeReportViewDTO> getReport(Long reportId) {
+        return judgeRepository.getReport(reportId);
     }
 
     public void update(String username, Long reportId, JudgeReportDTO dto) {
