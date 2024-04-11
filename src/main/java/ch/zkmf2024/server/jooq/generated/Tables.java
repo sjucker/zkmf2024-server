@@ -15,6 +15,7 @@ import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
+import ch.zkmf2024.server.jooq.generated.tables.Ranking;
 import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
@@ -97,6 +98,11 @@ public class Tables {
      * The table <code>programm_vorgaben</code>.
      */
     public static final ProgrammVorgaben PROGRAMM_VORGABEN = ProgrammVorgaben.PROGRAMM_VORGABEN;
+
+    /**
+     * The table <code>ranking</code>.
+     */
+    public static final Ranking RANKING = Ranking.RANKING;
 
     /**
      * The table <code>sponsor</code>.
