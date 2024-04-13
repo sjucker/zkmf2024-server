@@ -45,7 +45,7 @@ export class VereineComponent implements OnInit {
             complete: () => {
                 this.loading = false;
             }
-        })
+        });
     }
 
     count(): number {

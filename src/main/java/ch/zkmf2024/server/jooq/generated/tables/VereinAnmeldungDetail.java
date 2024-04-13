@@ -189,6 +189,11 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
      */
     public final TableField<VereinAnmeldungDetailRecord, String> STAGE_COMMENT = createField(DSL.name("stage_comment"), SQLDataType.VARCHAR(4096), this, "");
 
+    /**
+     * The column <code>verein_anmeldung_detail.stage_setup_image</code>.
+     */
+    public final TableField<VereinAnmeldungDetailRecord, byte[]> STAGE_SETUP_IMAGE = createField(DSL.name("stage_setup_image"), SQLDataType.BLOB, this, "");
+
     private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased) {
         this(alias, aliased, null);
     }

@@ -6,6 +6,7 @@ import {JuryComponent} from "./jury/jury.component";
 import {LoginComponent} from "./login/login.component";
 import {NewsletterComponent} from "./newsletter/newsletter.component";
 import {AuthenticationGuard} from "./service/authentication.guard";
+import {StageSetupComponent} from "./stage-setup/stage-setup.component";
 import {TimetableComponent} from "./timetable/timetable.component";
 import {UsersComponent} from "./users/users.component";
 import {VereineComponent} from "./vereine/vereine.component";
@@ -18,6 +19,7 @@ export const USERS_ROUTE = 'users';
 export const JURY_ROUTE = 'jury';
 export const TIMETABLE_ROUTE = 'zeitplan';
 export const ERRATA_ROUTE = 'errata';
+export const STAGE_ROUTE = 'stage';
 
 const canActivateFn: CanActivateFn = () => inject(AuthenticationGuard).canActivate();
 
@@ -61,6 +63,10 @@ const routes: Routes = [
         path: ERRATA_ROUTE,
         component: ErrataComponent,
         canActivate: [canActivateFn],
+    },
+    {
+        path: `${STAGE_ROUTE}/:locationid/:json`,
+        component: StageSetupComponent,
     },
     {
         path: LOGIN_ROUTE, component: LoginComponent,

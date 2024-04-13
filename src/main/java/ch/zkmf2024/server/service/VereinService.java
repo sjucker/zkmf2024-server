@@ -84,6 +84,7 @@ public class VereinService {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final CloudflareService cloudflareService;
+    private final StageService stageService;
     private final DSLContext jooqDsl;
 
     public VereinService(UserRepository userRepository,
@@ -94,6 +95,7 @@ public class VereinService {
                          PasswordEncoder passwordEncoder,
                          MailService mailService,
                          CloudflareService cloudflareService,
+                         StageService stageService,
                          DSLContext jooqDsl) {
         this.userRepository = userRepository;
         this.vereinRepository = vereinRepository;
@@ -103,6 +105,7 @@ public class VereinService {
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
         this.cloudflareService = cloudflareService;
+        this.stageService = stageService;
         this.jooqDsl = jooqDsl;
     }
 
@@ -124,6 +127,7 @@ public class VereinService {
 
     private VereinStageSetupDTO toVereinStageSetupDTO(VereinAnmeldungDetailPojo pojo, LongFunction<String> locationIdentifierGetter) {
         return new VereinStageSetupDTO(
+                pojo.getFkVerein(),
                 locationIdentifierGetter.apply(pojo.getFkVerein()),
                 Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}"),
                 pojo.getStageDirigentenpodest(),
@@ -347,6 +351,9 @@ public class VereinService {
         detail.setStageAblagenAmount(dto.ablagenAmount());
         detail.setStageComment(dto.comment());
         vereinRepository.update(detail);
+
+        // asynchronously generate the stage setup image and store it in DB as well
+        stageService.createStageSetupImage(dto);
     }
 
     private void updateDoppeleinsatz(Long vereinId, List<DoppelEinsatzDTO> doppeleinsatz, boolean mitspielerDoppeleinsatz) {
