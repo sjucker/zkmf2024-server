@@ -13,6 +13,7 @@ import ch.zkmf2024.server.dto.VereinPresentationDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.dto.VereinProgrammTitelDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
+import ch.zkmf2024.server.dto.VereinStageSetupDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VereinTimetableEntryDTO;
 import ch.zkmf2024.server.dto.VereinsangabenDTO;
@@ -51,6 +52,7 @@ import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
 import ch.zkmf2024.server.util.DateUtil;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
+import org.jooq.JSONB;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
@@ -569,6 +571,32 @@ public class VereinRepository {
                       .fetchSingle(it -> it.get(LOCATION.IDENTIFIER));
     }
 
+    public List<VereinStageSetupDTO> findMissingStageSetupImages() {
+        var locationsPerVerein = findRelevantLocationIdentifierPerVereinForStageSetup();
+        return jooqDsl.select()
+                      .from(VEREIN_ANMELDUNG_DETAIL)
+                      .where(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP.isNotNull(),
+                             VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE.isNull())
+                      .fetch(it -> new VereinStageSetupDTO(
+                              it.get(VEREIN_ANMELDUNG_DETAIL.FK_VEREIN),
+                              locationsPerVerein.get(it.get(VEREIN_ANMELDUNG_DETAIL.FK_VEREIN)),
+                              Optional.ofNullable(it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP)).map(JSONB::data).orElse("{}"),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT)
+                      ));
+    }
+
+    private Map<Long, String> findRelevantLocationIdentifierPerVereinForStageSetup() {
+        return jooqDsl.select()
+                      .from(VEREIN_PROGRAMM)
+                      .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
+                      .where(VEREIN_PROGRAMM.MODUL.in(A.name(), B.name(), H.name()),
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                      .fetchMap(VEREIN_PROGRAMM.FK_VEREIN, LOCATION.IDENTIFIER);
+    }
+
     public Optional<VereinPojo> findById(Long id) {
         return jooqDsl.selectFrom(VEREIN)
                       .where(VEREIN.ID.eq(id))
@@ -891,6 +919,12 @@ public class VereinRepository {
 
     public void update(VereinAnmeldungDetailPojo anmeldungDetail) {
         vereinAnmeldungDetailDao.update(anmeldungDetail);
+    }
+
+    public void updateStageSetupImage(Long vereinId, byte[] image) {
+        var pojo = vereinAnmeldungDetailDao.fetchByFkVerein(vereinId).stream().findFirst().orElseThrow();
+        pojo.setStageSetupImage(image);
+        vereinAnmeldungDetailDao.update(pojo);
     }
 
     public List<VereinProgrammPojo> findAllModulDProgramme() {

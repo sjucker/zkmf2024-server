@@ -35,6 +35,7 @@ import {JuryLoginCreateComponent} from './jury-login-create/jury-login-create.co
 import {JuryComponent} from './jury/jury.component';
 import {LoginComponent} from './login/login.component';
 import {NewsletterComponent} from './newsletter/newsletter.component';
+import {StageSetupComponent} from "./stage-setup/stage-setup.component";
 import {TimetableAssignJudgesComponent} from './timetable-assign-judges/timetable-assign-judges.component';
 import {TimetableEntryEditComponent} from './timetable-entry-edit/timetable-entry-edit.component';
 import {TimetableComponent} from './timetable/timetable.component';
@@ -64,6 +65,7 @@ import {VereineComponent} from './vereine/vereine.component';
         TimetableEntryEditComponent,
         ErrataComponent,
         TimetableAssignJudgesComponent,
+        StageSetupComponent,
     ],
     imports: [
         BrowserModule,

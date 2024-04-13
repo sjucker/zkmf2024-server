@@ -25,7 +25,7 @@ export class VereinDetailComponent {
     confirming = false;
 
     canvasId = 'stage-canvas';
-    stageSetup: VereinStageSetupDTO = {stageSetup: "{}", dirigentenpodest: false, locationIdentifier: ""};
+    stageSetup: VereinStageSetupDTO = {stageSetup: "{}", dirigentenpodest: false, locationIdentifier: "", vereinId: 0};
 
     constructor(config: DynamicDialogConfig<VereinDetailInput>,
                 private authenticationService: AuthenticationService,
@@ -65,7 +65,7 @@ export class VereinDetailComponent {
             delay(500)
         ).subscribe((data) => {
             this.stageSetup = data[1];
-            add_viewer(this.canvasId, 900, this.stageSetup.locationIdentifier, this.stageSetup.stageSetup)
+            add_viewer(this.canvasId, 900, this.stageSetup.locationIdentifier, this.stageSetup.stageSetup, false)
         });
     }
 

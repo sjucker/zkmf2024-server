@@ -475,4 +475,19 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
     public List<VereinAnmeldungDetailPojo> fetchByStageComment(String... values) {
         return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT, values);
     }
+
+    /**
+     * Fetch records that have <code>stage_setup_image BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfStageSetupImage(byte[] lowerInclusive, byte[] upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_setup_image IN (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByStageSetupImage(byte[]... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE, values);
+    }
 }
