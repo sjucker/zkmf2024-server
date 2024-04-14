@@ -4,11 +4,15 @@
     <p-button iconPos="left" icon="pi pi-comments" label="Broadcast"
               [disabled]="selected.length < 1 || isReadOnly()"
               (onClick)="openBroadcast()"></p-button>
-    <p-button iconPos="left" icon="pi pi-download" [loading]="exporting" label="Export"
-              (onClick)="export()"></p-button>
+    <div class="flex gap-2">
+        <p-button iconPos="left" icon="pi pi-download" [loading]="exporting()" label="Export"
+                  (onClick)="export()"></p-button>
+        <p-button iconPos="left" icon="pi pi-download" [loading]="exportingStageSetups()" label="Bühnenpläne"
+                  (onClick)="exportStageSetups()"></p-button>
+    </div>
 </div>
 <p-table [value]="data"
-         [loading]="loading"
+         [loading]="loading()"
          [(selection)]="selected"
          styleClass="p-datatable-sm p-datatable-striped p-datatable-gridlines">
     <ng-template pTemplate="caption">
@@ -90,7 +94,7 @@
                     <i class="pi pi-comments" [ngStyle]="{'color': dto.hasMessages ? '' : 'lightgrey' }"></i>
                 </div>
             </td>
-            <td>{{dto.vereinsname}}</td>
+            <td>{{ dto.vereinsname }}</td>
             <td><i class="pi pi-star" *ngIf="dto.registrationConfirmed"></i></td>
             <td><i [ngClass]="getPhaseStatusIcon(dto.phase1)"></i></td>
             <td [ngClass]="{'confirmed': dto.phase2Confirmed}">
@@ -99,20 +103,20 @@
             <td [ngClass]="{'confirmed': dto.phase4Confirmed}">
                 <i [ngClass]="getPhaseStatusIcon(dto.phase4)"></i>
             </td>
-            <td>{{dto.programmLastUpdated | date: 'dd.MM.yyyy HH:mm'}}</td>
-            <td>{{formatBoolean(dto.modulA)}}</td>
-            <td>{{formatBoolean(dto.modulB)}}</td>
-            <td>{{formatBoolean(dto.modulC)}}</td>
-            <td>{{formatBoolean(dto.modulD)}}</td>
-            <td>{{formatBoolean(dto.modulE)}}</td>
-            <td>{{formatBoolean(dto.modulF)}}</td>
-            <td>{{formatBoolean(dto.modulG)}}</td>
-            <td>{{formatBoolean(dto.modulH)}}</td>
-            <td>{{formatKlasse(dto.klasseModulA)}}</td>
-            <td>{{formatKlasse(dto.klasseModulB)}}</td>
+            <td>{{ dto.programmLastUpdated | date: 'dd.MM.yyyy HH:mm' }}</td>
+            <td>{{ formatBoolean(dto.modulA) }}</td>
+            <td>{{ formatBoolean(dto.modulB) }}</td>
+            <td>{{ formatBoolean(dto.modulC) }}</td>
+            <td>{{ formatBoolean(dto.modulD) }}</td>
+            <td>{{ formatBoolean(dto.modulE) }}</td>
+            <td>{{ formatBoolean(dto.modulF) }}</td>
+            <td>{{ formatBoolean(dto.modulG) }}</td>
+            <td>{{ formatBoolean(dto.modulH) }}</td>
+            <td>{{ formatKlasse(dto.klasseModulA) }}</td>
+            <td>{{ formatKlasse(dto.klasseModulB) }}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-        Total: {{count()}}
+        Total: {{ count() }}
     </ng-template>
 </p-table>

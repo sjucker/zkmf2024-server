@@ -40,6 +40,12 @@ export class VereineService {
         });
     }
 
+    exportStageSetups(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/stage-setups`, {
+            responseType: 'blob'
+        });
+    }
+
     saveComment(id: number, comment: string): Observable<VereinCommentDTO> {
         const request: VereinCommentCreateDTO = {
             comment: comment
