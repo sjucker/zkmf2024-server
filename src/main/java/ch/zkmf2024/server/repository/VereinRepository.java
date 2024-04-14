@@ -930,4 +930,36 @@ public class VereinRepository {
     public List<VereinProgrammPojo> findAllModulDProgramme() {
         return vereinProgrammDao.fetchByModul(D.name());
     }
+
+    public List<StageSetupExport> getAllStageSetupsForExport() {
+        return jooqDsl.select()
+                      .from(VEREIN_ANMELDUNG_DETAIL)
+                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_ANMELDUNG_DETAIL.FK_VEREIN))
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
+                      .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
+                      .where(VEREIN_PROGRAMM.MODUL.in(A.name(), B.name(), H.name()),
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL),
+                             VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE.isNotNull())
+                      .fetch(it -> new StageSetupExport(
+                              it.get(VEREIN.VEREINSNAME),
+                              it.get(LOCATION.NAME),
+                              it.get(TIMETABLE_ENTRY.DATE),
+                              it.get(TIMETABLE_ENTRY.START_TIME),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT)
+                      ));
+    }
+
+    public record StageSetupExport(String verein,
+                                   String location,
+                                   LocalDate date,
+                                   LocalTime time,
+                                   byte[] image,
+                                   boolean dirigentenpodest,
+                                   Integer ablagenAmount,
+                                   String comment) {
+    }
 }

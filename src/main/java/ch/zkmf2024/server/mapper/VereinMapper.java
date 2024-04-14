@@ -111,6 +111,7 @@ public interface VereinMapper {
     @Mapping(target = "stageDirigentenpodest", ignore = true)
     @Mapping(target = "stageAblagenAmount", ignore = true)
     @Mapping(target = "stageComment", ignore = true)
+    @Mapping(target = "stageSetupImage", ignore = true)
     @Mapping(target = "verpflegungHelper_1", source = "verpflegungHelper1")
     @Mapping(target = "verpflegungHelper_2", source = "verpflegungHelper2")
     @Mapping(target = "verpflegungHelper_3", source = "verpflegungHelper3")

@@ -26,6 +26,7 @@ import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
 import ch.zkmf2024.server.service.JudgeService;
 import ch.zkmf2024.server.service.NewsletterService;
+import ch.zkmf2024.server.service.StageService;
 import ch.zkmf2024.server.service.TimetableService;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +67,7 @@ public class AdminEndpoint {
     private final JudgeService judgeService;
     private final TimetableService timetableService;
     private final ErrataService errataService;
+    private final StageService stageService;
 
     public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService,
@@ -73,7 +75,8 @@ public class AdminEndpoint {
                          ExportService exportService,
                          JudgeService judgeService,
                          TimetableService timetableService,
-                         ErrataService errataService) {
+                         ErrataService errataService,
+                         StageService stageService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.vereinService = vereinService;
@@ -81,6 +84,7 @@ public class AdminEndpoint {
         this.judgeService = judgeService;
         this.timetableService = timetableService;
         this.errataService = errataService;
+        this.stageService = stageService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -102,6 +106,13 @@ public class AdminEndpoint {
     public ResponseEntity<Resource> exportVereine() throws IOException {
         log.info("GET /secured/admin/download/vereine");
         return export(exportService.exportVereine());
+    }
+
+    @GetMapping(path = "/download/stage-setups")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<Resource> exportStageSetups() {
+        log.info("GET /secured/admin/download/stage-setups");
+        return export(stageService.createPdf().orElseThrow());
     }
 
     private ResponseEntity<Resource> export(File file) {

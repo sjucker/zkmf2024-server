@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {saveAs} from "file-saver";
 import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -18,8 +18,9 @@ import {VereinMessagesComponent, VereinMessagesInput} from "../verein-messages/v
 export class VereineComponent implements OnInit {
     data: VereinOverviewDTO[] = [];
     selected: VereinOverviewDTO[] = [];
-    loading = false;
-    exporting = false;
+    loading = signal(false);
+    exporting = signal(false);
+    exportingStageSetups = signal(false);
 
     ref?: DynamicDialogRef;
 
@@ -34,7 +35,7 @@ export class VereineComponent implements OnInit {
     }
 
     private loadData() {
-        this.loading = true;
+        this.loading.set(true);
         this.vereineService.getAll().subscribe({
             next: value => {
                 this.data = value;
@@ -43,7 +44,7 @@ export class VereineComponent implements OnInit {
                 this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText, life: 3000})
             },
             complete: () => {
-                this.loading = false;
+                this.loading.set(false);
             }
         });
     }
@@ -156,13 +157,13 @@ export class VereineComponent implements OnInit {
     }
 
     export() {
-        this.exporting = true;
+        this.exporting.set(true);
         this.vereineService.export().subscribe({
             next: response => {
                 saveAs(response, "vereine-export.xlsx");
             },
             error: error => {
-                this.exporting = false;
+                this.exporting.set(false);
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Fehler',
@@ -171,7 +172,28 @@ export class VereineComponent implements OnInit {
                 });
             },
             complete: () => {
-                this.exporting = false;
+                this.exporting.set(false);
+            }
+        });
+    }
+
+    exportStageSetups() {
+        this.exportingStageSetups.set(true);
+        this.vereineService.exportStageSetups().subscribe({
+            next: response => {
+                saveAs(response, "buehnenplaene.pdf");
+            },
+            error: error => {
+                this.exportingStageSetups.set(false);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exportingStageSetups.set(false);
             }
         });
     }
