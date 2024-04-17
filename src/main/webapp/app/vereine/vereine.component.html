@@ -1,14 +1,15 @@
 <p-toast position="top-center"></p-toast>
 <p-confirmDialog></p-confirmDialog>
-<div class="m-2 flex justify-content-between">
+<div class="m-2 flex flex-column md:flex-row justify-content-between gap-2">
     <p-button iconPos="left" icon="pi pi-comments" label="Broadcast"
               [disabled]="selected.length < 1 || isReadOnly()"
               (onClick)="openBroadcast()"></p-button>
-    <div class="flex gap-2">
+    <div class="flex gap-2 justify-content-between">
         <p-button iconPos="left" icon="pi pi-download" [loading]="exporting()" label="Export"
                   (onClick)="export()"></p-button>
+        <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
         <p-button iconPos="left" icon="pi pi-download" [loading]="exportingStageSetups()" label="Bühnenpläne"
-                  (onClick)="exportStageSetups()"></p-button>
+                  (onClick)="menu.toggle($event)"></p-button>
     </div>
 </div>
 <p-table [value]="data"

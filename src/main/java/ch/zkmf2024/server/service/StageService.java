@@ -78,12 +78,13 @@ public class StageService {
         }
     }
 
-    public Optional<File> createPdf() {
+    public Optional<File> createPdf(String locationIdentifier) {
         try (var document = new PDDocument()) {
             var font = new PDType1Font(HELVETICA);
             var fontBold = new PDType1Font(HELVETICA_BOLD);
 
             for (var stageSetupExport : vereinRepository.getAllStageSetupsForExport().stream()
+                                                        .filter(stageSetupExport -> locationIdentifier == null || locationIdentifier.equals(stageSetupExport.locationIdentifier()))
                                                         .sorted(comparing(StageSetupExport::location).thenComparing(StageSetupExport::date).thenComparing(StageSetupExport::time))
                                                         .toList()) {
 

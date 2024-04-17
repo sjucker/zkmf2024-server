@@ -944,6 +944,7 @@ public class VereinRepository {
                       .fetch(it -> new StageSetupExport(
                               it.get(VEREIN.VEREINSNAME),
                               it.get(LOCATION.NAME),
+                              it.get(LOCATION.IDENTIFIER),
                               it.get(TIMETABLE_ENTRY.DATE),
                               it.get(TIMETABLE_ENTRY.START_TIME),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE),
@@ -955,6 +956,7 @@ public class VereinRepository {
 
     public record StageSetupExport(String verein,
                                    String location,
+                                   String locationIdentifier,
                                    LocalDate date,
                                    LocalTime time,
                                    byte[] image,

@@ -15,6 +15,7 @@ import {DialogService, DynamicDialogModule} from "primeng/dynamicdialog";
 import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ListboxModule} from "primeng/listbox";
+import {MenuModule} from "primeng/menu";
 import {MenubarModule} from "primeng/menubar";
 import {OrderListModule} from "primeng/orderlist";
 import {PanelModule} from "primeng/panel";
@@ -91,7 +92,8 @@ import {VereineComponent} from './vereine/vereine.component';
         PasswordModule,
         OrderListModule,
         CalendarModule,
-        DropdownModule
+        DropdownModule,
+        MenuModule
     ],
     providers: [
         MessageService,

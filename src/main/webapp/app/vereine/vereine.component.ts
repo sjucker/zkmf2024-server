@@ -1,6 +1,6 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {saveAs} from "file-saver";
-import {MessageService} from "primeng/api";
+import {MenuItem, MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {BroadcastComponent, BroadcastInput} from "../broadcast/broadcast.component";
 import {Klasse, PhaseStatus, VereinOverviewDTO} from "../rest";
@@ -22,6 +22,8 @@ export class VereineComponent implements OnInit {
     exporting = signal(false);
     exportingStageSetups = signal(false);
 
+    menuItems: MenuItem[] = [];
+
     ref?: DynamicDialogRef;
 
     constructor(private vereineService: VereineService,
@@ -32,6 +34,16 @@ export class VereineComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadData();
+
+        this.menuItems = [
+            {label: 'Salmensaal Schlieren', command: () => this.exportStageSetups('salmensaal-schlieren')},
+            {label: 'Reformierte Kirche Urdorf', command: () => this.exportStageSetups('reformierte-kirche-urdorf')},
+            {label: 'Zentrumshalle Urdorf', command: () => this.exportStageSetups('zentrumshalle-urdorf')},
+            {label: 'Grosse Ref. Kirche Schlieren', command: () => this.exportStageSetups('grosse-ref-kirche-schlieren')},
+            {label: 'Embrisaal Urdorf', command: () => this.exportStageSetups('embrisaal-urdorf')},
+            {label: 'Turnhalle Weihermatt Urdorf', command: () => this.exportStageSetups('turnhalle-weihermatt-urdorf')},
+            {label: 'Alle', command: () => this.exportStageSetups()},
+        ];
     }
 
     private loadData() {
@@ -177,11 +189,11 @@ export class VereineComponent implements OnInit {
         });
     }
 
-    exportStageSetups() {
+    exportStageSetups(locationIdentifier?: string) {
         this.exportingStageSetups.set(true);
-        this.vereineService.exportStageSetups().subscribe({
+        this.vereineService.exportStageSetups(locationIdentifier).subscribe({
             next: response => {
-                saveAs(response, "buehnenplaene.pdf");
+                saveAs(response, locationIdentifier ? `buehnenplaene-${locationIdentifier}.pdf` : `buehnenplaene.pdf`);
             },
             error: error => {
                 this.exportingStageSetups.set(false);

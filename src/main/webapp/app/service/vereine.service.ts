@@ -40,8 +40,12 @@ export class VereineService {
         });
     }
 
-    exportStageSetups(): Observable<Blob> {
-        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/stage-setups`, {
+    exportStageSetups(locationIdentifier?: string): Observable<Blob> {
+        const url = locationIdentifier
+            ? `${this.baseUrl}/secured/admin/download/stage-setups/${locationIdentifier}`
+            : `${this.baseUrl}/secured/admin/download/stage-setups`;
+
+        return this.httpClient.get(url, {
             responseType: 'blob'
         });
     }

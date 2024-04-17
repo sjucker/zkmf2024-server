@@ -108,11 +108,11 @@ public class AdminEndpoint {
         return export(exportService.exportVereine());
     }
 
-    @GetMapping(path = "/download/stage-setups")
+    @GetMapping(path = {"/download/stage-setups", "/download/stage-setups/{locationIdentifier}"})
     @Secured({"ADMIN", "ADMIN_READ_ONLY"})
-    public ResponseEntity<Resource> exportStageSetups() {
-        log.info("GET /secured/admin/download/stage-setups");
-        return export(stageService.createPdf().orElseThrow());
+    public ResponseEntity<Resource> exportStageSetups(@PathVariable(required = false) String locationIdentifier) {
+        log.info("GET /secured/admin/download/stage-setups/{}", locationIdentifier);
+        return export(stageService.createPdf(locationIdentifier).orElseThrow());
     }
 
     private ResponseEntity<Resource> export(File file) {
