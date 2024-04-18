@@ -1,5 +1,6 @@
 package ch.zkmf2024.server;
 
+import ch.zkmf2024.server.service.FirebaseMessagingService;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,11 @@ public abstract class AbstractIntegrationTest {
         @Bean
         public JavaMailSender javaMailSender() {
             return mock(JavaMailSender.class);
+        }
+
+        @Bean
+        public FirebaseMessagingService firebaseMessagingService() {
+            return mock(FirebaseMessagingService.class);
         }
     }
 
