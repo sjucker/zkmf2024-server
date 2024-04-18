@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,5 +36,10 @@ public class AppPageService {
             throw new IllegalArgumentException("ID from path does not match ID in DTO!");
         }
         appPageRepository.update(new AppPagePojo(id, dto.markdown(), dto.cloudflareId()));
+    }
+
+    public Optional<AppPageDTO> find(Long id) {
+        return appPageRepository.findById(id)
+                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getCloudflareId()));
     }
 }

@@ -6,6 +6,7 @@ import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AppPageRepository {
@@ -26,5 +27,9 @@ public class AppPageRepository {
 
     public void update(AppPagePojo pojo) {
         appPageDao.update(pojo);
+    }
+
+    public Optional<AppPagePojo> findById(Long id) {
+        return appPageDao.findOptionalById(id);
     }
 }
