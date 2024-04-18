@@ -1,1 +1,6 @@
 node
+target/webapp
+target/classes
+target/**.jar.original
+node_modules/primeng
+node_modules/@angular
