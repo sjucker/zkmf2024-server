@@ -35,11 +35,11 @@ public class AppPageService {
         if (!Objects.equals(id, dto.id())) {
             throw new IllegalArgumentException("ID from path does not match ID in DTO!");
         }
-        appPageRepository.update(new AppPagePojo(id, dto.markdown(), dto.cloudflareId()));
+        appPageRepository.update(new AppPagePojo(id, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null)));
     }
 
     public Optional<AppPageDTO> find(Long id) {
         return appPageRepository.findById(id)
-                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getCloudflareId()));
+                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), defaultIfBlank(pojo.getCloudflareId(), null)));
     }
 }
