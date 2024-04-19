@@ -14,7 +14,9 @@ export class MobileAppEditComponent implements OnInit {
 
     dto: AppPageDTO = {
         id: 0,
-        markdown: ''
+        markdown: '',
+        title: '',
+        news: false
     };
 
     saving = signal(false);

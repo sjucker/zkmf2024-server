@@ -8,6 +8,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {CalendarModule} from "primeng/calendar";
+import {CheckboxModule} from "primeng/checkbox";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogModule} from "primeng/dialog";
 import {DropdownModule} from "primeng/dropdown";
@@ -99,7 +100,8 @@ import {VereineComponent} from './vereine/vereine.component';
         OrderListModule,
         CalendarModule,
         DropdownModule,
-        MenuModule
+        MenuModule,
+        CheckboxModule
     ],
     providers: [
         MessageService,

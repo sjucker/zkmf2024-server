@@ -95,4 +95,34 @@ public class AppPageDao extends DAOImpl<AppPageRecord, AppPagePojo, Long> {
     public List<AppPagePojo> fetchByCloudflareId(String... values) {
         return fetch(AppPage.APP_PAGE.CLOUDFLARE_ID, values);
     }
+
+    /**
+     * Fetch records that have <code>title BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<AppPagePojo> fetchRangeOfTitle(String lowerInclusive, String upperInclusive) {
+        return fetchRange(AppPage.APP_PAGE.TITLE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>title IN (values)</code>
+     */
+    public List<AppPagePojo> fetchByTitle(String... values) {
+        return fetch(AppPage.APP_PAGE.TITLE, values);
+    }
+
+    /**
+     * Fetch records that have <code>news BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<AppPagePojo> fetchRangeOfNews(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(AppPage.APP_PAGE.NEWS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>news IN (values)</code>
+     */
+    public List<AppPagePojo> fetchByNews(Boolean... values) {
+        return fetch(AppPage.APP_PAGE.NEWS, values);
+    }
 }

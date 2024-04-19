@@ -41,6 +41,26 @@ public interface IAppPage extends Serializable {
      */
     public String getCloudflareId();
 
+    /**
+     * Setter for <code>app_page.title</code>.
+     */
+    public void setTitle(String value);
+
+    /**
+     * Getter for <code>app_page.title</code>.
+     */
+    public String getTitle();
+
+    /**
+     * Setter for <code>app_page.news</code>.
+     */
+    public void setNews(Boolean value);
+
+    /**
+     * Getter for <code>app_page.news</code>.
+     */
+    public Boolean getNews();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

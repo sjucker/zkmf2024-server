@@ -8,12 +8,12 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.AppPageRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function3;
+import org.jooq.Function5;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row3;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -61,6 +61,16 @@ public class AppPage extends TableImpl<AppPageRecord> {
      * The column <code>app_page.cloudflare_id</code>.
      */
     public final TableField<AppPageRecord, String> CLOUDFLARE_ID = createField(DSL.name("cloudflare_id"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>app_page.title</code>.
+     */
+    public final TableField<AppPageRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(255).nullable(false).defaultValue(DSL.field(DSL.raw("''::character varying"), SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>app_page.news</code>.
+     */
+    public final TableField<AppPageRecord, Boolean> NEWS = createField(DSL.name("news"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     private AppPage(Name alias, Table<AppPageRecord> aliased) {
         this(alias, aliased, null);
@@ -150,18 +160,18 @@ public class AppPage extends TableImpl<AppPageRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<Long, String, String> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row5<Long, String, String, String, Boolean> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function3<? super Long, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function5<? super Long, ? super String, ? super String, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -169,7 +179,7 @@ public class AppPage extends TableImpl<AppPageRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function3<? super Long, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function5<? super Long, ? super String, ? super String, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

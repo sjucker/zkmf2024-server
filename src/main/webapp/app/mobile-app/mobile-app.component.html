@@ -11,18 +11,22 @@
     <ng-template pTemplate="header">
         <tr>
             <th>ID</th>
+            <th>Titel</th>
             <th>Text</th>
             <th>Cloudflare-ID</th>
+            <th>in News</th>
             <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-dto>
         <tr>
             <td class="vertical-align-top">{{ dto.id }}</td>
+            <td class="vertical-align-top">{{ dto.title }}</td>
             <td class="vertical-align-top">
                 <pre>{{ dto.markdown }}</pre>
             </td>
             <td class="vertical-align-top">{{ dto.cloudflareId }}</td>
+            <td class="vertical-align-top">{{ dto.news ? 'Ja' : 'Nein' }}</td>
             <td class="vertical-align-top">
                 <div class="cursor-pointer" (click)="openEditPage(dto)"><i class="pi pi-pencil"></i></div>
             </td>

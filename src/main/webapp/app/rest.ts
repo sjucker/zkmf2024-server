@@ -9,6 +9,8 @@ export interface AdhocOrchesterTeilnehmerDTO {
 export interface AppPageDTO {
     id: number;
     markdown: string;
+    title: string;
+    news: boolean;
     cloudflareId?: string;
 }
 
@@ -518,6 +520,8 @@ export interface VerifyEmailRequestDTO {
 
 export interface AppPageCreateDTO {
     markdown: string;
+    title: string;
+    news: boolean;
     cloudflareId?: string;
 }
 

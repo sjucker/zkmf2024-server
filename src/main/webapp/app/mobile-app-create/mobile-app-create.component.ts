@@ -1,6 +1,7 @@
 import {Component, signal} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {DynamicDialogRef} from "primeng/dynamicdialog";
+import {AppPageCreateDTO} from "../rest";
 import {MobileAppService} from "../service/app.service";
 import {AuthenticationService} from "../service/authentication.service";
 
@@ -11,8 +12,11 @@ import {AuthenticationService} from "../service/authentication.service";
 })
 export class MobileAppCreateComponent {
 
-    markdown = '';
-    cloudflareId = '';
+    dto: AppPageCreateDTO = {
+        markdown: '',
+        title: '',
+        news: false
+    };
 
     saving = signal(false);
 
@@ -23,9 +27,9 @@ export class MobileAppCreateComponent {
     }
 
     save() {
-        if (this.markdown) {
+        if (this.dto.markdown) {
             this.saving.set(true);
-            this.service.create({markdown: this.markdown, cloudflareId: this.cloudflareId}).subscribe({
+            this.service.create(this.dto).subscribe({
                 next: () => {
                     this.saving.set(false);
                     this.close();

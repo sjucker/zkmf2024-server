@@ -16,6 +16,8 @@ public class AppPagePojo implements IAppPage {
     private Long id;
     private String markdown;
     private String cloudflareId;
+    private String title;
+    private Boolean news;
 
     public AppPagePojo() {
     }
@@ -24,16 +26,22 @@ public class AppPagePojo implements IAppPage {
         this.id = value.getId();
         this.markdown = value.getMarkdown();
         this.cloudflareId = value.getCloudflareId();
+        this.title = value.getTitle();
+        this.news = value.getNews();
     }
 
     public AppPagePojo(
             Long id,
             String markdown,
-            String cloudflareId
+            String cloudflareId,
+            String title,
+            Boolean news
     ) {
         this.id = id;
         this.markdown = markdown;
         this.cloudflareId = cloudflareId;
+        this.title = title;
+        this.news = news;
     }
 
     /**
@@ -84,6 +92,38 @@ public class AppPagePojo implements IAppPage {
         this.cloudflareId = cloudflareId;
     }
 
+    /**
+     * Getter for <code>app_page.title</code>.
+     */
+    @Override
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Setter for <code>app_page.title</code>.
+     */
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * Getter for <code>app_page.news</code>.
+     */
+    @Override
+    public Boolean getNews() {
+        return this.news;
+    }
+
+    /**
+     * Setter for <code>app_page.news</code>.
+     */
+    @Override
+    public void setNews(Boolean news) {
+        this.news = news;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -108,6 +148,16 @@ public class AppPagePojo implements IAppPage {
                 return false;
         } else if (!this.cloudflareId.equals(other.cloudflareId))
             return false;
+        if (this.title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!this.title.equals(other.title))
+            return false;
+        if (this.news == null) {
+            if (other.news != null)
+                return false;
+        } else if (!this.news.equals(other.news))
+            return false;
         return true;
     }
 
@@ -118,6 +168,8 @@ public class AppPagePojo implements IAppPage {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.markdown == null) ? 0 : this.markdown.hashCode());
         result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
+        result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
+        result = prime * result + ((this.news == null) ? 0 : this.news.hashCode());
         return result;
     }
 
@@ -128,6 +180,8 @@ public class AppPagePojo implements IAppPage {
         sb.append(id);
         sb.append(", ").append(markdown);
         sb.append(", ").append(cloudflareId);
+        sb.append(", ").append(title);
+        sb.append(", ").append(news);
 
         sb.append(")");
         return sb.toString();
@@ -142,6 +196,8 @@ public class AppPagePojo implements IAppPage {
         setId(from.getId());
         setMarkdown(from.getMarkdown());
         setCloudflareId(from.getCloudflareId());
+        setTitle(from.getTitle());
+        setNews(from.getNews());
     }
 
     @Override

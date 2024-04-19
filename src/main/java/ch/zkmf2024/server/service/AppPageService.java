@@ -25,23 +25,23 @@ public class AppPageService {
 
     public List<AppPageDTO> getAll() {
         return appPageRepository.findAll().stream()
-                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getCloudflareId()))
+                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getNews(), pojo.getCloudflareId()))
                                 .toList();
     }
 
     public void insert(AppPageCreateDTO dto) {
-        appPageRepository.insert(new AppPagePojo(null, dto.markdown(), dto.cloudflareId()));
+        appPageRepository.insert(new AppPagePojo(null, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news()));
     }
 
     public void update(Long id, AppPageDTO dto) {
         if (!Objects.equals(id, dto.id())) {
             throw new IllegalArgumentException("ID from path does not match ID in DTO!");
         }
-        appPageRepository.update(new AppPagePojo(id, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null)));
+        appPageRepository.update(new AppPagePojo(id, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news()));
     }
 
     public Optional<AppPageDTO> find(Long id) {
         return appPageRepository.findById(id)
-                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), defaultIfBlank(pojo.getCloudflareId(), null)));
+                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getNews(), pojo.getCloudflareId()));
     }
 }
