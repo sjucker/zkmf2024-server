@@ -572,8 +572,11 @@ export interface LocationSelectionDTO {
     name: string;
 }
 
-export interface SendMessageDTO {
-    route?: string;
+export interface MessageSendDTO {
+    type: MessageType;
+    title: string;
+    body: string;
+    route: string;
 }
 
 export interface TimetableEntryCreateDTO {
@@ -902,6 +905,11 @@ export enum Besetzung {
     FANFARE = "FANFARE",
     TAMBOUREN = "TAMBOUREN",
     PERKUSSIONSENSEMBLE = "PERKUSSIONSENSEMBLE",
+}
+
+export enum MessageType {
+    EMERGENCY = "EMERGENCY",
+    GENERAL = "GENERAL",
 }
 
 export enum TimetableEntryType {

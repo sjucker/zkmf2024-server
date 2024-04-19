@@ -15,7 +15,7 @@ import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
-import ch.zkmf2024.server.dto.admin.SendMessageDTO;
+import ch.zkmf2024.server.dto.admin.MessageSendDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.UserCreateDTO;
@@ -388,10 +388,10 @@ public class AdminEndpoint {
 
     @PostMapping("/messaging")
     @Secured({"ADMIN"})
-    public ResponseEntity<Void> messaging(@RequestBody SendMessageDTO dto) {
+    public ResponseEntity<Void> messaging(@RequestBody @Valid MessageSendDTO dto) {
         log.info("POST /secured/admin/messaging {}", dto);
 
-        firebaseMessagingService.sendToEmergencyTopic("Test", "body", dto.route());
+        firebaseMessagingService.send(dto);
 
         return ResponseEntity.ok().build();
     }

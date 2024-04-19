@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.admin.MessageSendDTO;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -21,12 +22,11 @@ public class FirebaseMessagingService {
         this.firebaseMessaging = firebaseMessaging;
     }
 
-    public void sendToEmergencyTopic(String title, String body, String route) {
-        sendToTopic(EMERGENCY_TOPIC, title, body, route);
-    }
-
-    public void sendToGeneralTopic(String title, String body) {
-        sendToTopic(GENERAL_TOPIC, title, body, null);
+    public void send(MessageSendDTO dto) {
+        switch (dto.type()) {
+            case EMERGENCY -> sendToTopic(EMERGENCY_TOPIC, dto.title(), dto.body(), dto.route());
+            case GENERAL -> sendToTopic(GENERAL_TOPIC, dto.title(), dto.body(), dto.route());
+        }
     }
 
     public void sendToTopic(String topic, String title, String body, String route) {
