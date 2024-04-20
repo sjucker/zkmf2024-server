@@ -13,8 +13,9 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Slf4j
 @Service
 public class FirebaseMessagingService {
-    public static final String EMERGENCY_TOPIC = "emergency";
-    public static final String GENERAL_TOPIC = "general";
+    private static final String EMERGENCY_TOPIC = "emergency";
+    private static final String GENERAL_TOPIC = "general";
+    private static final String VEREIN_TOPIC = "favorite-%s";
 
     private final FirebaseMessaging firebaseMessaging;
 
@@ -27,6 +28,10 @@ public class FirebaseMessagingService {
             case EMERGENCY -> sendToTopic(EMERGENCY_TOPIC, dto.title(), dto.body(), dto.route());
             case GENERAL -> sendToTopic(GENERAL_TOPIC, dto.title(), dto.body(), dto.route());
         }
+    }
+
+    public void sendToFavoritedVerein(String identifier, String title, String body) {
+        sendToTopic(VEREIN_TOPIC.formatted(identifier), title, body, "/vereine/%s".formatted(identifier));
     }
 
     public void sendToTopic(String topic, String title, String body, String route) {

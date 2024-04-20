@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 
 @Slf4j
@@ -25,7 +26,7 @@ public class AppPageService {
 
     public List<AppPageDTO> getAll() {
         return appPageRepository.findAll().stream()
-                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getNews(), pojo.getCloudflareId()))
+                                .map(AppPageService::toDTO)
                                 .toList();
     }
 
@@ -42,6 +43,18 @@ public class AppPageService {
 
     public Optional<AppPageDTO> find(Long id) {
         return appPageRepository.findById(id)
-                                .map(pojo -> new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getNews(), pojo.getCloudflareId()));
+                                .map(AppPageService::toDTO);
+    }
+
+    public List<AppPageDTO> getNews() {
+        return appPageRepository.findAll().stream()
+                                .filter(AppPagePojo::getNews)
+                                .map(AppPageService::toDTO)
+                                .sorted(comparing(AppPageDTO::id).reversed())
+                                .toList();
+    }
+
+    private static AppPageDTO toDTO(AppPagePojo pojo) {
+        return new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getNews(), pojo.getCloudflareId());
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/public/app-page")
@@ -25,5 +27,12 @@ public class AppPageEndpoint {
         log.info("GET /public/app-page/{}", id);
 
         return ResponseEntity.of(appPageService.find(id));
+    }
+
+    @GetMapping("/news")
+    public ResponseEntity<List<AppPageDTO>> news() {
+        log.info("GET /public/app-page/news");
+
+        return ResponseEntity.ok(appPageService.getNews());
     }
 }
