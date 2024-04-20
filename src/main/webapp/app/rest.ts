@@ -573,6 +573,12 @@ export interface LocationSelectionDTO {
     name: string;
 }
 
+export interface MessageFavoriteDTO {
+    identifier: string;
+    title: string;
+    body: string;
+}
+
 export interface MessageSendDTO {
     type: MessageType;
     title: string;

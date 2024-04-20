@@ -15,6 +15,7 @@ import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
+import ch.zkmf2024.server.dto.admin.MessageFavoriteDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
@@ -390,6 +391,16 @@ public class AdminEndpoint {
     @Secured({"ADMIN"})
     public ResponseEntity<Void> messaging(@RequestBody @Valid MessageSendDTO dto) {
         log.info("POST /secured/admin/messaging {}", dto);
+
+        firebaseMessagingService.send(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/messaging/favorite")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> messagingFavorite(@RequestBody @Valid MessageFavoriteDTO dto) {
+        log.info("POST /secured/admin/messaging/favorite {}", dto);
 
         firebaseMessagingService.send(dto);
 

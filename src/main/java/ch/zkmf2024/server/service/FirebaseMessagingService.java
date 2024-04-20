@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.admin.MessageFavoriteDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendDTO;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -30,8 +31,8 @@ public class FirebaseMessagingService {
         }
     }
 
-    public void sendToFavoritedVerein(String identifier, String title, String body) {
-        sendToTopic(VEREIN_TOPIC.formatted(identifier), title, body, "/vereine/%s".formatted(identifier));
+    public void send(MessageFavoriteDTO dto) {
+        sendToTopic(VEREIN_TOPIC.formatted(dto.identifier()), dto.title(), dto.body(), "/vereine/%s".formatted(dto.identifier()));
     }
 
     public void sendToTopic(String topic, String title, String body, String route) {
