@@ -1,0 +1,32 @@
+<p-confirmDialog></p-confirmDialog>
+<p-toast position="top-center"></p-toast>
+<div class="flex flex-column gap-5">
+    <span class="p-float-label mt-2">
+        <input type="text" id="title" pInputText [(ngModel)]="dto.title" [maxLength]="255" class="w-full">
+        <label for="title">Titel</label>
+    </span>
+
+    <textarea rows="8" cols="60" pInputTextarea [(ngModel)]="dto.body" maxlength="1000"></textarea>
+
+    <span class="p-float-label">
+        <input type="text" id="route" pInputText [(ngModel)]="dto.route" [maxLength]="255" class="w-full">
+        <label for="route">Route (z.B. "/app/2", "/festprogramm")</label>
+    </span>
+
+    <span class="p-float-label">
+        <p-dropdown id="type"
+                    [options]="typeOptions"
+                    [(ngModel)]="dto.type"></p-dropdown>
+        <label for="type">Typ</label>
+    </span>
+
+    <div class="flex justify-content-end gap-5 align-items-end">
+        <p-button label="Abbrechen"
+                  [text]="true"
+                  (onClick)="close()"></p-button>
+        <p-button label="Senden"
+                  (onClick)="send()"
+                  [loading]="sending()"
+                  [disabled]="!isValid() || isReadOnly()"></p-button>
+    </div>
+</div>

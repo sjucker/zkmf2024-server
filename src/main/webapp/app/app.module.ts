@@ -38,6 +38,7 @@ import {JuryComponent} from './jury/jury.component';
 import {LoginComponent} from './login/login.component';
 import {MobileAppCreateComponent} from "./mobile-app-create/mobile-app-create.component";
 import {MobileAppEditComponent} from "./mobile-app-edit/mobile-app-edit.component";
+import {MobileAppMessagingComponent} from "./mobile-app-messaging/mobile-app-messaging.component";
 import {MobileAppComponent} from "./mobile-app/mobile-app.component";
 import {NewsletterComponent} from './newsletter/newsletter.component';
 import {StageSetupComponent} from "./stage-setup/stage-setup.component";
@@ -74,6 +75,7 @@ import {VereineComponent} from './vereine/vereine.component';
         MobileAppComponent,
         MobileAppCreateComponent,
         MobileAppEditComponent,
+        MobileAppMessagingComponent,
     ],
     imports: [
         BrowserModule,

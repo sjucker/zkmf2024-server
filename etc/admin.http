@@ -22,3 +22,15 @@ Content-Type: application/json
   "body": "Die letzten News bevor es losgeht findest du hier...",
   "route": "/page/2"
 }
+
+###
+
+POST {{url}}/secured/admin/messaging/favorite
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "identifier": "harmonie-am-bachtel",
+  "title": "Harmonie am Bachtel",
+  "body": "In 15 Minuten spielen sie in der Zentrumshalle."
+}

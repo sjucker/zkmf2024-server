@@ -5,7 +5,6 @@
         <div class="field col-12 md:col-4 lg:col-3">
             <span class="p-float-label">
             <p-dropdown id="vereine"
-                        [autoDisplayFirst]="false"
                         [options]="availableVereine"
                         [(ngModel)]="vereinId"
                         optionValue="id"
@@ -49,7 +48,6 @@
                 <div class="field col-12 md:col-3 lg:col-2">
                     <span class="p-float-label">
                     <p-dropdown id="locations"
-                                [autoDisplayFirst]="false"
                                 [options]="e.availableLocations"
                                 [(ngModel)]="e.locationId"
                                 optionValue="id"

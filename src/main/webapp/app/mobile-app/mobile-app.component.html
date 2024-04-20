@@ -1,6 +1,9 @@
 <div class="m-2 flex flex-column md:flex-row justify-content-between gap-2">
     <p-button iconPos="left" icon="pi pi-align-justify" label="App Page erstellen"
               (onClick)="openCreatePage()"></p-button>
+
+    <p-button iconPos="left" icon="pi pi-send" label="Notification senden"
+              (onClick)="openMessaging()"></p-button>
 </div>
 <p-table [value]="pages"
          [loading]="loading()"
