@@ -16,7 +16,8 @@ export class MobileAppEditComponent implements OnInit {
         id: 0,
         markdown: '',
         title: '',
-        news: false
+        news: false,
+        createdAt: ''
     };
 
     saving = signal(false);
