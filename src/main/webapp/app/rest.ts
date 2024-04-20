@@ -10,6 +10,7 @@ export interface AppPageDTO {
     id: number;
     markdown: string;
     title: string;
+    createdAt: DateAsString;
     news: boolean;
     cloudflareId?: string;
 }

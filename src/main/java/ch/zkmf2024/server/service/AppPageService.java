@@ -7,6 +7,7 @@ import ch.zkmf2024.server.repository.AppPageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,14 +32,20 @@ public class AppPageService {
     }
 
     public void insert(AppPageCreateDTO dto) {
-        appPageRepository.insert(new AppPagePojo(null, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news()));
+        appPageRepository.insert(new AppPagePojo(null, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news(), LocalDateTime.now()));
     }
 
     public void update(Long id, AppPageDTO dto) {
         if (!Objects.equals(id, dto.id())) {
             throw new IllegalArgumentException("ID from path does not match ID in DTO!");
         }
-        appPageRepository.update(new AppPagePojo(id, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news()));
+        var pojo = appPageRepository.findById(id).orElseThrow();
+        pojo.setMarkdown(dto.markdown());
+        pojo.setCloudflareId(defaultIfBlank(dto.cloudflareId(), null));
+        pojo.setTitle(dto.title());
+        pojo.setNews(dto.news());
+
+        appPageRepository.update(pojo);
     }
 
     public Optional<AppPageDTO> find(Long id) {
@@ -55,6 +62,6 @@ public class AppPageService {
     }
 
     private static AppPageDTO toDTO(AppPagePojo pojo) {
-        return new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getNews(), pojo.getCloudflareId());
+        return new AppPageDTO(pojo.getId(), pojo.getMarkdown(), pojo.getTitle(), pojo.getCreatedAt().toLocalDate(), pojo.getNews(), pojo.getCloudflareId());
     }
 }

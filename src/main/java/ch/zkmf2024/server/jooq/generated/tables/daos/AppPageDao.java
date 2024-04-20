@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.AppPageRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,5 +125,20 @@ public class AppPageDao extends DAOImpl<AppPageRecord, AppPagePojo, Long> {
      */
     public List<AppPagePojo> fetchByNews(Boolean... values) {
         return fetch(AppPage.APP_PAGE.NEWS, values);
+    }
+
+    /**
+     * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<AppPagePojo> fetchRangeOfCreatedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(AppPage.APP_PAGE.CREATED_AT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>created_at IN (values)</code>
+     */
+    public List<AppPagePojo> fetchByCreatedAt(LocalDateTime... values) {
+        return fetch(AppPage.APP_PAGE.CREATED_AT, values);
     }
 }
