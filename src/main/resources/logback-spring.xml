@@ -23,7 +23,7 @@
         <to>${to}</to>
         <subject>[ZKMF2024 ${spring.profiles.active}]: %logger{20} - %msg</subject>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%15.-15X{userId}] %-5level %logger{35} - %msg%n</pattern>
         </layout>
     </appender>
 
