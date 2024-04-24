@@ -63,4 +63,8 @@ public enum Modul implements HasDescription {
     public String getFullDescription() {
         return "%s - %s".formatted(name(), getDescription());
     }
+
+    public boolean isPlatzkonzert() {
+        return this == C;
+    }
 }

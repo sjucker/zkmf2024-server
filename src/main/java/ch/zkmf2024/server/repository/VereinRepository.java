@@ -252,6 +252,9 @@ public class VereinRepository {
                           .where(TITEL.ID.in(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID)),
                                  VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
                           .fetch(this::toTitelDTO);
+        } else if (modul.isPlatzkonzert()) {
+            // do not publish Platzkonzert program
+            return List.of();
         } else {
             return jooqDsl.select()
                           .from(VEREIN_PROGRAMM_TITEL)
