@@ -25,7 +25,7 @@ export class VereinDetailComponent {
     confirming = false;
 
     canvasId = 'stage-canvas';
-    stageSetup: VereinStageSetupDTO = {stageSetup: "{}", dirigentenpodest: false, locationIdentifier: "", vereinId: 0};
+    stageSetup: VereinStageSetupDTO = {stageSetup: "{}", dirigentenpodest: false, locationIdentifier: "", vereinId: 0, hasAdditionalImage: false};
 
     constructor(config: DynamicDialogConfig<VereinDetailInput>,
                 private authenticationService: AuthenticationService,

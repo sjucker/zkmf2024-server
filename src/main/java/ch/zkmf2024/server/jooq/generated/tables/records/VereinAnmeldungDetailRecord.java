@@ -490,6 +490,22 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         return (byte[]) get(28);
     }
 
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_setup_additional</code>.
+     */
+    @Override
+    public void setStageSetupAdditional(byte[] value) {
+        set(29, value);
+    }
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_setup_additional</code>.
+     */
+    @Override
+    public byte[] getStageSetupAdditional() {
+        return (byte[]) get(29);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -534,6 +550,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setStageAblagenAmount(from.getStageAblagenAmount());
         setStageComment(from.getStageComment());
         setStageSetupImage(from.getStageSetupImage());
+        setStageSetupAdditional(from.getStageSetupAdditional());
         resetChangedOnNotNull();
     }
 
@@ -557,7 +574,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
     /**
      * Create a detached, initialised VereinAnmeldungDetailRecord
      */
-    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6, JSONB stageSetup, Boolean stageDirigentenpodest, Integer stageAblagenAmount, String stageComment, byte[] stageSetupImage) {
+    public VereinAnmeldungDetailRecord(Long id, Long fkVerein, Integer festfuehrerAmount, Integer festkartenMusikerAmount, Integer festkartenBegleiterAmount, Integer freitagabendAmount, Boolean gehbehinderung, Boolean partiturenSent, LocalDate partiturenSentAt, Boolean gesamtchor, Boolean adhocOrchester, Boolean anreisePublicTransport, String anreisePublicTransportType, String anreiseOtherwise, Integer verpflegungMeat, Integer verpflegungVegan, Integer verpflegungAllergies, Integer verpflegungNone, String verpflegungHelper_1, String verpflegungHelper_2, String verpflegungHelper_3, String verpflegungHelper_4, String verpflegungHelper_5, String verpflegungHelper_6, JSONB stageSetup, Boolean stageDirigentenpodest, Integer stageAblagenAmount, String stageComment, byte[] stageSetupImage, byte[] stageSetupAdditional) {
         super(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL);
 
         setId(id);
@@ -589,6 +606,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
         setStageAblagenAmount(stageAblagenAmount);
         setStageComment(stageComment);
         setStageSetupImage(stageSetupImage);
+        setStageSetupAdditional(stageSetupAdditional);
         resetChangedOnNotNull();
     }
 
@@ -628,6 +646,7 @@ public class VereinAnmeldungDetailRecord extends UpdatableRecordImpl<VereinAnmel
             setStageAblagenAmount(value.getStageAblagenAmount());
             setStageComment(value.getStageComment());
             setStageSetupImage(value.getStageSetupImage());
+            setStageSetupAdditional(value.getStageSetupAdditional());
             resetChangedOnNotNull();
         }
     }

@@ -490,4 +490,19 @@ public class VereinAnmeldungDetailDao extends DAOImpl<VereinAnmeldungDetailRecor
     public List<VereinAnmeldungDetailPojo> fetchByStageSetupImage(byte[]... values) {
         return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE, values);
     }
+
+    /**
+     * Fetch records that have <code>stage_setup_additional BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchRangeOfStageSetupAdditional(byte[] lowerInclusive, byte[] upperInclusive) {
+        return fetchRange(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_ADDITIONAL, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_setup_additional IN (values)</code>
+     */
+    public List<VereinAnmeldungDetailPojo> fetchByStageSetupAdditional(byte[]... values) {
+        return fetch(VereinAnmeldungDetail.VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_ADDITIONAL, values);
+    }
 }

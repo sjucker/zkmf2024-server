@@ -416,6 +416,7 @@ export interface VereinStageSetupDTO {
     dirigentenpodest: boolean;
     ablagenAmount?: number;
     comment?: string;
+    hasAdditionalImage: boolean;
 }
 
 export interface VereinTeilnahmeDTO {

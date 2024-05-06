@@ -41,6 +41,8 @@ public class StageService {
 
     private static final float POINTS_PER_INCH = 72;
     private static final float POINTS_PER_MM = 1 / (10 * 2.54f) * POINTS_PER_INCH;
+    public static final int WIDTH_IN_MM = 297;
+    public static final int HEIGHT_IN_MM = 210;
 
     private final VereinRepository vereinRepository;
     private final ApplicationProperties applicationProperties;
@@ -88,7 +90,7 @@ public class StageService {
                                                         .sorted(comparing(StageSetupExport::location).thenComparing(StageSetupExport::date).thenComparing(StageSetupExport::time))
                                                         .toList()) {
 
-                var page = new PDPage(new PDRectangle(297 * POINTS_PER_MM, 210 * POINTS_PER_MM));
+                var page = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
                 document.addPage(page);
 
                 var contentStream = new PDPageContentStream(document, page);
@@ -123,9 +125,32 @@ public class StageService {
                     }
                 }
 
-                var image = PDImageXObject.createFromByteArray(document, stageSetupExport.image(), stageSetupExport.location());
+                var image = PDImageXObject.createFromByteArray(document, stageSetupExport.image(), stageSetupExport.verein());
                 contentStream.drawImage(image, 10 * POINTS_PER_MM, 39 * POINTS_PER_MM, 256 * POINTS_PER_MM, 144 * POINTS_PER_MM);
                 contentStream.close();
+
+                if (stageSetupExport.additionalImage() != null) {
+                    var additionalPage = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
+                    document.addPage(additionalPage);
+                    var additionalContentStream = new PDPageContentStream(document, additionalPage);
+                    additionalContentStream.beginText();
+                    additionalContentStream.newLineAtOffset(10 * POINTS_PER_MM, 190 * POINTS_PER_MM);
+                    additionalContentStream.setFont(fontBold, 20);
+                    additionalContentStream.showText("Zusatzbild " + stageSetupExport.verein());
+                    additionalContentStream.endText();
+
+                    var additionalImage = PDImageXObject.createFromByteArray(document, stageSetupExport.additionalImage(), stageSetupExport.verein());
+                    var scaleWidth = ((float) WIDTH_IN_MM - 20) / additionalImage.getWidth();
+                    var scaleHeight = ((float) HEIGHT_IN_MM - 40) / additionalImage.getHeight();
+                    var ratio = Math.min(Math.min(scaleWidth, scaleHeight), 1);
+                    var height = additionalImage.getHeight() * ratio;
+                    additionalContentStream.drawImage(additionalImage,
+                                                      10 * POINTS_PER_MM,
+                                                      (HEIGHT_IN_MM - height - 30) * POINTS_PER_MM,
+                                                      additionalImage.getWidth() * ratio * POINTS_PER_MM,
+                                                      height * POINTS_PER_MM);
+                    additionalContentStream.close();
+                }
             }
             var temp = Files.createTempFile(null, ".pdf").toFile();
             document.save(temp);
