@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+
 @Slf4j
 @RestController
 @RequestMapping("/secured/verein")
@@ -72,6 +74,37 @@ public class SecuredVereinEndpoint {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/stage/additional")
+    @Secured({"VEREIN"})
+    public ResponseEntity<Void> additionalStageUpload(@AuthenticationPrincipal UserDetails userDetails,
+                                                      @RequestParam MultipartFile file) {
+        log.info("POST /secured/verein/stage/additional {}", getFileDescription(file));
+
+        try {
+            vereinService.updateStageSetupAdditional(userDetails.getUsername(), file);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/stage/additional")
+    @Secured({"VEREIN"})
+    public ResponseEntity<Void> deleteAdditionalStage(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("DELETE /secured/verein/stage/additional");
+
+        vereinService.deleteStageSetupAdditional(userDetails.getUsername());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/stage/additional", produces = IMAGE_JPEG_VALUE)
+    @Secured({"VEREIN"})
+    public ResponseEntity<byte[]> getAdditionalStage(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("GET /secured/verein/stage/additional");
+
+        return ResponseEntity.of(vereinService.getStageSetupAdditional(userDetails.getUsername()));
+    }
+
     @PostMapping("/confirm")
     @Secured({"VEREIN"})
     public ResponseEntity<VereinDTO> confirmRegistration(@AuthenticationPrincipal UserDetails userDetails) {
@@ -82,9 +115,9 @@ public class SecuredVereinEndpoint {
 
     @PostMapping("/bilder-upload")
     @Secured({"VEREIN"})
-    public ResponseEntity<?> bildUpload(@AuthenticationPrincipal UserDetails userDetails,
-                                        @RequestParam(required = false) MultipartFile logo,
-                                        @RequestParam(required = false) MultipartFile bild) {
+    public ResponseEntity<Void> bildUpload(@AuthenticationPrincipal UserDetails userDetails,
+                                           @RequestParam(required = false) MultipartFile logo,
+                                           @RequestParam(required = false) MultipartFile bild) {
         log.info("POST /secured/verein/bilder-upload logo={}, bild={}", getFileDescription(logo), getFileDescription(bild));
 
         try {
@@ -97,8 +130,8 @@ public class SecuredVereinEndpoint {
 
     @DeleteMapping("/bilder-upload/{id}")
     @Secured({"VEREIN"})
-    public ResponseEntity<?> deleteBild(@AuthenticationPrincipal UserDetails userDetails,
-                                        @PathVariable Long id) {
+    public ResponseEntity<Void> deleteBild(@AuthenticationPrincipal UserDetails userDetails,
+                                           @PathVariable Long id) {
         log.info("DELETE /secured/verein/bilder-upload/{}", id);
 
         vereinService.deleteImage(userDetails.getUsername(), id);

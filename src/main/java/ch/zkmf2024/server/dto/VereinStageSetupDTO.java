@@ -7,5 +7,6 @@ public record VereinStageSetupDTO(@NotNull Long vereinId,
                                   @NotNull String stageSetup,
                                   boolean dirigentenpodest,
                                   Integer ablagenAmount,
-                                  String comment) {
+                                  String comment,
+                                  boolean hasAdditionalImage) {
 }

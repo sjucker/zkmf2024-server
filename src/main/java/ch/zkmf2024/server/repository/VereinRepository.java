@@ -586,7 +586,8 @@ public class VereinRepository {
                               Optional.ofNullable(it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP)).map(JSONB::data).orElse("{}"),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT),
-                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT)
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_ADDITIONAL) != null
                       ));
     }
 
@@ -951,6 +952,7 @@ public class VereinRepository {
                               it.get(TIMETABLE_ENTRY.DATE),
                               it.get(TIMETABLE_ENTRY.START_TIME),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_ADDITIONAL),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT)
@@ -963,6 +965,7 @@ public class VereinRepository {
                                    LocalDate date,
                                    LocalTime time,
                                    byte[] image,
+                                   byte[] additionalImage,
                                    boolean dirigentenpodest,
                                    Integer ablagenAmount,
                                    String comment) {

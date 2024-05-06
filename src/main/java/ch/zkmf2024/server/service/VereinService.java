@@ -132,7 +132,8 @@ public class VereinService {
                 Optional.ofNullable(pojo.getStageSetup()).map(JSONB::data).orElse("{}"),
                 pojo.getStageDirigentenpodest(),
                 pojo.getStageAblagenAmount(),
-                pojo.getStageComment()
+                pojo.getStageComment(),
+                pojo.getStageSetupAdditional() != null
         );
     }
 
@@ -354,6 +355,28 @@ public class VereinService {
 
         // asynchronously generate the stage setup image and store it in DB as well
         stageService.createStageSetupImage(dto);
+    }
+
+    public void updateStageSetupAdditional(String email, MultipartFile file) throws IOException {
+        if (file != null) {
+            var detail = vereinRepository.findByEmail(email).map(VereinPojo::getId).flatMap(vereinRepository::findAnmeldungDetail).orElseThrow();
+            detail.setStageSetupAdditional(file.getBytes());
+            vereinRepository.update(detail);
+        }
+    }
+
+    public void deleteStageSetupAdditional(String email) {
+        vereinRepository.findByEmail(email).map(VereinPojo::getId).flatMap(vereinRepository::findAnmeldungDetail).ifPresent(detail -> {
+            detail.setStageSetupAdditional(null);
+            vereinRepository.update(detail);
+        });
+    }
+
+    public Optional<byte[]> getStageSetupAdditional(String email) {
+        return vereinRepository.findByEmail(email)
+                               .map(VereinPojo::getId)
+                               .flatMap(vereinRepository::findAnmeldungDetail)
+                               .map(VereinAnmeldungDetailPojo::getStageSetupAdditional);
     }
 
     private void updateDoppeleinsatz(Long vereinId, List<DoppelEinsatzDTO> doppeleinsatz, boolean mitspielerDoppeleinsatz) {

@@ -310,6 +310,16 @@ public interface IVereinAnmeldungDetail extends Serializable {
      */
     public byte[] getStageSetupImage();
 
+    /**
+     * Setter for <code>verein_anmeldung_detail.stage_setup_additional</code>.
+     */
+    public void setStageSetupAdditional(byte[] value);
+
+    /**
+     * Getter for <code>verein_anmeldung_detail.stage_setup_additional</code>.
+     */
+    public byte[] getStageSetupAdditional();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
