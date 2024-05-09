@@ -944,7 +944,7 @@ public class VereinRepository {
                       .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
                       .where(VEREIN_PROGRAMM.MODUL.in(A.name(), B.name(), H.name()),
                              TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL),
-                             VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE.isNotNull())
+                             VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_IMAGE.isNotNull().or(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_ADDITIONAL.isNotNull()))
                       .fetch(it -> new StageSetupExport(
                               it.get(VEREIN.VEREINSNAME),
                               it.get(LOCATION.NAME),

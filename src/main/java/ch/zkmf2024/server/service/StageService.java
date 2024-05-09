@@ -90,44 +90,46 @@ public class StageService {
                                                         .sorted(comparing(StageSetupExport::location).thenComparing(StageSetupExport::date).thenComparing(StageSetupExport::time))
                                                         .toList()) {
 
-                var page = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
-                document.addPage(page);
+                if (stageSetupExport.image() != null) {
+                    var page = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
+                    document.addPage(page);
 
-                var contentStream = new PDPageContentStream(document, page);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(10 * POINTS_PER_MM, 190 * POINTS_PER_MM);
-                contentStream.setFont(fontBold, 20);
-                contentStream.showText(stageSetupExport.verein());
-                contentStream.endText();
+                    var contentStream = new PDPageContentStream(document, page);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(10 * POINTS_PER_MM, 190 * POINTS_PER_MM);
+                    contentStream.setFont(fontBold, 20);
+                    contentStream.showText(stageSetupExport.verein());
+                    contentStream.endText();
 
-                contentStream.beginText();
-                contentStream.newLineAtOffset(10 * POINTS_PER_MM, 185 * POINTS_PER_MM);
-                contentStream.setFont(font, 12);
-                contentStream.showText("%s, %s - %s (Dirigentenpodest: %s, Anzahl Schlägelablagen: %s)".formatted(formatDateWritten(stageSetupExport.date()),
-                                                                                                                  stageSetupExport.time(),
-                                                                                                                  stageSetupExport.location(),
-                                                                                                                  stageSetupExport.dirigentenpodest() ? "Ja" : "Nein",
-                                                                                                                  ofNullable(stageSetupExport.ablagenAmount()).map(Object::toString).orElse("-")));
-                contentStream.endText();
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(10 * POINTS_PER_MM, 185 * POINTS_PER_MM);
+                    contentStream.setFont(font, 12);
+                    contentStream.showText("%s, %s - %s (Dirigentenpodest: %s, Anzahl Schlägelablagen: %s)".formatted(formatDateWritten(stageSetupExport.date()),
+                                                                                                                      stageSetupExport.time(),
+                                                                                                                      stageSetupExport.location(),
+                                                                                                                      stageSetupExport.dirigentenpodest() ? "Ja" : "Nein",
+                                                                                                                      ofNullable(stageSetupExport.ablagenAmount()).map(Object::toString).orElse("-")));
+                    contentStream.endText();
 
-                if (isNotBlank(stageSetupExport.comment())) {
-                    var lines = StringUtils.replace(stageSetupExport.comment(), "\n", System.lineSeparator()).split(System.lineSeparator());
-                    int i = 0;
-                    for (var line : lines) {
-                        for (var wrapLine : WordUtils.wrap(line, 150).split(System.lineSeparator())) {
-                            contentStream.beginText();
-                            contentStream.setFont(font, 10);
-                            contentStream.newLineAtOffset(10 * POINTS_PER_MM, (35 - (i * 4)) * POINTS_PER_MM);
-                            contentStream.showText(wrapLine);
-                            contentStream.endText();
-                            i++;
+                    if (isNotBlank(stageSetupExport.comment())) {
+                        var lines = StringUtils.replace(stageSetupExport.comment(), "\n", System.lineSeparator()).split(System.lineSeparator());
+                        int i = 0;
+                        for (var line : lines) {
+                            for (var wrapLine : WordUtils.wrap(line, 150).split(System.lineSeparator())) {
+                                contentStream.beginText();
+                                contentStream.setFont(font, 10);
+                                contentStream.newLineAtOffset(10 * POINTS_PER_MM, (35 - (i * 4)) * POINTS_PER_MM);
+                                contentStream.showText(wrapLine);
+                                contentStream.endText();
+                                i++;
+                            }
                         }
                     }
-                }
 
-                var image = PDImageXObject.createFromByteArray(document, stageSetupExport.image(), stageSetupExport.verein());
-                contentStream.drawImage(image, 10 * POINTS_PER_MM, 39 * POINTS_PER_MM, 256 * POINTS_PER_MM, 144 * POINTS_PER_MM);
-                contentStream.close();
+                    var image = PDImageXObject.createFromByteArray(document, stageSetupExport.image(), stageSetupExport.verein());
+                    contentStream.drawImage(image, 10 * POINTS_PER_MM, 39 * POINTS_PER_MM, 256 * POINTS_PER_MM, 144 * POINTS_PER_MM);
+                    contentStream.close();
+                }
 
                 if (stageSetupExport.additionalImage() != null) {
                     var additionalPage = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
