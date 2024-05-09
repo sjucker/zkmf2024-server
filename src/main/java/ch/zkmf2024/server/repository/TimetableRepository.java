@@ -132,6 +132,7 @@ public class TimetableRepository {
                 it.get(VEREIN.VEREINSNAME),
                 Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription(),
                 getCompetition(it),
+                TimetableEntryType.from(it.get(TIMETABLE_ENTRY.ENTRY_TYPE)),
                 TimetableEntryType.from(it.get(TIMETABLE_ENTRY.ENTRY_TYPE)).getDescription(),
                 LocationRepository.toDTO(it),
                 it.get(TIMETABLE_ENTRY.DATE),

@@ -181,6 +181,8 @@ export interface LocationDTO {
     cloudflareId?: string;
     kuulaId?: string;
     einspiellokal?: LocationDTO;
+    instrumentendepotId?: number;
+    instrumentendepotParademusikId?: number;
     instrumentendepot?: LocationDTO;
     juryfeedback?: LocationDTO;
     percussionEquipmentType?: PercussionEquipmentType;
@@ -282,7 +284,8 @@ export interface TimetableOverviewEntryDTO {
     vereinsname: string;
     modul: string;
     competition: string;
-    type: string;
+    type: TimetableEntryType;
+    typeDescription: string;
     location: LocationDTO;
     date: DateAsString;
     start: DateAsString;
@@ -343,6 +346,8 @@ export interface VereinDTO {
     messages: VereinMessageDTO[];
     errata: VereinErrataDTO[];
     lunchTime: DateAsString;
+    instrumentenDepot?: LocationDTO;
+    instrumentenDepotParademusik?: LocationDTO;
     programmUpdated: boolean;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;

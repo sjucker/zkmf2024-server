@@ -19,6 +19,8 @@ public record LocationDTO(@NotNull Long id,
                           String cloudflareId,
                           String kuulaId,
                           LocationDTO einspiellokal,
+                          Long instrumentendepotId,
+                          Long instrumentendepotParademusikId,
                           LocationDTO instrumentendepot,
                           LocationDTO juryfeedback,
                           PercussionEquipmentType percussionEquipmentType) {

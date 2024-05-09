@@ -8,7 +8,7 @@ public enum TimetableEntryType implements HasDescription {
     WETTSPIEL("Wettspiel"),
     BESPRECHUNG("Besprechung"),
     PLATZKONZERT("Platzkonzert"),
-    MARSCHMUSIK("Marschmusik");
+    MARSCHMUSIK("Parademusik");
 
     private final String description;
 

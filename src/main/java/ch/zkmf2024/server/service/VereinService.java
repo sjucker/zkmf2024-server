@@ -3,10 +3,12 @@ package ch.zkmf2024.server.service;
 import ch.zkmf2024.server.dto.AdhocOrchesterTeilnehmerDTO;
 import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
 import ch.zkmf2024.server.dto.ImageType;
+import ch.zkmf2024.server.dto.LocationDTO;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.NichtmitgliederDTO;
 import ch.zkmf2024.server.dto.PhaseStatus;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
+import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
@@ -39,6 +41,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ErrataRepository;
 import ch.zkmf2024.server.repository.ImageRepository;
+import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
@@ -81,6 +84,7 @@ public class VereinService {
     private final ImageRepository imageRepository;
     private final TimetableRepository timetableRepository;
     private final ErrataRepository errataRepository;
+    private final LocationRepository locationRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final CloudflareService cloudflareService;
@@ -92,6 +96,7 @@ public class VereinService {
                          ImageRepository imageRepository,
                          TimetableRepository timetableRepository,
                          ErrataRepository errataRepository,
+                         LocationRepository locationRepository,
                          PasswordEncoder passwordEncoder,
                          MailService mailService,
                          CloudflareService cloudflareService,
@@ -102,6 +107,7 @@ public class VereinService {
         this.imageRepository = imageRepository;
         this.timetableRepository = timetableRepository;
         this.errataRepository = errataRepository;
+        this.locationRepository = locationRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
         this.cloudflareService = cloudflareService;
@@ -186,6 +192,8 @@ public class VereinService {
 
         var vereinsanmeldung = MAPPER.toVereinsanmeldungDTO(verein);
 
+        var timetableEntries = findTimetableEntriesByVereinId(verein.getId());
+
         return new VereinDTO(
                 verein.getEmail(),
                 MAPPER.toDTO(verein),
@@ -208,12 +216,32 @@ public class VereinService {
                 verein.getPhase2ConfirmedBy(),
                 verein.getPhase2ConfirmedAt(),
                 verein.getPhase4ConfirmedAt(),
-                findTimetableEntriesByVereinId(verein.getId()),
+                timetableEntries,
                 findMessagesByVereinId(verein.getId(), verein.getEmail()),
                 findErrata(verein.getId()),
                 verein.getLunchTime(),
+                getInstrumentenDepot(timetableEntries).orElse(null),
+                getInstrumentenDepotParademusik(timetableEntries).orElse(null),
                 false
         );
+    }
+
+    private Optional<LocationDTO> getInstrumentenDepot(List<TimetableOverviewEntryDTO> timetableEntries) {
+        return timetableEntries.stream()
+                               .filter(e -> e.type() == TimetableEntryType.WETTSPIEL)
+                               .findFirst()
+                               .map(e -> locationRepository.findById(e.location().instrumentendepotId()).orElseThrow());
+    }
+
+    private Optional<LocationDTO> getInstrumentenDepotParademusik(List<TimetableOverviewEntryDTO> timetableEntries) {
+        if (timetableEntries.stream().anyMatch(e -> e.type() == TimetableEntryType.MARSCHMUSIK)) {
+            return timetableEntries.stream()
+                                   .filter(e -> e.type() == TimetableEntryType.WETTSPIEL && e.location().instrumentendepotParademusikId() != null)
+                                   .findFirst()
+                                   .map(e -> locationRepository.findById(e.location().instrumentendepotParademusikId()).orElseThrow());
+        }
+
+        return Optional.empty();
     }
 
     private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId, boolean hasPartituren) {

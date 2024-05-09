@@ -68,6 +68,8 @@ public class LocationRepository {
                 pojo.getCloudflareId(),
                 pojo.getKuulaId(),
                 findById(pojo.getEinspiellokalId()).orElse(null),
+                pojo.getInstrumentendepotId(),
+                pojo.getInstrumentendepotParademusikId(),
                 findById(pojo.getInstrumentendepotId()).orElse(null),
                 findById(pojo.getJuryfeedbackId()).orElse(null),
                 ofNullable(pojo.getPercussionEquipment()).map(PercussionEquipmentType::valueOf).orElse(null)
@@ -105,7 +107,11 @@ public class LocationRepository {
                 it.get(LOCATION.MAP_ID),
                 it.get(LOCATION.CLOUDFLARE_ID),
                 it.get(LOCATION.KUULA_ID),
-                null, null, null,
+                null,
+                it.get(LOCATION.INSTRUMENTENDEPOT_ID),
+                it.get(LOCATION.INSTRUMENTENDEPOT_PARADEMUSIK_ID),
+                null,
+                null,
                 ofNullable(it.get(LOCATION.PERCUSSION_EQUIPMENT)).map(PercussionEquipmentType::valueOf).orElse(null)
         );
     }

@@ -30,6 +30,8 @@ public record VereinDTO(
         @NotNull List<VereinMessageDTO> messages,
         @NotNull List<VereinErrataDTO> errata,
         @NotNull LocalTime lunchTime,
+        LocationDTO instrumentenDepot,
+        LocationDTO instrumentenDepotParademusik,
         // used for client to signal that programm was updated
         boolean programmUpdated
 ) {
