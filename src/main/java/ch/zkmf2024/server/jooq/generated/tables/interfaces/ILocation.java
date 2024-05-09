@@ -184,6 +184,16 @@ public interface ILocation extends Serializable {
      */
     public String getMapId();
 
+    /**
+     * Setter for <code>location.instrumentendepot_parademusik_id</code>.
+     */
+    public void setInstrumentendepotParademusikId(Long value);
+
+    /**
+     * Getter for <code>location.instrumentendepot_parademusik_id</code>.
+     */
+    public Long getInstrumentendepotParademusikId();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

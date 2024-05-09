@@ -33,6 +33,7 @@ public class LocationPojo implements ILocation {
     private String kuulaId;
     private String percussionEquipment;
     private String mapId;
+    private Long instrumentendepotParademusikId;
 
     public LocationPojo() {
     }
@@ -55,6 +56,7 @@ public class LocationPojo implements ILocation {
         this.kuulaId = value.getKuulaId();
         this.percussionEquipment = value.getPercussionEquipment();
         this.mapId = value.getMapId();
+        this.instrumentendepotParademusikId = value.getInstrumentendepotParademusikId();
     }
 
     public LocationPojo(
@@ -74,7 +76,8 @@ public class LocationPojo implements ILocation {
             String cloudflareId,
             String kuulaId,
             String percussionEquipment,
-            String mapId
+            String mapId,
+            Long instrumentendepotParademusikId
     ) {
         this.id = id;
         this.name = name;
@@ -93,6 +96,7 @@ public class LocationPojo implements ILocation {
         this.kuulaId = kuulaId;
         this.percussionEquipment = percussionEquipment;
         this.mapId = mapId;
+        this.instrumentendepotParademusikId = instrumentendepotParademusikId;
     }
 
     /**
@@ -367,6 +371,22 @@ public class LocationPojo implements ILocation {
         this.mapId = mapId;
     }
 
+    /**
+     * Getter for <code>location.instrumentendepot_parademusik_id</code>.
+     */
+    @Override
+    public Long getInstrumentendepotParademusikId() {
+        return this.instrumentendepotParademusikId;
+    }
+
+    /**
+     * Setter for <code>location.instrumentendepot_parademusik_id</code>.
+     */
+    @Override
+    public void setInstrumentendepotParademusikId(Long instrumentendepotParademusikId) {
+        this.instrumentendepotParademusikId = instrumentendepotParademusikId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -461,6 +481,11 @@ public class LocationPojo implements ILocation {
                 return false;
         } else if (!this.mapId.equals(other.mapId))
             return false;
+        if (this.instrumentendepotParademusikId == null) {
+            if (other.instrumentendepotParademusikId != null)
+                return false;
+        } else if (!this.instrumentendepotParademusikId.equals(other.instrumentendepotParademusikId))
+            return false;
         return true;
     }
 
@@ -485,6 +510,7 @@ public class LocationPojo implements ILocation {
         result = prime * result + ((this.kuulaId == null) ? 0 : this.kuulaId.hashCode());
         result = prime * result + ((this.percussionEquipment == null) ? 0 : this.percussionEquipment.hashCode());
         result = prime * result + ((this.mapId == null) ? 0 : this.mapId.hashCode());
+        result = prime * result + ((this.instrumentendepotParademusikId == null) ? 0 : this.instrumentendepotParademusikId.hashCode());
         return result;
     }
 
@@ -509,6 +535,7 @@ public class LocationPojo implements ILocation {
         sb.append(", ").append(kuulaId);
         sb.append(", ").append(percussionEquipment);
         sb.append(", ").append(mapId);
+        sb.append(", ").append(instrumentendepotParademusikId);
 
         sb.append(")");
         return sb.toString();
@@ -537,6 +564,7 @@ public class LocationPojo implements ILocation {
         setKuulaId(from.getKuulaId());
         setPercussionEquipment(from.getPercussionEquipment());
         setMapId(from.getMapId());
+        setInstrumentendepotParademusikId(from.getInstrumentendepotParademusikId());
     }
 
     @Override

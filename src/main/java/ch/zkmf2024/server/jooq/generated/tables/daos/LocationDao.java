@@ -321,4 +321,20 @@ public class LocationDao extends DAOImpl<LocationRecord, LocationPojo, Long> {
     public List<LocationPojo> fetchByMapId(String... values) {
         return fetch(Location.LOCATION.MAP_ID, values);
     }
+
+    /**
+     * Fetch records that have <code>instrumentendepot_parademusik_id BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<LocationPojo> fetchRangeOfInstrumentendepotParademusikId(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Location.LOCATION.INSTRUMENTENDEPOT_PARADEMUSIK_ID, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>instrumentendepot_parademusik_id IN
+     * (values)</code>
+     */
+    public List<LocationPojo> fetchByInstrumentendepotParademusikId(Long... values) {
+        return fetch(Location.LOCATION.INSTRUMENTENDEPOT_PARADEMUSIK_ID, values);
+    }
 }
