@@ -96,9 +96,9 @@ public class SecuredJudgeEndpoint {
 
     @GetMapping("/summary")
     @Secured({"JUDGE", "ADMIN", "IMPERSONATE"})
-    public ResponseEntity<List<JudgeReportSummaryDTO>> summaries() {
-        log.info("GET /secured/judge/summary");
-        return ResponseEntity.ok(judgeService.findSummaries());
+    public ResponseEntity<List<JudgeReportSummaryDTO>> summaries(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("GET /secured/judge/summary, {}", userDetails.getUsername());
+        return ResponseEntity.ok(judgeService.findSummaries(userDetails.getUsername()));
     }
 
     @PostMapping("/confirm-scores/{programmId}")

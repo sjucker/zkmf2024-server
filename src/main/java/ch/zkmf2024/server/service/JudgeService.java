@@ -10,6 +10,7 @@ import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
+import ch.zkmf2024.server.dto.UserRole;
 import ch.zkmf2024.server.dto.admin.JudgeDTO;
 import ch.zkmf2024.server.dto.admin.JudgeReportCreateDTO;
 import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
@@ -20,14 +21,17 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.JudgeRepository;
+import ch.zkmf2024.server.repository.TimetableRepository.ModulKlasseBesetzung;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.JudgeReportStatus.DONE;
@@ -40,12 +44,14 @@ import static ch.zkmf2024.server.dto.JudgeRole.JUROR_2_MUSIKALISCH;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_3_MUSIKALISCH;
 import static ch.zkmf2024.server.dto.JudgeRole.JUROR_4_OPTISCH;
+import static ch.zkmf2024.server.dto.UserRole.ADMIN;
 import static ch.zkmf2024.server.dto.UserRole.JUDGE;
 import static ch.zkmf2024.server.util.DateUtil.now;
 import static java.math.RoundingMode.HALF_UP;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Slf4j
@@ -189,8 +195,24 @@ public class JudgeService {
                               .toList();
     }
 
-    public List<JudgeReportSummaryDTO> findSummaries() {
-        return judgeRepository.findSummaries();
+    public List<JudgeReportSummaryDTO> findSummaries(String username) {
+        var user = userRepository.findById(username).orElseThrow(() -> new NoSuchElementException("no user found for %s".formatted(username)));
+        var summaries = judgeRepository.findSummaries();
+        if (UserRole.valueOf(user.getRole()) == ADMIN) {
+            // admin sees everything
+            return summaries;
+        } else {
+            // find all relevant modul/klasse/besetzung for current judge
+            var relevant = summaries.stream()
+                                    .filter(dto -> dto.scores().stream().anyMatch(d -> StringUtils.equals(d.judgeEmail(), user.getEmail())))
+                                    .map(dto -> new ModulKlasseBesetzung(dto.modul(), dto.klasse(), dto.besetzung()))
+                                    .collect(toSet());
+
+            // only display the entries that are relevant for judge
+            return summaries.stream()
+                            .filter(dto -> relevant.contains(new ModulKlasseBesetzung(dto.modul(), dto.klasse(), dto.besetzung())))
+                            .toList();
+        }
     }
 
     public void createReports(Long timetableEntryId, JudgeReportCreateDTO dto) {

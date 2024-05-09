@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record JudgeReportScoreDTO(@NotNull Long reportId,
+                                  @NotNull String judgeEmail,
                                   @NotNull String judgeName,
                                   @NotNull String judgeRole,
                                   BigDecimal score,

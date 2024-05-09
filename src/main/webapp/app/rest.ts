@@ -111,6 +111,7 @@ export interface JudgeReportRatingDTO {
 
 export interface JudgeReportScoreDTO {
     reportId: number;
+    judgeEmail: string;
     judgeName: string;
     judgeRole: string;
     score?: number;
@@ -120,9 +121,12 @@ export interface JudgeReportScoreDTO {
 
 export interface JudgeReportSummaryDTO {
     programmId: number;
-    modul: string;
-    klasse?: string;
-    besetzung?: string;
+    modul: Modul;
+    modulDescription: string;
+    klasse?: Klasse;
+    klasseDescription?: string;
+    besetzung?: Besetzung;
+    besetzungDescription?: string;
     verein: string;
     overallScore?: number;
     scores: JudgeReportScoreDTO[];

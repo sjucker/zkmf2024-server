@@ -430,17 +430,23 @@ public class JudgeRepository {
                               var record3 = records.get(2);
                               var record4 = modul.isParademusik() ? records.get(3) : null;
 
+                              var klasse = Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE));
+                              var besetzung = Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG));
                               consumer.accept(new JudgeReportSummaryDTO(
                                       record1.get(VEREIN_PROGRAMM.ID),
+                                      modul,
                                       getFullDescription(modul, category),
-                                      Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
-                                      Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                                      klasse.orElse(null),
+                                      klasse.map(Klasse::getDescription).orElse(null),
+                                      besetzung.orElse(null),
+                                      besetzung.map(Besetzung::getDescription).orElse(null),
                                       record1.get(VEREIN.VEREINSNAME),
                                       overallScore(record1, record2, record3, record4, modul).orElse(null),
                                       records.stream()
                                              .sorted(comparing(it -> it.get(JUDGE_REPORT.ID)))
                                              .map(it -> new JudgeReportScoreDTO(
                                                      it.get(JUDGE_REPORT.ID),
+                                                     it.get(JUDGE.EMAIL),
                                                      "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME)),
                                                      JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE)).getDescription(),
                                                      it.get(JUDGE_REPORT.SCORE),

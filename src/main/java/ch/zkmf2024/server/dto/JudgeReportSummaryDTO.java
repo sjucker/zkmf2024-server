@@ -6,9 +6,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record JudgeReportSummaryDTO(@NotNull Long programmId,
-                                    @NotNull String modul,
-                                    String klasse,
-                                    String besetzung,
+                                    @NotNull Modul modul,
+                                    @NotNull String modulDescription,
+                                    Klasse klasse,
+                                    String klasseDescription,
+                                    Besetzung besetzung,
+                                    String besetzungDescription,
                                     @NotNull String verein,
                                     BigDecimal overallScore,
                                     @NotNull List<JudgeReportScoreDTO> scores,
