@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 @SpringBootTest
 public abstract class AbstractIntegrationTest {
 
-    static final PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.4"));
+    static final PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>(DockerImageName.parse("postgres:16.3"));
 
     @DynamicPropertySource
     static void dataSourceProperties(DynamicPropertyRegistry registry) {
