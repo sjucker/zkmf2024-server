@@ -60,7 +60,7 @@ public class SponsoringService {
         }
     }
 
-    public SponsorDTO getRandom() {
-        return sponsoringRepository.getRandom();
+    public List<SponsorDTO> getRandom(int count) {
+        return sponsoringRepository.getRandom(count);
     }
 }

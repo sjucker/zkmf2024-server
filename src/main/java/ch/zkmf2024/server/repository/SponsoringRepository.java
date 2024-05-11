@@ -37,12 +37,12 @@ public class SponsoringRepository {
                                              mapping(toDTO(), toList())));
     }
 
-    public SponsorDTO getRandom() {
+    public List<SponsorDTO> getRandom(int count) {
         return jooqDsl.selectFrom(SPONSOR)
                       .where(SPONSOR.CLOUDFLARE_ID.isNotNull(), SPONSOR.URL.isNotNull())
                       .orderBy(rand())
-                      .limit(1)
-                      .fetchSingle(it -> new SponsorDTO(it.getName(), it.getCloudflareId(), it.getUrl()));
+                      .limit(count)
+                      .fetch(it -> new SponsorDTO(it.getName(), it.getCloudflareId(), it.getUrl()));
     }
 
     private static Function<SponsorPojo, SponsorDTO> toDTO() {
