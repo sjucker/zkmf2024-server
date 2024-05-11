@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
 import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
+import ch.zkmf2024.server.repository.UnterhaltungRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,12 +28,14 @@ class TimetableServiceTest {
     private LocationRepository locationRepository;
     @Mock
     private VereinRepository vereinRepository;
+    @Mock
+    private UnterhaltungRepository unterhaltungRepository;
 
     private TimetableService service;
 
     @BeforeEach
     void setUp() {
-        service = new TimetableService(timetableRepository, locationRepository, vereinRepository);
+        service = new TimetableService(timetableRepository, locationRepository, vereinRepository, unterhaltungRepository);
     }
 
     @Test

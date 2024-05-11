@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.rest;
 
+import ch.zkmf2024.server.dto.CurrentTimetablePreviewDTO;
 import ch.zkmf2024.server.dto.TimetableDayOverviewDTO;
 import ch.zkmf2024.server.service.TimetableService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,13 @@ public class TimetableEndpoint {
         log.info("GET /public/timetable/{}", locationIdentifier);
 
         return ResponseEntity.ok(timetableService.getPublicTimetable(locationIdentifier));
+    }
+
+    @GetMapping("/preview/{locationIdentifier}")
+    public ResponseEntity<CurrentTimetablePreviewDTO> getCurrentPreview(@PathVariable String locationIdentifier) {
+        log.info("GET /public/timetable/preview/{}", locationIdentifier);
+
+        return ResponseEntity.ok(timetableService.getCurrentPreview(locationIdentifier));
     }
 
 }

@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.CurrentTimetablePreviewDTO;
 import ch.zkmf2024.server.dto.LocationType;
 import ch.zkmf2024.server.dto.TimetableDayOverviewDTO;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
@@ -12,6 +13,7 @@ import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
 import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
+import ch.zkmf2024.server.repository.UnterhaltungRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,13 +42,16 @@ public class TimetableService {
     private final TimetableRepository timetableRepository;
     private final LocationRepository locationRepository;
     private final VereinRepository vereinRepository;
+    private final UnterhaltungRepository unterhaltungRepository;
 
     public TimetableService(TimetableRepository timetableRepository,
                             LocationRepository locationRepository,
-                            VereinRepository vereinRepository) {
+                            VereinRepository vereinRepository,
+                            UnterhaltungRepository unterhaltungRepository) {
         this.timetableRepository = timetableRepository;
         this.locationRepository = locationRepository;
         this.vereinRepository = vereinRepository;
+        this.unterhaltungRepository = unterhaltungRepository;
     }
 
     public List<TimetableEntryDTO> findAll() {
@@ -189,5 +194,12 @@ public class TimetableService {
         entry.setEndTime(dto.end());
         entry.setFkLocation(dto.locationId());
         timetableRepository.update(entry);
+    }
+
+    public CurrentTimetablePreviewDTO getCurrentPreview(String locationIdentifier) {
+        var current = timetableRepository.findCurrent(locationIdentifier).or(() -> unterhaltungRepository.findCurrent(locationIdentifier)).orElse(null);
+        var next = timetableRepository.findNext(locationIdentifier).or(() -> unterhaltungRepository.findNext(locationIdentifier)).orElse(null);
+
+        return new CurrentTimetablePreviewDTO(current, next);
     }
 }

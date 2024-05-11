@@ -20,6 +20,11 @@ export interface CoordinatesDTO {
     longitude: number;
 }
 
+export interface CurrentTimetablePreviewDTO {
+    current?: TimetablePreviewDTO;
+    next?: TimetablePreviewDTO;
+}
+
 export interface DoppelEinsatzDTO {
     otherVerein: VereinSelectionDTO;
     mitspielerName: string;
@@ -295,6 +300,16 @@ export interface TimetableOverviewEntryDTO {
     start: DateAsString;
     end: DateAsString;
     time: string;
+}
+
+export interface TimetablePreviewDTO {
+    header1: string;
+    header2?: string;
+    header3?: string;
+    location: LocationDTO;
+    startTime: DateAsString;
+    endTime: DateAsString;
+    minutesUntilStart: number;
 }
 
 export interface TitelDTO extends IsValid {

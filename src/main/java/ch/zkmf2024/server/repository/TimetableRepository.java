@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
+import ch.zkmf2024.server.dto.TimetablePreviewDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TimetableEntryDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
@@ -14,12 +15,15 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
+import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.MARSCHMUSIK;
@@ -28,6 +32,10 @@ import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPI
 import static ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.tables.Verein.VEREIN;
 import static ch.zkmf2024.server.repository.VereinRepository.getCompetition;
+import static ch.zkmf2024.server.util.DateUtil.currentTime;
+import static ch.zkmf2024.server.util.DateUtil.now;
+import static ch.zkmf2024.server.util.DateUtil.today;
+import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Repository
 public class TimetableRepository {
@@ -173,6 +181,56 @@ public class TimetableRepository {
 
     public void update(TimetableEntryPojo entry) {
         timetableEntryDao.update(entry);
+    }
+
+    public Optional<TimetablePreviewDTO> findCurrent(String locationIdentifier) {
+        var now = currentTime();
+        var today = today();
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .join(KONTAKT).on(VEREIN.DIREKTION_KONTAKT_ID.eq(KONTAKT.ID))
+                      .where(TIMETABLE_ENTRY.DATE.eq(today),
+                             TIMETABLE_ENTRY.START_TIME.lessOrEqual(now),
+                             TIMETABLE_ENTRY.END_TIME.greaterOrEqual(now),
+                             LOCATION.IDENTIFIER.eq(locationIdentifier))
+                      .fetchOptional(it -> new TimetablePreviewDTO(
+                              it.get(VEREIN.VEREINSNAME),
+                              getCompetition(it),
+                              "unter der Leitung von %s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
+                              LocationRepository.toDTO(it),
+                              it.get(TIMETABLE_ENTRY.START_TIME),
+                              it.get(TIMETABLE_ENTRY.END_TIME),
+                              0L
+                      ));
+    }
+
+    public Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .join(KONTAKT).on(VEREIN.DIREKTION_KONTAKT_ID.eq(KONTAKT.ID))
+                      .where(TIMETABLE_ENTRY.DATE.greaterOrEqual(today()),
+                             LOCATION.IDENTIFIER.eq(locationIdentifier),
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                      .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME)
+                      .stream()
+                      .filter(it -> LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)).isAfter(now()))
+                      .limit(1)
+                      .map(it -> new TimetablePreviewDTO(
+                              it.get(VEREIN.VEREINSNAME),
+                              getCompetition(it),
+                              "unter der Leitung von %s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
+                              LocationRepository.toDTO(it),
+                              it.get(TIMETABLE_ENTRY.START_TIME),
+                              it.get(TIMETABLE_ENTRY.END_TIME),
+                              Duration.between(now(), LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME))).toMinutes()
+                      ))
+                      .findFirst();
     }
 
     public record ModulKlasseBesetzung(Modul modul, Klasse klasse, Besetzung besetzung) {
