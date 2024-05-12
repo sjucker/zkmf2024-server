@@ -62,6 +62,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.LongFunction;
+import java.util.function.ToLongFunction;
 
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_BILD;
 import static ch.zkmf2024.server.dto.ImageType.VEREIN_LOGO;
@@ -227,17 +228,20 @@ public class VereinService {
     }
 
     private Optional<LocationDTO> getInstrumentenDepot(List<TimetableOverviewEntryDTO> timetableEntries) {
-        return timetableEntries.stream()
-                               .filter(e -> e.type() == TimetableEntryType.WETTSPIEL)
-                               .findFirst()
-                               .map(e -> locationRepository.findById(e.location().instrumentendepotId()).orElseThrow());
+        return getInstrumentenDepot(timetableEntries, TimetableEntryType.WETTSPIEL, LocationDTO::instrumentendepotId)
+                .or(() -> getInstrumentenDepot(timetableEntries, TimetableEntryType.PLATZKONZERT, LocationDTO::instrumentendepotId));
     }
 
     private Optional<LocationDTO> getInstrumentenDepotParademusik(List<TimetableOverviewEntryDTO> timetableEntries) {
+        return getInstrumentenDepot(timetableEntries, TimetableEntryType.WETTSPIEL, LocationDTO::instrumentendepotParademusikId)
+                .or(() -> getInstrumentenDepot(timetableEntries, TimetableEntryType.PLATZKONZERT, LocationDTO::instrumentendepotParademusikId));
+    }
+
+    private Optional<LocationDTO> getInstrumentenDepot(List<TimetableOverviewEntryDTO> timetableEntries, TimetableEntryType type, ToLongFunction<LocationDTO> idGetter) {
         return timetableEntries.stream()
-                               .filter(e -> e.type() == TimetableEntryType.WETTSPIEL)
+                               .filter(e -> e.type() == type)
                                .findFirst()
-                               .map(e -> locationRepository.findById(e.location().instrumentendepotParademusikId()).orElseThrow());
+                               .map(e -> locationRepository.findById(idGetter.applyAsLong(e.location())).orElseThrow());
     }
 
     private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId, boolean hasPartituren) {
