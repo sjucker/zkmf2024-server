@@ -234,14 +234,10 @@ public class VereinService {
     }
 
     private Optional<LocationDTO> getInstrumentenDepotParademusik(List<TimetableOverviewEntryDTO> timetableEntries) {
-        if (timetableEntries.stream().anyMatch(e -> e.type() == TimetableEntryType.MARSCHMUSIK)) {
-            return timetableEntries.stream()
-                                   .filter(e -> e.type() == TimetableEntryType.WETTSPIEL && e.location().instrumentendepotParademusikId() != null)
-                                   .findFirst()
-                                   .map(e -> locationRepository.findById(e.location().instrumentendepotParademusikId()).orElseThrow());
-        }
-
-        return Optional.empty();
+        return timetableEntries.stream()
+                               .filter(e -> e.type() == TimetableEntryType.WETTSPIEL)
+                               .findFirst()
+                               .map(e -> locationRepository.findById(e.location().instrumentendepotParademusikId()).orElseThrow());
     }
 
     private VereinsanmeldungDetailDTO getAnmeldungDetail(Long vereinId, boolean hasPartituren) {
