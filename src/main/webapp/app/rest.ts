@@ -23,6 +23,7 @@ export interface CoordinatesDTO {
 export interface CurrentTimetablePreviewDTO {
     current?: TimetablePreviewDTO;
     next?: TimetablePreviewDTO;
+    sponsoren: SponsorDTO[];
 }
 
 export interface DoppelEinsatzDTO {

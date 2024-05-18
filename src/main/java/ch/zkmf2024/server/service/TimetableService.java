@@ -43,15 +43,18 @@ public class TimetableService {
     private final LocationRepository locationRepository;
     private final VereinRepository vereinRepository;
     private final UnterhaltungRepository unterhaltungRepository;
+    private final SponsoringService sponsoringService;
 
     public TimetableService(TimetableRepository timetableRepository,
                             LocationRepository locationRepository,
                             VereinRepository vereinRepository,
-                            UnterhaltungRepository unterhaltungRepository) {
+                            UnterhaltungRepository unterhaltungRepository,
+                            SponsoringService sponsoringService) {
         this.timetableRepository = timetableRepository;
         this.locationRepository = locationRepository;
         this.vereinRepository = vereinRepository;
         this.unterhaltungRepository = unterhaltungRepository;
+        this.sponsoringService = sponsoringService;
     }
 
     public List<TimetableEntryDTO> findAll() {
@@ -200,6 +203,6 @@ public class TimetableService {
         var current = timetableRepository.findCurrent(locationIdentifier).or(() -> unterhaltungRepository.findCurrent(locationIdentifier)).orElse(null);
         var next = timetableRepository.findNext(locationIdentifier).or(() -> unterhaltungRepository.findNext(locationIdentifier)).orElse(null);
 
-        return new CurrentTimetablePreviewDTO(current, next);
+        return new CurrentTimetablePreviewDTO(current, next, sponsoringService.getRandom(4));
     }
 }
