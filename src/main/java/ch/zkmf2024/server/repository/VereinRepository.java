@@ -439,83 +439,85 @@ public class VereinRepository {
     }
 
     private Map<Long, List<DoppelEinsatzDTO>> findDoppeleinsatzPerVereinId() {
-        return jooqDsl.select()
-                      .from(VEREIN_DOPPELEINSATZ)
-                      .join(VEREIN).on(VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN.eq(VEREIN.ID))
-                      .stream()
-                      .collect(groupingBy(it -> it.get(VEREIN_DOPPELEINSATZ.FK_VEREIN),
-                                          mapping(it -> new DoppelEinsatzDTO(
-                                                  new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)),
-                                                  it.get(VEREIN_DOPPELEINSATZ.NAME)
-                                          ), toList())));
+        var query = jooqDsl.select()
+                           .from(VEREIN_DOPPELEINSATZ)
+                           .join(VEREIN).on(VEREIN_DOPPELEINSATZ.FK_OTHER_VEREIN.eq(VEREIN.ID));
+        try (var stream = query.stream()) {
+            return stream.collect(groupingBy(it -> it.get(VEREIN_DOPPELEINSATZ.FK_VEREIN),
+                                             mapping(it -> new DoppelEinsatzDTO(
+                                                     new VereinSelectionDTO(it.get(VEREIN.ID), it.get(VEREIN.VEREINSNAME)),
+                                                     it.get(VEREIN_DOPPELEINSATZ.NAME)
+                                             ), toList())));
+        }
     }
 
     public Map<Long, List<VereinProgrammDTO>> findProgrammePerVereinId() {
-        Map<Long, Map<Modul, List<Record>>> rows = jooqDsl.select()
-                                                          .from(VEREIN)
-                                                          .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
-                                                          .leftJoin(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
-                                                          .leftJoin(TITEL).on(TITEL.ID.eq(VEREIN_PROGRAMM_TITEL.FK_TITEL))
-                                                          .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc())
-                                                          .stream()
-                                                          .collect(groupingBy(it -> it.get(VEREIN.ID),
-                                                                              groupingBy(it -> Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
-                                                                                         toList())));
+        var query = jooqDsl.select()
+                           .from(VEREIN)
+                           .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
+                           .leftJoin(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                           .leftJoin(TITEL).on(TITEL.ID.eq(VEREIN_PROGRAMM_TITEL.FK_TITEL))
+                           .orderBy(VEREIN_PROGRAMM_TITEL.POSITION.asc());
+        try (var stream = query.stream()) {
+            Map<Long, Map<Modul, List<Record>>> rows = stream.collect(groupingBy(it -> it.get(VEREIN.ID),
+                                                                                 groupingBy(it -> Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
+                                                                                            toList())));
 
-        var result = new HashMap<Long, Map<Modul, VereinProgrammDTO>>();
-        for (var entry : rows.entrySet()) {
-            var vereinId = entry.getKey();
-            var value = entry.getValue();
+            var result = new HashMap<Long, Map<Modul, VereinProgrammDTO>>();
+            for (var entry : rows.entrySet()) {
+                var vereinId = entry.getKey();
+                var value = entry.getValue();
 
-            var programmPerModul = result.computeIfAbsent(vereinId, key -> new HashMap<>());
-            for (var recordEntry : value.entrySet()) {
-                var records = recordEntry.getValue();
+                var programmPerModul = result.computeIfAbsent(vereinId, key -> new HashMap<>());
+                for (var recordEntry : value.entrySet()) {
+                    var records = recordEntry.getValue();
 
-                for (var r : records) {
+                    for (var r : records) {
 
-                    var vereinProgrammDTO = programmPerModul.computeIfAbsent(recordEntry.getKey(), key -> {
-                        var modul = Modul.valueOf(r.get(VEREIN_PROGRAMM.MODUL));
-                        return new VereinProgrammDTO(
-                                r.get(VEREIN_PROGRAMM.ID),
-                                modul,
-                                modul.getFullDescription(),
-                                Klasse.fromString(r.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
-                                Besetzung.fromString(r.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
-                                r.get(VEREIN_PROGRAMM.TITEL),
-                                r.get(VEREIN_PROGRAMM.INFO_MODERATION),
-                                0,
-                                null,
-                                null,
-                                new ArrayList<>(),
-                                modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_A),
-                                modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_B),
-                                modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_C),
-                                TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).orElse(null),
-                                TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).orElse(null),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID), modul),
-                                r.get(VEREIN_PROGRAMM.MODUL_B_PA),
-                                r.get(VEREIN_PROGRAMM.MODUL_B_EGITARRE),
-                                r.get(VEREIN_PROGRAMM.MODUL_B_EBASS),
-                                r.get(VEREIN_PROGRAMM.MODUL_B_KEYBOARD),
-                                r.get(VEREIN_PROGRAMM.MODUL_B_GESANG),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), modul),
-                                getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID), modul)
-                        );
-                    });
+                        var vereinProgrammDTO = programmPerModul.computeIfAbsent(recordEntry.getKey(), key -> {
+                            var modul = Modul.valueOf(r.get(VEREIN_PROGRAMM.MODUL));
+                            return new VereinProgrammDTO(
+                                    r.get(VEREIN_PROGRAMM.ID),
+                                    modul,
+                                    modul.getFullDescription(),
+                                    Klasse.fromString(r.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                                    Besetzung.fromString(r.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
+                                    r.get(VEREIN_PROGRAMM.TITEL),
+                                    r.get(VEREIN_PROGRAMM.INFO_MODERATION),
+                                    0,
+                                    null,
+                                    null,
+                                    new ArrayList<>(),
+                                    modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_A),
+                                    modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_B),
+                                    modul == Modul.G && r.get(VEREIN.TAMBOUREN_KAT_C),
+                                    TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).orElse(null),
+                                    TambourenGrundlage.fromString(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).orElse(null),
+                                    getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID), modul),
+                                    getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID), modul),
+                                    getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID), modul),
+                                    getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID), modul),
+                                    r.get(VEREIN_PROGRAMM.MODUL_B_PA),
+                                    r.get(VEREIN_PROGRAMM.MODUL_B_EGITARRE),
+                                    r.get(VEREIN_PROGRAMM.MODUL_B_EBASS),
+                                    r.get(VEREIN_PROGRAMM.MODUL_B_KEYBOARD),
+                                    r.get(VEREIN_PROGRAMM.MODUL_B_GESANG),
+                                    getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), modul),
+                                    getTitelOrEmpty(r.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID), modul)
+                            );
+                        });
 
-                    if (r.get(TITEL.ID) != null) {
-                        vereinProgrammDTO.ablauf().add(toVereinProgrammTitelDTO(r));
+                        if (r.get(TITEL.ID) != null) {
+                            vereinProgrammDTO.ablauf().add(toVereinProgrammTitelDTO(r));
+                        }
                     }
                 }
             }
-        }
 
-        return result.entrySet().stream()
-                     .collect(toMap(Entry::getKey,
-                                    entry -> entry.getValue().values().stream().toList()));
+            return result.entrySet().stream()
+                         .collect(toMap(Entry::getKey,
+                                        entry -> entry.getValue().values().stream().toList()));
+        }
     }
 
     private VereinProgrammTitelDTO toVereinProgrammTitelDTO(Record it) {
