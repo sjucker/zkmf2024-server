@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.ZKMF2024_USER;
+import static org.apache.commons.lang3.StringUtils.toRootLowerCase;
 
 @Repository
 public class UserRepository {
@@ -23,18 +24,18 @@ public class UserRepository {
     }
 
     public Optional<Zkmf2024UserPojo> findById(String email) {
-        return userDao.findOptionalById(email);
+        return userDao.findOptionalById(toRootLowerCase(email));
     }
 
     public boolean existsById(String email) {
-        return userDao.existsById(email);
+        return userDao.existsById(toRootLowerCase(email));
     }
 
     public Optional<Zkmf2024UserPojo> findByIdAndRole(String email, UserRole role) {
         return jooqDsl
                 .selectFrom(ZKMF2024_USER)
                 .where(
-                        ZKMF2024_USER.EMAIL.eq(email),
+                        ZKMF2024_USER.EMAIL.eq(toRootLowerCase(email)),
                         ZKMF2024_USER.ROLE.eq(role.name())
                 )
                 .fetchOptionalInto(Zkmf2024UserPojo.class);

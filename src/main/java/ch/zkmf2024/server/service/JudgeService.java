@@ -53,6 +53,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.toRootLowerCase;
 
 @Slf4j
 @Service
@@ -178,7 +179,7 @@ public class JudgeService {
 
     public void createLogin(JuryLoginCreateDTO dto) {
         judgeRepository.insert(new JudgePojo(null, dto.email(), dto.name(), dto.firstName(), null, null, null));
-        userRepository.insert(new Zkmf2024UserPojo(dto.email(),
+        userRepository.insert(new Zkmf2024UserPojo(toRootLowerCase(dto.email()),
                                                    JUDGE.name(),
                                                    passwordEncoder.encode(dto.password()),
                                                    null,

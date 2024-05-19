@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static org.apache.commons.lang3.StringUtils.toRootLowerCase;
+
 @Slf4j
 @Service
 public class UserService {
@@ -29,7 +31,7 @@ public class UserService {
         }
 
         userRepository.insert(new Zkmf2024UserPojo(
-                dto.email(),
+                toRootLowerCase(dto.email()),
                 dto.role().name(),
                 passwordEncoder.encode(dto.password()),
                 null,

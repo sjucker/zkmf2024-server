@@ -73,6 +73,7 @@ import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang3.StringUtils.toRootLowerCase;
 
 @Slf4j
 @Service
@@ -272,19 +273,20 @@ public class VereinService {
     }
 
     public void create(RegisterVereinRequestDTO request) {
-        if (userRepository.existsById(request.email())) {
-            log.warn("tried to register new verein with already registerd email {}", request.email());
-            throw new IllegalArgumentException("there is already a user with email: " + request.email());
+        var email = toRootLowerCase(request.email());
+        if (userRepository.existsById(email)) {
+            log.warn("tried to register new verein with already registered email {}", email);
+            throw new IllegalArgumentException("there is already a user with email: " + email);
         }
 
-        if (vereinRepository.findByEmail(request.email()).isPresent()) {
-            log.error("there is already a verein associated with email '{}' but no corresponding user found", request.email());
+        if (vereinRepository.findByEmail(email).isPresent()) {
+            log.error("there is already a verein associated with email '{}' but no corresponding user found", email);
             throw new IllegalStateException();
         }
 
         jooqDsl.transaction(configuration -> {
             var user = new Zkmf2024UserPojo();
-            user.setEmail(request.email());
+            user.setEmail(email);
             user.setPassword(passwordEncoder.encode(request.password()));
             user.setRole(VEREIN.name());
             user.setCreatedAt(now());
@@ -297,7 +299,7 @@ public class VereinService {
             vereinRepository.insert(kontaktDirektion);
 
             var verein = new VereinPojo();
-            verein.setEmail(request.email());
+            verein.setEmail(email);
             verein.setVereinsname(request.vereinsname());
             verein.setPraesidentKontaktId(kontaktPraesident.getId());
             verein.setDirektionKontaktId(kontaktDirektion.getId());
