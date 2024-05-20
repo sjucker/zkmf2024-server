@@ -61,7 +61,7 @@ public class UnterhaltungRepository {
         var query = jooqDsl.select()
                            .from(UNTERHALTUNG_ENTRY)
                            .join(LOCATION).on(UNTERHALTUNG_ENTRY.FK_LOCATION.eq(LOCATION.ID))
-                           .where(UNTERHALTUNG_ENTRY.DATE.greaterOrEqual(DateUtil.today()),
+                           .where(UNTERHALTUNG_ENTRY.DATE.eq(DateUtil.today()),
                                   LOCATION.IDENTIFIER.eq(locationIdentifier))
                            .orderBy(UNTERHALTUNG_ENTRY.DATE, UNTERHALTUNG_ENTRY.START_TIME);
         try (var stream = query.stream()) {

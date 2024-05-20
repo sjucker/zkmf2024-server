@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.CurrentTimetablePreviewDTO;
 import ch.zkmf2024.server.dto.LocationType;
 import ch.zkmf2024.server.dto.TimetableDayOverviewDTO;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
+import ch.zkmf2024.server.dto.TimetablePreviewDTO;
 import ch.zkmf2024.server.dto.VereinSelectionDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
@@ -30,6 +31,7 @@ import static ch.zkmf2024.server.dto.TimetableEntryType.EINSPIEL;
 import static ch.zkmf2024.server.dto.TimetableEntryType.MARSCHMUSIK;
 import static ch.zkmf2024.server.dto.TimetableEntryType.PLATZKONZERT;
 import static ch.zkmf2024.server.dto.TimetableEntryType.WETTSPIEL;
+import static ch.zkmf2024.server.util.DateUtil.currentTime;
 import static ch.zkmf2024.server.util.FormatUtil.formatDate;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
@@ -201,8 +203,22 @@ public class TimetableService {
 
     public CurrentTimetablePreviewDTO getCurrentPreview(String locationIdentifier) {
         var current = timetableRepository.findCurrent(locationIdentifier).or(() -> unterhaltungRepository.findCurrent(locationIdentifier)).orElse(null);
-        var next = timetableRepository.findNext(locationIdentifier).or(() -> unterhaltungRepository.findNext(locationIdentifier)).orElse(null);
 
-        return new CurrentTimetablePreviewDTO(current, next, sponsoringService.getRandom(4));
+        var nextTimetable = timetableRepository.findNext(locationIdentifier);
+        var nextUnterhaltung = unterhaltungRepository.findNext(locationIdentifier);
+
+        TimetablePreviewDTO next;
+        if (nextTimetable.isPresent() && nextUnterhaltung.isPresent()) {
+            next = nextTimetable.get().startTime().isBefore(nextUnterhaltung.get().startTime())
+                    ? nextTimetable.get()
+                    : nextUnterhaltung.get();
+        } else {
+            next = nextTimetable.orElseGet(() -> nextUnterhaltung.orElse(null));
+        }
+
+        return new CurrentTimetablePreviewDTO(current,
+                                              next,
+                                              sponsoringService.getRandom(4),
+                                              currentTime());
     }
 }

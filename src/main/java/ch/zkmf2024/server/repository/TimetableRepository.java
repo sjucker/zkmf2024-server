@@ -214,7 +214,7 @@ public class TimetableRepository {
                            .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                            .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
                            .join(KONTAKT).on(VEREIN.DIREKTION_KONTAKT_ID.eq(KONTAKT.ID))
-                           .where(TIMETABLE_ENTRY.DATE.greaterOrEqual(today()),
+                           .where(TIMETABLE_ENTRY.DATE.eq(today()),
                                   LOCATION.IDENTIFIER.eq(locationIdentifier),
                                   TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
                            .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME);
