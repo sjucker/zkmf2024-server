@@ -19,8 +19,6 @@ import ch.zkmf2024.server.dto.admin.MessageFavoriteDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
-import ch.zkmf2024.server.dto.admin.UserCreateDTO;
-import ch.zkmf2024.server.dto.admin.UserDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
 import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
@@ -52,6 +50,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +88,7 @@ public class AdminEndpoint {
                          TimetableService timetableService,
                          ErrataService errataService,
                          StageService stageService,
-                         FirebaseMessagingService firebaseMessagingService,
+                         @Nullable FirebaseMessagingService firebaseMessagingService,
                          AppPageService appPageService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
@@ -276,15 +275,6 @@ public class AdminEndpoint {
         }
     }
 
-    @PostMapping(path = "/user")
-    @Secured({"ADMIN"})
-    public ResponseEntity<UserDTO> createUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserCreateDTO dto) {
-        log.info("POST /user {}", dto);
-
-        // TODO
-        return ResponseEntity.ok(null);
-    }
-
     @PostMapping("/jury/login")
     @Secured({"ADMIN"})
     public ResponseEntity<?> create(@RequestBody JuryLoginCreateDTO dto) {
@@ -404,7 +394,11 @@ public class AdminEndpoint {
     public ResponseEntity<Void> messaging(@RequestBody @Valid MessageSendDTO dto) {
         log.info("POST /secured/admin/messaging {}", dto);
 
-        firebaseMessagingService.send(dto);
+        if (firebaseMessagingService != null) {
+            firebaseMessagingService.send(dto);
+        } else {
+            log.info("firebaseMessagingService not available ('firebase.enabled' is false)");
+        }
 
         return ResponseEntity.ok().build();
     }
@@ -413,8 +407,11 @@ public class AdminEndpoint {
     @Secured({"ADMIN"})
     public ResponseEntity<Void> messagingFavorite(@RequestBody @Valid MessageFavoriteDTO dto) {
         log.info("POST /secured/admin/messaging/favorite {}", dto);
-
-        firebaseMessagingService.send(dto);
+        if (firebaseMessagingService != null) {
+            firebaseMessagingService.send(dto);
+        } else {
+            log.info("firebaseMessagingService not available ('firebase.enabled' is false)");
+        }
 
         return ResponseEntity.ok().build();
     }

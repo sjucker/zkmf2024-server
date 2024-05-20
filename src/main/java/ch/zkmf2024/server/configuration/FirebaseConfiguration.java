@@ -13,7 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Configuration
-@ConditionalOnProperty("firebase.credentials")
+@ConditionalOnProperty(value = "firebase.enabled", havingValue = "true")
 public class FirebaseConfiguration {
 
     private final String firebaseCredentials;

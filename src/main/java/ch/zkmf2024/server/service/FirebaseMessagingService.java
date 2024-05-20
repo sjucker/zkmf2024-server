@@ -7,12 +7,14 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(value = "firebase.enabled", havingValue = "true")
 public class FirebaseMessagingService {
     private static final String EMERGENCY_TOPIC = "emergency";
     private static final String GENERAL_TOPIC = "general";
