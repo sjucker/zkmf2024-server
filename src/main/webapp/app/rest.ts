@@ -24,6 +24,7 @@ export interface CurrentTimetablePreviewDTO {
     current?: TimetablePreviewDTO;
     next?: TimetablePreviewDTO;
     sponsoren: SponsorDTO[];
+    currentTime: DateAsString;
 }
 
 export interface DoppelEinsatzDTO {

@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.UNTERHALTUNG_ENTRY;
-import static ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.util.DateUtil.now;
 
 @Repository
@@ -51,8 +50,9 @@ public class UnterhaltungRepository {
                               it.get(UNTERHALTUNG_ENTRY.SUBTITLE),
                               null,
                               LocationRepository.toDTO(it),
-                              it.get(TIMETABLE_ENTRY.START_TIME),
-                              it.get(TIMETABLE_ENTRY.END_TIME),
+                              it.get(UNTERHALTUNG_ENTRY.DATE),
+                              it.get(UNTERHALTUNG_ENTRY.START_TIME),
+                              it.get(UNTERHALTUNG_ENTRY.END_TIME),
                               0
                       ));
     }
@@ -61,7 +61,7 @@ public class UnterhaltungRepository {
         var query = jooqDsl.select()
                            .from(UNTERHALTUNG_ENTRY)
                            .join(LOCATION).on(UNTERHALTUNG_ENTRY.FK_LOCATION.eq(LOCATION.ID))
-                           .where(UNTERHALTUNG_ENTRY.DATE.eq(DateUtil.today()),
+                           .where(UNTERHALTUNG_ENTRY.DATE.greaterOrEqual(DateUtil.today()),
                                   LOCATION.IDENTIFIER.eq(locationIdentifier))
                            .orderBy(UNTERHALTUNG_ENTRY.DATE, UNTERHALTUNG_ENTRY.START_TIME);
         try (var stream = query.stream()) {
@@ -72,8 +72,9 @@ public class UnterhaltungRepository {
                                  it.get(UNTERHALTUNG_ENTRY.SUBTITLE),
                                  null,
                                  LocationRepository.toDTO(it),
-                                 it.get(TIMETABLE_ENTRY.START_TIME),
-                                 it.get(TIMETABLE_ENTRY.END_TIME),
+                                 it.get(UNTERHALTUNG_ENTRY.DATE),
+                                 it.get(UNTERHALTUNG_ENTRY.START_TIME),
+                                 it.get(UNTERHALTUNG_ENTRY.END_TIME),
                                  Duration.between(DateUtil.now(), LocalDateTime.of(it.get(UNTERHALTUNG_ENTRY.DATE), it.get(UNTERHALTUNG_ENTRY.START_TIME))).toMinutes()
                          ))
                          .findFirst();
