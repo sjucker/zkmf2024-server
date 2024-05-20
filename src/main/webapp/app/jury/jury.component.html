@@ -1,9 +1,12 @@
 <p-toast position="top-center"></p-toast>
 <p-confirmDialog></p-confirmDialog>
-<div class="mb-2 flex gap-2">
+<div class="mb-2 flex gap-2 justify-content-between">
     <p-button label="Login erstellen"
               (onClick)="openCreateJuryUser()"
               [disabled]="isReadOnly()"></p-button>
+
+    <p-button iconPos="left" icon="pi pi-download" [loading]="exporting()" label="Backup Export"
+              (onClick)="export()"></p-button>
 </div>
 
 <p-table [value]="jury"

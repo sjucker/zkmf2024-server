@@ -65,12 +65,15 @@ export interface JudgeReportDTO {
     id: number;
     modul: Modul;
     modulDescription: string;
+    judgeName: string;
     role: JudgeRole;
     roleDescription: string;
     klasse?: string;
     besetzung?: string;
     category?: JudgeReportModulCategory;
     categoryDescription?: string;
+    start: DateAsString;
+    end: DateAsString;
     location: string;
     verein: string;
     dirigent: string;

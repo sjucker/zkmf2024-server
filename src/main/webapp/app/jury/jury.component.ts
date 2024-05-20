@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
+import {saveAs} from "file-saver";
 import {MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {JuryLoginCreateComponent} from "../jury-login-create/jury-login-create.component";
@@ -16,6 +17,8 @@ export class JuryComponent implements OnInit {
     ref?: DynamicDialogRef;
 
     jury: JudgeDTO[] = [];
+
+    exporting = signal(false);
 
     constructor(private dialogService: DialogService,
                 private authenticationService: AuthenticationService,
@@ -73,4 +76,24 @@ export class JuryComponent implements OnInit {
         return this.authenticationService.isReadOnly();
     }
 
+    export() {
+        this.exporting.set(true);
+        this.service.export().subscribe({
+            next: response => {
+                saveAs(response, "jury.pdf");
+            },
+            error: error => {
+                this.exporting.set(false);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exporting.set(false);
+            }
+        });
+    }
 }

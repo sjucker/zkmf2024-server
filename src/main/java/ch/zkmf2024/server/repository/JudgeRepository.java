@@ -154,9 +154,22 @@ public class JudgeRepository {
         return "https://www.google.com/maps/place/%s".formatted(URLEncoder.encode(address, UTF_8));
     }
 
+    public List<JudgeReportDTO> getAllReports() {
+        return jooqDsl.select()
+                      .from(JUDGE_REPORT)
+                      .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
+                      .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .join(KONTAKT).on(VEREIN.DIREKTION_KONTAKT_ID.eq(KONTAKT.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .fetch(this::toDTO);
+    }
+
     public Optional<JudgeReportDTO> getReport(Long judgeId, Long reportId) {
         return jooqDsl.select()
                       .from(JUDGE_REPORT)
+                      .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
                       .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
@@ -164,41 +177,46 @@ public class JudgeRepository {
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .where(JUDGE_REPORT.FK_JUDGE.eq(judgeId),
                              JUDGE_REPORT.ID.eq(reportId))
-                      .fetchOptional(it -> {
-                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
-                          var category = JudgeReportModulCategory.fromString(it.get(JUDGE_REPORT.CATEGORY));
-                          var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
-                          var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE));
-                          var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG));
+                      .fetchOptional(this::toDTO);
+    }
 
-                          var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(modul, klasse.orElse(null), besetzung.orElse(null));
+    private JudgeReportDTO toDTO(Record it) {
+        var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+        var category = JudgeReportModulCategory.fromString(it.get(JUDGE_REPORT.CATEGORY));
+        var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
+        var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE));
+        var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG));
 
-                          return new JudgeReportDTO(
-                                  it.get(JUDGE_REPORT.ID),
-                                  modul,
-                                  modul.getFullDescription(),
-                                  role,
-                                  role.getDescription(),
-                                  klasse.map(Klasse::getDescription).orElse(null),
-                                  besetzung.map(Besetzung::getDescription).orElse(null),
-                                  category.orElse(null),
-                                  category.map(JudgeReportModulCategory::getDescription).orElse(null),
-                                  it.get(LOCATION.NAME),
-                                  it.get(VEREIN.VEREINSNAME),
-                                  "%s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
-                                  it.get(VEREIN_PROGRAMM.TITEL),
-                                  it.get(VEREIN_PROGRAMM.INFO_MODERATION),
-                                  minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
-                                  minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::maxDurationInSeconds).orElse(null),
-                                  TambourenGrundlage.fromString(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).map(TambourenGrundlage::getDescription).orElse(null),
-                                  TambourenGrundlage.fromString(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).map(TambourenGrundlage::getDescription).orElse(null),
-                                  it.get(JUDGE_REPORT.SCORE),
-                                  it.get(JUDGE_REPORT.RATING_FIXED),
-                                  JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
-                                  findTitles(reportId, modul, category.orElse(null)),
-                                  findOverallRatings(reportId, modul, category.orElse(null), role)
-                          );
-                      });
+        var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(modul, klasse.orElse(null), besetzung.orElse(null));
+
+        return new JudgeReportDTO(
+                it.get(JUDGE_REPORT.ID),
+                modul,
+                modul.getFullDescription(),
+                "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME)),
+                role,
+                role.getDescription(),
+                klasse.map(Klasse::getDescription).orElse(null),
+                besetzung.map(Besetzung::getDescription).orElse(null),
+                category.orElse(null),
+                category.map(JudgeReportModulCategory::getDescription).orElse(null),
+                LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)),
+                LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)),
+                it.get(LOCATION.NAME),
+                it.get(VEREIN.VEREINSNAME),
+                "%s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
+                it.get(VEREIN_PROGRAMM.TITEL),
+                it.get(VEREIN_PROGRAMM.INFO_MODERATION),
+                minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
+                minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::maxDurationInSeconds).orElse(null),
+                TambourenGrundlage.fromString(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_1)).map(TambourenGrundlage::getDescription).orElse(null),
+                TambourenGrundlage.fromString(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_2)).map(TambourenGrundlage::getDescription).orElse(null),
+                it.get(JUDGE_REPORT.SCORE),
+                it.get(JUDGE_REPORT.RATING_FIXED),
+                JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
+                findTitles(it.get(JUDGE_REPORT.ID), modul, category.orElse(null)),
+                findOverallRatings(it.get(JUDGE_REPORT.ID), modul, category.orElse(null), role)
+        );
     }
 
     public Optional<JudgeReportViewDTO> getReport(Long reportId) {

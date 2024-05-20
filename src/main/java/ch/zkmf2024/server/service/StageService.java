@@ -6,13 +6,7 @@ import ch.zkmf2024.server.repository.VereinRepository;
 import ch.zkmf2024.server.repository.VereinRepository.StageSetupExport;
 import com.microsoft.playwright.Playwright;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,10 +15,17 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.file.Files;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.util.FormatUtil.formatDateWritten;
+import static ch.zkmf2024.server.util.PdfUtil.HEIGHT_IN_MM;
+import static ch.zkmf2024.server.util.PdfUtil.POINTS_PER_MM;
+import static ch.zkmf2024.server.util.PdfUtil.WIDTH_IN_MM;
+import static ch.zkmf2024.server.util.PdfUtil.addPageLandscape;
+import static ch.zkmf2024.server.util.PdfUtil.multiLineSmall;
+import static ch.zkmf2024.server.util.PdfUtil.save;
+import static ch.zkmf2024.server.util.PdfUtil.textHeader;
+import static ch.zkmf2024.server.util.PdfUtil.textNormal;
 import static com.microsoft.playwright.options.AriaRole.HEADING;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
@@ -32,17 +33,10 @@ import static java.util.Optional.ofNullable;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.replace;
-import static org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName.HELVETICA;
-import static org.apache.pdfbox.pdmodel.font.Standard14Fonts.FontName.HELVETICA_BOLD;
 
 @Slf4j
 @Service
 public class StageService {
-
-    private static final float POINTS_PER_INCH = 72;
-    private static final float POINTS_PER_MM = 1 / (10 * 2.54f) * POINTS_PER_INCH;
-    public static final int WIDTH_IN_MM = 297;
-    public static final int HEIGHT_IN_MM = 210;
 
     private final VereinRepository vereinRepository;
     private final ApplicationProperties applicationProperties;
@@ -82,70 +76,34 @@ public class StageService {
 
     public Optional<File> createPdf(String locationIdentifier) {
         try (var document = new PDDocument()) {
-            var font = new PDType1Font(HELVETICA);
-            var fontBold = new PDType1Font(HELVETICA_BOLD);
-
             for (var stageSetupExport : vereinRepository.getAllStageSetupsForExport().stream()
                                                         .filter(stageSetupExport -> locationIdentifier == null || locationIdentifier.equals(stageSetupExport.locationIdentifier()))
                                                         .sorted(comparing(StageSetupExport::location).thenComparing(StageSetupExport::date).thenComparing(StageSetupExport::time))
                                                         .toList()) {
 
-                var page = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
-                document.addPage(page);
-
-                var contentStream = new PDPageContentStream(document, page);
-                contentStream.beginText();
-                contentStream.newLineAtOffset(10 * POINTS_PER_MM, 190 * POINTS_PER_MM);
-                contentStream.setFont(fontBold, 20);
-                contentStream.showText(stageSetupExport.verein());
-                contentStream.endText();
-
-                contentStream.beginText();
-                contentStream.newLineAtOffset(10 * POINTS_PER_MM, 185 * POINTS_PER_MM);
-                contentStream.setFont(font, 12);
-                contentStream.showText("%s, %s - %s (Dirigentenpodest: %s, Anzahl Schlägelablagen: %s)".formatted(formatDateWritten(stageSetupExport.date()),
-                                                                                                                  stageSetupExport.time(),
-                                                                                                                  stageSetupExport.location(),
-                                                                                                                  stageSetupExport.dirigentenpodest() ? "Ja" : "Nein",
-                                                                                                                  ofNullable(stageSetupExport.ablagenAmount()).map(Object::toString).orElse("-")));
-                contentStream.endText();
+                var contentStream = addPageLandscape(document);
+                textHeader(contentStream, 10, 190, stageSetupExport.verein());
+                textNormal(contentStream, 10, 185, "%s, %s - %s (Dirigentenpodest: %s, Anzahl Schlägelablagen: %s)".formatted(formatDateWritten(stageSetupExport.date()),
+                                                                                                                              stageSetupExport.time(),
+                                                                                                                              stageSetupExport.location(),
+                                                                                                                              stageSetupExport.dirigentenpodest() ? "Ja" : "Nein",
+                                                                                                                              ofNullable(stageSetupExport.ablagenAmount()).map(Object::toString).orElse("-")));
 
                 if (isNotBlank(stageSetupExport.comment())) {
-                    var lines = StringUtils.replace(stageSetupExport.comment(), "\n", System.lineSeparator()).split(System.lineSeparator());
-                    int i = 0;
-                    for (var line : lines) {
-                        for (var wrapLine : WordUtils.wrap(line, 150).split(System.lineSeparator())) {
-                            contentStream.beginText();
-                            contentStream.setFont(font, 10);
-                            contentStream.newLineAtOffset(10 * POINTS_PER_MM, (35 - (i * 4)) * POINTS_PER_MM);
-                            contentStream.showText(wrapLine);
-                            contentStream.endText();
-                            i++;
-                        }
-                    }
+                    multiLineSmall(contentStream, 10, 35, stageSetupExport.comment(), 150);
                 }
 
                 if (stageSetupExport.image() != null) {
                     var image = PDImageXObject.createFromByteArray(document, stageSetupExport.image(), stageSetupExport.verein());
                     contentStream.drawImage(image, 10 * POINTS_PER_MM, 39 * POINTS_PER_MM, 256 * POINTS_PER_MM, 144 * POINTS_PER_MM);
                 } else {
-                    contentStream.beginText();
-                    contentStream.newLineAtOffset(10 * POINTS_PER_MM, 175 * POINTS_PER_MM);
-                    contentStream.setFont(fontBold, 12);
-                    contentStream.showText(stageSetupExport.additionalImage() != null ? "Nur Zusatzbild erfasst" : "Kein Bühnenplan erfasst");
-                    contentStream.endText();
+                    textNormal(contentStream, 10, 175, stageSetupExport.additionalImage() != null ? "Nur Zusatzbild erfasst" : "Kein Bühnenplan erfasst");
                 }
                 contentStream.close();
 
                 if (stageSetupExport.additionalImage() != null) {
-                    var additionalPage = new PDPage(new PDRectangle(WIDTH_IN_MM * POINTS_PER_MM, HEIGHT_IN_MM * POINTS_PER_MM));
-                    document.addPage(additionalPage);
-                    var additionalContentStream = new PDPageContentStream(document, additionalPage);
-                    additionalContentStream.beginText();
-                    additionalContentStream.newLineAtOffset(10 * POINTS_PER_MM, 190 * POINTS_PER_MM);
-                    additionalContentStream.setFont(fontBold, 20);
-                    additionalContentStream.showText("Zusatzbild " + stageSetupExport.verein());
-                    additionalContentStream.endText();
+                    var additionalContentStream = addPageLandscape(document);
+                    textHeader(additionalContentStream, 10, 190, stageSetupExport.verein() + " (Zusatzbild)");
 
                     var additionalImage = PDImageXObject.createFromByteArray(document, stageSetupExport.additionalImage(), stageSetupExport.verein());
                     var scaleWidth = ((float) WIDTH_IN_MM - 20) / additionalImage.getWidth();
@@ -160,9 +118,7 @@ public class StageService {
                     additionalContentStream.close();
                 }
             }
-            var temp = Files.createTempFile(null, ".pdf").toFile();
-            document.save(temp);
-            return Optional.of(temp);
+            return Optional.of(save(document));
         } catch (IOException e) {
             log.error("error creating pdf", e);
             return Optional.empty();

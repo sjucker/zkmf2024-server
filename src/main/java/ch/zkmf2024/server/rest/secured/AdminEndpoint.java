@@ -30,6 +30,7 @@ import ch.zkmf2024.server.service.ErrataService;
 import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.FirebaseMessagingService;
 import ch.zkmf2024.server.service.HelperRegistrationService;
+import ch.zkmf2024.server.service.JudgePdfService;
 import ch.zkmf2024.server.service.JudgeService;
 import ch.zkmf2024.server.service.NewsletterService;
 import ch.zkmf2024.server.service.StageService;
@@ -72,6 +73,7 @@ public class AdminEndpoint {
     private final VereinService vereinService;
     private final ExportService exportService;
     private final JudgeService judgeService;
+    private final JudgePdfService judgePdfService;
     private final TimetableService timetableService;
     private final ErrataService errataService;
     private final StageService stageService;
@@ -83,6 +85,7 @@ public class AdminEndpoint {
                          VereinService vereinService,
                          ExportService exportService,
                          JudgeService judgeService,
+                         JudgePdfService judgePdfService,
                          TimetableService timetableService,
                          ErrataService errataService,
                          StageService stageService,
@@ -93,6 +96,7 @@ public class AdminEndpoint {
         this.vereinService = vereinService;
         this.exportService = exportService;
         this.judgeService = judgeService;
+        this.judgePdfService = judgePdfService;
         this.timetableService = timetableService;
         this.errataService = errataService;
         this.stageService = stageService;
@@ -302,6 +306,14 @@ public class AdminEndpoint {
         log.info("GET /secured/admin/jury");
 
         return ResponseEntity.ok(judgeService.findAll());
+    }
+
+    @GetMapping("/jury/download")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<Resource> getJuryDownload() {
+        log.info("GET /secured/admin/jury/download");
+
+        return export(judgePdfService.create().orElseThrow());
     }
 
     @PostMapping("/jury/report/{id}")

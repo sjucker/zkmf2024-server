@@ -34,4 +34,9 @@ export class JuryService {
         return this.httpClient.get<JudgeDTO[]>(`${this.baseUrl}/secured/admin/jury`)
     }
 
+    export(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/jury/download`, {
+            responseType: 'blob'
+        });
+    }
 }
