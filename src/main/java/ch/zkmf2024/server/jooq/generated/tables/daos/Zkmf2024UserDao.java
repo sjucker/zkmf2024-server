@@ -171,4 +171,19 @@ public class Zkmf2024UserDao extends DAOImpl<Zkmf2024UserRecord, Zkmf2024UserPoj
     public List<Zkmf2024UserPojo> fetchByPasswordResetToken(String... values) {
         return fetch(Zkmf2024User.ZKMF2024_USER.PASSWORD_RESET_TOKEN, values);
     }
+
+    /**
+     * Fetch records that have <code>superuser BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<Zkmf2024UserPojo> fetchRangeOfSuperuser(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Zkmf2024User.ZKMF2024_USER.SUPERUSER, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>superuser IN (values)</code>
+     */
+    public List<Zkmf2024UserPojo> fetchBySuperuser(Boolean... values) {
+        return fetch(Zkmf2024User.ZKMF2024_USER.SUPERUSER, values);
+    }
 }

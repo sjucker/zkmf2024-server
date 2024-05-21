@@ -28,6 +28,9 @@ public class UserAuthService implements UserDetailsService {
         if (user != null) {
             var authorities = new ArrayList<GrantedAuthority>();
             authorities.add(new SimpleGrantedAuthority(user.getRole()));
+            if (user.getSuperuser()) {
+                authorities.add(new SimpleGrantedAuthority("SUPERUSER"));
+            }
             return new User(user.getEmail(), user.getPassword(), authorities);
         }
 

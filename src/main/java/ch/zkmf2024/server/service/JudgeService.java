@@ -186,7 +186,8 @@ public class JudgeService {
                                                    now(),
                                                    null,
                                                    null,
-                                                   null));
+                                                   null,
+                                                   false));
     }
 
     public List<JudgeDTO> findAll() {

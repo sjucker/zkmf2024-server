@@ -44,7 +44,7 @@ class AuthEndpointTest extends AbstractIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.insert(new Zkmf2024UserPojo("email", ADMIN.name(), "{noop}pass1234", null, DateUtil.now(), null, null, null));
+        userRepository.insert(new Zkmf2024UserPojo("email", ADMIN.name(), "{noop}pass1234", null, DateUtil.now(), null, null, null, false));
     }
 
     @AfterEach

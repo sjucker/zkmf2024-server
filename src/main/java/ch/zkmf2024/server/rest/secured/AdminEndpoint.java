@@ -390,7 +390,7 @@ public class AdminEndpoint {
     }
 
     @PostMapping("/messaging")
-    @Secured({"ADMIN"})
+    @Secured({"SUPERUSER"})
     public ResponseEntity<Void> messaging(@RequestBody @Valid MessageSendDTO dto) {
         log.info("POST /secured/admin/messaging {}", dto);
 
@@ -404,7 +404,7 @@ public class AdminEndpoint {
     }
 
     @PostMapping("/messaging/favorite")
-    @Secured({"ADMIN"})
+    @Secured({"SUPERUSER"})
     public ResponseEntity<Void> messagingFavorite(@RequestBody @Valid MessageFavoriteDTO dto) {
         log.info("POST /secured/admin/messaging/favorite {}", dto);
         if (firebaseMessagingService != null) {

@@ -8,11 +8,11 @@ import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.records.Zkmf2024UserRecord;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function8;
+import org.jooq.Function9;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -86,6 +86,11 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
      * The column <code>zkmf2024_user.password_reset_token</code>.
      */
     public final TableField<Zkmf2024UserRecord, String> PASSWORD_RESET_TOKEN = createField(DSL.name("password_reset_token"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>zkmf2024_user.superuser</code>.
+     */
+    public final TableField<Zkmf2024UserRecord, Boolean> SUPERUSER = createField(DSL.name("superuser"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
     private Zkmf2024User(Name alias, Table<Zkmf2024UserRecord> aliased) {
         this(alias, aliased, null);
@@ -170,18 +175,18 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<String, String, String, LocalDateTime, LocalDateTime, String, LocalDateTime, String> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<String, String, String, LocalDateTime, LocalDateTime, String, LocalDateTime, String, Boolean> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -189,7 +194,7 @@ public class Zkmf2024User extends TableImpl<Zkmf2024UserRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super String, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super LocalDateTime, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

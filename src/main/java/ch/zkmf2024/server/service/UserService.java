@@ -38,7 +38,8 @@ public class UserService {
                 DateUtil.now(),
                 UUID.randomUUID().toString(),
                 null,
-                null
+                null,
+                false
         ));
 
         return new UserDTO(dto.email(), dto.role(), null);

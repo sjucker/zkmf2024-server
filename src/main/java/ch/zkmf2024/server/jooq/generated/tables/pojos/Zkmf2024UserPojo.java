@@ -23,6 +23,7 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
     private String emailVerification;
     private LocalDateTime emailVerifiedAt;
     private String passwordResetToken;
+    private Boolean superuser;
 
     public Zkmf2024UserPojo() {
     }
@@ -36,6 +37,7 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
         this.emailVerification = value.getEmailVerification();
         this.emailVerifiedAt = value.getEmailVerifiedAt();
         this.passwordResetToken = value.getPasswordResetToken();
+        this.superuser = value.getSuperuser();
     }
 
     public Zkmf2024UserPojo(
@@ -46,7 +48,8 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
             LocalDateTime createdAt,
             String emailVerification,
             LocalDateTime emailVerifiedAt,
-            String passwordResetToken
+            String passwordResetToken,
+            Boolean superuser
     ) {
         this.email = email;
         this.role = role;
@@ -56,6 +59,7 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
         this.emailVerification = emailVerification;
         this.emailVerifiedAt = emailVerifiedAt;
         this.passwordResetToken = passwordResetToken;
+        this.superuser = superuser;
     }
 
     /**
@@ -186,6 +190,22 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
         this.passwordResetToken = passwordResetToken;
     }
 
+    /**
+     * Getter for <code>zkmf2024_user.superuser</code>.
+     */
+    @Override
+    public Boolean getSuperuser() {
+        return this.superuser;
+    }
+
+    /**
+     * Setter for <code>zkmf2024_user.superuser</code>.
+     */
+    @Override
+    public void setSuperuser(Boolean superuser) {
+        this.superuser = superuser;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -235,6 +255,11 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
                 return false;
         } else if (!this.passwordResetToken.equals(other.passwordResetToken))
             return false;
+        if (this.superuser == null) {
+            if (other.superuser != null)
+                return false;
+        } else if (!this.superuser.equals(other.superuser))
+            return false;
         return true;
     }
 
@@ -250,6 +275,7 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
         result = prime * result + ((this.emailVerification == null) ? 0 : this.emailVerification.hashCode());
         result = prime * result + ((this.emailVerifiedAt == null) ? 0 : this.emailVerifiedAt.hashCode());
         result = prime * result + ((this.passwordResetToken == null) ? 0 : this.passwordResetToken.hashCode());
+        result = prime * result + ((this.superuser == null) ? 0 : this.superuser.hashCode());
         return result;
     }
 
@@ -265,6 +291,7 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
         sb.append(", ").append(emailVerification);
         sb.append(", ").append(emailVerifiedAt);
         sb.append(", ").append(passwordResetToken);
+        sb.append(", ").append(superuser);
 
         sb.append(")");
         return sb.toString();
@@ -284,6 +311,7 @@ public class Zkmf2024UserPojo implements IZkmf2024User {
         setEmailVerification(from.getEmailVerification());
         setEmailVerifiedAt(from.getEmailVerifiedAt());
         setPasswordResetToken(from.getPasswordResetToken());
+        setSuperuser(from.getSuperuser());
     }
 
     @Override

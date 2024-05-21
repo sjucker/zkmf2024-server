@@ -92,6 +92,16 @@ public interface IZkmf2024User extends Serializable {
      */
     public String getPasswordResetToken();
 
+    /**
+     * Setter for <code>zkmf2024_user.superuser</code>.
+     */
+    public void setSuperuser(Boolean value);
+
+    /**
+     * Getter for <code>zkmf2024_user.superuser</code>.
+     */
+    public Boolean getSuperuser();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
