@@ -218,7 +218,7 @@ public class TimetableService {
 
         return new CurrentTimetablePreviewDTO(current,
                                               next,
-                                              sponsoringService.getRandom(4),
+                                              sponsoringService.getRandom(6),
                                               currentTime());
     }
 }
