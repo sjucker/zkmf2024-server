@@ -25,11 +25,17 @@ export interface CurrentTimetablePreviewDTO {
     next?: TimetablePreviewDTO;
     sponsoren: SponsorDTO[];
     currentTime: DateAsString;
+    emergencyMessage?: EmergencyMessageDTO;
 }
 
 export interface DoppelEinsatzDTO {
     otherVerein: VereinSelectionDTO;
     mitspielerName: string;
+}
+
+export interface EmergencyMessageDTO {
+    header: string;
+    message: string;
 }
 
 export interface FestprogrammDayDTO {
@@ -312,6 +318,7 @@ export interface TimetablePreviewDTO {
     header2?: string;
     header3?: string;
     location: LocationDTO;
+    date: DateAsString;
     startTime: DateAsString;
     endTime: DateAsString;
     minutesUntilStart: number;

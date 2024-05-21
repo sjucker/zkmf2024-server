@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.AppPage;
+import ch.zkmf2024.server.jooq.generated.tables.EmergencyMessage;
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
 import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
@@ -57,6 +58,11 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>app_page</code>.
      */
     public final AppPage APP_PAGE = AppPage.APP_PAGE;
+
+    /**
+     * The table <code>emergency_message</code>.
+     */
+    public final EmergencyMessage EMERGENCY_MESSAGE = EmergencyMessage.EMERGENCY_MESSAGE;
 
     /**
      * The table <code>errata</code>.
@@ -219,6 +225,7 @@ public class DefaultSchema extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
                 AppPage.APP_PAGE,
+                EmergencyMessage.EMERGENCY_MESSAGE,
                 Errata.ERRATA,
                 FestprogrammEntry.FESTPROGRAMM_ENTRY,
                 HelperRegistration.HELPER_REGISTRATION,

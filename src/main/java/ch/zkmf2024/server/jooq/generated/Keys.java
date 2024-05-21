@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.AppPage;
+import ch.zkmf2024.server.jooq.generated.tables.EmergencyMessage;
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
 import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
@@ -34,6 +35,7 @@ import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
 import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import ch.zkmf2024.server.jooq.generated.tables.records.AppPageRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.EmergencyMessageRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ErrataRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.FestprogrammEntryRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.HelperRegistrationRecord;
@@ -81,6 +83,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<AppPageRecord> PK_APP_PAGE = Internal.createUniqueKey(AppPage.APP_PAGE, DSL.name("pk_app_page"), new TableField[]{AppPage.APP_PAGE.ID}, true);
+    public static final UniqueKey<EmergencyMessageRecord> PK_EMERGENCY_MESSAGE = Internal.createUniqueKey(EmergencyMessage.EMERGENCY_MESSAGE, DSL.name("pk_emergency_message"), new TableField[]{EmergencyMessage.EMERGENCY_MESSAGE.ID}, true);
     public static final UniqueKey<ErrataRecord> PK_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("pk_errata"), new TableField[]{Errata.ERRATA.ID}, true);
     public static final UniqueKey<ErrataRecord> UQ_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("uq_errata"), new TableField[]{Errata.ERRATA.MODUL, Errata.ERRATA.KLASSE, Errata.ERRATA.BESETZUNG}, true);
     public static final UniqueKey<FestprogrammEntryRecord> PK_FESTPROGRAMM_ENTRY = Internal.createUniqueKey(FestprogrammEntry.FESTPROGRAMM_ENTRY, DSL.name("pk_festprogramm_entry"), new TableField[]{FestprogrammEntry.FESTPROGRAMM_ENTRY.ID}, true);

@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.AppPage;
+import ch.zkmf2024.server.jooq.generated.tables.EmergencyMessage;
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
 import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
 import ch.zkmf2024.server.jooq.generated.tables.HelperRegistration;
@@ -44,6 +45,11 @@ public class Tables {
      * The table <code>app_page</code>.
      */
     public static final AppPage APP_PAGE = AppPage.APP_PAGE;
+
+    /**
+     * The table <code>emergency_message</code>.
+     */
+    public static final EmergencyMessage EMERGENCY_MESSAGE = EmergencyMessage.EMERGENCY_MESSAGE;
 
     /**
      * The table <code>errata</code>.

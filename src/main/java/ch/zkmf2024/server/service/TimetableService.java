@@ -12,6 +12,7 @@ import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO.TimeTableEntryDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
+import ch.zkmf2024.server.repository.EmergencyMessageRepository;
 import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UnterhaltungRepository;
@@ -46,17 +47,20 @@ public class TimetableService {
     private final VereinRepository vereinRepository;
     private final UnterhaltungRepository unterhaltungRepository;
     private final SponsoringService sponsoringService;
+    private final EmergencyMessageRepository emergencyMessageRepository;
 
     public TimetableService(TimetableRepository timetableRepository,
                             LocationRepository locationRepository,
                             VereinRepository vereinRepository,
                             UnterhaltungRepository unterhaltungRepository,
-                            SponsoringService sponsoringService) {
+                            SponsoringService sponsoringService,
+                            EmergencyMessageRepository emergencyMessageRepository) {
         this.timetableRepository = timetableRepository;
         this.locationRepository = locationRepository;
         this.vereinRepository = vereinRepository;
         this.unterhaltungRepository = unterhaltungRepository;
         this.sponsoringService = sponsoringService;
+        this.emergencyMessageRepository = emergencyMessageRepository;
     }
 
     public List<TimetableEntryDTO> findAll() {
@@ -219,6 +223,7 @@ public class TimetableService {
         return new CurrentTimetablePreviewDTO(current,
                                               next,
                                               sponsoringService.getRandom(6),
-                                              currentTime());
+                                              currentTime(),
+                                              emergencyMessageRepository.findEmergencyMessage().orElse(null));
     }
 }

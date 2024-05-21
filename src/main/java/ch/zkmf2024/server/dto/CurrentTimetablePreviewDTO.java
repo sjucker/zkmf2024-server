@@ -7,5 +7,6 @@ import java.util.List;
 public record CurrentTimetablePreviewDTO(TimetablePreviewDTO current,
                                          TimetablePreviewDTO next,
                                          @NotNull List<SponsorDTO> sponsoren,
-                                         @NotNull LocalTime currentTime) {
+                                         @NotNull LocalTime currentTime,
+                                         EmergencyMessageDTO emergencyMessage) {
 }
