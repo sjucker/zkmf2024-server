@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated;
 
 import ch.zkmf2024.server.jooq.generated.tables.AppPage;
+import ch.zkmf2024.server.jooq.generated.tables.CurrentlyPlaying;
 import ch.zkmf2024.server.jooq.generated.tables.EmergencyMessage;
 import ch.zkmf2024.server.jooq.generated.tables.Errata;
 import ch.zkmf2024.server.jooq.generated.tables.FestprogrammEntry;
@@ -36,6 +37,7 @@ import ch.zkmf2024.server.jooq.generated.tables.VereinProgrammTitel;
 import ch.zkmf2024.server.jooq.generated.tables.VereinStatus;
 import ch.zkmf2024.server.jooq.generated.tables.Zkmf2024User;
 import ch.zkmf2024.server.jooq.generated.tables.records.AppPageRecord;
+import ch.zkmf2024.server.jooq.generated.tables.records.CurrentlyPlayingRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.EmergencyMessageRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ErrataRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.FestprogrammEntryRecord;
@@ -85,6 +87,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<AppPageRecord> PK_APP_PAGE = Internal.createUniqueKey(AppPage.APP_PAGE, DSL.name("pk_app_page"), new TableField[]{AppPage.APP_PAGE.ID}, true);
+    public static final UniqueKey<CurrentlyPlayingRecord> PK_CURRENTLY_PLAYING = Internal.createUniqueKey(CurrentlyPlaying.CURRENTLY_PLAYING, DSL.name("pk_currently_playing"), new TableField[]{CurrentlyPlaying.CURRENTLY_PLAYING.ID}, true);
     public static final UniqueKey<EmergencyMessageRecord> PK_EMERGENCY_MESSAGE = Internal.createUniqueKey(EmergencyMessage.EMERGENCY_MESSAGE, DSL.name("pk_emergency_message"), new TableField[]{EmergencyMessage.EMERGENCY_MESSAGE.ID}, true);
     public static final UniqueKey<ErrataRecord> PK_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("pk_errata"), new TableField[]{Errata.ERRATA.ID}, true);
     public static final UniqueKey<ErrataRecord> UQ_ERRATA = Internal.createUniqueKey(Errata.ERRATA, DSL.name("uq_errata"), new TableField[]{Errata.ERRATA.MODUL, Errata.ERRATA.KLASSE, Errata.ERRATA.BESETZUNG}, true);
@@ -129,6 +132,7 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<CurrentlyPlayingRecord, TimetableEntryRecord> CURRENTLY_PLAYING__FK_TIMETABLE_ENTRY = Internal.createForeignKey(CurrentlyPlaying.CURRENTLY_PLAYING, DSL.name("fk_timetable_entry"), new TableField[]{CurrentlyPlaying.CURRENTLY_PLAYING.FK_TIMETABLE_ENTRY}, Keys.PK_TIMETABLE_ENTRY, new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
     public static final ForeignKey<JudgeReportRecord, JudgeRecord> JUDGE_REPORT__FK_JUDGE_REPORT_JUDGE = Internal.createForeignKey(JudgeReport.JUDGE_REPORT, DSL.name("fk_judge_report_judge"), new TableField[]{JudgeReport.JUDGE_REPORT.FK_JUDGE}, Keys.PK_JUDGE, new TableField[]{Judge.JUDGE.ID}, true);
     public static final ForeignKey<JudgeReportRecord, TimetableEntryRecord> JUDGE_REPORT__FK_JUDGE_REPORT_TIMETABLE = Internal.createForeignKey(JudgeReport.JUDGE_REPORT, DSL.name("fk_judge_report_timetable"), new TableField[]{JudgeReport.JUDGE_REPORT.FK_TIMETABLE_ENTRY}, Keys.PK_TIMETABLE_ENTRY, new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
     public static final ForeignKey<JudgeReportCommentRecord, JudgeReportRecord> JUDGE_REPORT_COMMENT__FK_JUDGE_REPORT_COMMENT_REPORT = Internal.createForeignKey(JudgeReportComment.JUDGE_REPORT_COMMENT, DSL.name("fk_judge_report_comment_report"), new TableField[]{JudgeReportComment.JUDGE_REPORT_COMMENT.FK_JUDGE_REPORT}, Keys.PK_JUDGE_REPORT, new TableField[]{JudgeReport.JUDGE_REPORT.ID}, true);

@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static ch.zkmf2024.server.jooq.generated.Tables.CURRENTLY_PLAYING;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
@@ -186,17 +187,15 @@ public class TimetableRepository {
     }
 
     public Optional<TimetablePreviewDTO> findCurrent(String locationIdentifier) {
-        var now = currentTime();
-        var today = today();
         return jooqDsl.select()
                       .from(TIMETABLE_ENTRY)
+                      .join(CURRENTLY_PLAYING).on(TIMETABLE_ENTRY.ID.eq(CURRENTLY_PLAYING.FK_TIMETABLE_ENTRY))
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
                       .join(KONTAKT).on(VEREIN.DIREKTION_KONTAKT_ID.eq(KONTAKT.ID))
-                      .where(TIMETABLE_ENTRY.DATE.eq(today),
-                             TIMETABLE_ENTRY.START_TIME.lessOrEqual(now),
-                             TIMETABLE_ENTRY.END_TIME.greaterOrEqual(now),
+                      .where(CURRENTLY_PLAYING.STARTED_AT.isNotNull(),
+                             CURRENTLY_PLAYING.ENDED_AT.isNull(),
                              LOCATION.IDENTIFIER.eq(locationIdentifier))
                       .fetchOptional(TimetableRepository::toTimetablePreviewDTO);
     }

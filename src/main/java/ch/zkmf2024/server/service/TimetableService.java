@@ -206,24 +206,37 @@ public class TimetableService {
     }
 
     public CurrentTimetablePreviewDTO getCurrentPreview(String locationIdentifier) {
-        var current = timetableRepository.findCurrent(locationIdentifier).or(() -> unterhaltungRepository.findCurrent(locationIdentifier)).orElse(null);
+        var emergencyMessage = emergencyMessageRepository.findEmergencyMessage();
+        if (emergencyMessage.isPresent()) {
+            // emergency has the highest priority
+            return CurrentTimetablePreviewDTO.of(emergencyMessage.get());
+        }
 
+        var current = timetableRepository.findCurrent(locationIdentifier);
+        if (current.isPresent()) {
+            // if current okay is going on, do not show anything else
+            return CurrentTimetablePreviewDTO.of(current.get());
+        }
+
+        var next = findNext(locationIdentifier);
+
+        return new CurrentTimetablePreviewDTO(null,
+                                              next.orElse(null),
+                                              sponsoringService.getRandom(6),
+                                              currentTime(),
+                                              null);
+    }
+
+    private Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
         var nextTimetable = timetableRepository.findNext(locationIdentifier);
         var nextUnterhaltung = unterhaltungRepository.findNext(locationIdentifier);
 
-        TimetablePreviewDTO next;
         if (nextTimetable.isPresent() && nextUnterhaltung.isPresent()) {
-            next = nextTimetable.get().startTime().isBefore(nextUnterhaltung.get().startTime())
-                    ? nextTimetable.get()
-                    : nextUnterhaltung.get();
+            return nextTimetable.get().startTime().isBefore(nextUnterhaltung.get().startTime())
+                    ? nextTimetable
+                    : nextUnterhaltung;
         } else {
-            next = nextTimetable.orElseGet(() -> nextUnterhaltung.orElse(null));
+            return nextTimetable.or(() -> nextUnterhaltung);
         }
-
-        return new CurrentTimetablePreviewDTO(current,
-                                              next,
-                                              sponsoringService.getRandom(6),
-                                              currentTime(),
-                                              emergencyMessageRepository.findEmergencyMessage().orElse(null));
     }
 }
