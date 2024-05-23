@@ -356,6 +356,16 @@ export interface UnterhaltungsEntryDTO {
     unterhaltungIdentifier?: string;
 }
 
+export interface UpcomingVereinDTO {
+    timetableEntryId: number;
+    vereinIdentifier: string;
+    vereinName: string;
+    location: string;
+    startTime: DateAsString;
+    minutesUntilStart: number;
+    id?: string;
+}
+
 export interface VereinDTO {
     email: string;
     angaben: VereinsangabenDTO;

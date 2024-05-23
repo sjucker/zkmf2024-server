@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.TimetablePreviewDTO;
+import ch.zkmf2024.server.dto.UpcomingVereinDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TimetableEntryDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -196,16 +198,7 @@ public class TimetableRepository {
                              TIMETABLE_ENTRY.START_TIME.lessOrEqual(now),
                              TIMETABLE_ENTRY.END_TIME.greaterOrEqual(now),
                              LOCATION.IDENTIFIER.eq(locationIdentifier))
-                      .fetchOptional(it -> new TimetablePreviewDTO(
-                              it.get(VEREIN.VEREINSNAME),
-                              getCompetition(it),
-                              "unter der Leitung von %s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
-                              LocationRepository.toDTO(it),
-                              it.get(TIMETABLE_ENTRY.DATE),
-                              it.get(TIMETABLE_ENTRY.START_TIME),
-                              it.get(TIMETABLE_ENTRY.END_TIME),
-                              0L
-                      ));
+                      .fetchOptional(TimetableRepository::toTimetablePreviewDTO);
     }
 
     public Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
@@ -222,18 +215,46 @@ public class TimetableRepository {
         try (var stream = query.stream()) {
             return stream.filter(it -> LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)).isAfter(now()))
                          .limit(1)
-                         .map(it -> new TimetablePreviewDTO(
-                                 it.get(VEREIN.VEREINSNAME),
-                                 getCompetition(it),
-                                 "unter der Leitung von %s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
-                                 LocationRepository.toDTO(it),
-                                 it.get(TIMETABLE_ENTRY.DATE),
-                                 it.get(TIMETABLE_ENTRY.START_TIME),
-                                 it.get(TIMETABLE_ENTRY.END_TIME),
-                                 Duration.between(now(), LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME))).toMinutes()
-                         ))
+                         .map(TimetableRepository::toTimetablePreviewDTO)
                          .findFirst();
         }
+    }
+
+    private static TimetablePreviewDTO toTimetablePreviewDTO(org.jooq.Record it) {
+        return new TimetablePreviewDTO(
+                it.get(VEREIN.VEREINSNAME),
+                getCompetition(it),
+                "unter der Leitung von %s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
+                LocationRepository.toDTO(it),
+                it.get(TIMETABLE_ENTRY.DATE),
+                it.get(TIMETABLE_ENTRY.START_TIME),
+                it.get(TIMETABLE_ENTRY.END_TIME),
+                getMinutesUntilStart(it)
+        );
+    }
+
+    private static long getMinutesUntilStart(org.jooq.Record it) {
+        return Duration.between(now(), LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME))).toMinutes();
+    }
+
+    public List<UpcomingVereinDTO> findAllUpcomingIn(long amount, TemporalUnit unit) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                      .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                      .join(LOCATION).on(TIMETABLE_ENTRY.FK_LOCATION.eq(LOCATION.ID))
+                      .where(TIMETABLE_ENTRY.DATE.eq(today()),
+                             TIMETABLE_ENTRY.START_TIME.lessOrEqual(currentTime().plus(amount, unit)),
+                             TIMETABLE_ENTRY.START_TIME.greaterThan(currentTime()),
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                      .fetch(it -> new UpcomingVereinDTO(
+                              it.get(TIMETABLE_ENTRY.ID),
+                              it.get(VEREIN.IDENTIFIER),
+                              it.get(VEREIN.VEREINSNAME),
+                              it.get(LOCATION.NAME),
+                              it.get(TIMETABLE_ENTRY.START_TIME),
+                              getMinutesUntilStart(it)
+                      ));
     }
 
     public record ModulKlasseBesetzung(Modul modul, Klasse klasse, Besetzung besetzung) {

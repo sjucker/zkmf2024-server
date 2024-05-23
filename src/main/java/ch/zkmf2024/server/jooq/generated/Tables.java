@@ -16,6 +16,7 @@ import ch.zkmf2024.server.jooq.generated.tables.JudgeReportRating;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt;
 import ch.zkmf2024.server.jooq.generated.tables.Location;
 import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
+import ch.zkmf2024.server.jooq.generated.tables.NotificationSent;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.Ranking;
 import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
@@ -105,6 +106,11 @@ public class Tables {
      * The table <code>newsletter_recipient</code>.
      */
     public static final NewsletterRecipient NEWSLETTER_RECIPIENT = NewsletterRecipient.NEWSLETTER_RECIPIENT;
+
+    /**
+     * The table <code>notification_sent</code>.
+     */
+    public static final NotificationSent NOTIFICATION_SENT = NotificationSent.NOTIFICATION_SENT;
 
     /**
      * The table <code>programm_vorgaben</code>.

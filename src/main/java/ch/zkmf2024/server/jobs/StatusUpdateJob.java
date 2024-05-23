@@ -18,7 +18,7 @@ public class StatusUpdateJob {
         this.vereinService = vereinService;
     }
 
-    @Scheduled(timeUnit = MINUTES, initialDelay = 1, fixedRate = 60)
+    @Scheduled(timeUnit = MINUTES, initialDelay = 3, fixedRate = 60)
     public void updateStatus() {
         log.info("running status update job");
 
