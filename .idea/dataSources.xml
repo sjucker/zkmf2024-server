@@ -13,7 +13,7 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Heroku Staging" uuid="2f23e5e2-78e6-42e7-acbe-66fc915d0f23">
+    <data-source source="LOCAL" name="Heroku Staging" read-only="true" uuid="2f23e5e2-78e6-42e7-acbe-66fc915d0f23">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
