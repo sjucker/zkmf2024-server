@@ -34,8 +34,10 @@ export interface DoppelEinsatzDTO {
 }
 
 export interface EmergencyMessageDTO {
+    id?: number;
     header: string;
     message: string;
+    active: boolean;
 }
 
 export interface FestprogrammDayDTO {
@@ -869,6 +871,25 @@ export enum JudgeReportCategoryRating {
     VERY_POSITIVE = "VERY_POSITIVE",
 }
 
+export enum Klasse {
+    HOECHSTKLASSE = "HOECHSTKLASSE",
+    KLASSE_1 = "KLASSE_1",
+    KLASSE_2 = "KLASSE_2",
+    KLASSE_3 = "KLASSE_3",
+    KLASSE_4 = "KLASSE_4",
+    OBERSTUFE = "OBERSTUFE",
+    MITTELSTUFE = "MITTELSTUFE",
+    UNTERSTUFE = "UNTERSTUFE",
+}
+
+export enum Besetzung {
+    HARMONIE = "HARMONIE",
+    BRASS_BAND = "BRASS_BAND",
+    FANFARE = "FANFARE",
+    TAMBOUREN = "TAMBOUREN",
+    PERKUSSIONSENSEMBLE = "PERKUSSIONSENSEMBLE",
+}
+
 export enum LocationType {
     PARADEMUSIK = "PARADEMUSIK",
     EINSPIELLOKAL = "EINSPIELLOKAL",
@@ -922,6 +943,14 @@ export enum Einsatzzeit {
     NACHT = "NACHT",
 }
 
+export enum TimetableEntryType {
+    EINSPIEL = "EINSPIEL",
+    WETTSPIEL = "WETTSPIEL",
+    BESPRECHUNG = "BESPRECHUNG",
+    PLATZKONZERT = "PLATZKONZERT",
+    MARSCHMUSIK = "MARSCHMUSIK",
+}
+
 export enum UnterhaltungEntryType {
     FREITAG_ABEND = "FREITAG_ABEND",
     SAMSTAG_TAG = "SAMSTAG_TAG",
@@ -942,34 +971,7 @@ export enum TambourenGrundlage {
     DOUBLE = "DOUBLE",
 }
 
-export enum Klasse {
-    HOECHSTKLASSE = "HOECHSTKLASSE",
-    KLASSE_1 = "KLASSE_1",
-    KLASSE_2 = "KLASSE_2",
-    KLASSE_3 = "KLASSE_3",
-    KLASSE_4 = "KLASSE_4",
-    OBERSTUFE = "OBERSTUFE",
-    MITTELSTUFE = "MITTELSTUFE",
-    UNTERSTUFE = "UNTERSTUFE",
-}
-
-export enum Besetzung {
-    HARMONIE = "HARMONIE",
-    BRASS_BAND = "BRASS_BAND",
-    FANFARE = "FANFARE",
-    TAMBOUREN = "TAMBOUREN",
-    PERKUSSIONSENSEMBLE = "PERKUSSIONSENSEMBLE",
-}
-
 export enum MessageType {
     EMERGENCY = "EMERGENCY",
     GENERAL = "GENERAL",
-}
-
-export enum TimetableEntryType {
-    EINSPIEL = "EINSPIEL",
-    WETTSPIEL = "WETTSPIEL",
-    BESPRECHUNG = "BESPRECHUNG",
-    PLATZKONZERT = "PLATZKONZERT",
-    MARSCHMUSIK = "MARSCHMUSIK",
 }

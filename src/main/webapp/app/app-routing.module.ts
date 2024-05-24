@@ -1,5 +1,6 @@
 import {inject, NgModule} from '@angular/core';
 import {CanActivateFn, RouterModule, Routes} from '@angular/router';
+import {EmergencyComponent} from "./emergency/emergency.component";
 import {ErrataComponent} from "./errata/errata.component";
 import {HelferComponent} from "./helfer/helfer.component";
 import {JuryComponent} from "./jury/jury.component";
@@ -15,6 +16,7 @@ import {VereineComponent} from "./vereine/vereine.component";
 export const LOGIN_ROUTE = 'login';
 export const VEREINE_ROUTE = 'vereine';
 export const APP_ROUTE = 'app';
+export const EMERGENCY_ROUTE = 'notfall';
 export const NEWSLETTER_ROUTE = 'newsletter';
 export const HELFER_ROUTE = 'helfer';
 export const USERS_ROUTE = 'users';
@@ -39,6 +41,11 @@ const routes: Routes = [
     {
         path: APP_ROUTE,
         component: MobileAppComponent,
+        canActivate: [canActivateFn],
+    },
+    {
+        path: EMERGENCY_ROUTE,
+        component: EmergencyComponent,
         canActivate: [canActivateFn],
     },
     {
