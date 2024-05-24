@@ -3,7 +3,6 @@ package ch.zkmf2024.server.service;
 import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
-import ch.zkmf2024.server.repository.EmergencyMessageRepository;
 import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UnterhaltungRepository;
@@ -34,13 +33,13 @@ class TimetableServiceTest {
     @Mock
     private SponsoringService sponsoringService;
     @Mock
-    private EmergencyMessageRepository emergencyMessageRepository;
+    private EmergencyService emergencyService;
 
     private TimetableService service;
 
     @BeforeEach
     void setUp() {
-        service = new TimetableService(timetableRepository, locationRepository, vereinRepository, unterhaltungRepository, sponsoringService, emergencyMessageRepository);
+        service = new TimetableService(timetableRepository, locationRepository, vereinRepository, unterhaltungRepository, sponsoringService, emergencyService);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.AppPageDTO;
+import ch.zkmf2024.server.dto.EmergencyMessageDTO;
 import ch.zkmf2024.server.dto.NewsletterRecipientDTO;
 import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.VereinDTO;
@@ -24,6 +25,7 @@ import ch.zkmf2024.server.dto.admin.VereinCommentDTO;
 import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
 import ch.zkmf2024.server.dto.admin.VereinOverviewDTO;
 import ch.zkmf2024.server.service.AppPageService;
+import ch.zkmf2024.server.service.EmergencyService;
 import ch.zkmf2024.server.service.ErrataService;
 import ch.zkmf2024.server.service.ExportService;
 import ch.zkmf2024.server.service.FirebaseMessagingService;
@@ -78,6 +80,7 @@ public class AdminEndpoint {
     private final StageService stageService;
     private final FirebaseMessagingService firebaseMessagingService;
     private final AppPageService appPageService;
+    private final EmergencyService emergencyService;
 
     public AdminEndpoint(NewsletterService newsletterService,
                          HelperRegistrationService helperRegistrationService,
@@ -89,7 +92,8 @@ public class AdminEndpoint {
                          ErrataService errataService,
                          StageService stageService,
                          @Nullable FirebaseMessagingService firebaseMessagingService,
-                         AppPageService appPageService) {
+                         AppPageService appPageService,
+                         EmergencyService emergencyService) {
         this.newsletterService = newsletterService;
         this.helperRegistrationService = helperRegistrationService;
         this.vereinService = vereinService;
@@ -101,6 +105,7 @@ public class AdminEndpoint {
         this.stageService = stageService;
         this.firebaseMessagingService = firebaseMessagingService;
         this.appPageService = appPageService;
+        this.emergencyService = emergencyService;
     }
 
     @GetMapping(path = "/download/helfer")
@@ -440,6 +445,24 @@ public class AdminEndpoint {
         log.info("PATCH /secured/admin/app-page/{} {}", id, dto);
 
         appPageService.update(id, dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/emergency")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<List<EmergencyMessageDTO>> getEmergency() {
+        log.info("GET /secured/admin/emergency");
+
+        return ResponseEntity.ok(emergencyService.findAll());
+    }
+
+    @PostMapping("/emergency")
+    @Secured({"ADMIN"})
+    public ResponseEntity<Void> postEmergency(@RequestBody @Valid EmergencyMessageDTO dto) {
+        log.info("POST /secured/admin/emergency {}", dto);
+
+        emergencyService.createOrUpdate(dto);
 
         return ResponseEntity.ok().build();
     }
