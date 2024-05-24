@@ -6,16 +6,26 @@
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/zkmf2024</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="Heroku Staging" uuid="2f23e5e2-78e6-42e7-acbe-66fc915d0f23">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://ec2-63-33-143-66.eu-west-1.compute.amazonaws.com:5432/d77g3mre6mengr</jdbc-url>
+      <jdbc-url>jdbc:postgresql://ec2-52-30-108-125.eu-west-1.compute.amazonaws.com:5432/d7ajnq6i6q9dug</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Heroku Prod" uuid="454ad3d4-4ac3-4916-93d0-eee8f024f02b">
+    <data-source source="LOCAL" name="Heroku Prod" read-only="true" uuid="454ad3d4-4ac3-4916-93d0-eee8f024f02b">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
