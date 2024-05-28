@@ -376,16 +376,20 @@ public class VereinService {
     }
 
     public void updateStage(String email, VereinStageSetupDTO dto) {
-        // TODO check if not fixed
-        var detail = vereinRepository.findAnmeldungDetailByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
-        detail.setStageSetup(JSONB.jsonbOrNull(dto.stageSetup()));
-        detail.setStageDirigentenpodest(dto.dirigentenpodest());
-        detail.setStageAblagenAmount(dto.ablagenAmount());
-        detail.setStageComment(dto.comment());
-        vereinRepository.update(detail);
+        var verein = vereinRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
+        if (verein.getStageSetupConfirmedAt() == null) {
+            var detail = vereinRepository.findAnmeldungDetailByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
+            detail.setStageSetup(JSONB.jsonbOrNull(dto.stageSetup()));
+            detail.setStageDirigentenpodest(dto.dirigentenpodest());
+            detail.setStageAblagenAmount(dto.ablagenAmount());
+            detail.setStageComment(dto.comment());
+            vereinRepository.update(detail);
 
-        // asynchronously generate the stage setup image and store it in DB as well
-        stageService.createStageSetupImage(dto);
+            // asynchronously generate the stage setup image and store it in DB as well
+            stageService.createStageSetupImage(dto);
+        } else {
+            log.error("verein {} tried to update stage although it is already confirmed at {}", email, verein.getStageSetupConfirmedAt());
+        }
     }
 
     public void updateStageSetupAdditional(String email, MultipartFile file) throws IOException {
