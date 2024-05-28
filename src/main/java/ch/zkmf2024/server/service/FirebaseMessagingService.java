@@ -52,6 +52,28 @@ public class FirebaseMessagingService {
                 message.putData("route", route);
             }
 
+            log.info("sending notification {}/{} to topic {}", title, body, topic);
+            firebaseMessaging.send(message.build());
+        } catch (FirebaseMessagingException e) {
+            log.error("could not send message", e);
+        }
+    }
+
+    public void sendToToken(String token, String title, String body, String route) {
+        try {
+            var notification = Notification.builder()
+                                           .setTitle(title)
+                                           .setBody(body)
+                                           .build();
+
+            var message = Message.builder()
+                                 .setToken(token)
+                                 .setNotification(notification);
+
+            if (isNotBlank(route)) {
+                message.putData("route", route);
+            }
+            log.info("sending notification {}/{} to token {}", title, body, token);
             firebaseMessaging.send(message.build());
         } catch (FirebaseMessagingException e) {
             log.error("could not send message", e);
