@@ -1,7 +1,7 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {MessageService} from "primeng/api";
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {EmergencyDialogComponent} from "../emergency-dialog/emergency-dialog.component";
 import {EmergencyMessageDTO} from "../rest";
-import {AuthenticationService} from "../service/authentication.service";
 import {EmergencyService} from "../service/emergency.service";
 
 @Component({
@@ -14,9 +14,10 @@ export class EmergencyComponent implements OnInit {
     messages = signal<EmergencyMessageDTO[]>([]);
     loading = signal(false);
 
-    constructor(private authenticationService: AuthenticationService,
-                private readonly emergencyService: EmergencyService,
-                private readonly messageService: MessageService) {
+    ref?: DynamicDialogRef;
+
+    constructor(private emergencyService: EmergencyService,
+                private dialogService: DialogService) {
     }
 
     ngOnInit(): void {
@@ -44,10 +45,23 @@ export class EmergencyComponent implements OnInit {
     }
 
     openCreateMessage(): void {
-// TODO
+        this.ref = this.dialogService.open(EmergencyDialogComponent, {
+            header: 'Notfall-Nachricht erstellen'
+        });
+
+        this.ref.onClose.subscribe(() => {
+            this.load();
+        });
     }
 
     openEditMessage(dto: EmergencyMessageDTO) {
-// TODO
+        this.ref = this.dialogService.open(EmergencyDialogComponent, {
+            header: 'Notfall-Nachricht bearbeiten',
+            data: {...dto}
+        });
+
+        this.ref.onClose.subscribe(() => {
+            this.load();
+        });
     }
 }

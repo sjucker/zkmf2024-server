@@ -1,0 +1,21 @@
+<p-toast position="top-center"></p-toast>
+<div class="flex flex-column gap-5">
+    <span class="p-float-label  mt-2">
+        <input type="text" id="header" pInputText [(ngModel)]="dto.header" [maxLength]="255" class="w-full">
+        <label for="header">Titel</label>
+    </span>
+
+    <textarea rows="8" cols="60" pInputTextarea [(ngModel)]="dto.message" maxlength="8000"></textarea>
+
+    <p-checkbox [(ngModel)]="dto.active" [binary]="true" inputId="active" label="Aktiv"></p-checkbox>
+
+    <div class="flex justify-content-end gap-5 align-items-end">
+        <p-button label="Schliessen"
+                  [text]="true"
+                  (onClick)="close()"></p-button>
+        <p-button label="Speichern"
+                  (onClick)="save()"
+                  [loading]="saving()"
+                  [disabled]="dto.header.length < 1 || dto.message.length < 1 || isReadOnly()"></p-button>
+    </div>
+</div>

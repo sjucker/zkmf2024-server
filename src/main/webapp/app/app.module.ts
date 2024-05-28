@@ -30,6 +30,7 @@ import {ToastModule} from "primeng/toast";
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BroadcastComponent} from './broadcast/broadcast.component';
+import {EmergencyDialogComponent} from "./emergency-dialog/emergency-dialog.component";
 import {EmergencyComponent} from "./emergency/emergency.component";
 import {ErrataComponent} from './errata/errata.component';
 import {HelferComponent} from './helfer/helfer.component';
@@ -78,6 +79,7 @@ import {VereineComponent} from './vereine/vereine.component';
         MobileAppEditComponent,
         MobileAppMessagingComponent,
         EmergencyComponent,
+        EmergencyDialogComponent,
     ],
     imports: [
         BrowserModule,
