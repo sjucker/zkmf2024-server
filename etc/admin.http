@@ -34,3 +34,16 @@ Content-Type: application/json
   "title": "Harmonie am Bachtel",
   "body": "In 15 Minuten spielen sie in der Zentrumshalle."
 }
+
+###
+
+POST {{url}}/secured/admin/messaging/token
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "token": "{{token}}",
+  "title": "Token Test",
+  "body": "Test zu spezifischem Token",
+  "route": "/page/2"
+}

@@ -635,6 +635,13 @@ export interface MessageSendDTO {
     route: string;
 }
 
+export interface MessageSendTokenDTO {
+    token: string;
+    title: string;
+    body: string;
+    route: string;
+}
+
 export interface TimetableEntryCreateDTO {
     vereinProgrammId: number;
     modul: Modul;

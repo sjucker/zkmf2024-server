@@ -2,6 +2,7 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.admin.MessageFavoriteDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendDTO;
+import ch.zkmf2024.server.dto.admin.MessageSendTokenDTO;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -31,6 +32,10 @@ public class FirebaseMessagingService {
             case EMERGENCY -> sendToTopic(EMERGENCY_TOPIC, dto.title(), dto.body(), dto.route());
             case GENERAL -> sendToTopic(GENERAL_TOPIC, dto.title(), dto.body(), dto.route());
         }
+    }
+
+    public void send(MessageSendTokenDTO dto) {
+        sendToToken(dto.token(), dto.title(), dto.body(), dto.route());
     }
 
     public void send(MessageFavoriteDTO dto) {

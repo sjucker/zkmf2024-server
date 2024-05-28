@@ -18,6 +18,7 @@ import ch.zkmf2024.server.dto.admin.JuryLoginCreateDTO;
 import ch.zkmf2024.server.dto.admin.LocationSelectionDTO;
 import ch.zkmf2024.server.dto.admin.MessageFavoriteDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendDTO;
+import ch.zkmf2024.server.dto.admin.MessageSendTokenDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryCreateDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.dto.admin.VereinCommentCreateDTO;
@@ -398,6 +399,20 @@ public class AdminEndpoint {
     @Secured({"SUPERUSER"})
     public ResponseEntity<Void> messaging(@RequestBody @Valid MessageSendDTO dto) {
         log.info("POST /secured/admin/messaging {}", dto);
+
+        if (firebaseMessagingService != null) {
+            firebaseMessagingService.send(dto);
+        } else {
+            log.info("firebaseMessagingService not available ('firebase.enabled' is false)");
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/messaging/token")
+    @Secured({"SUPERUSER"})
+    public ResponseEntity<Void> messaging(@RequestBody @Valid MessageSendTokenDTO dto) {
+        log.info("POST /secured/admin/messaging/token {}", dto);
 
         if (firebaseMessagingService != null) {
             firebaseMessagingService.send(dto);
