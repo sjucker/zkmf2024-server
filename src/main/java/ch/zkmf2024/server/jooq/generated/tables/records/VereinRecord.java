@@ -740,6 +740,22 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         return (LocalDateTime) get(44);
     }
 
+    /**
+     * Setter for <code>verein.stage_setup_confirmed_at</code>.
+     */
+    @Override
+    public void setStageSetupConfirmedAt(LocalDateTime value) {
+        set(45, value);
+    }
+
+    /**
+     * Getter for <code>verein.stage_setup_confirmed_at</code>.
+     */
+    @Override
+    public LocalDateTime getStageSetupConfirmedAt() {
+        return (LocalDateTime) get(45);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -800,6 +816,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setIdentifier(from.getIdentifier());
         setLunchTime(from.getLunchTime());
         setPhase4ConfirmedAt(from.getPhase4ConfirmedAt());
+        setStageSetupConfirmedAt(from.getStageSetupConfirmedAt());
         resetChangedOnNotNull();
     }
 
@@ -823,7 +840,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
     /**
      * Create a detached, initialised VereinRecord
      */
-    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC, String phase2ConfirmedBy, LocalDateTime phase2ConfirmedAt, String provWettspiel, String provParademusik, String provPlatzkonzert, LocalDateTime programmLastUpdated, String identifier, LocalTime lunchTime, LocalDateTime phase4ConfirmedAt) {
+    public VereinRecord(Long id, String email, Long praesidentKontaktId, Long direktionKontaktId, String vereinsname, String adresse, Integer plz, String ort, String homepage, String facebook, String instagram, String iban, Boolean modula, Boolean modulb, Boolean modulc, Boolean moduld, Boolean module, Boolean modulf, Boolean modulg, Boolean modulh, String klasseModula, String klasseModulb, String klasseModulh, Boolean harmonie, Boolean brassBand, Boolean fanfare, Boolean tambouren, Boolean perkussionsensemble, String websiteText, Boolean direktionDoppeleinsatz, String direktionDoppeleinsatzVerein, Boolean mitspielerDoppeleinsatz, LocalDateTime confirmedAt, Boolean tambourenKatA, Boolean tambourenKatB, Boolean tambourenKatC, String phase2ConfirmedBy, LocalDateTime phase2ConfirmedAt, String provWettspiel, String provParademusik, String provPlatzkonzert, LocalDateTime programmLastUpdated, String identifier, LocalTime lunchTime, LocalDateTime phase4ConfirmedAt, LocalDateTime stageSetupConfirmedAt) {
         super(Verein.VEREIN);
 
         setId(id);
@@ -871,6 +888,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
         setIdentifier(identifier);
         setLunchTime(lunchTime);
         setPhase4ConfirmedAt(phase4ConfirmedAt);
+        setStageSetupConfirmedAt(stageSetupConfirmedAt);
         resetChangedOnNotNull();
     }
 
@@ -926,6 +944,7 @@ public class VereinRecord extends UpdatableRecordImpl<VereinRecord> implements I
             setIdentifier(value.getIdentifier());
             setLunchTime(value.getLunchTime());
             setPhase4ConfirmedAt(value.getPhase4ConfirmedAt());
+            setStageSetupConfirmedAt(value.getStageSetupConfirmedAt());
             resetChangedOnNotNull();
         }
     }

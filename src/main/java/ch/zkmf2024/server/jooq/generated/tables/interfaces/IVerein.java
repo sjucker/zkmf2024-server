@@ -463,6 +463,16 @@ public interface IVerein extends Serializable {
      */
     public LocalDateTime getPhase4ConfirmedAt();
 
+    /**
+     * Setter for <code>verein.stage_setup_confirmed_at</code>.
+     */
+    public void setStageSetupConfirmedAt(LocalDateTime value);
+
+    /**
+     * Getter for <code>verein.stage_setup_confirmed_at</code>.
+     */
+    public LocalDateTime getStageSetupConfirmedAt();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

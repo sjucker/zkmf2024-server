@@ -26,6 +26,7 @@ public record VereinDTO(
         String phase2ConfirmedBy,
         LocalDateTime phase2ConfirmedAt,
         LocalDateTime phase4ConfirmedAt,
+        LocalDateTime stageSetupConfirmedAt,
         @NotNull List<TimetableOverviewEntryDTO> timetableEntries,
         @NotNull List<VereinMessageDTO> messages,
         @NotNull List<VereinErrataDTO> errata,

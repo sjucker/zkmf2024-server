@@ -218,6 +218,7 @@ public class VereinService {
                 verein.getPhase2ConfirmedBy(),
                 verein.getPhase2ConfirmedAt(),
                 verein.getPhase4ConfirmedAt(),
+                verein.getStageSetupConfirmedAt(),
                 timetableEntries,
                 findMessagesByVereinId(verein.getId(), verein.getEmail()),
                 findErrata(verein.getId()),

@@ -385,6 +385,7 @@ export interface VereinDTO {
     phase2ConfirmedBy?: string;
     phase2ConfirmedAt?: DateAsString;
     phase4ConfirmedAt?: DateAsString;
+    stageSetupConfirmedAt?: DateAsString;
     timetableEntries: TimetableOverviewEntryDTO[];
     messages: VereinMessageDTO[];
     errata: VereinErrataDTO[];

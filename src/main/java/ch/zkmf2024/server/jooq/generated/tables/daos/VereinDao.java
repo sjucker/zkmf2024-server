@@ -742,4 +742,19 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByPhase4ConfirmedAt(LocalDateTime... values) {
         return fetch(Verein.VEREIN.PHASE4_CONFIRMED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>stage_setup_confirmed_at BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfStageSetupConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(Verein.VEREIN.STAGE_SETUP_CONFIRMED_AT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>stage_setup_confirmed_at IN (values)</code>
+     */
+    public List<VereinPojo> fetchByStageSetupConfirmedAt(LocalDateTime... values) {
+        return fetch(Verein.VEREIN.STAGE_SETUP_CONFIRMED_AT, values);
+    }
 }

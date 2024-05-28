@@ -425,6 +425,7 @@ public class VereinRepository {
                                     it.get(VEREIN.PHASE2_CONFIRMED_BY),
                                     it.get(VEREIN.PHASE2_CONFIRMED_AT),
                                     it.get(VEREIN.PHASE4_CONFIRMED_AT),
+                                    it.get(VEREIN.STAGE_SETUP_CONFIRMED_AT),
                                     List.of(),
                                     List.of(),
                                     List.of(),
