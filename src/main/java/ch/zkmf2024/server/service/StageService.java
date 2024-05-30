@@ -83,11 +83,13 @@ public class StageService {
 
                 var contentStream = addPageLandscape(document);
                 textHeader(contentStream, 10, 190, stageSetupExport.verein());
-                textNormal(contentStream, 10, 185, "%s, %s - %s (Dirigentenpodest: %s, Anzahl Schlägelablagen: %s)".formatted(formatDateWritten(stageSetupExport.date()),
-                                                                                                                              stageSetupExport.time(),
-                                                                                                                              stageSetupExport.location(),
-                                                                                                                              stageSetupExport.dirigentenpodest() ? "Ja" : "Nein",
-                                                                                                                              ofNullable(stageSetupExport.ablagenAmount()).map(Object::toString).orElse("-")));
+                textNormal(contentStream, 10, 185, "%s, %s - %s (Dirigentenpodest: %s, Anzahl Schlägelablagen: %s, Anzahl Musizierende: %s)"
+                        .formatted(formatDateWritten(stageSetupExport.date()),
+                                   stageSetupExport.time(),
+                                   stageSetupExport.location(),
+                                   stageSetupExport.dirigentenpodest() ? "Ja" : "Nein",
+                                   ofNullable(stageSetupExport.ablagenAmount()).map(Object::toString).orElse("-"),
+                                   stageSetupExport.festkartenMusikerAmount()));
 
                 if (isNotBlank(stageSetupExport.comment())) {
                     multiLineSmall(contentStream, 10, 35, stageSetupExport.comment(), 150);

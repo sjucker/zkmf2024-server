@@ -244,6 +244,11 @@ export interface NichtmitgliederDTO {
     instrument?: string;
 }
 
+export interface RankingDTO {
+    modul: string;
+    score: number;
+}
+
 export interface RegisterHelperRequestDTO {
     email: string;
     name: string;
@@ -641,6 +646,12 @@ export interface MessageSendTokenDTO {
     title: string;
     body: string;
     route: string;
+}
+
+export interface RankingSummaryDTO {
+    vereinsName: string;
+    competition: string;
+    rankings: RankingDTO[];
 }
 
 export interface TimetableEntryCreateDTO {

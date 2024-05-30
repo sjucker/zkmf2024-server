@@ -959,7 +959,8 @@ public class VereinRepository {
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_SETUP_ADDITIONAL),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_DIRIGENTENPODEST),
                               it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_ABLAGEN_AMOUNT),
-                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT)
+                              it.get(VEREIN_ANMELDUNG_DETAIL.STAGE_COMMENT),
+                              it.get(VEREIN_ANMELDUNG_DETAIL.FESTKARTEN_MUSIKER_AMOUNT)
                       ));
     }
 
@@ -972,6 +973,7 @@ public class VereinRepository {
                                    byte[] additionalImage,
                                    boolean dirigentenpodest,
                                    Integer ablagenAmount,
-                                   String comment) {
+                                   String comment,
+                                   Integer festkartenMusikerAmount) {
     }
 }
