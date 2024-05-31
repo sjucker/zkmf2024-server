@@ -934,6 +934,7 @@ export enum UserRole {
     ADMIN = "ADMIN",
     ADMIN_READ_ONLY = "ADMIN_READ_ONLY",
     JUDGE = "JUDGE",
+    JUDGE_HELPER = "JUDGE_HELPER",
     IMPERSONATE = "IMPERSONATE",
 }
 

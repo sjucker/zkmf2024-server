@@ -5,5 +5,6 @@ public enum UserRole {
     ADMIN,
     ADMIN_READ_ONLY,
     JUDGE,
+    JUDGE_HELPER,
     IMPERSONATE
 }
