@@ -28,6 +28,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
+import ch.zkmf2024.server.service.JudgeService.JudgeTeamIdentifier;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -430,6 +431,7 @@ public class JudgeRepository {
                            .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
                            .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
                            .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
+                           .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
                            .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME);
         try (var stream = query.stream()) {
             return stream.collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))
@@ -450,14 +452,19 @@ public class JudgeRepository {
 
                                  var klasse = Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE));
                                  var besetzung = Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG));
+                                 var modulCategory = JudgeReportModulCategory.fromString(category);
                                  consumer.accept(new JudgeReportSummaryDTO(
                                          record1.get(VEREIN_PROGRAMM.ID),
+                                         record1.get(TIMETABLE_ENTRY.DATE),
+                                         LocationRepository.toDTO(record1),
                                          modul,
                                          getFullDescription(modul, category),
                                          klasse.orElse(null),
                                          klasse.map(Klasse::getDescription).orElse(null),
                                          besetzung.orElse(null),
                                          besetzung.map(Besetzung::getDescription).orElse(null),
+                                         modulCategory.orElse(null),
+                                         modulCategory.map(JudgeReportModulCategory::getDescription).orElse(null),
                                          record1.get(VEREIN.VEREINSNAME),
                                          overallScore(record1, record2, record3, record4, modul).orElse(null),
                                          records.stream()
@@ -524,19 +531,25 @@ public class JudgeRepository {
     }
 
     public List<JudgeRankingEntryDTO> getRanking(Long reportId, Long judgeId) {
-        var modulKlasseBesetzung = jooqDsl.select(VEREIN_PROGRAMM.MODUL,
-                                                  VEREIN_PROGRAMM.KLASSE,
-                                                  VEREIN_PROGRAMM.BESETZUNG,
-                                                  JUDGE_REPORT.CATEGORY)
-                                          .from(JUDGE_REPORT)
-                                          .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
-                                          .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
-                                          .where(JUDGE_REPORT.ID.eq(reportId))
-                                          .fetchSingle();
+        var judgeTeamIdentifier = jooqDsl.select(VEREIN_PROGRAMM.MODUL,
+                                                 VEREIN_PROGRAMM.KLASSE,
+                                                 VEREIN_PROGRAMM.BESETZUNG,
+                                                 JUDGE_REPORT.CATEGORY,
+                                                 LOCATION.IDENTIFIER)
+                                         .from(JUDGE_REPORT)
+                                         .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
+                                         .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                                         .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
+                                         .where(JUDGE_REPORT.ID.eq(reportId))
+                                         .fetchSingle(it -> new JudgeTeamIdentifier(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
+                                                                                    Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).orElse(null),
+                                                                                    Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null),
+                                                                                    JudgeReportModulCategory.fromString(it.get(JUDGE_REPORT.CATEGORY)).orElse(null),
+                                                                                    it.get(LOCATION.IDENTIFIER)));
 
-        var klasse = modulKlasseBesetzung.get(VEREIN_PROGRAMM.KLASSE);
-        var besetzung = modulKlasseBesetzung.get(VEREIN_PROGRAMM.BESETZUNG);
-        var category = modulKlasseBesetzung.get(JUDGE_REPORT.CATEGORY);
+        var klasse = judgeTeamIdentifier.klasse();
+        var besetzung = judgeTeamIdentifier.besetzung();
+        var category = judgeTeamIdentifier.category();
 
         var query = jooqDsl.select(TIMETABLE_ENTRY.ID,
                                    VEREIN.VEREINSNAME,
@@ -547,10 +560,12 @@ public class JudgeRepository {
                            .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
                            .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
                            .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
-                           .where(VEREIN_PROGRAMM.MODUL.eq(modulKlasseBesetzung.get(VEREIN_PROGRAMM.MODUL)),
-                                  klasse != null ? VEREIN_PROGRAMM.KLASSE.eq(klasse) : VEREIN_PROGRAMM.KLASSE.isNull(),
-                                  besetzung != null ? VEREIN_PROGRAMM.BESETZUNG.eq(besetzung) : VEREIN_PROGRAMM.BESETZUNG.isNull(),
-                                  category != null ? JUDGE_REPORT.CATEGORY.eq(category) : JUDGE_REPORT.CATEGORY.isNull())
+                           .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
+                           .where(VEREIN_PROGRAMM.MODUL.eq(judgeTeamIdentifier.modul().name()),
+                                  klasse != null ? VEREIN_PROGRAMM.KLASSE.eq(klasse.name()) : VEREIN_PROGRAMM.KLASSE.isNull(),
+                                  besetzung != null ? VEREIN_PROGRAMM.BESETZUNG.eq(besetzung.name()) : VEREIN_PROGRAMM.BESETZUNG.isNull(),
+                                  category != null ? JUDGE_REPORT.CATEGORY.eq(category.name()) : JUDGE_REPORT.CATEGORY.isNull(),
+                                  LOCATION.IDENTIFIER.eq(judgeTeamIdentifier.locationIdentifier()))
                            .and(judgeId != null ? JUDGE.ID.eq(judgeId) : DSL.noCondition());
         try (var stream = query.stream()) {
             return stream.collect(groupingBy(it -> it.get(TIMETABLE_ENTRY.ID), toList()))

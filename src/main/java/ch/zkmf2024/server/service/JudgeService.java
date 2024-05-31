@@ -1,13 +1,16 @@
 package ch.zkmf2024.server.service;
 
+import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.JudgePresentationDTO;
 import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
+import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
 import ch.zkmf2024.server.dto.JudgeReportStatus;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
+import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.UserRole;
@@ -21,7 +24,6 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.JudgeRepository;
-import ch.zkmf2024.server.repository.TimetableRepository.ModulKlasseBesetzung;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -207,13 +209,19 @@ public class JudgeService {
             // find all relevant modul/klasse/besetzung for current judge
             var relevant = summaries.stream()
                                     .filter(dto -> dto.scores().stream().anyMatch(d -> StringUtils.equals(d.judgeEmail(), user.getEmail())))
-                                    .map(dto -> new ModulKlasseBesetzung(dto.modul(), dto.klasse(), dto.besetzung()))
+                                    .map(JudgeTeamIdentifier::of)
                                     .collect(toSet());
 
             // only display the entries that are relevant for judge
             return summaries.stream()
-                            .filter(dto -> relevant.contains(new ModulKlasseBesetzung(dto.modul(), dto.klasse(), dto.besetzung())))
+                            .filter(dto -> relevant.contains(JudgeTeamIdentifier.of(dto)))
                             .toList();
+        }
+    }
+
+    public record JudgeTeamIdentifier(Modul modul, Klasse klasse, Besetzung besetzung, JudgeReportModulCategory category, String locationIdentifier) {
+        public static JudgeTeamIdentifier of(JudgeReportSummaryDTO dto) {
+            return new JudgeTeamIdentifier(dto.modul(), dto.klasse(), dto.besetzung(), dto.category(), dto.location().identifier());
         }
     }
 
