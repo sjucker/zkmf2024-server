@@ -6,6 +6,8 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
+import ch.zkmf2024.server.dto.RankingPenaltyDTO;
+import ch.zkmf2024.server.dto.VereinPlayingDTO;
 import ch.zkmf2024.server.service.JudgeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import static ch.zkmf2024.server.util.DateUtil.now;
 
 @Slf4j
 @RestController
@@ -143,6 +147,48 @@ public class SecuredJudgeEndpoint {
         log.info("POST /secured/judge/modul-d {}", dtos);
 
         judgeService.updateModulD(dtos);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/helper")
+    @Secured({"JUDGE_HELPER"})
+    public ResponseEntity<List<VereinPlayingDTO>> helper(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("GET /secured/judge/helper");
+
+        // assumption: user with role JUDGE_HELPER has username that corresponds to location's identifier
+        return ResponseEntity.ok(judgeService.getVereinPlayingEntries(userDetails.getUsername()));
+    }
+
+    @PostMapping("/helper/started/{timetableEntryId}")
+    @Secured({"JUDGE_HELPER"})
+    public ResponseEntity<?> started(@AuthenticationPrincipal UserDetails userDetails,
+                                     @PathVariable("timetableEntryId") Long timetableEntryId) {
+        log.info("POST /secured/judge/helper/started/{}", timetableEntryId);
+
+        judgeService.setCurrentlyPlaying(userDetails.getUsername(), timetableEntryId, pojo -> pojo.setStartedAt(now()));
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/helper/ended/{timetableEntryId}")
+    @Secured({"JUDGE_HELPER"})
+    public ResponseEntity<?> ended(@AuthenticationPrincipal UserDetails userDetails,
+                                   @PathVariable("timetableEntryId") Long timetableEntryId) {
+        log.info("POST /secured/judge/helper/ended/{}", timetableEntryId);
+
+        judgeService.setCurrentlyPlaying(userDetails.getUsername(), timetableEntryId, pojo -> pojo.setEndedAt(now()));
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/helper/penalty")
+    @Secured({"JUDGE_HELPER"})
+    public ResponseEntity<?> rankingPenalty(@AuthenticationPrincipal UserDetails userDetails,
+                                            @RequestBody RankingPenaltyDTO dto) {
+        log.info("POST /secured/judge/helper/penalty {}", dto);
+
+        judgeService.setRankingPenalty(userDetails.getUsername(), dto.timetableEntryId(), dto.minutesOverrun());
 
         return ResponseEntity.ok().build();
     }

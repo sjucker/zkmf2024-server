@@ -20,6 +20,7 @@ import ch.zkmf2024.server.dto.ModulDSelection;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.TambourenGrundlage;
 import ch.zkmf2024.server.dto.TitelDTO;
+import ch.zkmf2024.server.dto.VereinPlayingDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeReportCommentDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.JudgeReportDao;
@@ -54,17 +55,20 @@ import static ch.zkmf2024.server.dto.Modul.D;
 import static ch.zkmf2024.server.dto.Modul.G;
 import static ch.zkmf2024.server.dto.ModulDSelection.TITEL_1;
 import static ch.zkmf2024.server.dto.ModulDSelection.TITEL_2;
+import static ch.zkmf2024.server.jooq.generated.Tables.CURRENTLY_PLAYING;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT_RATING;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
+import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_PENALTY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
 import static java.math.RoundingMode.HALF_UP;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
@@ -630,5 +634,46 @@ public class JudgeRepository {
                           return result;
                       })
                       .orElse(Set.of());
+    }
+
+    public List<VereinPlayingDTO> getVereinPlayingEntries(String locationIdentifier) {
+        return jooqDsl.select()
+                      .from(TIMETABLE_ENTRY)
+                      .join(VEREIN).on(VEREIN.ID.eq(TIMETABLE_ENTRY.FK_VEREIN))
+                      .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
+                      .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
+                      .leftJoin(CURRENTLY_PLAYING).on(CURRENTLY_PLAYING.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                      .leftJoin(RANKING_PENALTY).on(RANKING_PENALTY.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                      .where(LOCATION.IDENTIFIER.equalIgnoreCase(locationIdentifier),
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                      .orderBy(CURRENTLY_PLAYING.ENDED_AT.nullsFirst(), TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
+                      .fetch(it -> {
+                          var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
+                                                                                             Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).orElse(null),
+                                                                                             Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null));
+
+                          return new VereinPlayingDTO(
+                                  it.get(TIMETABLE_ENTRY.ID),
+                                  it.get(VEREIN.VEREINSNAME),
+                                  LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)),
+                                  LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)),
+                                  minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
+                                  minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::maxDurationInSeconds).orElse(null),
+                                  it.get(CURRENTLY_PLAYING.STARTED_AT) != null,
+                                  it.get(CURRENTLY_PLAYING.ENDED_AT) != null,
+                                  getJury(it.get(TIMETABLE_ENTRY.ID)),
+                                  it.get(RANKING_PENALTY.MINUTES_OVERRUN)
+                          );
+                      });
+
+    }
+
+    private String getJury(long timetableEntryId) {
+        return String.join(", ", jooqDsl.select()
+                                        .from(JUDGE_REPORT)
+                                        .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
+                                        .where(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(timetableEntryId))
+                                        .orderBy(JUDGE_REPORT.ROLE)
+                                        .fetch(it -> "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME))));
     }
 }

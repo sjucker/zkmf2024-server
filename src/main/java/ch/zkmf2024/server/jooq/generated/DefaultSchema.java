@@ -20,6 +20,7 @@ import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.NotificationSent;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.Ranking;
+import ch.zkmf2024.server.jooq.generated.tables.RankingPenalty;
 import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
@@ -142,6 +143,11 @@ public class DefaultSchema extends SchemaImpl {
     public final Ranking RANKING = Ranking.RANKING;
 
     /**
+     * The table <code>ranking_penalty</code>.
+     */
+    public final RankingPenalty RANKING_PENALTY = RankingPenalty.RANKING_PENALTY;
+
+    /**
      * The table <code>sponsor</code>.
      */
     public final Sponsor SPONSOR = Sponsor.SPONSOR;
@@ -253,6 +259,7 @@ public class DefaultSchema extends SchemaImpl {
                 NotificationSent.NOTIFICATION_SENT,
                 ProgrammVorgaben.PROGRAMM_VORGABEN,
                 Ranking.RANKING,
+                RankingPenalty.RANKING_PENALTY,
                 Sponsor.SPONSOR,
                 SurveyAnswer.SURVEY_ANSWER,
                 TimetableEntry.TIMETABLE_ENTRY,
