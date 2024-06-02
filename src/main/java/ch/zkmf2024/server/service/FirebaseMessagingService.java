@@ -22,9 +22,12 @@ public class FirebaseMessagingService {
     private static final String VEREIN_TOPIC = "favorite-%s";
 
     private final FirebaseMessaging firebaseMessaging;
+    private final MailService mailService;
 
-    public FirebaseMessagingService(FirebaseMessaging firebaseMessaging) {
+    public FirebaseMessagingService(FirebaseMessaging firebaseMessaging,
+                                    MailService mailService) {
         this.firebaseMessaging = firebaseMessaging;
+        this.mailService = mailService;
     }
 
     public void send(MessageSendDTO dto) {
@@ -59,6 +62,7 @@ public class FirebaseMessagingService {
 
             log.info("sending notification {}/{} to topic {}", title, body, topic);
             firebaseMessaging.send(message.build());
+            mailService.sendNotificationEmail(title, body, topic);
         } catch (FirebaseMessagingException e) {
             log.error("could not send message", e);
         }
@@ -80,6 +84,7 @@ public class FirebaseMessagingService {
             }
             log.info("sending notification {}/{} to token {}", title, body, token);
             firebaseMessaging.send(message.build());
+            mailService.sendNotificationEmail(title, body, token);
         } catch (FirebaseMessagingException e) {
             log.error("could not send message", e);
         }

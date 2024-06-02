@@ -316,6 +316,20 @@ public class MailService {
         }
     }
 
+    public void sendNotificationEmail(String title, String body, String topicOrToken) {
+        try {
+            var mimeMessage = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_NO, UTF_8.name());
+            helper.setFrom(environment.getRequiredProperty("spring.mail.username"));
+            helper.setTo(applicationProperties.getBccMail());
+            helper.setSubject("[%s] Notification".formatted(getSubjectPrefix()));
+            helper.setText("Topic/Token: %s %nTitle: %s %nBody: %s".formatted(topicOrToken, title, body));
+            mailSender.send(mimeMessage);
+        } catch (RuntimeException | MessagingException e) {
+            log.error("could not send notification message to %s".formatted(applicationProperties.getBccMail()), e);
+        }
+    }
+
     private static String getEinsatzzeit(List<Einsatzzeit> values) {
         return StringUtils.defaultIfBlank(values.stream().map(Einsatzzeit::getDescription).collect(joining(", ")), "-");
     }
