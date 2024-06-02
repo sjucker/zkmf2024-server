@@ -6,14 +6,34 @@ package ch.zkmf2024.server.jooq.generated.tables;
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
+import ch.zkmf2024.server.jooq.generated.tables.Kontakt.KontaktPath;
+import ch.zkmf2024.server.jooq.generated.tables.Ranking.RankingPath;
+import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TimetableEntryPath;
+import ch.zkmf2024.server.jooq.generated.tables.Titel.TitelPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester.VereinAnmeldungAdhocOrchesterPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungDetail.VereinAnmeldungDetailPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungNichtmitglieder.VereinAnmeldungNichtmitgliederPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinComment.VereinCommentPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinDoppeleinsatz.VereinDoppeleinsatzPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinMessage.VereinMessagePath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm.VereinProgrammPath;
+import ch.zkmf2024.server.jooq.generated.tables.VereinStatus.VereinStatusPath;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinRecord;
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Index;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
+import org.jooq.SQL;
 import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -25,6 +45,7 @@ import org.jooq.impl.TableImpl;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -279,11 +300,11 @@ public class Verein extends TableImpl<VereinRecord> {
     public final TableField<VereinRecord, LocalDateTime> STAGE_SETUP_CONFIRMED_AT = createField(DSL.name("stage_setup_confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     private Verein(Name alias, Table<VereinRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private Verein(Name alias, Table<VereinRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private Verein(Name alias, Table<VereinRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -307,8 +328,39 @@ public class Verein extends TableImpl<VereinRecord> {
         this(DSL.name("verein"), null);
     }
 
-    public <O extends Record> Verein(Table<O> child, ForeignKey<O, VereinRecord> key) {
-        super(child, key, VEREIN);
+    public <O extends Record> Verein(Table<O> path, ForeignKey<O, VereinRecord> childPath, InverseForeignKey<O, VereinRecord> parentPath) {
+        super(path, childPath, parentPath, VEREIN);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class VereinPath extends Verein implements Path<VereinRecord> {
+
+        private static final long serialVersionUID = 1L;
+
+        public <O extends Record> VereinPath(Table<O> path, ForeignKey<O, VereinRecord> childPath, InverseForeignKey<O, VereinRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+
+        private VereinPath(Name alias, Table<VereinRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public VereinPath as(String alias) {
+            return new VereinPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public VereinPath as(Name alias) {
+            return new VereinPath(alias, this);
+        }
+
+        @Override
+        public VereinPath as(Table<?> alias) {
+            return new VereinPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -341,29 +393,187 @@ public class Verein extends TableImpl<VereinRecord> {
         return Arrays.asList(Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT);
     }
 
-    private transient Kontakt _fkVereinPraesidentKontakt;
-    private transient Kontakt _fkVereinDirektionKontakt;
+    private transient KontaktPath _fkVereinPraesidentKontakt;
 
     /**
      * Get the implicit join path to the <code>public.kontakt</code> table, via
      * the <code>fk_verein_praesident_kontakt</code> key.
      */
-    public Kontakt fkVereinPraesidentKontakt() {
+    public KontaktPath fkVereinPraesidentKontakt() {
         if (_fkVereinPraesidentKontakt == null)
-            _fkVereinPraesidentKontakt = new Kontakt(this, Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT);
+            _fkVereinPraesidentKontakt = new KontaktPath(this, Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, null);
 
         return _fkVereinPraesidentKontakt;
     }
+
+    private transient KontaktPath _fkVereinDirektionKontakt;
 
     /**
      * Get the implicit join path to the <code>public.kontakt</code> table, via
      * the <code>fk_verein_direktion_kontakt</code> key.
      */
-    public Kontakt fkVereinDirektionKontakt() {
+    public KontaktPath fkVereinDirektionKontakt() {
         if (_fkVereinDirektionKontakt == null)
-            _fkVereinDirektionKontakt = new Kontakt(this, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT);
+            _fkVereinDirektionKontakt = new KontaktPath(this, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT, null);
 
         return _fkVereinDirektionKontakt;
+    }
+
+    private transient RankingPath _ranking;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.ranking</code>
+     * table
+     */
+    public RankingPath ranking() {
+        if (_ranking == null)
+            _ranking = new RankingPath(this, null, Keys.RANKING__FK_RANKING_VEREIN.getInverseKey());
+
+        return _ranking;
+    }
+
+    private transient TimetableEntryPath _timetableEntry;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.timetable_entry</code> table
+     */
+    public TimetableEntryPath timetableEntry() {
+        if (_timetableEntry == null)
+            _timetableEntry = new TimetableEntryPath(this, null, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN.getInverseKey());
+
+        return _timetableEntry;
+    }
+
+    private transient TitelPath _titel;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.titel</code> table
+     */
+    public TitelPath titel() {
+        if (_titel == null)
+            _titel = new TitelPath(this, null, Keys.TITEL__FK_TITEL_VEREIN.getInverseKey());
+
+        return _titel;
+    }
+
+    private transient VereinAnmeldungAdhocOrchesterPath _vereinAnmeldungAdhocOrchester;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_anmeldung_adhoc_orchester</code> table
+     */
+    public VereinAnmeldungAdhocOrchesterPath vereinAnmeldungAdhocOrchester() {
+        if (_vereinAnmeldungAdhocOrchester == null)
+            _vereinAnmeldungAdhocOrchester = new VereinAnmeldungAdhocOrchesterPath(this, null, Keys.VEREIN_ANMELDUNG_ADHOC_ORCHESTER__FK_VEREIN_ANMELDUNG_ADHOC_ORCHESTER_VEREIN.getInverseKey());
+
+        return _vereinAnmeldungAdhocOrchester;
+    }
+
+    private transient VereinAnmeldungDetailPath _vereinAnmeldungDetail;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_anmeldung_detail</code> table
+     */
+    public VereinAnmeldungDetailPath vereinAnmeldungDetail() {
+        if (_vereinAnmeldungDetail == null)
+            _vereinAnmeldungDetail = new VereinAnmeldungDetailPath(this, null, Keys.VEREIN_ANMELDUNG_DETAIL__FK_VEREIN_ANMELDUNG_DETAIL_VEREIN.getInverseKey());
+
+        return _vereinAnmeldungDetail;
+    }
+
+    private transient VereinAnmeldungNichtmitgliederPath _vereinAnmeldungNichtmitglieder;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_anmeldung_nichtmitglieder</code> table
+     */
+    public VereinAnmeldungNichtmitgliederPath vereinAnmeldungNichtmitglieder() {
+        if (_vereinAnmeldungNichtmitglieder == null)
+            _vereinAnmeldungNichtmitglieder = new VereinAnmeldungNichtmitgliederPath(this, null, Keys.VEREIN_ANMELDUNG_NICHTMITGLIEDER__FK_VEREIN_ANMELDUNG_NICHTMITGLIEDER_VEREIN.getInverseKey());
+
+        return _vereinAnmeldungNichtmitglieder;
+    }
+
+    private transient VereinCommentPath _vereinComment;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_comment</code> table
+     */
+    public VereinCommentPath vereinComment() {
+        if (_vereinComment == null)
+            _vereinComment = new VereinCommentPath(this, null, Keys.VEREIN_COMMENT__FK_VEREIN_COMMENT_VEREIN.getInverseKey());
+
+        return _vereinComment;
+    }
+
+    private transient VereinDoppeleinsatzPath _fkVereinDoppeleinsatzOtherVerein;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_doppeleinsatz</code> table, via the
+     * <code>fk_verein_doppeleinsatz_other_verein</code> key
+     */
+    public VereinDoppeleinsatzPath fkVereinDoppeleinsatzOtherVerein() {
+        if (_fkVereinDoppeleinsatzOtherVerein == null)
+            _fkVereinDoppeleinsatzOtherVerein = new VereinDoppeleinsatzPath(this, null, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN.getInverseKey());
+
+        return _fkVereinDoppeleinsatzOtherVerein;
+    }
+
+    private transient VereinDoppeleinsatzPath _fkVereinDoppeleinsatzVerein;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_doppeleinsatz</code> table, via the
+     * <code>fk_verein_doppeleinsatz_verein</code> key
+     */
+    public VereinDoppeleinsatzPath fkVereinDoppeleinsatzVerein() {
+        if (_fkVereinDoppeleinsatzVerein == null)
+            _fkVereinDoppeleinsatzVerein = new VereinDoppeleinsatzPath(this, null, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN.getInverseKey());
+
+        return _fkVereinDoppeleinsatzVerein;
+    }
+
+    private transient VereinMessagePath _vereinMessage;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_message</code> table
+     */
+    public VereinMessagePath vereinMessage() {
+        if (_vereinMessage == null)
+            _vereinMessage = new VereinMessagePath(this, null, Keys.VEREIN_MESSAGE__FK_VEREIN_MESSAGE_VEREIN.getInverseKey());
+
+        return _vereinMessage;
+    }
+
+    private transient VereinProgrammPath _vereinProgramm;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_programm</code> table
+     */
+    public VereinProgrammPath vereinProgramm() {
+        if (_vereinProgramm == null)
+            _vereinProgramm = new VereinProgrammPath(this, null, Keys.VEREIN_PROGRAMM__FK_VEREIN_PROGRAMM_VEREIN.getInverseKey());
+
+        return _vereinProgramm;
+    }
+
+    private transient VereinStatusPath _vereinStatus;
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>public.verein_status</code> table
+     */
+    public VereinStatusPath vereinStatus() {
+        if (_vereinStatus == null)
+            _vereinStatus = new VereinStatusPath(this, null, Keys.VEREIN_STATUS__FK_VEREIN_STATUS.getInverseKey());
+
+        return _vereinStatus;
     }
 
     @Override
@@ -403,5 +613,89 @@ public class Verein extends TableImpl<VereinRecord> {
     @Override
     public Verein rename(Table<?> name) {
         return new Verein(name.getQualifiedName(), null);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Verein where(Condition condition) {
+        return new Verein(getQualifiedName(), aliased() ? this : null, null, condition);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Verein where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Verein where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Verein where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Verein where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Verein where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Verein where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public Verein where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Verein whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public Verein whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }
