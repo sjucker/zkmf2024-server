@@ -5,14 +5,23 @@ package ch.zkmf2024.server.jooq.generated.tables;
 
 import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Keys;
+import ch.zkmf2024.server.jooq.generated.tables.Verein.VereinPath;
 import ch.zkmf2024.server.jooq.generated.tables.records.VereinAnmeldungDetailRecord;
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
 import org.jooq.JSONB;
 import org.jooq.Name;
+import org.jooq.Path;
+import org.jooq.PlainSQL;
+import org.jooq.QueryPart;
 import org.jooq.Record;
+import org.jooq.SQL;
 import org.jooq.Schema;
+import org.jooq.Select;
+import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
@@ -23,6 +32,7 @@ import org.jooq.impl.TableImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -200,11 +210,11 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
     public final TableField<VereinAnmeldungDetailRecord, byte[]> STAGE_SETUP_ADDITIONAL = createField(DSL.name("stage_setup_additional"), SQLDataType.BLOB, this, "");
 
     private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased) {
-        this(alias, aliased, null);
+        this(alias, aliased, (Field<?>[]) null, null);
     }
 
-    private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    private VereinAnmeldungDetail(Name alias, Table<VereinAnmeldungDetailRecord> aliased, Field<?>[] parameters, Condition where) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table(), where);
     }
 
     /**
@@ -228,8 +238,39 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
         this(DSL.name("verein_anmeldung_detail"), null);
     }
 
-    public <O extends Record> VereinAnmeldungDetail(Table<O> child, ForeignKey<O, VereinAnmeldungDetailRecord> key) {
-        super(child, key, VEREIN_ANMELDUNG_DETAIL);
+    public <O extends Record> VereinAnmeldungDetail(Table<O> path, ForeignKey<O, VereinAnmeldungDetailRecord> childPath, InverseForeignKey<O, VereinAnmeldungDetailRecord> parentPath) {
+        super(path, childPath, parentPath, VEREIN_ANMELDUNG_DETAIL);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class VereinAnmeldungDetailPath extends VereinAnmeldungDetail implements Path<VereinAnmeldungDetailRecord> {
+
+        private static final long serialVersionUID = 1L;
+
+        public <O extends Record> VereinAnmeldungDetailPath(Table<O> path, ForeignKey<O, VereinAnmeldungDetailRecord> childPath, InverseForeignKey<O, VereinAnmeldungDetailRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+
+        private VereinAnmeldungDetailPath(Name alias, Table<VereinAnmeldungDetailRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public VereinAnmeldungDetailPath as(String alias) {
+            return new VereinAnmeldungDetailPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public VereinAnmeldungDetailPath as(Name alias) {
+            return new VereinAnmeldungDetailPath(alias, this);
+        }
+
+        @Override
+        public VereinAnmeldungDetailPath as(Table<?> alias) {
+            return new VereinAnmeldungDetailPath(alias.getQualifiedName(), this);
+        }
     }
 
     @Override
@@ -252,14 +293,14 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
         return Arrays.asList(Keys.VEREIN_ANMELDUNG_DETAIL__FK_VEREIN_ANMELDUNG_DETAIL_VEREIN);
     }
 
-    private transient Verein _verein;
+    private transient VereinPath _verein;
 
     /**
      * Get the implicit join path to the <code>public.verein</code> table.
      */
-    public Verein verein() {
+    public VereinPath verein() {
         if (_verein == null)
-            _verein = new Verein(this, Keys.VEREIN_ANMELDUNG_DETAIL__FK_VEREIN_ANMELDUNG_DETAIL_VEREIN);
+            _verein = new VereinPath(this, Keys.VEREIN_ANMELDUNG_DETAIL__FK_VEREIN_ANMELDUNG_DETAIL_VEREIN, null);
 
         return _verein;
     }
@@ -301,5 +342,89 @@ public class VereinAnmeldungDetail extends TableImpl<VereinAnmeldungDetailRecord
     @Override
     public VereinAnmeldungDetail rename(Table<?> name) {
         return new VereinAnmeldungDetail(name.getQualifiedName(), null);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public VereinAnmeldungDetail where(Condition condition) {
+        return new VereinAnmeldungDetail(getQualifiedName(), aliased() ? this : null, null, condition);
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public VereinAnmeldungDetail where(Collection<? extends Condition> conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public VereinAnmeldungDetail where(Condition... conditions) {
+        return where(DSL.and(conditions));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public VereinAnmeldungDetail where(Field<Boolean> condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public VereinAnmeldungDetail where(SQL condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public VereinAnmeldungDetail where(@Stringly.SQL String condition) {
+        return where(DSL.condition(condition));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public VereinAnmeldungDetail where(@Stringly.SQL String condition, Object... binds) {
+        return where(DSL.condition(condition, binds));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    @PlainSQL
+    public VereinAnmeldungDetail where(@Stringly.SQL String condition, QueryPart... parts) {
+        return where(DSL.condition(condition, parts));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public VereinAnmeldungDetail whereExists(Select<?> select) {
+        return where(DSL.exists(select));
+    }
+
+    /**
+     * Create an inline derived table from this table
+     */
+    @Override
+    public VereinAnmeldungDetail whereNotExists(Select<?> select) {
+        return where(DSL.notExists(select));
     }
 }
