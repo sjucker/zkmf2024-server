@@ -51,15 +51,18 @@ public class RankingsService {
         rankingRepository.insert(new RankingEntryPojo(ranking.getId(), vereinProgramm.getFkVerein(), score, 0));
 
         int rank = 0;
+        int sameRank = 0;
         BigDecimal lastScore = null;
         for (var rankingEntry : rankingRepository.findAllByRankingId(ranking.getId()).stream()
                                                  .sorted(Comparator.comparing(RankingEntryPojo::getScore).reversed())
                                                  .toList()) {
             if (lastScore != null && lastScore.compareTo(rankingEntry.getScore()) == 0) {
                 rankingEntry.setRank(rank);
+                sameRank++;
             } else {
-                rank++;
+                rank += 1 + sameRank;
                 rankingEntry.setRank(rank);
+                sameRank = 0;
             }
             rankingRepository.update(rankingEntry);
 
