@@ -3,7 +3,6 @@ package ch.zkmf2024.server.dto;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record JudgeReportSummaryDTO(@NotNull Long programmId,
@@ -22,7 +21,5 @@ public record JudgeReportSummaryDTO(@NotNull Long programmId,
                                     BigDecimal penalty,
                                     @NotNull List<JudgeReportScoreDTO> scores,
                                     boolean done,
-                                    boolean scoresConfirmed,
-                                    String scoresConfirmedBy,
-                                    LocalDateTime scoresConfirmedAt) {
+                                    boolean scoresConfirmed) {
 }

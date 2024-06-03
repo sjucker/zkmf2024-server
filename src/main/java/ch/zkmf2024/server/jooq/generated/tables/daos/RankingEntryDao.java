@@ -11,6 +11,7 @@ import org.jooq.Record2;
 import org.jooq.impl.DAOImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -96,5 +97,35 @@ public class RankingEntryDao extends DAOImpl<RankingEntryRecord, RankingEntryPoj
      */
     public List<RankingEntryPojo> fetchByRank(Integer... values) {
         return fetch(RankingEntry.RANKING_ENTRY.RANK, values);
+    }
+
+    /**
+     * Fetch records that have <code>confirmed_by BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<RankingEntryPojo> fetchRangeOfConfirmedBy(String lowerInclusive, String upperInclusive) {
+        return fetchRange(RankingEntry.RANKING_ENTRY.CONFIRMED_BY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>confirmed_by IN (values)</code>
+     */
+    public List<RankingEntryPojo> fetchByConfirmedBy(String... values) {
+        return fetch(RankingEntry.RANKING_ENTRY.CONFIRMED_BY, values);
+    }
+
+    /**
+     * Fetch records that have <code>confirmed_at BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<RankingEntryPojo> fetchRangeOfConfirmedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(RankingEntry.RANKING_ENTRY.CONFIRMED_AT, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>confirmed_at IN (values)</code>
+     */
+    public List<RankingEntryPojo> fetchByConfirmedAt(LocalDateTime... values) {
+        return fetch(RankingEntry.RANKING_ENTRY.CONFIRMED_AT, values);
     }
 }

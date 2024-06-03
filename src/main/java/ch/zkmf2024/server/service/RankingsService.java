@@ -1,19 +1,23 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.JudgeReportModulCategory;
+import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.admin.RankingSummaryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.RankingEntryPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.RankingPojo;
 import ch.zkmf2024.server.repository.RankingRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
+import ch.zkmf2024.server.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
 import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
 
 @Slf4j
@@ -37,6 +41,10 @@ public class RankingsService {
         return List.of();
     }
 
+    public List<RankingListDTO> getAllRankingLists() {
+        return rankingRepository.getAllRankingLists();
+    }
+
     public void confirmScore(String username, Long vereinProgrammId, JudgeReportModulCategory category, BigDecimal score) {
         var vereinProgramm = vereinRepository.findVereinProgramm(vereinProgrammId).orElseThrow();
         var timetableEntry = timetableRepository.findWettspielByProgrammId(vereinProgrammId).orElseThrow();
@@ -48,7 +56,7 @@ public class RankingsService {
             rankingRepository.insert(ranking);
         }
 
-        rankingRepository.insert(new RankingEntryPojo(ranking.getId(), vereinProgramm.getFkVerein(), score, 0));
+        rankingRepository.insert(new RankingEntryPojo(ranking.getId(), vereinProgramm.getFkVerein(), score, 0, username, DateUtil.now()));
 
         int rank = 0;
         int sameRank = 0;
@@ -68,7 +76,11 @@ public class RankingsService {
 
             lastScore = rankingEntry.getScore();
         }
+    }
 
-        vereinRepository.confirmScores(username, vereinProgrammId);
+    public void publishRankingList(Long rankingId) {
+        var rankingPojo = rankingRepository.findById(rankingId).orElseThrow(() -> new NoSuchElementException("no ranking found for id: " + rankingId));
+        rankingPojo.setStatus(FINAL.name());
+        rankingRepository.update(rankingPojo);
     }
 }

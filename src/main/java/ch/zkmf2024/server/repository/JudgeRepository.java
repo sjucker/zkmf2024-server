@@ -29,6 +29,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
+import ch.zkmf2024.server.repository.RankingRepository.ConfirmedScoreIdentifier;
 import ch.zkmf2024.server.service.JudgeService.JudgeTeamIdentifier;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -89,16 +90,19 @@ public class JudgeRepository {
     private final JudgeReportDao judgeReportDao;
     private final JudgeReportCommentDao judgeReportCommentDao;
     private final JudgeReportRatingDao judgeReportRatingDao;
+    private final RankingRepository rankingRepository;
 
     public JudgeRepository(ProgrammVorgabenRepository programmVorgabenRepository,
                            DSLContext jooqDsl,
-                           DefaultConfiguration jooqConfig) {
+                           DefaultConfiguration jooqConfig,
+                           RankingRepository rankingRepository) {
         this.programmVorgabenRepository = programmVorgabenRepository;
         this.jooqDsl = jooqDsl;
         this.judgeDao = new JudgeDao(jooqConfig);
         this.judgeReportDao = new JudgeReportDao(jooqConfig);
         this.judgeReportCommentDao = new JudgeReportCommentDao(jooqConfig);
         this.judgeReportRatingDao = new JudgeReportRatingDao(jooqConfig);
+        this.rankingRepository = rankingRepository;
     }
 
     public Optional<JudgePojo> findByEmail(String email) {
@@ -429,6 +433,8 @@ public class JudgeRepository {
     }
 
     public List<JudgeReportSummaryDTO> findSummaries() {
+        var confirmedScores = rankingRepository.getConfirmedScores();
+
         var query = jooqDsl.select()
                            .from(JUDGE_REPORT)
                            .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.ID.eq(JUDGE_REPORT.FK_TIMETABLE_ENTRY))
@@ -488,9 +494,8 @@ public class JudgeRepository {
                                                 ))
                                                 .toList(),
                                          isDone(record1, record2, record3, record4),
-                                         record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT) != null,
-                                         record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY),
-                                         record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT)
+                                         confirmedScores.contains(new ConfirmedScoreIdentifier(modul, klasse.orElse(null), besetzung.orElse(null), modulCategory.orElse(null),
+                                                                                               record1.get(LOCATION.ID), record1.get(VEREIN.ID)))
                                  ));
                              }
                          })
@@ -502,11 +507,11 @@ public class JudgeRepository {
         }
     }
 
-    private BigDecimal penalty(Record record) {
+    private BigDecimal penalty(Record it) {
         BigDecimal penalty = null;
-        if (record.get(VEREIN_PROGRAMM.MINUTES_OVERRUN) != null) {
+        if (it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN) != null) {
             // for each minute overrun -2 points
-            penalty = TWO.multiply(new BigDecimal(record.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)));
+            penalty = TWO.multiply(new BigDecimal(it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)));
         }
         return penalty;
     }

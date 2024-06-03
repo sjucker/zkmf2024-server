@@ -30,6 +30,7 @@ import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -74,6 +75,16 @@ public class RankingEntry extends TableImpl<RankingEntryRecord> {
      * The column <code>ranking_entry.rank</code>.
      */
     public final TableField<RankingEntryRecord, Integer> RANK = createField(DSL.name("rank"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>ranking_entry.confirmed_by</code>.
+     */
+    public final TableField<RankingEntryRecord, String> CONFIRMED_BY = createField(DSL.name("confirmed_by"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>ranking_entry.confirmed_at</code>.
+     */
+    public final TableField<RankingEntryRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     private RankingEntry(Name alias, Table<RankingEntryRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
+import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.RankingPenaltyDTO;
 import ch.zkmf2024.server.dto.VereinPlayingDTO;
 import ch.zkmf2024.server.service.JudgeService;
@@ -197,6 +198,24 @@ public class SecuredJudgeEndpoint {
 
         // username -> location-identifier
         judgeService.setRankingPenalty(userDetails.getUsername(), dto.vereinProgrammId(), dto.minutesOverrun());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/ranking-list")
+    @Secured({"ADMIN"})
+    public ResponseEntity<List<RankingListDTO>> rankingLists() {
+        log.info("GET /secured/judge/ranking-list");
+
+        return ResponseEntity.ok(rankingsService.getAllRankingLists());
+    }
+
+    @PostMapping("/ranking-list/{rankingId}")
+    @Secured({"ADMIN"})
+    public ResponseEntity<?> publishRankingList(@PathVariable("rankingId") Long rankingId) {
+        log.info("POST /secured/judge/ranking-list/{}", rankingId);
+
+        rankingsService.publishRankingList(rankingId);
 
         return ResponseEntity.ok().build();
     }
