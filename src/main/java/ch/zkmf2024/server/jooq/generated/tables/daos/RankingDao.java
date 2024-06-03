@@ -9,7 +9,6 @@ import ch.zkmf2024.server.jooq.generated.tables.records.RankingRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,21 +64,6 @@ public class RankingDao extends DAOImpl<RankingRecord, RankingPojo, Long> {
      */
     public Optional<RankingPojo> fetchOptionalById(Long value) {
         return fetchOptional(Ranking.RANKING.ID, value);
-    }
-
-    /**
-     * Fetch records that have <code>fk_verein BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    public List<RankingPojo> fetchRangeOfFkVerein(Long lowerInclusive, Long upperInclusive) {
-        return fetchRange(Ranking.RANKING.FK_VEREIN, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>fk_verein IN (values)</code>
-     */
-    public List<RankingPojo> fetchByFkVerein(Long... values) {
-        return fetch(Ranking.RANKING.FK_VEREIN, values);
     }
 
     /**
@@ -143,32 +127,32 @@ public class RankingDao extends DAOImpl<RankingRecord, RankingPojo, Long> {
     }
 
     /**
-     * Fetch records that have <code>score BETWEEN lowerInclusive AND
+     * Fetch records that have <code>location_identifier BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<RankingPojo> fetchRangeOfLocationIdentifier(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Ranking.RANKING.LOCATION_IDENTIFIER, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>location_identifier IN (values)</code>
+     */
+    public List<RankingPojo> fetchByLocationIdentifier(String... values) {
+        return fetch(Ranking.RANKING.LOCATION_IDENTIFIER, values);
+    }
+
+    /**
+     * Fetch records that have <code>status BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<RankingPojo> fetchRangeOfScore(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
-        return fetchRange(Ranking.RANKING.SCORE, lowerInclusive, upperInclusive);
+    public List<RankingPojo> fetchRangeOfStatus(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Ranking.RANKING.STATUS, lowerInclusive, upperInclusive);
     }
 
     /**
-     * Fetch records that have <code>score IN (values)</code>
+     * Fetch records that have <code>status IN (values)</code>
      */
-    public List<RankingPojo> fetchByScore(BigDecimal... values) {
-        return fetch(Ranking.RANKING.SCORE, values);
-    }
-
-    /**
-     * Fetch records that have <code>rank BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    public List<RankingPojo> fetchRangeOfRank(Integer lowerInclusive, Integer upperInclusive) {
-        return fetchRange(Ranking.RANKING.RANK, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>rank IN (values)</code>
-     */
-    public List<RankingPojo> fetchByRank(Integer... values) {
-        return fetch(Ranking.RANKING.RANK, values);
+    public List<RankingPojo> fetchByStatus(String... values) {
+        return fetch(Ranking.RANKING.STATUS, values);
     }
 }

@@ -7,7 +7,7 @@ import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt.KontaktPath;
-import ch.zkmf2024.server.jooq.generated.tables.Ranking.RankingPath;
+import ch.zkmf2024.server.jooq.generated.tables.RankingEntry.RankingEntryPath;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TimetableEntryPath;
 import ch.zkmf2024.server.jooq.generated.tables.Titel.TitelPath;
 import ch.zkmf2024.server.jooq.generated.tables.VereinAnmeldungAdhocOrchester.VereinAnmeldungAdhocOrchesterPath;
@@ -419,17 +419,17 @@ public class Verein extends TableImpl<VereinRecord> {
         return _fkVereinDirektionKontakt;
     }
 
-    private transient RankingPath _ranking;
+    private transient RankingEntryPath _rankingEntry;
 
     /**
-     * Get the implicit to-many join path to the <code>public.ranking</code>
-     * table
+     * Get the implicit to-many join path to the
+     * <code>public.ranking_entry</code> table
      */
-    public RankingPath ranking() {
-        if (_ranking == null)
-            _ranking = new RankingPath(this, null, Keys.RANKING__FK_RANKING_VEREIN.getInverseKey());
+    public RankingEntryPath rankingEntry() {
+        if (_rankingEntry == null)
+            _rankingEntry = new RankingEntryPath(this, null, Keys.RANKING_ENTRY__FK_RANKING_ENTRY_VEREIN.getInverseKey());
 
-        return _ranking;
+        return _rankingEntry;
     }
 
     private transient TimetableEntryPath _timetableEntry;

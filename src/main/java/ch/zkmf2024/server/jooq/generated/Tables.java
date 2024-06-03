@@ -20,6 +20,7 @@ import ch.zkmf2024.server.jooq.generated.tables.NewsletterRecipient;
 import ch.zkmf2024.server.jooq.generated.tables.NotificationSent;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.Ranking;
+import ch.zkmf2024.server.jooq.generated.tables.RankingEntry;
 import ch.zkmf2024.server.jooq.generated.tables.RankingPenalty;
 import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
@@ -128,6 +129,11 @@ public class Tables {
      * The table <code>ranking</code>.
      */
     public static final Ranking RANKING = Ranking.RANKING;
+
+    /**
+     * The table <code>ranking_entry</code>.
+     */
+    public static final RankingEntry RANKING_ENTRY = RankingEntry.RANKING_ENTRY;
 
     /**
      * The table <code>ranking_penalty</code>.
