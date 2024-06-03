@@ -267,6 +267,7 @@ export interface RankingListDTO {
     description: string;
     status: RankingStatus;
     entries: RankingListEntryDTO[];
+    final: boolean;
 }
 
 export interface RankingListEntryDTO {
