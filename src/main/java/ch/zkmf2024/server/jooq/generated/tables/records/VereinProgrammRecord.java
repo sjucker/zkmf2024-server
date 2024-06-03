@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -419,6 +420,22 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
         return (Integer) get(24);
     }
 
+    /**
+     * Setter for <code>verein_programm.bonus</code>.
+     */
+    @Override
+    public void setBonus(BigDecimal value) {
+        set(25, value);
+    }
+
+    /**
+     * Getter for <code>verein_programm.bonus</code>.
+     */
+    @Override
+    public BigDecimal getBonus() {
+        return (BigDecimal) get(25);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -459,6 +476,7 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
         setScoresConfirmedAt(from.getScoresConfirmedAt());
         setModulDTitelSelection(from.getModulDTitelSelection());
         setMinutesOverrun(from.getMinutesOverrun());
+        setBonus(from.getBonus());
         resetChangedOnNotNull();
     }
 
@@ -482,7 +500,7 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
     /**
      * Create a detached, initialised VereinProgrammRecord
      */
-    public VereinProgrammRecord(Long id, Long fkVerein, String modul, String klasse, String besetzung, String titel, String infoModeration, Integer totalDurationInSeconds, String modulGKatA_1, String modulGKatA_2, Long modulGKatATitel_1Id, Long modulGKatATitel_2Id, Long modulGKatBTitelId, Long modulGKatCTitelId, Boolean modulBPa, Boolean modulBEgitarre, Boolean modulBEbass, Boolean modulBKeyboard, Boolean modulBGesang, Long modulDTitel_1Id, Long modulDTitel_2Id, String scoresConfirmedBy, LocalDateTime scoresConfirmedAt, String modulDTitelSelection, Integer minutesOverrun) {
+    public VereinProgrammRecord(Long id, Long fkVerein, String modul, String klasse, String besetzung, String titel, String infoModeration, Integer totalDurationInSeconds, String modulGKatA_1, String modulGKatA_2, Long modulGKatATitel_1Id, Long modulGKatATitel_2Id, Long modulGKatBTitelId, Long modulGKatCTitelId, Boolean modulBPa, Boolean modulBEgitarre, Boolean modulBEbass, Boolean modulBKeyboard, Boolean modulBGesang, Long modulDTitel_1Id, Long modulDTitel_2Id, String scoresConfirmedBy, LocalDateTime scoresConfirmedAt, String modulDTitelSelection, Integer minutesOverrun, BigDecimal bonus) {
         super(VereinProgramm.VEREIN_PROGRAMM);
 
         setId(id);
@@ -510,6 +528,7 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
         setScoresConfirmedAt(scoresConfirmedAt);
         setModulDTitelSelection(modulDTitelSelection);
         setMinutesOverrun(minutesOverrun);
+        setBonus(bonus);
         resetChangedOnNotNull();
     }
 
@@ -545,6 +564,7 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
             setScoresConfirmedAt(value.getScoresConfirmedAt());
             setModulDTitelSelection(value.getModulDTitelSelection());
             setMinutesOverrun(value.getMinutesOverrun());
+            setBonus(value.getBonus());
             resetChangedOnNotNull();
         }
     }

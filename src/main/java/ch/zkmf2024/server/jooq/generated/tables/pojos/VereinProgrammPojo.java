@@ -5,6 +5,7 @@ package ch.zkmf2024.server.jooq.generated.tables.pojos;
 
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IVereinProgramm;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -40,6 +41,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
     private LocalDateTime scoresConfirmedAt;
     private String modulDTitelSelection;
     private Integer minutesOverrun;
+    private BigDecimal bonus;
 
     public VereinProgrammPojo() {
     }
@@ -70,6 +72,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.scoresConfirmedAt = value.getScoresConfirmedAt();
         this.modulDTitelSelection = value.getModulDTitelSelection();
         this.minutesOverrun = value.getMinutesOverrun();
+        this.bonus = value.getBonus();
     }
 
     public VereinProgrammPojo(
@@ -97,7 +100,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
             String scoresConfirmedBy,
             LocalDateTime scoresConfirmedAt,
             String modulDTitelSelection,
-            Integer minutesOverrun
+            Integer minutesOverrun,
+            BigDecimal bonus
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -124,6 +128,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.scoresConfirmedAt = scoresConfirmedAt;
         this.modulDTitelSelection = modulDTitelSelection;
         this.minutesOverrun = minutesOverrun;
+        this.bonus = bonus;
     }
 
     /**
@@ -526,6 +531,22 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.minutesOverrun = minutesOverrun;
     }
 
+    /**
+     * Getter for <code>verein_programm.bonus</code>.
+     */
+    @Override
+    public BigDecimal getBonus() {
+        return this.bonus;
+    }
+
+    /**
+     * Setter for <code>verein_programm.bonus</code>.
+     */
+    @Override
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -660,6 +681,11 @@ public class VereinProgrammPojo implements IVereinProgramm {
                 return false;
         } else if (!this.minutesOverrun.equals(other.minutesOverrun))
             return false;
+        if (this.bonus == null) {
+            if (other.bonus != null)
+                return false;
+        } else if (!this.bonus.equals(other.bonus))
+            return false;
         return true;
     }
 
@@ -692,6 +718,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         result = prime * result + ((this.scoresConfirmedAt == null) ? 0 : this.scoresConfirmedAt.hashCode());
         result = prime * result + ((this.modulDTitelSelection == null) ? 0 : this.modulDTitelSelection.hashCode());
         result = prime * result + ((this.minutesOverrun == null) ? 0 : this.minutesOverrun.hashCode());
+        result = prime * result + ((this.bonus == null) ? 0 : this.bonus.hashCode());
         return result;
     }
 
@@ -724,6 +751,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         sb.append(", ").append(scoresConfirmedAt);
         sb.append(", ").append(modulDTitelSelection);
         sb.append(", ").append(minutesOverrun);
+        sb.append(", ").append(bonus);
 
         sb.append(")");
         return sb.toString();
@@ -760,6 +788,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         setScoresConfirmedAt(from.getScoresConfirmedAt());
         setModulDTitelSelection(from.getModulDTitelSelection());
         setMinutesOverrun(from.getMinutesOverrun());
+        setBonus(from.getBonus());
     }
 
     @Override

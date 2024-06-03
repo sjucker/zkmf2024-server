@@ -320,20 +320,29 @@ public class JudgeService {
     }
 
     public void setRankingPenalty(String locationIdentifier, Long vereinProgrammId, int minutesOverrun) {
+        updateGeneralRanking(locationIdentifier, vereinProgrammId, pojo -> pojo.setMinutesOverrun(minutesOverrun));
+    }
+
+    public void setRankingBonus(String locationIdentifier, Long vereinProgrammId, BigDecimal bonus) {
+        updateGeneralRanking(locationIdentifier, vereinProgrammId, pojo -> pojo.setBonus(bonus));
+    }
+
+    private void updateGeneralRanking(String locationIdentifier, Long vereinProgrammId, Consumer<VereinProgrammPojo> setter) {
         var location = locationRepository.findByIdentifier(locationIdentifier).orElseThrow(() -> new NoSuchElementException("unknown locationIdentifier: " + locationIdentifier));
         var timetableEntry = timetableRepository.findWettspielByProgrammId(vereinProgrammId).orElseThrow(() -> new NoSuchElementException("unknown vereinProgrammId: " + vereinProgrammId));
 
         if (!Objects.equals(timetableEntry.getFkLocation(), location.id())) {
-            throw new IllegalArgumentException("tried to set ranking penalty for verein programm %s for wrong location %s".formatted(vereinProgrammId, locationIdentifier));
+            throw new IllegalArgumentException("tried to set ranking bonus/penalty for verein programm %s for wrong location %s".formatted(vereinProgrammId, locationIdentifier));
         }
 
         vereinRepository.findVereinProgramm(vereinProgrammId)
                         .ifPresentOrElse(pojo -> {
-                                             pojo.setMinutesOverrun(minutesOverrun);
+                                             setter.accept(pojo);
                                              vereinRepository.update(pojo);
                                          },
                                          () -> {
                                              throw new NoSuchElementException("no verein programm found for: " + vereinProgrammId);
                                          });
     }
+
 }

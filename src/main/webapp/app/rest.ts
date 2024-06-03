@@ -158,6 +158,7 @@ export interface JudgeReportSummaryDTO {
     verein: string;
     overallScore?: number;
     penalty?: number;
+    bonus?: number;
     scores: JudgeReportScoreDTO[];
     done: boolean;
     scoresConfirmed: boolean;
@@ -251,6 +252,11 @@ export interface NewsletterRecipientDTO {
 export interface NichtmitgliederDTO {
     amount?: number;
     instrument?: string;
+}
+
+export interface RankingBonusDTO {
+    vereinProgrammId: number;
+    bonus: number;
 }
 
 export interface RankingDTO {
@@ -451,6 +457,7 @@ export interface VereinPlayingDTO {
     timetableEntryId: number;
     vereinProgrammId: number;
     vereinsname: string;
+    modul: Modul;
     startTime: DateAsString;
     endTime: DateAsString;
     minDurationInSeconds?: number;
@@ -459,6 +466,7 @@ export interface VereinPlayingDTO {
     ended: boolean;
     jury: string;
     minutesOverrun?: number;
+    bonus?: number;
 }
 
 export interface VereinPresentationDTO {
@@ -834,6 +842,12 @@ export interface IsValid {
 
 export type DateAsString = string;
 
+export enum JudgeReportModulCategory {
+    MODUL_G_KAT_A = "MODUL_G_KAT_A",
+    MODUL_G_KAT_B = "MODUL_G_KAT_B",
+    MODUL_G_KAT_C = "MODUL_G_KAT_C",
+}
+
 export enum Modul {
     A = "A",
     B = "B",
@@ -853,12 +867,6 @@ export enum JudgeRole {
     JUROR_2_MUSIKALISCH = "JUROR_2_MUSIKALISCH",
     JUROR_3_MUSIKALISCH = "JUROR_3_MUSIKALISCH",
     JUROR_4_OPTISCH = "JUROR_4_OPTISCH",
-}
-
-export enum JudgeReportModulCategory {
-    MODUL_G_KAT_A = "MODUL_G_KAT_A",
-    MODUL_G_KAT_B = "MODUL_G_KAT_B",
-    MODUL_G_KAT_C = "MODUL_G_KAT_C",
 }
 
 export enum JudgeReportStatus {

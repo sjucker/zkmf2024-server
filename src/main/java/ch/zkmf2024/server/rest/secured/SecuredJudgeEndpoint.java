@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
+import ch.zkmf2024.server.dto.RankingBonusDTO;
 import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.RankingPenaltyDTO;
 import ch.zkmf2024.server.dto.VereinPlayingDTO;
@@ -198,6 +199,18 @@ public class SecuredJudgeEndpoint {
 
         // username -> location-identifier
         judgeService.setRankingPenalty(userDetails.getUsername(), dto.vereinProgrammId(), dto.minutesOverrun());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/helper/bonus")
+    @Secured({"JUDGE_HELPER"})
+    public ResponseEntity<?> rankingBonus(@AuthenticationPrincipal UserDetails userDetails,
+                                          @RequestBody RankingBonusDTO dto) {
+        log.info("POST /secured/judge/helper/bonus {}", dto);
+
+        // username -> location-identifier
+        judgeService.setRankingBonus(userDetails.getUsername(), dto.vereinProgrammId(), dto.bonus());
 
         return ResponseEntity.ok().build();
     }

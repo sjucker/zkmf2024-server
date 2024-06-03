@@ -19,6 +19,7 @@ public record JudgeReportSummaryDTO(@NotNull Long programmId,
                                     @NotNull String verein,
                                     BigDecimal overallScore,
                                     BigDecimal penalty,
+                                    BigDecimal bonus,
                                     @NotNull List<JudgeReportScoreDTO> scores,
                                     boolean done,
                                     boolean scoresConfirmed) {

@@ -34,6 +34,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -184,6 +185,11 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      * The column <code>verein_programm.minutes_overrun</code>.
      */
     public final TableField<VereinProgrammRecord, Integer> MINUTES_OVERRUN = createField(DSL.name("minutes_overrun"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>verein_programm.bonus</code>.
+     */
+    public final TableField<VereinProgrammRecord, BigDecimal> BONUS = createField(DSL.name("bonus"), SQLDataType.NUMERIC(3, 1), this, "");
 
     private VereinProgramm(Name alias, Table<VereinProgrammRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

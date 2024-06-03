@@ -4,6 +4,7 @@
 package ch.zkmf2024.server.jooq.generated.tables.interfaces;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -261,6 +262,16 @@ public interface IVereinProgramm extends Serializable {
      * Getter for <code>verein_programm.minutes_overrun</code>.
      */
     public Integer getMinutesOverrun();
+
+    /**
+     * Setter for <code>verein_programm.bonus</code>.
+     */
+    public void setBonus(BigDecimal value);
+
+    /**
+     * Getter for <code>verein_programm.bonus</code>.
+     */
+    public BigDecimal getBonus();
 
     // -------------------------------------------------------------------------
     // FROM and INTO

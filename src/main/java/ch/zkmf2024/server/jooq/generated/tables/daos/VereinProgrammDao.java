@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -426,5 +427,20 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
      */
     public List<VereinProgrammPojo> fetchByMinutesOverrun(Integer... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.MINUTES_OVERRUN, values);
+    }
+
+    /**
+     * Fetch records that have <code>bonus BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfBonus(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.BONUS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>bonus IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByBonus(BigDecimal... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.BONUS, values);
     }
 }
