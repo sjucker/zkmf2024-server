@@ -98,27 +98,11 @@ public class RankingRecord extends UpdatableRecordImpl<RankingRecord> implements
     }
 
     /**
-     * Setter for <code>ranking.location_identifier</code>.
-     */
-    @Override
-    public void setLocationIdentifier(String value) {
-        set(5, value);
-    }
-
-    /**
-     * Getter for <code>ranking.location_identifier</code>.
-     */
-    @Override
-    public String getLocationIdentifier() {
-        return (String) get(5);
-    }
-
-    /**
      * Setter for <code>ranking.status</code>.
      */
     @Override
     public void setStatus(String value) {
-        set(6, value);
+        set(5, value);
     }
 
     /**
@@ -126,7 +110,23 @@ public class RankingRecord extends UpdatableRecordImpl<RankingRecord> implements
      */
     @Override
     public String getStatus() {
-        return (String) get(6);
+        return (String) get(5);
+    }
+
+    /**
+     * Setter for <code>ranking.fk_location</code>.
+     */
+    @Override
+    public void setFkLocation(Long value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>ranking.fk_location</code>.
+     */
+    @Override
+    public Long getFkLocation() {
+        return (Long) get(6);
     }
 
     // -------------------------------------------------------------------------
@@ -149,8 +149,8 @@ public class RankingRecord extends UpdatableRecordImpl<RankingRecord> implements
         setKlasse(from.getKlasse());
         setBesetzung(from.getBesetzung());
         setCategory(from.getCategory());
-        setLocationIdentifier(from.getLocationIdentifier());
         setStatus(from.getStatus());
+        setFkLocation(from.getFkLocation());
         resetChangedOnNotNull();
     }
 
@@ -174,7 +174,7 @@ public class RankingRecord extends UpdatableRecordImpl<RankingRecord> implements
     /**
      * Create a detached, initialised RankingRecord
      */
-    public RankingRecord(Long id, String modul, String klasse, String besetzung, String category, String locationIdentifier, String status) {
+    public RankingRecord(Long id, String modul, String klasse, String besetzung, String category, String status, Long fkLocation) {
         super(Ranking.RANKING);
 
         setId(id);
@@ -182,8 +182,8 @@ public class RankingRecord extends UpdatableRecordImpl<RankingRecord> implements
         setKlasse(klasse);
         setBesetzung(besetzung);
         setCategory(category);
-        setLocationIdentifier(locationIdentifier);
         setStatus(status);
+        setFkLocation(fkLocation);
         resetChangedOnNotNull();
     }
 
@@ -199,8 +199,8 @@ public class RankingRecord extends UpdatableRecordImpl<RankingRecord> implements
             setKlasse(value.getKlasse());
             setBesetzung(value.getBesetzung());
             setCategory(value.getCategory());
-            setLocationIdentifier(value.getLocationIdentifier());
             setStatus(value.getStatus());
+            setFkLocation(value.getFkLocation());
             resetChangedOnNotNull();
         }
     }

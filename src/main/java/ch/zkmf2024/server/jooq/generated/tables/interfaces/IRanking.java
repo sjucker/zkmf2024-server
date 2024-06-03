@@ -62,16 +62,6 @@ public interface IRanking extends Serializable {
     public String getCategory();
 
     /**
-     * Setter for <code>ranking.location_identifier</code>.
-     */
-    public void setLocationIdentifier(String value);
-
-    /**
-     * Getter for <code>ranking.location_identifier</code>.
-     */
-    public String getLocationIdentifier();
-
-    /**
      * Setter for <code>ranking.status</code>.
      */
     public void setStatus(String value);
@@ -80,6 +70,16 @@ public interface IRanking extends Serializable {
      * Getter for <code>ranking.status</code>.
      */
     public String getStatus();
+
+    /**
+     * Setter for <code>ranking.fk_location</code>.
+     */
+    public void setFkLocation(Long value);
+
+    /**
+     * Getter for <code>ranking.fk_location</code>.
+     */
+    public Long getFkLocation();
 
     // -------------------------------------------------------------------------
     // FROM and INTO

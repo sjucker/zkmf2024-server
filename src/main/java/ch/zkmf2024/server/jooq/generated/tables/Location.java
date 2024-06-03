@@ -7,6 +7,7 @@ import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.enums.LocationLocationType;
+import ch.zkmf2024.server.jooq.generated.tables.Ranking.RankingPath;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TimetableEntryPath;
 import ch.zkmf2024.server.jooq.generated.tables.UnterhaltungEntry.UnterhaltungEntryPath;
 import ch.zkmf2024.server.jooq.generated.tables.records.LocationRecord;
@@ -280,6 +281,19 @@ public class Location extends TableImpl<LocationRecord> {
             _fkLocationJuryfeedback = new LocationPath(this, Keys.LOCATION__FK_LOCATION_JURYFEEDBACK, null);
 
         return _fkLocationJuryfeedback;
+    }
+
+    private transient RankingPath _ranking;
+
+    /**
+     * Get the implicit to-many join path to the <code>public.ranking</code>
+     * table
+     */
+    public RankingPath ranking() {
+        if (_ranking == null)
+            _ranking = new RankingPath(this, null, Keys.RANKING__FK_RANKING_LOCATION.getInverseKey());
+
+        return _ranking;
     }
 
     private transient TimetableEntryPath _timetableEntry;

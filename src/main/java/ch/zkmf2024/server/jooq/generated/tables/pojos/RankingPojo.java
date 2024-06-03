@@ -18,8 +18,8 @@ public class RankingPojo implements IRanking {
     private String klasse;
     private String besetzung;
     private String category;
-    private String locationIdentifier;
     private String status;
+    private Long fkLocation;
 
     public RankingPojo() {
     }
@@ -30,8 +30,8 @@ public class RankingPojo implements IRanking {
         this.klasse = value.getKlasse();
         this.besetzung = value.getBesetzung();
         this.category = value.getCategory();
-        this.locationIdentifier = value.getLocationIdentifier();
         this.status = value.getStatus();
+        this.fkLocation = value.getFkLocation();
     }
 
     public RankingPojo(
@@ -40,16 +40,16 @@ public class RankingPojo implements IRanking {
             String klasse,
             String besetzung,
             String category,
-            String locationIdentifier,
-            String status
+            String status,
+            Long fkLocation
     ) {
         this.id = id;
         this.modul = modul;
         this.klasse = klasse;
         this.besetzung = besetzung;
         this.category = category;
-        this.locationIdentifier = locationIdentifier;
         this.status = status;
+        this.fkLocation = fkLocation;
     }
 
     /**
@@ -133,22 +133,6 @@ public class RankingPojo implements IRanking {
     }
 
     /**
-     * Getter for <code>ranking.location_identifier</code>.
-     */
-    @Override
-    public String getLocationIdentifier() {
-        return this.locationIdentifier;
-    }
-
-    /**
-     * Setter for <code>ranking.location_identifier</code>.
-     */
-    @Override
-    public void setLocationIdentifier(String locationIdentifier) {
-        this.locationIdentifier = locationIdentifier;
-    }
-
-    /**
      * Getter for <code>ranking.status</code>.
      */
     @Override
@@ -162,6 +146,22 @@ public class RankingPojo implements IRanking {
     @Override
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * Getter for <code>ranking.fk_location</code>.
+     */
+    @Override
+    public Long getFkLocation() {
+        return this.fkLocation;
+    }
+
+    /**
+     * Setter for <code>ranking.fk_location</code>.
+     */
+    @Override
+    public void setFkLocation(Long fkLocation) {
+        this.fkLocation = fkLocation;
     }
 
     @Override
@@ -198,15 +198,15 @@ public class RankingPojo implements IRanking {
                 return false;
         } else if (!this.category.equals(other.category))
             return false;
-        if (this.locationIdentifier == null) {
-            if (other.locationIdentifier != null)
-                return false;
-        } else if (!this.locationIdentifier.equals(other.locationIdentifier))
-            return false;
         if (this.status == null) {
             if (other.status != null)
                 return false;
         } else if (!this.status.equals(other.status))
+            return false;
+        if (this.fkLocation == null) {
+            if (other.fkLocation != null)
+                return false;
+        } else if (!this.fkLocation.equals(other.fkLocation))
             return false;
         return true;
     }
@@ -220,8 +220,8 @@ public class RankingPojo implements IRanking {
         result = prime * result + ((this.klasse == null) ? 0 : this.klasse.hashCode());
         result = prime * result + ((this.besetzung == null) ? 0 : this.besetzung.hashCode());
         result = prime * result + ((this.category == null) ? 0 : this.category.hashCode());
-        result = prime * result + ((this.locationIdentifier == null) ? 0 : this.locationIdentifier.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
+        result = prime * result + ((this.fkLocation == null) ? 0 : this.fkLocation.hashCode());
         return result;
     }
 
@@ -234,8 +234,8 @@ public class RankingPojo implements IRanking {
         sb.append(", ").append(klasse);
         sb.append(", ").append(besetzung);
         sb.append(", ").append(category);
-        sb.append(", ").append(locationIdentifier);
         sb.append(", ").append(status);
+        sb.append(", ").append(fkLocation);
 
         sb.append(")");
         return sb.toString();
@@ -252,8 +252,8 @@ public class RankingPojo implements IRanking {
         setKlasse(from.getKlasse());
         setBesetzung(from.getBesetzung());
         setCategory(from.getCategory());
-        setLocationIdentifier(from.getLocationIdentifier());
         setStatus(from.getStatus());
+        setFkLocation(from.getFkLocation());
     }
 
     @Override

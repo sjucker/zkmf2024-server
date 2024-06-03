@@ -7,6 +7,7 @@ import ch.zkmf2024.server.jooq.generated.DefaultSchema;
 import ch.zkmf2024.server.jooq.generated.Indexes;
 import ch.zkmf2024.server.jooq.generated.Keys;
 import ch.zkmf2024.server.jooq.generated.tables.Kontakt.KontaktPath;
+import ch.zkmf2024.server.jooq.generated.tables.Ranking.RankingPath;
 import ch.zkmf2024.server.jooq.generated.tables.RankingEntry.RankingEntryPath;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry.TimetableEntryPath;
 import ch.zkmf2024.server.jooq.generated.tables.Titel.TitelPath;
@@ -574,6 +575,14 @@ public class Verein extends TableImpl<VereinRecord> {
             _vereinStatus = new VereinStatusPath(this, null, Keys.VEREIN_STATUS__FK_VEREIN_STATUS.getInverseKey());
 
         return _vereinStatus;
+    }
+
+    /**
+     * Get the implicit many-to-many join path to the
+     * <code>public.ranking</code> table
+     */
+    public RankingPath ranking() {
+        return rankingEntry().ranking();
     }
 
     @Override

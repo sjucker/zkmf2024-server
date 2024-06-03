@@ -127,21 +127,6 @@ public class RankingDao extends DAOImpl<RankingRecord, RankingPojo, Long> {
     }
 
     /**
-     * Fetch records that have <code>location_identifier BETWEEN lowerInclusive
-     * AND upperInclusive</code>
-     */
-    public List<RankingPojo> fetchRangeOfLocationIdentifier(String lowerInclusive, String upperInclusive) {
-        return fetchRange(Ranking.RANKING.LOCATION_IDENTIFIER, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>location_identifier IN (values)</code>
-     */
-    public List<RankingPojo> fetchByLocationIdentifier(String... values) {
-        return fetch(Ranking.RANKING.LOCATION_IDENTIFIER, values);
-    }
-
-    /**
      * Fetch records that have <code>status BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
@@ -154,5 +139,20 @@ public class RankingDao extends DAOImpl<RankingRecord, RankingPojo, Long> {
      */
     public List<RankingPojo> fetchByStatus(String... values) {
         return fetch(Ranking.RANKING.STATUS, values);
+    }
+
+    /**
+     * Fetch records that have <code>fk_location BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<RankingPojo> fetchRangeOfFkLocation(Long lowerInclusive, Long upperInclusive) {
+        return fetchRange(Ranking.RANKING.FK_LOCATION, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>fk_location IN (values)</code>
+     */
+    public List<RankingPojo> fetchByFkLocation(Long... values) {
+        return fetch(Ranking.RANKING.FK_LOCATION, values);
     }
 }

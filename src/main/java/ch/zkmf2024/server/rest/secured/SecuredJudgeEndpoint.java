@@ -1,5 +1,6 @@
 package ch.zkmf2024.server.rest.secured;
 
+import ch.zkmf2024.server.dto.ConfirmScoreDTO;
 import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
@@ -9,6 +10,7 @@ import ch.zkmf2024.server.dto.ModulDSelectionDTO;
 import ch.zkmf2024.server.dto.RankingPenaltyDTO;
 import ch.zkmf2024.server.dto.VereinPlayingDTO;
 import ch.zkmf2024.server.service.JudgeService;
+import ch.zkmf2024.server.service.RankingsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -32,9 +34,12 @@ import static ch.zkmf2024.server.util.DateUtil.now;
 public class SecuredJudgeEndpoint {
 
     private final JudgeService judgeService;
+    private final RankingsService rankingsService;
 
-    public SecuredJudgeEndpoint(JudgeService judgeService) {
+    public SecuredJudgeEndpoint(JudgeService judgeService,
+                                RankingsService rankingsService) {
         this.judgeService = judgeService;
+        this.rankingsService = rankingsService;
     }
 
     @GetMapping
@@ -105,13 +110,13 @@ public class SecuredJudgeEndpoint {
         return ResponseEntity.ok(judgeService.findSummaries(userDetails.getUsername()));
     }
 
-    @PostMapping("/confirm-scores/{programmId}")
+    @PostMapping("/confirm-score")
     @Secured({"ADMIN"})
-    public ResponseEntity<?> confirmScores(@AuthenticationPrincipal UserDetails userDetails,
-                                           @PathVariable("programmId") Long programmId) {
-        log.info("POST /secured/judge/confirm-scores/{} {}", programmId, userDetails.getUsername());
+    public ResponseEntity<?> confirmScore(@AuthenticationPrincipal UserDetails userDetails,
+                                          @RequestBody ConfirmScoreDTO dto) {
+        log.info("POST /secured/judge/confirm-score {}", dto);
 
-        judgeService.confirmScores(userDetails.getUsername(), programmId);
+        rankingsService.confirmScore(userDetails.getUsername(), dto.vereinProgrammId(), dto.category(), dto.score());
 
         return ResponseEntity.ok().build();
     }

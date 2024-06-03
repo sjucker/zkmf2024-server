@@ -264,15 +264,6 @@ public class JudgeService {
         return judgeRepository.getRanking(reportId, judgeRepository.findByEmail(username).map(JudgePojo::getId).orElseThrow());
     }
 
-    public void addRanking(String username, Long programmId) {
-
-    }
-
-    public void confirmScores(String username, Long programmId) {
-        vereinRepository.confirmScores(username, programmId);
-        mailService.sendScoresConfirmation(vereinRepository.getEmailByProgrammId(programmId).orElseThrow());
-    }
-
     public List<ModulDSelectionDTO> getModulDSelection() {
         return judgeRepository.getModulDSelection();
     }

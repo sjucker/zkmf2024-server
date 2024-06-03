@@ -24,6 +24,7 @@ import org.jooq.Stringly;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -141,6 +142,11 @@ public class RankingEntry extends TableImpl<RankingEntryRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
+    }
+
+    @Override
+    public UniqueKey<RankingEntryRecord> getPrimaryKey() {
+        return Keys.PK_RANKING_ENTRY;
     }
 
     @Override

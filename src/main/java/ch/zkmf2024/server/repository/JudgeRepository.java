@@ -68,6 +68,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
+import static java.math.BigDecimal.TWO;
 import static java.math.RoundingMode.HALF_UP;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Comparator.comparing;
@@ -456,6 +457,9 @@ public class JudgeRepository {
                                  var klasse = Klasse.fromString(record1.get(VEREIN_PROGRAMM.KLASSE));
                                  var besetzung = Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG));
                                  var modulCategory = JudgeReportModulCategory.fromString(category);
+
+                                 var penalty = penalty(record1);
+
                                  consumer.accept(new JudgeReportSummaryDTO(
                                          record1.get(VEREIN_PROGRAMM.ID),
                                          record1.get(TIMETABLE_ENTRY.DATE),
@@ -469,7 +473,8 @@ public class JudgeRepository {
                                          modulCategory.orElse(null),
                                          modulCategory.map(JudgeReportModulCategory::getDescription).orElse(null),
                                          record1.get(VEREIN.VEREINSNAME),
-                                         overallScore(record1, record2, record3, record4, modul).orElse(null),
+                                         overallScore(record1, record2, record3, record4, modul, penalty).orElse(null),
+                                         penalty,
                                          records.stream()
                                                 .sorted(comparing(it -> it.get(JUDGE_REPORT.ID)))
                                                 .map(it -> new JudgeReportScoreDTO(
@@ -497,6 +502,15 @@ public class JudgeRepository {
         }
     }
 
+    private BigDecimal penalty(Record record) {
+        BigDecimal penalty = null;
+        if (record.get(VEREIN_PROGRAMM.MINUTES_OVERRUN) != null) {
+            // for each minute overrun -2 points
+            penalty = TWO.multiply(new BigDecimal(record.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)));
+        }
+        return penalty;
+    }
+
     private String getFullDescription(Modul modul, String category) {
         return JudgeReportModulCategory.fromString(category)
                                        .map(JudgeReportModulCategory::getDescription)
@@ -511,7 +525,7 @@ public class JudgeRepository {
                 (record4 == null || record4.get(JUDGE_REPORT.RATING_FIXED));
     }
 
-    private Optional<BigDecimal> overallScore(Record record1, Record record2, Record record3, Record record4, Modul modul) {
+    private Optional<BigDecimal> overallScore(Record record1, Record record2, Record record3, Record record4, Modul modul, BigDecimal penalty) {
         var score1 = record1.get(JUDGE_REPORT.SCORE);
         var score2 = record2.get(JUDGE_REPORT.SCORE);
         var score3 = record3.get(JUDGE_REPORT.SCORE);
@@ -523,8 +537,14 @@ public class JudgeRepository {
             }
         } else {
             if (score1 != null && score2 != null && score3 != null) {
-                return Optional.of(score1.add(score2).add(score3)
-                                         .divide(BigDecimal.valueOf(3), 2, HALF_UP));
+                var score = score1.add(score2).add(score3)
+                                  .divide(BigDecimal.valueOf(3), 2, HALF_UP);
+
+                if (penalty != null) {
+                    score = score.subtract(penalty);
+                }
+
+                return Optional.of(score);
             }
         }
         return Optional.empty();
@@ -558,6 +578,7 @@ public class JudgeRepository {
         var query = jooqDsl.select(TIMETABLE_ENTRY.ID,
                                    VEREIN.VEREINSNAME,
                                    VEREIN_PROGRAMM.MODUL,
+                                   VEREIN_PROGRAMM.MINUTES_OVERRUN,
                                    JUDGE_REPORT.SCORE)
                            .from(JUDGE_REPORT)
                            .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
@@ -584,7 +605,7 @@ public class JudgeRepository {
                                  var record3 = values.get(2);
                                  var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
                                  var record4 = modul.isParademusik() ? values.get(3) : null;
-                                 var overallScore = overallScore(record1, record2, record3, record4, modul);
+                                 var overallScore = overallScore(record1, record2, record3, record4, modul, penalty(record1));
                                  return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore.orElse(null));
                              }
                          })
