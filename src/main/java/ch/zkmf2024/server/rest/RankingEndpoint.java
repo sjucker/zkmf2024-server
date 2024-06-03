@@ -23,9 +23,15 @@ public class RankingEndpoint {
 
     @GetMapping
     public ResponseEntity<List<RankingListDTO>> rankings() {
-        return ResponseEntity.ok(rankingsService.getAllRankingLists().stream()
-                                                .filter(RankingListDTO::isFinal)
-                                                .toList());
+        log.info("GET /public/ranking");
+        return ResponseEntity.ok(rankingsService.getAllRankingLists(RankingListDTO::isFinal));
+
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<?> hasRankings() {
+        log.info("GET /public/ranking/available");
+        return rankingsService.hasFinalRankings() ? ResponseEntity.ok().build() : ResponseEntity.noContent().build();
     }
 
 }

@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.function.Predicate;
 
+import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
@@ -75,6 +77,10 @@ public class RankingRepository {
     }
 
     public List<RankingListDTO> getAllRankingLists() {
+        return getAllRankingLists(dto -> true);
+    }
+
+    public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate) {
         return jooqDsl.select().from(RANKING)
                       .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
                       .orderBy(RANKING.MODUL, RANKING.KLASSE.nullsLast(), RANKING.BESETZUNG.nullsLast(), RANKING.CATEGORY.nullsLast())
@@ -87,7 +93,10 @@ public class RankingRepository {
                               getDescription(it),
                               RankingStatus.valueOf(it.get(RANKING.STATUS)),
                               getEntries(it.get(RANKING.ID))
-                      ));
+                      ))
+                      .stream()
+                      .filter(predicate)
+                      .toList();
     }
 
     private String getDescription(Record it) {
@@ -131,6 +140,10 @@ public class RankingRepository {
                                                                    JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY)).orElse(null),
                                                                    it.get(RANKING.FK_LOCATION),
                                                                    it.get(RANKING_ENTRY.FK_VEREIN)));
+    }
+
+    public boolean hasFinalRankings() {
+        return jooqDsl.fetchExists(RANKING, RANKING.STATUS.eq(FINAL.name()));
     }
 
     public record ConfirmedScoreIdentifier(Modul modul, Klasse klasse, Besetzung besetzung, JudgeReportModulCategory category, Long locationId, Long vereinId) {
