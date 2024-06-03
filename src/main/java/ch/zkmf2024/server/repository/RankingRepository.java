@@ -85,30 +85,32 @@ public class RankingRepository {
                       .from(RANKING)
                       .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
                       .orderBy(RANKING.MODUL, RANKING.KLASSE.nullsLast(), RANKING.BESETZUNG.nullsLast(), RANKING.CATEGORY.nullsLast())
-                      .fetch(it -> {
-                          var modul = Modul.valueOf(it.get(RANKING.MODUL));
-                          var klasse = Klasse.fromString(it.get(RANKING.KLASSE));
-                          var besetzung = Besetzung.fromString(it.get(RANKING.BESETZUNG));
-                          var modulCategory = JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY));
-                          return new RankingListDTO(
-                                  it.get(RANKING.ID),
-                                  modul,
-                                  modul.getFullDescription(),
-                                  klasse.orElse(null),
-                                  klasse.map(Klasse::getDescription).orElse(null),
-                                  besetzung.orElse(null),
-                                  besetzung.map(Besetzung::getDescription).orElse(null),
-                                  modulCategory.orElse(null),
-                                  modulCategory.map(JudgeReportModulCategory::getDescription).orElse(null),
-                                  LocationRepository.toDTO(it),
-                                  getDescription(it),
-                                  RankingStatus.valueOf(it.get(RANKING.STATUS)),
-                                  getEntries(it.get(RANKING.ID))
-                          );
-                      })
+                      .fetch(this::toDTO)
                       .stream()
                       .filter(predicate)
                       .toList();
+    }
+
+    private RankingListDTO toDTO(Record it) {
+        var modul = Modul.valueOf(it.get(RANKING.MODUL));
+        var klasse = Klasse.fromString(it.get(RANKING.KLASSE));
+        var besetzung = Besetzung.fromString(it.get(RANKING.BESETZUNG));
+        var modulCategory = JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY));
+        return new RankingListDTO(
+                it.get(RANKING.ID),
+                modul,
+                modul.getFullDescription(),
+                klasse.orElse(null),
+                klasse.map(Klasse::getDescription).orElse(null),
+                besetzung.orElse(null),
+                besetzung.map(Besetzung::getDescription).orElse(null),
+                modulCategory.orElse(null),
+                modulCategory.map(JudgeReportModulCategory::getDescription).orElse(null),
+                LocationRepository.toDTO(it),
+                getDescription(it),
+                RankingStatus.valueOf(it.get(RANKING.STATUS)),
+                getEntries(it.get(RANKING.ID))
+        );
     }
 
     private String getDescription(Record it) {
@@ -156,6 +158,15 @@ public class RankingRepository {
 
     public boolean hasFinalRankings() {
         return jooqDsl.fetchExists(RANKING, RANKING.STATUS.eq(FINAL.name()));
+    }
+
+    public Optional<RankingListDTO> findRankingListById(Long rankingId) {
+        return jooqDsl.select()
+                      .from(RANKING)
+                      .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
+                      .where(RANKING.ID.eq(rankingId),
+                             RANKING.STATUS.eq(FINAL.name()))
+                      .fetchOptional(this::toDTO);
     }
 
     public record ConfirmedScoreIdentifier(Modul modul, Klasse klasse, Besetzung besetzung, JudgeReportModulCategory category, Long locationId, Long vereinId) {

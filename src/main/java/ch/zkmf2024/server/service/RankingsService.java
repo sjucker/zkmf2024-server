@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
@@ -52,6 +53,10 @@ public class RankingsService {
 
     public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate) {
         return rankingRepository.getAllRankingLists(predicate);
+    }
+
+    public Optional<RankingListDTO> findRankingListById(Long rankingId) {
+        return rankingRepository.findRankingListById(rankingId);
     }
 
     public void confirmScore(String username, Long vereinProgrammId, JudgeReportModulCategory category, BigDecimal score) {

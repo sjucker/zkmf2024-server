@@ -5,6 +5,7 @@ import ch.zkmf2024.server.service.RankingsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,10 +29,20 @@ public class RankingEndpoint {
 
     }
 
+    @GetMapping("/{rankingId}")
+    public ResponseEntity<RankingListDTO> ranking(@PathVariable("rankingId") Long rankingId) {
+        log.info("GET /public/ranking/{}", rankingId);
+
+        return ResponseEntity.of(rankingsService.findRankingListById(rankingId));
+
+    }
+
     @GetMapping("/available")
     public ResponseEntity<?> hasRankings() {
         log.info("GET /public/ranking/available");
         return rankingsService.hasFinalRankings() ? ResponseEntity.ok().build() : ResponseEntity.noContent().build();
     }
+
+    // TODO add endpoint to query whether a band has final ranking available
 
 }
