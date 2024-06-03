@@ -166,6 +166,7 @@ public class SecuredJudgeEndpoint {
                                      @PathVariable("timetableEntryId") Long timetableEntryId) {
         log.info("POST /secured/judge/helper/started/{}", timetableEntryId);
 
+        // username -> location-identifier
         judgeService.setCurrentlyPlaying(userDetails.getUsername(), timetableEntryId, pojo -> pojo.setStartedAt(now()));
 
         return ResponseEntity.ok().build();
@@ -177,6 +178,7 @@ public class SecuredJudgeEndpoint {
                                    @PathVariable("timetableEntryId") Long timetableEntryId) {
         log.info("POST /secured/judge/helper/ended/{}", timetableEntryId);
 
+        // username -> location-identifier
         judgeService.setCurrentlyPlaying(userDetails.getUsername(), timetableEntryId, pojo -> pojo.setEndedAt(now()));
 
         return ResponseEntity.ok().build();
@@ -188,7 +190,8 @@ public class SecuredJudgeEndpoint {
                                             @RequestBody RankingPenaltyDTO dto) {
         log.info("POST /secured/judge/helper/penalty {}", dto);
 
-        judgeService.setRankingPenalty(userDetails.getUsername(), dto.timetableEntryId(), dto.minutesOverrun());
+        // username -> location-identifier
+        judgeService.setRankingPenalty(userDetails.getUsername(), dto.vereinProgrammId(), dto.minutesOverrun());
 
         return ResponseEntity.ok().build();
     }

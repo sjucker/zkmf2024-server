@@ -254,7 +254,7 @@ export interface RankingDTO {
 }
 
 export interface RankingPenaltyDTO {
-    timetableEntryId: number;
+    vereinProgrammId: number;
     minutesOverrun: number;
 }
 
@@ -421,6 +421,7 @@ export interface VereinMessageDTO {
 
 export interface VereinPlayingDTO {
     timetableEntryId: number;
+    vereinProgrammId: number;
     vereinsname: string;
     startTime: DateAsString;
     endTime: DateAsString;

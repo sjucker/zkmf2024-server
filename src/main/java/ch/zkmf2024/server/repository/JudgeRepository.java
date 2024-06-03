@@ -62,7 +62,6 @@ import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT_COMMENT;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT_RATING;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
-import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_PENALTY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
@@ -483,7 +482,7 @@ public class JudgeRepository {
                                                         JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)) == DONE
                                                 ))
                                                 .toList(),
-                                         isDone(record1, record2, record3),
+                                         isDone(record1, record2, record3, record4),
                                          record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT) != null,
                                          record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY),
                                          record1.get(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT)
@@ -505,10 +504,11 @@ public class JudgeRepository {
                                        .orElse(modul.getFullDescription());
     }
 
-    private boolean isDone(Record record1, Record record2, Record record3) {
-        return JudgeReportStatus.valueOf(record1.get(JUDGE_REPORT.STATUS)) == DONE &&
-                JudgeReportStatus.valueOf(record2.get(JUDGE_REPORT.STATUS)) == DONE &&
-                JudgeReportStatus.valueOf(record3.get(JUDGE_REPORT.STATUS)) == DONE;
+    private boolean isDone(Record record1, Record record2, Record record3, Record record4) {
+        return record1.get(JUDGE_REPORT.RATING_FIXED) &&
+                record2.get(JUDGE_REPORT.RATING_FIXED) &&
+                record3.get(JUDGE_REPORT.RATING_FIXED) &&
+                (record4 == null || record4.get(JUDGE_REPORT.RATING_FIXED));
     }
 
     private Optional<BigDecimal> overallScore(Record record1, Record record2, Record record3, Record record4, Modul modul) {
@@ -643,7 +643,6 @@ public class JudgeRepository {
                       .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM.ID.eq(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM))
                       .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
                       .leftJoin(CURRENTLY_PLAYING).on(CURRENTLY_PLAYING.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
-                      .leftJoin(RANKING_PENALTY).on(RANKING_PENALTY.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
                       .where(LOCATION.IDENTIFIER.equalIgnoreCase(locationIdentifier),
                              TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
                       .orderBy(CURRENTLY_PLAYING.ENDED_AT.nullsFirst(), TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
@@ -654,6 +653,7 @@ public class JudgeRepository {
 
                           return new VereinPlayingDTO(
                                   it.get(TIMETABLE_ENTRY.ID),
+                                  it.get(VEREIN_PROGRAMM.ID),
                                   it.get(VEREIN.VEREINSNAME),
                                   LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)),
                                   LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)),
@@ -662,7 +662,7 @@ public class JudgeRepository {
                                   it.get(CURRENTLY_PLAYING.STARTED_AT) != null,
                                   it.get(CURRENTLY_PLAYING.ENDED_AT) != null,
                                   getJury(it.get(TIMETABLE_ENTRY.ID)),
-                                  it.get(RANKING_PENALTY.MINUTES_OVERRUN)
+                                  it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)
                           );
                       });
 

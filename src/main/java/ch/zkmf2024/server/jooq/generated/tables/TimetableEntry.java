@@ -10,7 +10,6 @@ import ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType;
 import ch.zkmf2024.server.jooq.generated.tables.CurrentlyPlaying.CurrentlyPlayingPath;
 import ch.zkmf2024.server.jooq.generated.tables.JudgeReport.JudgeReportPath;
 import ch.zkmf2024.server.jooq.generated.tables.Location.LocationPath;
-import ch.zkmf2024.server.jooq.generated.tables.RankingPenalty.RankingPenaltyPath;
 import ch.zkmf2024.server.jooq.generated.tables.Verein.VereinPath;
 import ch.zkmf2024.server.jooq.generated.tables.VereinProgramm.VereinProgrammPath;
 import ch.zkmf2024.server.jooq.generated.tables.records.TimetableEntryRecord;
@@ -254,19 +253,6 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
             _judgeReport = new JudgeReportPath(this, null, Keys.JUDGE_REPORT__FK_JUDGE_REPORT_TIMETABLE.getInverseKey());
 
         return _judgeReport;
-    }
-
-    private transient RankingPenaltyPath _rankingPenalty;
-
-    /**
-     * Get the implicit to-many join path to the
-     * <code>public.ranking_penalty</code> table
-     */
-    public RankingPenaltyPath rankingPenalty() {
-        if (_rankingPenalty == null)
-            _rankingPenalty = new RankingPenaltyPath(this, null, Keys.RANKING_PENALTY__FK_TIMETABLE_ENTRY.getInverseKey());
-
-        return _rankingPenalty;
     }
 
     @Override

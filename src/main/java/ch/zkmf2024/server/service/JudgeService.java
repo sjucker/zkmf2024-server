@@ -23,13 +23,11 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgePojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportCommentPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.JudgeReportRatingPojo;
-import ch.zkmf2024.server.jooq.generated.tables.pojos.RankingPenaltyPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.Zkmf2024UserPojo;
 import ch.zkmf2024.server.repository.CurrentlyPlayingRepository;
 import ch.zkmf2024.server.repository.JudgeRepository;
 import ch.zkmf2024.server.repository.LocationRepository;
-import ch.zkmf2024.server.repository.RankingPenaltyRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
@@ -76,7 +74,6 @@ public class JudgeService {
     private final TimetableRepository timetableRepository;
     private final LocationRepository locationRepository;
     private final CurrentlyPlayingRepository currentlyPlayingRepository;
-    private final RankingPenaltyRepository rankingPenaltyRepository;
     private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
@@ -86,7 +83,6 @@ public class JudgeService {
                         TimetableRepository timetableRepository,
                         LocationRepository locationRepository,
                         CurrentlyPlayingRepository currentlyPlayingRepository,
-                        RankingPenaltyRepository rankingPenaltyRepository,
                         MailService mailService,
                         PasswordEncoder passwordEncoder) {
         this.judgeRepository = judgeRepository;
@@ -95,7 +91,6 @@ public class JudgeService {
         this.timetableRepository = timetableRepository;
         this.locationRepository = locationRepository;
         this.currentlyPlayingRepository = currentlyPlayingRepository;
-        this.rankingPenaltyRepository = rankingPenaltyRepository;
         this.mailService = mailService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -269,6 +264,10 @@ public class JudgeService {
         return judgeRepository.getRanking(reportId, judgeRepository.findByEmail(username).map(JudgePojo::getId).orElseThrow());
     }
 
+    public void addRanking(String username, Long programmId) {
+
+    }
+
     public void confirmScores(String username, Long programmId) {
         vereinRepository.confirmScores(username, programmId);
         mailService.sendScoresConfirmation(vereinRepository.getEmailByProgrammId(programmId).orElseThrow());
@@ -329,22 +328,21 @@ public class JudgeService {
                                                    });
     }
 
-    public void setRankingPenalty(String locationIdentifier, Long timetableEntryId, int minutesOverrun) {
+    public void setRankingPenalty(String locationIdentifier, Long vereinProgrammId, int minutesOverrun) {
         var location = locationRepository.findByIdentifier(locationIdentifier).orElseThrow(() -> new NoSuchElementException("unknown locationIdentifier: " + locationIdentifier));
-        var timetableEntry = timetableRepository.find(timetableEntryId).orElseThrow(() -> new NoSuchElementException("unknown timetableEntryId: " + timetableEntryId));
+        var timetableEntry = timetableRepository.findWettspielByProgrammId(vereinProgrammId).orElseThrow(() -> new NoSuchElementException("unknown vereinProgrammId: " + vereinProgrammId));
 
         if (!Objects.equals(timetableEntry.getFkLocation(), location.id())) {
-            throw new IllegalArgumentException("tried to set ranking penalty for timetable entry %s for wrong location %s".formatted(timetableEntryId, locationIdentifier));
+            throw new IllegalArgumentException("tried to set ranking penalty for verein programm %s for wrong location %s".formatted(vereinProgrammId, locationIdentifier));
         }
 
-        rankingPenaltyRepository.findByTimetableEntryId(timetableEntryId)
-                                .ifPresentOrElse(pojo -> {
-                                                     pojo.setMinutesOverrun(minutesOverrun);
-                                                     rankingPenaltyRepository.update(pojo);
-                                                 },
-                                                 () -> {
-                                                     var pojo = new RankingPenaltyPojo(null, timetableEntry.getId(), minutesOverrun);
-                                                     rankingPenaltyRepository.insert(pojo);
-                                                 });
+        vereinRepository.findVereinProgramm(vereinProgrammId)
+                        .ifPresentOrElse(pojo -> {
+                                             pojo.setMinutesOverrun(minutesOverrun);
+                                             vereinRepository.update(pojo);
+                                         },
+                                         () -> {
+                                             throw new NoSuchElementException("no verein programm found for: " + vereinProgrammId);
+                                         });
     }
 }

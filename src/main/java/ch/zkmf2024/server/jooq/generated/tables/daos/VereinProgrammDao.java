@@ -412,4 +412,19 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
     public List<VereinProgrammPojo> fetchByModulDTitelSelection(String... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_D_TITEL_SELECTION, values);
     }
+
+    /**
+     * Fetch records that have <code>minutes_overrun BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfMinutesOverrun(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MINUTES_OVERRUN, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>minutes_overrun IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByMinutesOverrun(Integer... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MINUTES_OVERRUN, values);
+    }
 }

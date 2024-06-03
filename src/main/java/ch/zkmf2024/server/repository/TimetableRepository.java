@@ -163,6 +163,12 @@ public class TimetableRepository {
         return timetableEntryDao.findOptionalById(id);
     }
 
+    public Optional<TimetableEntryPojo> findWettspielByProgrammId(Long programmId) {
+        return timetableEntryDao.fetchByFkVereinProgramm(programmId).stream()
+                                .filter(pojo -> pojo.getEntryType().equals(WETTSPIEL))
+                                .findFirst();
+    }
+
     public List<TimetableOverviewEntryDTO> find(List<ModulKlasseBesetzung> modulKlasseBesetzungen) {
         return jooqDsl.select()
                       .from(TIMETABLE_ENTRY)

@@ -252,6 +252,16 @@ public interface IVereinProgramm extends Serializable {
      */
     public String getModulDTitelSelection();
 
+    /**
+     * Setter for <code>verein_programm.minutes_overrun</code>.
+     */
+    public void setMinutesOverrun(Integer value);
+
+    /**
+     * Getter for <code>verein_programm.minutes_overrun</code>.
+     */
+    public Integer getMinutesOverrun();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

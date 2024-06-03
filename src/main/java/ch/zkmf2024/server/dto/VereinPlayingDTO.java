@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record VereinPlayingDTO(@NotNull Long timetableEntryId,
+                               @NotNull Long vereinProgrammId,
                                @NotNull String vereinsname,
                                @NotNull LocalDateTime startTime,
                                @NotNull LocalDateTime endTime,

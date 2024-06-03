@@ -21,7 +21,6 @@ import ch.zkmf2024.server.jooq.generated.tables.NotificationSent;
 import ch.zkmf2024.server.jooq.generated.tables.ProgrammVorgaben;
 import ch.zkmf2024.server.jooq.generated.tables.Ranking;
 import ch.zkmf2024.server.jooq.generated.tables.RankingEntry;
-import ch.zkmf2024.server.jooq.generated.tables.RankingPenalty;
 import ch.zkmf2024.server.jooq.generated.tables.Sponsor;
 import ch.zkmf2024.server.jooq.generated.tables.SurveyAnswer;
 import ch.zkmf2024.server.jooq.generated.tables.TimetableEntry;
@@ -55,7 +54,6 @@ import ch.zkmf2024.server.jooq.generated.tables.records.NewsletterRecipientRecor
 import ch.zkmf2024.server.jooq.generated.tables.records.NotificationSentRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.ProgrammVorgabenRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.RankingEntryRecord;
-import ch.zkmf2024.server.jooq.generated.tables.records.RankingPenaltyRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.RankingRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.SponsorRecord;
 import ch.zkmf2024.server.jooq.generated.tables.records.SurveyAnswerRecord;
@@ -113,7 +111,6 @@ public class Keys {
     public static final UniqueKey<NotificationSentRecord> PK_NOTIFICATION_SENT = Internal.createUniqueKey(NotificationSent.NOTIFICATION_SENT, DSL.name("pk_notification_sent"), new TableField[]{NotificationSent.NOTIFICATION_SENT.ID}, true);
     public static final UniqueKey<ProgrammVorgabenRecord> PK_PROGRAMM_VORGABEN = Internal.createUniqueKey(ProgrammVorgaben.PROGRAMM_VORGABEN, DSL.name("pk_programm_vorgaben"), new TableField[]{ProgrammVorgaben.PROGRAMM_VORGABEN.MODUL, ProgrammVorgaben.PROGRAMM_VORGABEN.KLASSE, ProgrammVorgaben.PROGRAMM_VORGABEN.BESETZUNG}, true);
     public static final UniqueKey<RankingRecord> PK_RANKING = Internal.createUniqueKey(Ranking.RANKING, DSL.name("pk_ranking"), new TableField[]{Ranking.RANKING.ID}, true);
-    public static final UniqueKey<RankingPenaltyRecord> PK_RANKING_PENALTY = Internal.createUniqueKey(RankingPenalty.RANKING_PENALTY, DSL.name("pk_ranking_penalty"), new TableField[]{RankingPenalty.RANKING_PENALTY.ID}, true);
     public static final UniqueKey<SponsorRecord> PK_SPONSOR = Internal.createUniqueKey(Sponsor.SPONSOR, DSL.name("pk_sponsor"), new TableField[]{Sponsor.SPONSOR.ID}, true);
     public static final UniqueKey<SurveyAnswerRecord> PK_SURVEY_ANSWER = Internal.createUniqueKey(SurveyAnswer.SURVEY_ANSWER, DSL.name("pk_survey_answer"), new TableField[]{SurveyAnswer.SURVEY_ANSWER.ID}, true);
     public static final UniqueKey<TimetableEntryRecord> PK_TIMETABLE_ENTRY = Internal.createUniqueKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("pk_timetable_entry"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
@@ -149,7 +146,6 @@ public class Keys {
     public static final ForeignKey<LocationRecord, LocationRecord> LOCATION__FK_LOCATION_JURYFEEDBACK = Internal.createForeignKey(Location.LOCATION, DSL.name("fk_location_juryfeedback"), new TableField[]{Location.LOCATION.JURYFEEDBACK_ID}, Keys.PK_LOCATION, new TableField[]{Location.LOCATION.ID}, true);
     public static final ForeignKey<RankingEntryRecord, RankingRecord> RANKING_ENTRY__FK_RANKING_ENTRY_RANKING = Internal.createForeignKey(RankingEntry.RANKING_ENTRY, DSL.name("fk_ranking_entry_ranking"), new TableField[]{RankingEntry.RANKING_ENTRY.FK_RANKING}, Keys.PK_RANKING, new TableField[]{Ranking.RANKING.ID}, true);
     public static final ForeignKey<RankingEntryRecord, VereinRecord> RANKING_ENTRY__FK_RANKING_ENTRY_VEREIN = Internal.createForeignKey(RankingEntry.RANKING_ENTRY, DSL.name("fk_ranking_entry_verein"), new TableField[]{RankingEntry.RANKING_ENTRY.FK_VEREIN}, Keys.PK_VEREIN, new TableField[]{Verein.VEREIN.ID}, true);
-    public static final ForeignKey<RankingPenaltyRecord, TimetableEntryRecord> RANKING_PENALTY__FK_TIMETABLE_ENTRY = Internal.createForeignKey(RankingPenalty.RANKING_PENALTY, DSL.name("fk_timetable_entry"), new TableField[]{RankingPenalty.RANKING_PENALTY.FK_TIMETABLE_ENTRY}, Keys.PK_TIMETABLE_ENTRY, new TableField[]{TimetableEntry.TIMETABLE_ENTRY.ID}, true);
     public static final ForeignKey<TimetableEntryRecord, LocationRecord> TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION = Internal.createForeignKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("fk_timetable_location"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_LOCATION}, Keys.PK_LOCATION, new TableField[]{Location.LOCATION.ID}, true);
     public static final ForeignKey<TimetableEntryRecord, VereinProgrammRecord> TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM = Internal.createForeignKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("fk_timetable_programm"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM}, Keys.PK_VEREIN_PROGRAMM, new TableField[]{VereinProgramm.VEREIN_PROGRAMM.ID}, true);
     public static final ForeignKey<TimetableEntryRecord, VereinRecord> TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN = Internal.createForeignKey(TimetableEntry.TIMETABLE_ENTRY, DSL.name("fk_timetable_verein"), new TableField[]{TimetableEntry.TIMETABLE_ENTRY.FK_VEREIN}, Keys.PK_VEREIN, new TableField[]{Verein.VEREIN.ID}, true);

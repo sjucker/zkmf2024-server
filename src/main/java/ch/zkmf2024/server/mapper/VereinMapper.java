@@ -100,6 +100,7 @@ public interface VereinMapper {
     @Mapping(target = "tambourenKatA", ignore = true)
     @Mapping(target = "tambourenKatB", ignore = true)
     @Mapping(target = "tambourenKatC", ignore = true)
+    @Mapping(target = "stageSetupConfirmedAt", ignore = true)
     void updateVereinsangaben(@MappingTarget VereinPojo pojo, VereinsangabenDTO dto);
 
     @Mapping(target = "id", ignore = true)

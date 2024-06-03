@@ -39,6 +39,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
     private String scoresConfirmedBy;
     private LocalDateTime scoresConfirmedAt;
     private String modulDTitelSelection;
+    private Integer minutesOverrun;
 
     public VereinProgrammPojo() {
     }
@@ -68,6 +69,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.scoresConfirmedBy = value.getScoresConfirmedBy();
         this.scoresConfirmedAt = value.getScoresConfirmedAt();
         this.modulDTitelSelection = value.getModulDTitelSelection();
+        this.minutesOverrun = value.getMinutesOverrun();
     }
 
     public VereinProgrammPojo(
@@ -94,7 +96,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
             Long modulDTitel_2Id,
             String scoresConfirmedBy,
             LocalDateTime scoresConfirmedAt,
-            String modulDTitelSelection
+            String modulDTitelSelection,
+            Integer minutesOverrun
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -120,6 +123,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.scoresConfirmedBy = scoresConfirmedBy;
         this.scoresConfirmedAt = scoresConfirmedAt;
         this.modulDTitelSelection = modulDTitelSelection;
+        this.minutesOverrun = minutesOverrun;
     }
 
     /**
@@ -506,6 +510,22 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.modulDTitelSelection = modulDTitelSelection;
     }
 
+    /**
+     * Getter for <code>verein_programm.minutes_overrun</code>.
+     */
+    @Override
+    public Integer getMinutesOverrun() {
+        return this.minutesOverrun;
+    }
+
+    /**
+     * Setter for <code>verein_programm.minutes_overrun</code>.
+     */
+    @Override
+    public void setMinutesOverrun(Integer minutesOverrun) {
+        this.minutesOverrun = minutesOverrun;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -635,6 +655,11 @@ public class VereinProgrammPojo implements IVereinProgramm {
                 return false;
         } else if (!this.modulDTitelSelection.equals(other.modulDTitelSelection))
             return false;
+        if (this.minutesOverrun == null) {
+            if (other.minutesOverrun != null)
+                return false;
+        } else if (!this.minutesOverrun.equals(other.minutesOverrun))
+            return false;
         return true;
     }
 
@@ -666,6 +691,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         result = prime * result + ((this.scoresConfirmedBy == null) ? 0 : this.scoresConfirmedBy.hashCode());
         result = prime * result + ((this.scoresConfirmedAt == null) ? 0 : this.scoresConfirmedAt.hashCode());
         result = prime * result + ((this.modulDTitelSelection == null) ? 0 : this.modulDTitelSelection.hashCode());
+        result = prime * result + ((this.minutesOverrun == null) ? 0 : this.minutesOverrun.hashCode());
         return result;
     }
 
@@ -697,6 +723,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         sb.append(", ").append(scoresConfirmedBy);
         sb.append(", ").append(scoresConfirmedAt);
         sb.append(", ").append(modulDTitelSelection);
+        sb.append(", ").append(minutesOverrun);
 
         sb.append(")");
         return sb.toString();
@@ -732,6 +759,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         setScoresConfirmedBy(from.getScoresConfirmedBy());
         setScoresConfirmedAt(from.getScoresConfirmedAt());
         setModulDTitelSelection(from.getModulDTitelSelection());
+        setMinutesOverrun(from.getMinutesOverrun());
     }
 
     @Override

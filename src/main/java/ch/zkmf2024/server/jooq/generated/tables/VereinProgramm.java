@@ -180,6 +180,11 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      */
     public final TableField<VereinProgrammRecord, String> MODUL_D_TITEL_SELECTION = createField(DSL.name("modul_d_titel_selection"), SQLDataType.VARCHAR(255), this, "");
 
+    /**
+     * The column <code>verein_programm.minutes_overrun</code>.
+     */
+    public final TableField<VereinProgrammRecord, Integer> MINUTES_OVERRUN = createField(DSL.name("minutes_overrun"), SQLDataType.INTEGER, this, "");
+
     private VereinProgramm(Name alias, Table<VereinProgrammRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
