@@ -7,9 +7,14 @@ import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
 
 public record RankingListDTO(@NotNull Long id,
                              @NotNull Modul modul,
+                             @NotNull String modulDescription,
                              Klasse klasse,
+                             String klasseDescription,
                              Besetzung besetzung,
+                             String besetzungDescription,
                              JudgeReportModulCategory category,
+                             String categoryDescription,
+                             @NotNull LocationDTO location,
                              @NotNull String description,
                              @NotNull RankingStatus status,
                              @NotNull List<RankingListEntryDTO> entries) {

@@ -81,19 +81,31 @@ public class RankingRepository {
     }
 
     public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate) {
-        return jooqDsl.select().from(RANKING)
+        return jooqDsl.select()
+                      .from(RANKING)
                       .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
                       .orderBy(RANKING.MODUL, RANKING.KLASSE.nullsLast(), RANKING.BESETZUNG.nullsLast(), RANKING.CATEGORY.nullsLast())
-                      .fetch(it -> new RankingListDTO(
-                              it.get(RANKING.ID),
-                              Modul.valueOf(it.get(RANKING.MODUL)),
-                              Klasse.fromString(it.get(RANKING.KLASSE)).orElse(null),
-                              Besetzung.fromString(it.get(RANKING.BESETZUNG)).orElse(null),
-                              JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY)).orElse(null),
-                              getDescription(it),
-                              RankingStatus.valueOf(it.get(RANKING.STATUS)),
-                              getEntries(it.get(RANKING.ID))
-                      ))
+                      .fetch(it -> {
+                          var modul = Modul.valueOf(it.get(RANKING.MODUL));
+                          var klasse = Klasse.fromString(it.get(RANKING.KLASSE));
+                          var besetzung = Besetzung.fromString(it.get(RANKING.BESETZUNG));
+                          var modulCategory = JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY));
+                          return new RankingListDTO(
+                                  it.get(RANKING.ID),
+                                  modul,
+                                  modul.getFullDescription(),
+                                  klasse.orElse(null),
+                                  klasse.map(Klasse::getDescription).orElse(null),
+                                  besetzung.orElse(null),
+                                  besetzung.map(Besetzung::getDescription).orElse(null),
+                                  modulCategory.orElse(null),
+                                  modulCategory.map(JudgeReportModulCategory::getDescription).orElse(null),
+                                  LocationRepository.toDTO(it),
+                                  getDescription(it),
+                                  RankingStatus.valueOf(it.get(RANKING.STATUS)),
+                                  getEntries(it.get(RANKING.ID))
+                          );
+                      })
                       .stream()
                       .filter(predicate)
                       .toList();

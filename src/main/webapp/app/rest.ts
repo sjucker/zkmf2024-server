@@ -261,9 +261,14 @@ export interface RankingDTO {
 export interface RankingListDTO {
     id: number;
     modul: Modul;
+    modulDescription: string;
     klasse?: Klasse;
+    klasseDescription?: string;
     besetzung?: Besetzung;
+    besetzungDescription?: string;
     category?: JudgeReportModulCategory;
+    categoryDescription?: string;
+    location: LocationDTO;
     description: string;
     status: RankingStatus;
     entries: RankingListEntryDTO[];
