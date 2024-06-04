@@ -39,8 +39,7 @@ public class RankingsService {
     }
 
     public List<RankingSummaryDTO> getAllRankings() {
-        // TODO fill this
-        return List.of();
+        return rankingRepository.getAllRankingsPerVerein();
     }
 
     public boolean hasFinalRankings() {

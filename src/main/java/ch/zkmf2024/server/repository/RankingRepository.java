@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.RankingListEntryDTO;
 import ch.zkmf2024.server.dto.RankingStatus;
+import ch.zkmf2024.server.dto.admin.RankingSummaryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.RankingDao;
 import ch.zkmf2024.server.jooq.generated.tables.daos.RankingEntryDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.RankingEntryPojo;
@@ -27,6 +28,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 
 @Repository
 public class RankingRepository {
@@ -167,6 +169,20 @@ public class RankingRepository {
                       .where(RANKING.ID.eq(rankingId),
                              RANKING.STATUS.eq(FINAL.name()))
                       .fetchOptional(this::toDTO);
+    }
+
+    public List<RankingSummaryDTO> getAllRankingsPerVerein() {
+        return jooqDsl.select()
+                      .from(VEREIN_PROGRAMM)
+                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                      .leftJoin(RANKING).on(RANKING.MODUL.eq(VEREIN_PROGRAMM.MODUL),
+                                            RANKING.KLASSE.eq(VEREIN_PROGRAMM.KLASSE),
+                                            RANKING.BESETZUNG.eq(VEREIN_PROGRAMM.BESETZUNG))
+                      .join(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID))
+                      .fetch(it -> new RankingSummaryDTO(it.get(VEREIN.VEREINSNAME),
+                                                         // TODO
+                                                         "TODO", List.of()));
+
     }
 
     public record ConfirmedScoreIdentifier(Modul modul, Klasse klasse, Besetzung besetzung, JudgeReportModulCategory category, Long locationId, Long vereinId) {
