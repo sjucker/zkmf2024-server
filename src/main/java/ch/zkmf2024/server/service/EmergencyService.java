@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.EmergencyMessageDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.EmergencyMessagePojo;
 import ch.zkmf2024.server.repository.EmergencyMessageRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class EmergencyService {
                                          .toList();
     }
 
+    @Cacheable("emergency-message")
     public Optional<EmergencyMessageDTO> findActiveEmergencyMessage() {
         return emergencyMessageRepository.findActiveEmergencyMessage()
                                          .map(EmergencyService::toDTO);

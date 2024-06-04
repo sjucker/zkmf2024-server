@@ -33,6 +33,7 @@ import ch.zkmf2024.server.repository.UserRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -283,6 +284,7 @@ public class JudgeService {
 
     }
 
+    @Cacheable("judges")
     public List<JudgePresentationDTO> getJudgePresentations() {
         return judgeRepository.findAll().stream()
                               .filter(judge -> isNotBlank(judge.getModul()))

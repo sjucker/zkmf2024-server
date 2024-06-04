@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.admin.AppPageCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.AppPagePojo;
 import ch.zkmf2024.server.repository.AppPageRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,11 +49,13 @@ public class AppPageService {
         appPageRepository.update(pojo);
     }
 
+    @Cacheable("app-page")
     public Optional<AppPageDTO> find(Long id) {
         return appPageRepository.findById(id)
                                 .map(AppPageService::toDTO);
     }
 
+    @Cacheable("app-news")
     public List<AppPageDTO> getNews() {
         return appPageRepository.findAll().stream()
                                 .filter(AppPagePojo::getNews)

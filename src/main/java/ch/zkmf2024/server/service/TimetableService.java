@@ -18,6 +18,7 @@ import ch.zkmf2024.server.repository.UnterhaltungRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -168,10 +169,12 @@ public class TimetableService {
                                .toList();
     }
 
+    @Cacheable("timetables")
     public List<TimetableDayOverviewDTO> getPublicTimetable() {
         return getPublicTimetable(null);
     }
 
+    @Cacheable("timetables-location")
     public List<TimetableDayOverviewDTO> getPublicTimetable(String locationIdentifier) {
         var entriesPerDate = timetableRepository.findAllForPublic().stream()
                                                 .filter(dto -> locationIdentifier == null || StringUtils.equals(dto.location().identifier(), locationIdentifier))
@@ -204,6 +207,7 @@ public class TimetableService {
         timetableRepository.update(entry);
     }
 
+    @Cacheable("timetables-preview")
     public CurrentTimetablePreviewDTO getCurrentPreview(String locationIdentifier) {
         var emergencyMessage = emergencyService.findActiveEmergencyMessage();
         if (emergencyMessage.isPresent()) {

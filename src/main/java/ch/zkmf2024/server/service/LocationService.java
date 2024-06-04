@@ -6,6 +6,7 @@ import ch.zkmf2024.server.dto.LocationType;
 import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.util.DistanceUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,10 +27,12 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
+    @Cacheable("locations-type")
     public List<LocationDTO> findAllByType(LocationType type) {
         return locationRepository.findAllByType(type);
     }
 
+    @Cacheable("location")
     public Optional<LocationDTO> findByIdentifier(String identifier) {
         return locationRepository.findByIdentifier(identifier);
     }

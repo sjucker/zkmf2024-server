@@ -49,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.jooq.JSONB;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -708,10 +709,12 @@ public class VereinService {
         }
     }
 
+    @Cacheable("vereine-overview")
     public List<VereinTeilnahmeDTO> getOverview() {
         return vereinRepository.findAllConfirmed();
     }
 
+    @Cacheable("verein")
     public Optional<VereinPresentationDTO> findPresentationByIdentifier(String vereinIdentifier) {
         return vereinRepository.findPresentationByIdentifier(vereinIdentifier);
     }

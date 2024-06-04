@@ -6,6 +6,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.FestprogrammEntryPojo;
 import ch.zkmf2024.server.repository.FestprogrammRepository;
 import ch.zkmf2024.server.util.FormatUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class FestprogrammService {
         this.festprogrammRepository = festprogrammRepository;
     }
 
+    @Cacheable("festprogramm")
     public List<FestprogrammDayDTO> get() {
         var perDay = festprogrammRepository.findAll().stream()
                                            .sorted(comparing(FestprogrammEntryPojo::getDate).thenComparing(FestprogrammEntryPojo::getStartTime))

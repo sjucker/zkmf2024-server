@@ -10,6 +10,7 @@ import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
 import ch.zkmf2024.server.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,6 +43,7 @@ public class RankingsService {
         return rankingRepository.getAllRankingsPerVerein();
     }
 
+    @Cacheable("rankings-available")
     public boolean hasFinalRankings() {
         return rankingRepository.hasFinalRankings();
     }
@@ -50,10 +52,12 @@ public class RankingsService {
         return rankingRepository.getAllRankingLists();
     }
 
+    @Cacheable("rankings")
     public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate) {
         return rankingRepository.getAllRankingLists(predicate);
     }
 
+    @Cacheable("ranking")
     public Optional<RankingListDTO> findRankingListById(Long rankingId) {
         return rankingRepository.findRankingListById(rankingId);
     }

@@ -10,6 +10,7 @@ import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.TimetableRepository.ModulKlasseBesetzung;
 import ch.zkmf2024.server.repository.UnterhaltungRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class UnterhaltungService {
         this.timetableRepository = timetableRepository;
     }
 
+    @Cacheable("unterhaltung")
     public List<UnterhaltungTypeDTO> get() {
         var locationPerId = locationRepository.findAll().stream()
                                               .collect(toMap(LocationDTO::id, identity()));
@@ -122,6 +124,7 @@ public class UnterhaltungService {
         );
     }
 
+    @Cacheable("unterhaltung-id")
     public Optional<UnterhaltungsEntryDTO> getByUnterhaltungIdentifier(String identifier) {
         return unterhaltungRepository.findByUnterhaltungIdentifier(identifier)
                                      .map(pojo -> toUnterhaltungsEntryDTO(pojo, locationRepository.findById(pojo.getFkLocation())
