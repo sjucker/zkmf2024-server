@@ -18,6 +18,7 @@ import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -230,13 +231,20 @@ public class RankingRepository {
                                                                               };
                                                                           }
                                                                       })
-                                                                      .map(e -> new RankingDTO(Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL))
-                                                                                                    .getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
-                                                                                               e.get(RANKING_ENTRY.SCORE)))
+                                                                      .map(e -> {
+                                                                          var modul = Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL));
+                                                                          return new RankingDTO(modul.getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
+                                                                                                getScore(e, modul));
+                                                                      })
                                                                       .sorted(comparing(RankingDTO::modul))
                                                                       .toList()))
+                         .sorted(comparing(RankingSummaryDTO::competition).thenComparing(RankingSummaryDTO::vereinsName))
                          .toList();
         }
+    }
+
+    private static BigDecimal getScore(Record e, Modul modul) {
+        return Optional.ofNullable(e.get(RANKING_ENTRY.SCORE)).orElseGet(() -> modul.isPlatzkonzert() ? null : BigDecimal.ZERO);
     }
 
     private String getCompetition(List<? extends Record> entries) {

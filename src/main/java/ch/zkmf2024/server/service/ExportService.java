@@ -693,4 +693,8 @@ public class ExportService {
             return Optional.empty();
         }
     }
+
+    public byte[] generateDiplomas() {
+        return rankingsService.generateDiplomas();
+    }
 }
