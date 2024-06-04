@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Diplome</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+    <style>
+        .poppins-thin {
+            font-family: "Poppins", sans-serif;
+            font-weight: 100;
+            font-style: normal;
+        }
+
+        .poppins-extralight {
+            font-family: "Poppins", sans-serif;
+            font-weight: 200;
+            font-style: normal;
+        }
+
+        .poppins-light {
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .poppins-regular {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .poppins-medium {
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .poppins-semibold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        .poppins-bold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .poppins-extrabold {
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        .poppins-black {
+            font-family: "Poppins", sans-serif;
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        .poppins-thin-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 100;
+            font-style: italic;
+        }
+
+        .poppins-extralight-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 200;
+            font-style: italic;
+        }
+
+        .poppins-light-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .poppins-regular-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .poppins-medium-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .poppins-semibold-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .poppins-bold-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .poppins-extrabold-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            font-style: italic;
+        }
+
+        .poppins-black-italic {
+            font-family: "Poppins", sans-serif;
+            font-weight: 900;
+            font-style: italic;
+        }
+
+        body {
+            padding: 0;
+            width: 21cm;
+            border-left: 5mm solid white;
+            border-right: 5mm solid white;
+            box-sizing: border-box;
+        }
+
+        .page {
+            margin-top: 9.60cm;
+            margin-left: 1.55cm;
+            width: 13.50cm;
+            height: 10.50cm;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
+
+        .headline-verein {
+            font-size: 36px;
+            line-height: 40px;
+            margin-top: 0;
+            color: #f25d21;
+            text-wrap: balance;
+        }
+
+        .headline-competition {
+            font-size: 28px;
+            line-height: 32px;
+            margin-top: 0;
+            color: #000;
+        }
+
+        .ranking-title {
+            font-size: 28px;
+            line-height: 32px;
+            margin-top: 0.5cm;
+            color: #f25d21;
+        }
+
+        .ranking-score {
+            font-size: 28px;
+            line-height: 32px;
+            margin-top: 0;
+            display: flex;
+            flex-direction: row;
+            gap: 1cm;
+        }
+
+        .ranking-section {
+            padding-top: 0.5cm;
+        }
+    </style>
+</head>
+<body>
+<th:block th:each="ranking : ${rankings}">
+    <div class="page">
+        <div class="headline-verein poppins-extrabold"><span th:text="${ranking.vereinsName}"></span></div>
+        <div class="headline-competition poppins-bold"><span th:text="${ranking.competition}"></span></div>
+        <div class="ranking-section poppins-bold">
+            <th:block th:each="rankingEntry : ${ranking.rankings}">
+                <div class="ranking-title poppins-bold"><span th:text="${rankingEntry.modul}"></span></div>
+                <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null}">
+                    <div>Total</div>
+                    <div><span th:text="${#numbers.formatDecimal(rankingEntry.score, 1, 2, 'POINT')}"></span> Punkte</div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</th:block>
+</body>

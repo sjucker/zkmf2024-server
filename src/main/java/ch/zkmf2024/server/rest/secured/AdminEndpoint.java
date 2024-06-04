@@ -65,6 +65,7 @@ import java.util.Objects;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
+import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 
 @Slf4j
 @RestController
@@ -124,6 +125,13 @@ public class AdminEndpoint {
         return export(helperRegistrationService.exportForImport());
     }
 
+    @GetMapping(path = "/download/diplomas")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<Resource> diplomas() throws IOException {
+        log.info("GET /secured/admin/download/diplomas");
+        return export(exportService.generateDiplomas(), APPLICATION_PDF_VALUE);
+    }
+
     @GetMapping(path = "/download/vereine")
     @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<Resource> exportVereine() throws IOException {
@@ -159,19 +167,28 @@ public class AdminEndpoint {
         return export(exportService.exportLunchSummary().orElseThrow());
     }
 
-    private ResponseEntity<Resource> export(File file) {
+    private ResponseEntity<Resource> export(byte[] bytes, String contentType) {
         try {
-            var path = Paths.get(file.getAbsolutePath());
-            var resource = new ByteArrayResource(Files.readAllBytes(path));
+            var resource = new ByteArrayResource(bytes);
 
             return ResponseEntity.ok()
-                                 .header(CONTENT_TYPE, Files.probeContentType(path))
-                                 .contentLength(file.length())
+                                 .header(CONTENT_TYPE, contentType)
+                                 .contentLength(bytes.length)
                                  .contentType(APPLICATION_OCTET_STREAM)
                                  .body(resource);
 
-        } catch (RuntimeException | IOException e) {
-            log.error("Helfer export failed", e);
+        } catch (RuntimeException e) {
+            log.error("export failed", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    private ResponseEntity<Resource> export(File file) {
+        var path = Paths.get(file.getAbsolutePath());
+        try {
+            return export(Files.readAllBytes(path), Files.probeContentType(path));
+        } catch (IOException e) {
+            log.error("export failed", e);
             return ResponseEntity.internalServerError().build();
         }
     }
