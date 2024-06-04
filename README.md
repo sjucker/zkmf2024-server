@@ -15,6 +15,10 @@
 
 ## Heroku
 
+### Database
+
+* `heroku pg:info --app zkmf2024-server`
+
 ### Database Backup
 
 * Staging:  
