@@ -13,6 +13,7 @@ import ch.zkmf2024.server.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ import java.util.function.Predicate;
 import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
 import static ch.zkmf2024.server.dto.RankingStatus.INTERMEDIATE;
 import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
+import static ch.zkmf2024.server.service.PdfGenerationService.DIPLOMA_TEMPLATE;
 import static ch.zkmf2024.server.util.ValidationUtil.isPositive;
 
 @Slf4j
@@ -35,15 +37,18 @@ public class RankingsService {
     private final VereinRepository vereinRepository;
     private final TimetableRepository timetableRepository;
     private final FirebaseMessagingService firebaseMessagingService;
+    private final PdfGenerationService pdfGenerationService;
 
     public RankingsService(RankingRepository rankingRepository,
                            VereinRepository vereinRepository,
                            TimetableRepository timetableRepository,
-                           @Nullable FirebaseMessagingService firebaseMessagingService) {
+                           @Nullable FirebaseMessagingService firebaseMessagingService,
+                           PdfGenerationService pdfGenerationService) {
         this.rankingRepository = rankingRepository;
         this.vereinRepository = vereinRepository;
         this.timetableRepository = timetableRepository;
         this.firebaseMessagingService = firebaseMessagingService;
+        this.pdfGenerationService = pdfGenerationService;
     }
 
     public List<RankingSummaryDTO> getAllRankings() {
@@ -124,5 +129,15 @@ public class RankingsService {
                 log.info("firebaseMessagingService not available ('firebase.enabled' is false)");
             }
         }
+    }
+
+    public byte[] generateDiplomas() {
+        return generateDiplomas(getAllRankings());
+    }
+
+    byte[] generateDiplomas(List<RankingSummaryDTO> rankings) {
+        var context = new Context();
+        context.setVariable("rankings", rankings);
+        return pdfGenerationService.generatePdf(DIPLOMA_TEMPLATE, context);
     }
 }

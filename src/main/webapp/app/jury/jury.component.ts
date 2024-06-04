@@ -21,6 +21,7 @@ export class JuryComponent implements OnInit {
     exporting = signal(false);
     exportingRankings = signal(false);
     exportingParademusik = signal(false);
+    exportingDiplomas = signal(false);
 
     constructor(private dialogService: DialogService,
                 private authenticationService: AuthenticationService,
@@ -140,4 +141,26 @@ export class JuryComponent implements OnInit {
             }
         });
     }
+
+    exportDiplomas() {
+        this.exportingDiplomas.set(true);
+        this.service.exportDiplomas().subscribe({
+            next: response => {
+                saveAs(response, "diplome.pdf");
+            },
+            error: error => {
+                this.exportingDiplomas.set(false);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exportingDiplomas.set(false);
+            }
+        });
+    }
+
 }
