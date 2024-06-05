@@ -97,7 +97,7 @@ public class StageService {
 
                 if (stageSetupExport.image() != null) {
                     var image = PDImageXObject.createFromByteArray(document, stageSetupExport.image(), stageSetupExport.verein());
-                    contentStream.drawImage(image, 10 * POINTS_PER_MM, 39 * POINTS_PER_MM, 278 * POINTS_PER_MM, 156 * POINTS_PER_MM);
+                    contentStream.drawImage(image, 10 * POINTS_PER_MM, 39 * POINTS_PER_MM, 256 * POINTS_PER_MM, 144 * POINTS_PER_MM);
                 } else {
                     textNormal(contentStream, 10, 175, stageSetupExport.additionalImage() != null ? "Nur Zusatzbild erfasst" : "Kein Bühnenplan erfasst");
                 }
