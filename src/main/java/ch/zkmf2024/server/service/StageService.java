@@ -4,6 +4,7 @@ import ch.zkmf2024.server.configuration.ApplicationProperties;
 import ch.zkmf2024.server.dto.VereinStageSetupDTO;
 import ch.zkmf2024.server.repository.VereinRepository;
 import ch.zkmf2024.server.repository.VereinRepository.StageSetupExport;
+import com.microsoft.playwright.Browser.NewPageOptions;
 import com.microsoft.playwright.Playwright;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -62,7 +63,7 @@ public class StageService {
         log.info("Creating stage setup image for ID: {}", stageSetup.vereinId());
         try (var playwright = Playwright.create();
              var browser = playwright.chromium().launch();
-             var page = browser.newPage()) {
+             var page = browser.newPage(new NewPageOptions().setDeviceScaleFactor(2.0))) {
 
             page.navigate("%s/#/stage/%s/%s".formatted(applicationProperties.getBaseUrl(),
                                                        stageSetup.locationIdentifier(),
