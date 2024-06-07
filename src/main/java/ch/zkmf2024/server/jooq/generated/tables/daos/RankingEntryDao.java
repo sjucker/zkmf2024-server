@@ -128,4 +128,19 @@ public class RankingEntryDao extends DAOImpl<RankingEntryRecord, RankingEntryPoj
     public List<RankingEntryPojo> fetchByConfirmedAt(LocalDateTime... values) {
         return fetch(RankingEntry.RANKING_ENTRY.CONFIRMED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>additional_info BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<RankingEntryPojo> fetchRangeOfAdditionalInfo(String lowerInclusive, String upperInclusive) {
+        return fetchRange(RankingEntry.RANKING_ENTRY.ADDITIONAL_INFO, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>additional_info IN (values)</code>
+     */
+    public List<RankingEntryPojo> fetchByAdditionalInfo(String... values) {
+        return fetch(RankingEntry.RANKING_ENTRY.ADDITIONAL_INFO, values);
+    }
 }

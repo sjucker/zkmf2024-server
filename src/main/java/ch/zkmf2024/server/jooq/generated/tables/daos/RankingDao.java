@@ -9,6 +9,7 @@ import ch.zkmf2024.server.jooq.generated.tables.records.RankingRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -154,5 +155,20 @@ public class RankingDao extends DAOImpl<RankingRecord, RankingPojo, Long> {
      */
     public List<RankingPojo> fetchByFkLocation(Long... values) {
         return fetch(Ranking.RANKING.FK_LOCATION, values);
+    }
+
+    /**
+     * Fetch records that have <code>day BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<RankingPojo> fetchRangeOfDay(LocalDate lowerInclusive, LocalDate upperInclusive) {
+        return fetchRange(Ranking.RANKING.DAY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>day IN (values)</code>
+     */
+    public List<RankingPojo> fetchByDay(LocalDate... values) {
+        return fetch(Ranking.RANKING.DAY, values);
     }
 }

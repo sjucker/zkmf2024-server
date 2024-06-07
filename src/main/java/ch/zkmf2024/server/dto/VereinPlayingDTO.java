@@ -15,6 +15,7 @@ public record VereinPlayingDTO(@NotNull Long timetableEntryId,
                                boolean started,
                                boolean ended,
                                @NotNull String jury,
+                               Integer actualDurationInSeconds,
                                Integer minutesOverrun,
                                BigDecimal bonus) {
 }

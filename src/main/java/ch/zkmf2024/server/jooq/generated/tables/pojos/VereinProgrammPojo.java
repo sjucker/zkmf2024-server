@@ -42,6 +42,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
     private String modulDTitelSelection;
     private Integer minutesOverrun;
     private BigDecimal bonus;
+    private Integer actualDurationInSeconds;
 
     public VereinProgrammPojo() {
     }
@@ -73,6 +74,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.modulDTitelSelection = value.getModulDTitelSelection();
         this.minutesOverrun = value.getMinutesOverrun();
         this.bonus = value.getBonus();
+        this.actualDurationInSeconds = value.getActualDurationInSeconds();
     }
 
     public VereinProgrammPojo(
@@ -101,7 +103,8 @@ public class VereinProgrammPojo implements IVereinProgramm {
             LocalDateTime scoresConfirmedAt,
             String modulDTitelSelection,
             Integer minutesOverrun,
-            BigDecimal bonus
+            BigDecimal bonus,
+            Integer actualDurationInSeconds
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -129,6 +132,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.modulDTitelSelection = modulDTitelSelection;
         this.minutesOverrun = minutesOverrun;
         this.bonus = bonus;
+        this.actualDurationInSeconds = actualDurationInSeconds;
     }
 
     /**
@@ -547,6 +551,22 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.bonus = bonus;
     }
 
+    /**
+     * Getter for <code>verein_programm.actual_duration_in_seconds</code>.
+     */
+    @Override
+    public Integer getActualDurationInSeconds() {
+        return this.actualDurationInSeconds;
+    }
+
+    /**
+     * Setter for <code>verein_programm.actual_duration_in_seconds</code>.
+     */
+    @Override
+    public void setActualDurationInSeconds(Integer actualDurationInSeconds) {
+        this.actualDurationInSeconds = actualDurationInSeconds;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -686,6 +706,11 @@ public class VereinProgrammPojo implements IVereinProgramm {
                 return false;
         } else if (!this.bonus.equals(other.bonus))
             return false;
+        if (this.actualDurationInSeconds == null) {
+            if (other.actualDurationInSeconds != null)
+                return false;
+        } else if (!this.actualDurationInSeconds.equals(other.actualDurationInSeconds))
+            return false;
         return true;
     }
 
@@ -719,6 +744,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         result = prime * result + ((this.modulDTitelSelection == null) ? 0 : this.modulDTitelSelection.hashCode());
         result = prime * result + ((this.minutesOverrun == null) ? 0 : this.minutesOverrun.hashCode());
         result = prime * result + ((this.bonus == null) ? 0 : this.bonus.hashCode());
+        result = prime * result + ((this.actualDurationInSeconds == null) ? 0 : this.actualDurationInSeconds.hashCode());
         return result;
     }
 
@@ -752,6 +778,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         sb.append(", ").append(modulDTitelSelection);
         sb.append(", ").append(minutesOverrun);
         sb.append(", ").append(bonus);
+        sb.append(", ").append(actualDurationInSeconds);
 
         sb.append(")");
         return sb.toString();
@@ -789,6 +816,7 @@ public class VereinProgrammPojo implements IVereinProgramm {
         setModulDTitelSelection(from.getModulDTitelSelection());
         setMinutesOverrun(from.getMinutesOverrun());
         setBonus(from.getBonus());
+        setActualDurationInSeconds(from.getActualDurationInSeconds());
     }
 
     @Override

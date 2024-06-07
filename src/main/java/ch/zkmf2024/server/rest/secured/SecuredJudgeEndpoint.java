@@ -198,7 +198,7 @@ public class SecuredJudgeEndpoint {
         log.info("POST /secured/judge/helper/penalty {}", dto);
 
         // username -> location-identifier
-        judgeService.setRankingPenalty(userDetails.getUsername(), dto.vereinProgrammId(), dto.minutesOverrun());
+        judgeService.setRankingPenalty(userDetails.getUsername(), dto.vereinProgrammId(), dto.actualDurationInSeconds(), dto.minutesOverrun());
 
         return ResponseEntity.ok().build();
     }

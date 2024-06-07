@@ -22,6 +22,7 @@ public class RankingEntryPojo implements IRankingEntry {
     private Integer rank;
     private String confirmedBy;
     private LocalDateTime confirmedAt;
+    private String additionalInfo;
 
     public RankingEntryPojo() {
     }
@@ -33,6 +34,7 @@ public class RankingEntryPojo implements IRankingEntry {
         this.rank = value.getRank();
         this.confirmedBy = value.getConfirmedBy();
         this.confirmedAt = value.getConfirmedAt();
+        this.additionalInfo = value.getAdditionalInfo();
     }
 
     public RankingEntryPojo(
@@ -41,7 +43,8 @@ public class RankingEntryPojo implements IRankingEntry {
             BigDecimal score,
             Integer rank,
             String confirmedBy,
-            LocalDateTime confirmedAt
+            LocalDateTime confirmedAt,
+            String additionalInfo
     ) {
         this.fkRanking = fkRanking;
         this.fkVerein = fkVerein;
@@ -49,6 +52,7 @@ public class RankingEntryPojo implements IRankingEntry {
         this.rank = rank;
         this.confirmedBy = confirmedBy;
         this.confirmedAt = confirmedAt;
+        this.additionalInfo = additionalInfo;
     }
 
     /**
@@ -147,6 +151,22 @@ public class RankingEntryPojo implements IRankingEntry {
         this.confirmedAt = confirmedAt;
     }
 
+    /**
+     * Getter for <code>ranking_entry.additional_info</code>.
+     */
+    @Override
+    public String getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
+    /**
+     * Setter for <code>ranking_entry.additional_info</code>.
+     */
+    @Override
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -186,6 +206,11 @@ public class RankingEntryPojo implements IRankingEntry {
                 return false;
         } else if (!this.confirmedAt.equals(other.confirmedAt))
             return false;
+        if (this.additionalInfo == null) {
+            if (other.additionalInfo != null)
+                return false;
+        } else if (!this.additionalInfo.equals(other.additionalInfo))
+            return false;
         return true;
     }
 
@@ -199,6 +224,7 @@ public class RankingEntryPojo implements IRankingEntry {
         result = prime * result + ((this.rank == null) ? 0 : this.rank.hashCode());
         result = prime * result + ((this.confirmedBy == null) ? 0 : this.confirmedBy.hashCode());
         result = prime * result + ((this.confirmedAt == null) ? 0 : this.confirmedAt.hashCode());
+        result = prime * result + ((this.additionalInfo == null) ? 0 : this.additionalInfo.hashCode());
         return result;
     }
 
@@ -212,6 +238,7 @@ public class RankingEntryPojo implements IRankingEntry {
         sb.append(", ").append(rank);
         sb.append(", ").append(confirmedBy);
         sb.append(", ").append(confirmedAt);
+        sb.append(", ").append(additionalInfo);
 
         sb.append(")");
         return sb.toString();
@@ -229,6 +256,7 @@ public class RankingEntryPojo implements IRankingEntry {
         setRank(from.getRank());
         setConfirmedBy(from.getConfirmedBy());
         setConfirmedAt(from.getConfirmedAt());
+        setAdditionalInfo(from.getAdditionalInfo());
     }
 
     @Override

@@ -290,6 +290,7 @@ export interface RankingListEntryDTO {
 
 export interface RankingPenaltyDTO {
     vereinProgrammId: number;
+    actualDurationInSeconds: number;
     minutesOverrun: number;
 }
 
@@ -472,6 +473,7 @@ export interface VereinPlayingDTO {
     started: boolean;
     ended: boolean;
     jury: string;
+    actualDurationInSeconds?: number;
     minutesOverrun?: number;
     bonus?: number;
 }

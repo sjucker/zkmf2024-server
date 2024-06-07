@@ -321,8 +321,11 @@ public class JudgeService {
                                                    });
     }
 
-    public void setRankingPenalty(String locationIdentifier, Long vereinProgrammId, int minutesOverrun) {
-        updateGeneralRanking(locationIdentifier, vereinProgrammId, pojo -> pojo.setMinutesOverrun(minutesOverrun));
+    public void setRankingPenalty(String locationIdentifier, Long vereinProgrammId, Integer actualDurationInSeconds, int minutesOverrun) {
+        updateGeneralRanking(locationIdentifier, vereinProgrammId, pojo -> {
+            pojo.setActualDurationInSeconds(actualDurationInSeconds);
+            pojo.setMinutesOverrun(minutesOverrun);
+        });
     }
 
     public void setRankingBonus(String locationIdentifier, Long vereinProgrammId, BigDecimal bonus) {

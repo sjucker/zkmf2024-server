@@ -68,6 +68,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.PLATZKONZERT;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
 import static java.math.BigDecimal.TWO;
 import static java.math.RoundingMode.HALF_UP;
@@ -677,7 +678,8 @@ public class JudgeRepository {
                       .join(LOCATION).on(LOCATION.ID.eq(TIMETABLE_ENTRY.FK_LOCATION))
                       .leftJoin(CURRENTLY_PLAYING).on(CURRENTLY_PLAYING.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
                       .where(LOCATION.IDENTIFIER.equalIgnoreCase(locationIdentifier),
-                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                             TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL)
+                                                       .or(TIMETABLE_ENTRY.ENTRY_TYPE.eq(PLATZKONZERT)))
                       .orderBy(CURRENTLY_PLAYING.ENDED_AT.nullsFirst(), TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
                       .fetch(it -> {
                           var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
@@ -696,6 +698,7 @@ public class JudgeRepository {
                                   it.get(CURRENTLY_PLAYING.STARTED_AT) != null,
                                   it.get(CURRENTLY_PLAYING.ENDED_AT) != null,
                                   getJury(it.get(TIMETABLE_ENTRY.ID)),
+                                  it.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS),
                                   it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN),
                                   it.get(VEREIN_PROGRAMM.BONUS)
                           );

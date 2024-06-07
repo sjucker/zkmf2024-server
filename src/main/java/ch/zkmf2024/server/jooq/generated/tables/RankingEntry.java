@@ -86,6 +86,11 @@ public class RankingEntry extends TableImpl<RankingEntryRecord> {
      */
     public final TableField<RankingEntryRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
+    /**
+     * The column <code>ranking_entry.additional_info</code>.
+     */
+    public final TableField<RankingEntryRecord, String> ADDITIONAL_INFO = createField(DSL.name("additional_info"), SQLDataType.VARCHAR(255), this, "");
+
     private RankingEntry(Name alias, Table<RankingEntryRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

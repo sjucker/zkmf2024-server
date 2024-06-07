@@ -273,6 +273,16 @@ public interface IVereinProgramm extends Serializable {
      */
     public BigDecimal getBonus();
 
+    /**
+     * Setter for <code>verein_programm.actual_duration_in_seconds</code>.
+     */
+    public void setActualDurationInSeconds(Integer value);
+
+    /**
+     * Getter for <code>verein_programm.actual_duration_in_seconds</code>.
+     */
+    public Integer getActualDurationInSeconds();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

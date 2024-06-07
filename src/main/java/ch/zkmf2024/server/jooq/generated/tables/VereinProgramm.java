@@ -191,6 +191,11 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      */
     public final TableField<VereinProgrammRecord, BigDecimal> BONUS = createField(DSL.name("bonus"), SQLDataType.NUMERIC(3, 1), this, "");
 
+    /**
+     * The column <code>verein_programm.actual_duration_in_seconds</code>.
+     */
+    public final TableField<VereinProgrammRecord, Integer> ACTUAL_DURATION_IN_SECONDS = createField(DSL.name("actual_duration_in_seconds"), SQLDataType.INTEGER, this, "");
+
     private VereinProgramm(Name alias, Table<VereinProgrammRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

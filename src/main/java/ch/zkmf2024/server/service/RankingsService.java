@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.admin.RankingSummaryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.RankingEntryPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.RankingPojo;
+import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammPojo;
 import ch.zkmf2024.server.repository.RankingRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
@@ -22,6 +23,7 @@ import java.util.function.Predicate;
 
 import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
 import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
+import static ch.zkmf2024.server.util.ValidationUtil.isPositive;
 
 @Slf4j
 @Service
@@ -69,11 +71,12 @@ public class RankingsService {
         var ranking = rankingRepository.find(vereinProgramm.getModul(), vereinProgramm.getKlasse(), vereinProgramm.getBesetzung(), category, timetableEntry.getFkLocation()).orElse(null);
         if (ranking == null) {
             ranking = new RankingPojo(null, vereinProgramm.getModul(), vereinProgramm.getKlasse(), vereinProgramm.getBesetzung(),
-                                      category != null ? category.name() : null, PENDING.name(), timetableEntry.getFkLocation());
+                                      category != null ? category.name() : null, PENDING.name(), timetableEntry.getFkLocation(), timetableEntry.getDate());
             rankingRepository.insert(ranking);
         }
 
-        rankingRepository.insert(new RankingEntryPojo(ranking.getId(), vereinProgramm.getFkVerein(), score, 0, username, DateUtil.now()));
+        rankingRepository.insert(new RankingEntryPojo(ranking.getId(), vereinProgramm.getFkVerein(), score, 0, username, DateUtil.now(),
+                                                      getAdditionalInfo(vereinProgramm)));
 
         int rank = 0;
         int sameRank = 0;
@@ -93,6 +96,10 @@ public class RankingsService {
 
             lastScore = rankingEntry.getScore();
         }
+    }
+
+    private String getAdditionalInfo(VereinProgrammPojo vereinProgramm) {
+        return isPositive(vereinProgramm.getMinutesOverrun()) ? "Punktabzug %s Punkte (Zeitunter- oder überschreitung)".formatted(vereinProgramm.getMinutesOverrun() * 2) : null;
     }
 
     public void publishRankingList(Long rankingId) {

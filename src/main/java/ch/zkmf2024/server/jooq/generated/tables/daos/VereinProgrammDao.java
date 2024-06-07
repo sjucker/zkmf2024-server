@@ -443,4 +443,20 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
     public List<VereinProgrammPojo> fetchByBonus(BigDecimal... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.BONUS, values);
     }
+
+    /**
+     * Fetch records that have <code>actual_duration_in_seconds BETWEEN
+     * lowerInclusive AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfActualDurationInSeconds(Integer lowerInclusive, Integer upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>actual_duration_in_seconds IN
+     * (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByActualDurationInSeconds(Integer... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS, values);
+    }
 }

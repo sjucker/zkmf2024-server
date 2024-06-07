@@ -116,6 +116,22 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
         return (LocalDateTime) get(5);
     }
 
+    /**
+     * Setter for <code>ranking_entry.additional_info</code>.
+     */
+    @Override
+    public void setAdditionalInfo(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>ranking_entry.additional_info</code>.
+     */
+    @Override
+    public String getAdditionalInfo() {
+        return (String) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -137,6 +153,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
         setRank(from.getRank());
         setConfirmedBy(from.getConfirmedBy());
         setConfirmedAt(from.getConfirmedAt());
+        setAdditionalInfo(from.getAdditionalInfo());
         resetChangedOnNotNull();
     }
 
@@ -160,7 +177,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
     /**
      * Create a detached, initialised RankingEntryRecord
      */
-    public RankingEntryRecord(Long fkRanking, Long fkVerein, BigDecimal score, Integer rank, String confirmedBy, LocalDateTime confirmedAt) {
+    public RankingEntryRecord(Long fkRanking, Long fkVerein, BigDecimal score, Integer rank, String confirmedBy, LocalDateTime confirmedAt, String additionalInfo) {
         super(RankingEntry.RANKING_ENTRY);
 
         setFkRanking(fkRanking);
@@ -169,6 +186,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
         setRank(rank);
         setConfirmedBy(confirmedBy);
         setConfirmedAt(confirmedAt);
+        setAdditionalInfo(additionalInfo);
         resetChangedOnNotNull();
     }
 
@@ -185,6 +203,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
             setRank(value.getRank());
             setConfirmedBy(value.getConfirmedBy());
             setConfirmedAt(value.getConfirmedAt());
+            setAdditionalInfo(value.getAdditionalInfo());
             resetChangedOnNotNull();
         }
     }

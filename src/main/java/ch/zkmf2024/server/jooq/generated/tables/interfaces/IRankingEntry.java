@@ -73,6 +73,16 @@ public interface IRankingEntry extends Serializable {
      */
     public LocalDateTime getConfirmedAt();
 
+    /**
+     * Setter for <code>ranking_entry.additional_info</code>.
+     */
+    public void setAdditionalInfo(String value);
+
+    /**
+     * Getter for <code>ranking_entry.additional_info</code>.
+     */
+    public String getAdditionalInfo();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------
