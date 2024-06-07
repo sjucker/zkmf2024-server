@@ -67,4 +67,8 @@ public enum Modul implements HasDescription {
     public boolean isPlatzkonzert() {
         return this == C;
     }
+
+    public boolean isTambouren() {
+        return this == G;
+    }
 }
