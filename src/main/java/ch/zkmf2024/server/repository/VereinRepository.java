@@ -252,6 +252,16 @@ public class VereinRepository {
                           .where(TITEL.ID.in(it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_1_ID), it.get(VEREIN_PROGRAMM.MODUL_D_TITEL_2_ID)),
                                  VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
                           .fetch(this::toTitelDTO);
+        } else if (modul.isTambouren()) {
+            return jooqDsl.select()
+                          .from(TITEL)
+                          .join(VEREIN).on(VEREIN.ID.eq(it.get(VEREIN_PROGRAMM.FK_VEREIN)))
+                          .where(TITEL.ID.in(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID),
+                                             it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID),
+                                             it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID),
+                                             it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID)),
+                                 VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
+                          .fetch(this::toTitelDTO);
         } else if (modul.isPlatzkonzert()) {
             // do not publish Platzkonzert program
             return List.of();
