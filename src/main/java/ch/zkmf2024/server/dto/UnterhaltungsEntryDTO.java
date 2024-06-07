@@ -7,12 +7,13 @@ import java.time.LocalTime;
 public record UnterhaltungsEntryDTO(@NotNull UnterhaltungEntryType type,
                                     @NotNull LocalDate date,
                                     @NotNull LocalTime start,
-                                    LocalTime end,
+                                    @NotNull LocalTime end,
                                     @NotNull String title,
                                     String subtitle,
                                     String text,
                                     @NotNull LocationDTO location,
                                     String cloudflareId,
                                     String vereinIdentifier,
-                                    String unterhaltungIdentifier) {
+                                    String unterhaltungIdentifier,
+                                    boolean inPast) {
 }

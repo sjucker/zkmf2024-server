@@ -15,5 +15,6 @@ public record TimetableOverviewEntryDTO(@NotNull Long vereinId,
                                         @NotNull LocalDate date,
                                         @NotNull LocalTime start,
                                         @NotNull LocalTime end,
-                                        @NotNull String time) {
+                                        @NotNull String time,
+                                        boolean inPast) {
 }

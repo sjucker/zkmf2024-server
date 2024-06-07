@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import static ch.zkmf2024.server.dto.Besetzung.HARMONIE;
 import static ch.zkmf2024.server.dto.Klasse.HOECHSTKLASSE;
 import static ch.zkmf2024.server.dto.Klasse.KLASSE_1;
 import static ch.zkmf2024.server.dto.Modul.A;
+import static ch.zkmf2024.server.util.DateUtil.now;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
@@ -56,6 +58,7 @@ public class UnterhaltungService {
                                             .map(pojo -> toUnterhaltungsEntryDTO(pojo, locationPerId.get(pojo.getFkLocation())))
                                             .collect(groupingBy(UnterhaltungsEntryDTO::type, toCollection(ArrayList::new)));
 
+        var now = now();
         for (var platzkonzert : timetableRepository.findAllPlatzkonzzerte()) {
             var dto = new UnterhaltungsEntryDTO(
                     switch (platzkonzert.date().getDayOfWeek()) {
@@ -72,7 +75,8 @@ public class UnterhaltungService {
                     platzkonzert.location(),
                     null,
                     platzkonzert.vereinIdentifier(),
-                    null
+                    null,
+                    now.isAfter(LocalDateTime.of(platzkonzert.date(), platzkonzert.end()))
             );
             perType.get(dto.type()).add(dto);
         }
@@ -94,17 +98,23 @@ public class UnterhaltungService {
                     verein.location(),
                     null,
                     verein.vereinIdentifier(),
-                    null
+                    null,
+                    now.isAfter(LocalDateTime.of(verein.date(), verein.end()))
             );
             perType.get(dto.type()).add(dto);
         }
 
         return perType.keySet().stream()
-                      .map(type -> new UnterhaltungTypeDTO(type, perType.get(type).stream()
-                                                                        .sorted(comparing(UnterhaltungsEntryDTO::date)
-                                                                                        .thenComparing(UnterhaltungsEntryDTO::start)
-                                                                                        .thenComparing(UnterhaltungsEntryDTO::unterhaltungIdentifier, nullsFirst(naturalOrder())))
-                                                                        .toList()))
+                      .map(type -> {
+                          var entries = perType.get(type);
+                          return new UnterhaltungTypeDTO(type,
+                                                         entries.stream().allMatch(e -> now.isAfter(LocalDateTime.of(e.date(), e.end()))),
+                                                         entries.stream()
+                                                                .sorted(comparing(UnterhaltungsEntryDTO::date)
+                                                                                .thenComparing(UnterhaltungsEntryDTO::start)
+                                                                                .thenComparing(UnterhaltungsEntryDTO::unterhaltungIdentifier, nullsFirst(naturalOrder())))
+                                                                .toList());
+                      })
                       .toList();
     }
 
@@ -120,7 +130,8 @@ public class UnterhaltungService {
                 location,
                 pojo.getCloudflareId(),
                 null,
-                pojo.getIdentifier()
+                pojo.getIdentifier(),
+                now().isAfter(LocalDateTime.of(pojo.getDate(), pojo.getEndTime()))
         );
     }
 

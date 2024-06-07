@@ -151,7 +151,8 @@ public class TimetableRepository {
                 it.get(TIMETABLE_ENTRY.END_TIME),
                 "%s - %s".formatted(
                         FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.START_TIME)),
-                        FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME)))
+                        FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME))),
+                now().isAfter(LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)))
         );
     }
 
