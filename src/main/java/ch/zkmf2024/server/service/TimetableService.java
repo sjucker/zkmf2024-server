@@ -16,7 +16,6 @@ import ch.zkmf2024.server.repository.LocationRepository;
 import ch.zkmf2024.server.repository.TimetableRepository;
 import ch.zkmf2024.server.repository.UnterhaltungRepository;
 import ch.zkmf2024.server.repository.VereinRepository;
-import ch.zkmf2024.server.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
@@ -185,13 +184,13 @@ public class TimetableService {
         for (var localDate : entriesPerDate.keySet().stream()
                                            .sorted()
                                            .toList()) {
-            var today = DateUtil.today();
+            var entries = entriesPerDate.get(localDate);
             result.add(new TimetableDayOverviewDTO(formatDate(localDate, true),
-                                                   today.isAfter(localDate),
-                                                   entriesPerDate.get(localDate).stream()
-                                                                 .sorted(comparing(TimetableOverviewEntryDTO::start)
-                                                                                 .thenComparing(TimetableOverviewEntryDTO::end))
-                                                                 .toList()));
+                                                   entries.stream().allMatch(TimetableOverviewEntryDTO::inPast),
+                                                   entries.stream()
+                                                          .sorted(comparing(TimetableOverviewEntryDTO::start)
+                                                                          .thenComparing(TimetableOverviewEntryDTO::end))
+                                                          .toList()));
         }
 
         return result;
