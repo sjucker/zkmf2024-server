@@ -4,11 +4,11 @@ import ch.zkmf2024.server.dto.AppPageDTO;
 import ch.zkmf2024.server.dto.admin.AppPageCreateDTO;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.AppPagePojo;
 import ch.zkmf2024.server.repository.AppPageRepository;
+import ch.zkmf2024.server.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class AppPageService {
     }
 
     public void insert(AppPageCreateDTO dto) {
-        appPageRepository.insert(new AppPagePojo(null, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news(), LocalDateTime.now()));
+        appPageRepository.insert(new AppPagePojo(null, dto.markdown(), defaultIfBlank(dto.cloudflareId(), null), dto.title(), dto.news(), DateUtil.now()));
     }
 
     public void update(Long id, AppPageDTO dto) {
