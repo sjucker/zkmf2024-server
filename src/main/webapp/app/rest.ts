@@ -355,6 +355,8 @@ export interface TimetableOverviewEntryDTO {
     vereinIdentifier: string;
     vereinsname: string;
     modul: string;
+    klasse?: string;
+    besetzung?: string;
     competition: string;
     type: TimetableEntryType;
     typeDescription: string;

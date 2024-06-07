@@ -142,6 +142,8 @@ public class TimetableRepository {
                 it.get(VEREIN.IDENTIFIER),
                 it.get(VEREIN.VEREINSNAME),
                 Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)).getDescription(),
+                Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).map(Klasse::getDescription).orElse(null),
+                Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).map(Besetzung::getDescription).orElse(null),
                 getCompetition(it),
                 TimetableEntryType.from(it.get(TIMETABLE_ENTRY.ENTRY_TYPE)),
                 TimetableEntryType.from(it.get(TIMETABLE_ENTRY.ENTRY_TYPE)).getDescription(),
