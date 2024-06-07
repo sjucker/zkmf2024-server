@@ -527,6 +527,12 @@ public class JudgeRepository {
     }
 
     private boolean isDone(Record record1, Record record2, Record record3, Record record4) {
+        if (record1.get(VEREIN_PROGRAMM.TOTAL_DURATION_IN_SECONDS) != null &&
+                record1.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS) == null) {
+            // if judge helper has not yet entered actual duration not yet done
+            return false;
+        }
+
         return record1.get(JUDGE_REPORT.RATING_FIXED) &&
                 record2.get(JUDGE_REPORT.RATING_FIXED) &&
                 record3.get(JUDGE_REPORT.RATING_FIXED) &&

@@ -5,5 +5,6 @@ import java.math.BigDecimal;
 
 public record RankingListEntryDTO(@NotNull int rank,
                                   @NotNull String vereinsName,
-                                  @NotNull BigDecimal score) {
+                                  @NotNull BigDecimal score,
+                                  String additionalInfo) {
 }

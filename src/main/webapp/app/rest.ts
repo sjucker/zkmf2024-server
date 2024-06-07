@@ -286,6 +286,7 @@ export interface RankingListEntryDTO {
     rank: number;
     vereinsName: string;
     score: number;
+    additionalInfo?: string;
 }
 
 export interface RankingPenaltyDTO {

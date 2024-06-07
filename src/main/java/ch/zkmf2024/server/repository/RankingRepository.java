@@ -143,7 +143,8 @@ public class RankingRepository {
                       .orderBy(RANKING_ENTRY.RANK)
                       .fetch(it -> new RankingListEntryDTO(it.get(RANKING_ENTRY.RANK),
                                                            it.get(VEREIN.VEREINSNAME),
-                                                           it.get(RANKING_ENTRY.SCORE)));
+                                                           it.get(RANKING_ENTRY.SCORE),
+                                                           it.get(RANKING_ENTRY.ADDITIONAL_INFO)));
     }
 
     public Set<ConfirmedScoreIdentifier> getConfirmedScores() {
