@@ -79,15 +79,15 @@ public class RankingRepository {
     }
 
     public List<RankingListDTO> getAllRankingLists() {
-        return getAllRankingLists(dto -> true);
+        return getAllRankingLists(dto -> true, true);
     }
 
-    public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate) {
+    public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate, boolean loadEntries) {
         return jooqDsl.select()
                       .from(RANKING)
                       .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
                       .orderBy(RANKING.MODUL, RANKING.KLASSE.nullsLast(), RANKING.BESETZUNG.nullsLast(), RANKING.CATEGORY.nullsLast())
-                      .fetch(it -> toDTO(it, false))
+                      .fetch(it -> toDTO(it, loadEntries))
                       .stream()
                       .filter(predicate)
                       .toList();

@@ -19,6 +19,7 @@ export class JuryComponent implements OnInit {
     jury: JudgeDTO[] = [];
 
     exporting = signal(false);
+    exportingRankings = signal(false);
 
     constructor(private dialogService: DialogService,
                 private authenticationService: AuthenticationService,
@@ -93,6 +94,27 @@ export class JuryComponent implements OnInit {
             },
             complete: () => {
                 this.exporting.set(false);
+            }
+        });
+    }
+
+    exportRankings() {
+        this.exportingRankings.set(true);
+        this.service.exportRankings().subscribe({
+            next: response => {
+                saveAs(response, "ranglisten.xlsx");
+            },
+            error: error => {
+                this.exportingRankings.set(false);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exportingRankings.set(false);
             }
         });
     }

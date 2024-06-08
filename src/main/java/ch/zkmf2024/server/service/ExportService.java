@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -39,9 +40,48 @@ import static java.util.stream.Collectors.toList;
 public class ExportService {
 
     private final VereinService vereinService;
+    private final RankingsService rankingsService;
 
-    public ExportService(VereinService vereinService) {
+    public ExportService(VereinService vereinService,
+                         RankingsService rankingsService) {
         this.vereinService = vereinService;
+        this.rankingsService = rankingsService;
+    }
+
+    public File exportRankings() throws IOException {
+        try (var wb = new XSSFWorkbook()) {
+            for (var ranking : rankingsService.getAllRankingLists()) {
+                var sheet = wb.createSheet();
+                wb.setSheetName(wb.getSheetIndex(sheet), ranking.description());
+
+                var rowIndex = 0;
+                var headerRow = sheet.createRow(rowIndex++);
+
+                var columnIndex = 0;
+                for (var entry : ranking.entries()) {
+                    var row = sheet.createRow(rowIndex++);
+
+                    columnIndex = 0;
+                    columnIndex = setCellValue(columnIndex, row, entry.rank(), wb);
+                    columnIndex = setCellValue(columnIndex, row, entry.vereinsName(), wb);
+                    columnIndex = setCellValue(columnIndex, row, entry.score(), wb);
+                    columnIndex = setCellValue(columnIndex, row, entry.additionalInfo(), wb);
+                }
+
+                for (int i = 0; i < columnIndex; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                setCellValue(0, headerRow, ranking.description(), wb);
+            }
+
+            var temp = Files.createTempFile(null, ".xlsx");
+            try (var fileOut = new FileOutputStream(temp.toFile())) {
+                wb.write(fileOut);
+
+                return temp.toFile();
+            }
+        }
     }
 
     public File exportVereine() throws IOException {
@@ -540,6 +580,8 @@ public class ExportService {
                 cell.setCellValue(integerValue);
             } else if (value instanceof Float floatValue) {
                 cell.setCellValue(floatValue);
+            } else if (value instanceof BigDecimal bigDecimalValue) {
+                cell.setCellValue(bigDecimalValue.doubleValue());
             } else if (value instanceof Boolean booleanValue) {
                 cell.setCellValue(booleanValue ? "x" : "");
             } else if (value instanceof Klasse klasseValue) {

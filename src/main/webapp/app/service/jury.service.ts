@@ -39,4 +39,10 @@ export class JuryService {
             responseType: 'blob'
         });
     }
+
+    exportRankings(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/rankings`, {
+            responseType: 'blob'
+        });
+    }
 }

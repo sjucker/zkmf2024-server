@@ -56,7 +56,7 @@ public class RankingsService {
 
     @Cacheable("rankings")
     public List<RankingListDTO> getAllRankingLists(Predicate<RankingListDTO> predicate) {
-        return rankingRepository.getAllRankingLists(predicate);
+        return rankingRepository.getAllRankingLists(predicate, false);
     }
 
     @Cacheable("ranking")

@@ -130,6 +130,13 @@ public class AdminEndpoint {
         return export(exportService.exportVereine());
     }
 
+    @GetMapping(path = "/download/rankings")
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<Resource> exportRankings() throws IOException {
+        log.info("GET /secured/admin/download/rankings");
+        return export(exportService.exportRankings());
+    }
+
     @GetMapping(path = {"/download/stage-setups", "/download/stage-setups/{locationIdentifier}"})
     @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<Resource> exportStageSetups(@PathVariable(required = false) String locationIdentifier) {
