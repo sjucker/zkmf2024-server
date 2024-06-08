@@ -328,8 +328,14 @@ public class JudgeService {
         });
     }
 
-    public void setRankingBonus(String locationIdentifier, Long vereinProgrammId, BigDecimal bonus) {
-        updateGeneralRanking(locationIdentifier, vereinProgrammId, pojo -> pojo.setBonus(bonus));
+    public void setRankingBonus(String locationIdentifier, Long vereinProgrammId, BigDecimal bonus, JudgeReportModulCategory category) {
+        updateGeneralRanking(locationIdentifier, vereinProgrammId, pojo -> {
+            switch (category) {
+                case MODUL_G_KAT_A -> pojo.setModulGKatABonus(bonus);
+                case MODUL_G_KAT_B -> pojo.setModulGKatBBonus(bonus);
+                case MODUL_G_KAT_C -> pojo.setModulGKatCBonus(bonus);
+            }
+        });
     }
 
     private void updateGeneralRanking(String locationIdentifier, Long vereinProgrammId, Consumer<VereinProgrammPojo> setter) {

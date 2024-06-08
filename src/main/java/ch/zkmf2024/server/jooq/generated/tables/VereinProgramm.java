@@ -187,14 +187,24 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
     public final TableField<VereinProgrammRecord, Integer> MINUTES_OVERRUN = createField(DSL.name("minutes_overrun"), SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>verein_programm.bonus</code>.
-     */
-    public final TableField<VereinProgrammRecord, BigDecimal> BONUS = createField(DSL.name("bonus"), SQLDataType.NUMERIC(3, 1), this, "");
-
-    /**
      * The column <code>verein_programm.actual_duration_in_seconds</code>.
      */
     public final TableField<VereinProgrammRecord, Integer> ACTUAL_DURATION_IN_SECONDS = createField(DSL.name("actual_duration_in_seconds"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    public final TableField<VereinProgrammRecord, BigDecimal> MODUL_G_KAT_A_BONUS = createField(DSL.name("modul_g_kat_a_bonus"), SQLDataType.NUMERIC(3, 1), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    public final TableField<VereinProgrammRecord, BigDecimal> MODUL_G_KAT_B_BONUS = createField(DSL.name("modul_g_kat_b_bonus"), SQLDataType.NUMERIC(3, 1), this, "");
+
+    /**
+     * The column <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    public final TableField<VereinProgrammRecord, BigDecimal> MODUL_G_KAT_C_BONUS = createField(DSL.name("modul_g_kat_c_bonus"), SQLDataType.NUMERIC(3, 1), this, "");
 
     private VereinProgramm(Name alias, Table<VereinProgrammRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

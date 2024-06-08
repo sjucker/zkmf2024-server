@@ -430,21 +430,6 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
     }
 
     /**
-     * Fetch records that have <code>bonus BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    public List<VereinProgrammPojo> fetchRangeOfBonus(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
-        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.BONUS, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>bonus IN (values)</code>
-     */
-    public List<VereinProgrammPojo> fetchByBonus(BigDecimal... values) {
-        return fetch(VereinProgramm.VEREIN_PROGRAMM.BONUS, values);
-    }
-
-    /**
      * Fetch records that have <code>actual_duration_in_seconds BETWEEN
      * lowerInclusive AND upperInclusive</code>
      */
@@ -458,5 +443,50 @@ public class VereinProgrammDao extends DAOImpl<VereinProgrammRecord, VereinProgr
      */
     public List<VereinProgrammPojo> fetchByActualDurationInSeconds(Integer... values) {
         return fetch(VereinProgramm.VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_bonus BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatABonus(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_a_bonus IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatABonus(BigDecimal... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_b_bonus BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatBBonus(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_b_bonus IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatBBonus(BigDecimal... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS, values);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_c_bonus BETWEEN lowerInclusive
+     * AND upperInclusive</code>
+     */
+    public List<VereinProgrammPojo> fetchRangeOfModulGKatCBonus(BigDecimal lowerInclusive, BigDecimal upperInclusive) {
+        return fetchRange(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>modul_g_kat_c_bonus IN (values)</code>
+     */
+    public List<VereinProgrammPojo> fetchByModulGKatCBonus(BigDecimal... values) {
+        return fetch(VereinProgramm.VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS, values);
     }
 }

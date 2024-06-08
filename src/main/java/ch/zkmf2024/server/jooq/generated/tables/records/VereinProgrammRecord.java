@@ -421,27 +421,11 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
     }
 
     /**
-     * Setter for <code>verein_programm.bonus</code>.
-     */
-    @Override
-    public void setBonus(BigDecimal value) {
-        set(25, value);
-    }
-
-    /**
-     * Getter for <code>verein_programm.bonus</code>.
-     */
-    @Override
-    public BigDecimal getBonus() {
-        return (BigDecimal) get(25);
-    }
-
-    /**
      * Setter for <code>verein_programm.actual_duration_in_seconds</code>.
      */
     @Override
     public void setActualDurationInSeconds(Integer value) {
-        set(26, value);
+        set(25, value);
     }
 
     /**
@@ -449,7 +433,55 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
      */
     @Override
     public Integer getActualDurationInSeconds() {
-        return (Integer) get(26);
+        return (Integer) get(25);
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    @Override
+    public void setModulGKatABonus(BigDecimal value) {
+        set(26, value);
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    @Override
+    public BigDecimal getModulGKatABonus() {
+        return (BigDecimal) get(26);
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    @Override
+    public void setModulGKatBBonus(BigDecimal value) {
+        set(27, value);
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    @Override
+    public BigDecimal getModulGKatBBonus() {
+        return (BigDecimal) get(27);
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    @Override
+    public void setModulGKatCBonus(BigDecimal value) {
+        set(28, value);
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    @Override
+    public BigDecimal getModulGKatCBonus() {
+        return (BigDecimal) get(28);
     }
 
     // -------------------------------------------------------------------------
@@ -492,8 +524,10 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
         setScoresConfirmedAt(from.getScoresConfirmedAt());
         setModulDTitelSelection(from.getModulDTitelSelection());
         setMinutesOverrun(from.getMinutesOverrun());
-        setBonus(from.getBonus());
         setActualDurationInSeconds(from.getActualDurationInSeconds());
+        setModulGKatABonus(from.getModulGKatABonus());
+        setModulGKatBBonus(from.getModulGKatBBonus());
+        setModulGKatCBonus(from.getModulGKatCBonus());
         resetChangedOnNotNull();
     }
 
@@ -517,7 +551,7 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
     /**
      * Create a detached, initialised VereinProgrammRecord
      */
-    public VereinProgrammRecord(Long id, Long fkVerein, String modul, String klasse, String besetzung, String titel, String infoModeration, Integer totalDurationInSeconds, String modulGKatA_1, String modulGKatA_2, Long modulGKatATitel_1Id, Long modulGKatATitel_2Id, Long modulGKatBTitelId, Long modulGKatCTitelId, Boolean modulBPa, Boolean modulBEgitarre, Boolean modulBEbass, Boolean modulBKeyboard, Boolean modulBGesang, Long modulDTitel_1Id, Long modulDTitel_2Id, String scoresConfirmedBy, LocalDateTime scoresConfirmedAt, String modulDTitelSelection, Integer minutesOverrun, BigDecimal bonus, Integer actualDurationInSeconds) {
+    public VereinProgrammRecord(Long id, Long fkVerein, String modul, String klasse, String besetzung, String titel, String infoModeration, Integer totalDurationInSeconds, String modulGKatA_1, String modulGKatA_2, Long modulGKatATitel_1Id, Long modulGKatATitel_2Id, Long modulGKatBTitelId, Long modulGKatCTitelId, Boolean modulBPa, Boolean modulBEgitarre, Boolean modulBEbass, Boolean modulBKeyboard, Boolean modulBGesang, Long modulDTitel_1Id, Long modulDTitel_2Id, String scoresConfirmedBy, LocalDateTime scoresConfirmedAt, String modulDTitelSelection, Integer minutesOverrun, Integer actualDurationInSeconds, BigDecimal modulGKatABonus, BigDecimal modulGKatBBonus, BigDecimal modulGKatCBonus) {
         super(VereinProgramm.VEREIN_PROGRAMM);
 
         setId(id);
@@ -545,8 +579,10 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
         setScoresConfirmedAt(scoresConfirmedAt);
         setModulDTitelSelection(modulDTitelSelection);
         setMinutesOverrun(minutesOverrun);
-        setBonus(bonus);
         setActualDurationInSeconds(actualDurationInSeconds);
+        setModulGKatABonus(modulGKatABonus);
+        setModulGKatBBonus(modulGKatBBonus);
+        setModulGKatCBonus(modulGKatCBonus);
         resetChangedOnNotNull();
     }
 
@@ -582,8 +618,10 @@ public class VereinProgrammRecord extends UpdatableRecordImpl<VereinProgrammReco
             setScoresConfirmedAt(value.getScoresConfirmedAt());
             setModulDTitelSelection(value.getModulDTitelSelection());
             setMinutesOverrun(value.getMinutesOverrun());
-            setBonus(value.getBonus());
             setActualDurationInSeconds(value.getActualDurationInSeconds());
+            setModulGKatABonus(value.getModulGKatABonus());
+            setModulGKatBBonus(value.getModulGKatBBonus());
+            setModulGKatCBonus(value.getModulGKatCBonus());
             resetChangedOnNotNull();
         }
     }

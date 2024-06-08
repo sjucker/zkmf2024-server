@@ -41,6 +41,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -354,7 +355,7 @@ public class JudgeRepository {
         );
     }
 
-    private JudgeReportRatingDTO toJudgeReportRatingDTO(org.jooq.Record it) {
+    private JudgeReportRatingDTO toJudgeReportRatingDTO(Record it) {
         var category = JudgeReportCategory.fromString(it.get(JUDGE_REPORT_RATING.CATEGORY)).orElseThrow();
         return new JudgeReportRatingDTO(
                 category,
@@ -466,7 +467,7 @@ public class JudgeRepository {
                                  var modulCategory = JudgeReportModulCategory.fromString(category);
 
                                  var penalty = penalty(record1);
-                                 var bonus = record1.get(VEREIN_PROGRAMM.BONUS);
+                                 var bonus = getBonus(modulCategory.orElse(null), record1).orElse(null);
 
                                  consumer.accept(new JudgeReportSummaryDTO(
                                          record1.get(VEREIN_PROGRAMM.ID),
@@ -505,9 +506,21 @@ public class JudgeRepository {
                          .sorted(comparing(JudgeReportSummaryDTO::modul)
                                          .thenComparing(JudgeReportSummaryDTO::klasse, nullsLast(naturalOrder()))
                                          .thenComparing(JudgeReportSummaryDTO::besetzung, nullsLast(naturalOrder()))
+                                         .thenComparing(JudgeReportSummaryDTO::category, nullsLast(naturalOrder()))
                                          .thenComparing(JudgeReportSummaryDTO::overallScore, nullsLast(naturalOrder())))
                          .toList();
         }
+    }
+
+    private Optional<BigDecimal> getBonus(JudgeReportModulCategory modulCategory, Record it) {
+        if (modulCategory != null) {
+            return switch (modulCategory) {
+                case MODUL_G_KAT_A -> Optional.ofNullable(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS));
+                case MODUL_G_KAT_B -> Optional.ofNullable(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS));
+                case MODUL_G_KAT_C -> Optional.ofNullable(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS));
+            };
+        }
+        return Optional.empty();
     }
 
     private BigDecimal penalty(Record it) {
@@ -597,7 +610,9 @@ public class JudgeRepository {
                                    VEREIN.VEREINSNAME,
                                    VEREIN_PROGRAMM.MODUL,
                                    VEREIN_PROGRAMM.MINUTES_OVERRUN,
-                                   VEREIN_PROGRAMM.BONUS,
+                                   VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS,
+                                   VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS,
+                                   VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS,
                                    JUDGE_REPORT.SCORE)
                            .from(JUDGE_REPORT)
                            .join(JUDGE).on(JUDGE.ID.eq(JUDGE_REPORT.FK_JUDGE))
@@ -624,7 +639,7 @@ public class JudgeRepository {
                                  var record3 = values.get(2);
                                  var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
                                  var record4 = modul.isParademusik() ? values.get(3) : null;
-                                 var overallScore = overallScore(record1, record2, record3, record4, modul, penalty(record1), record1.get(VEREIN_PROGRAMM.BONUS));
+                                 var overallScore = overallScore(record1, record2, record3, record4, modul, penalty(record1), getBonus(category, record1).orElse(null));
                                  return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore.orElse(null));
                              }
                          })
@@ -688,7 +703,8 @@ public class JudgeRepository {
                                                        .or(TIMETABLE_ENTRY.ENTRY_TYPE.eq(PLATZKONZERT)))
                       .orderBy(CURRENTLY_PLAYING.ENDED_AT.nullsFirst(), TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME, TIMETABLE_ENTRY.END_TIME)
                       .fetch(it -> {
-                          var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
+                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+                          var minMaxDuration = programmVorgabenRepository.findMinMaxDuration(modul,
                                                                                              Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE)).orElse(null),
                                                                                              Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null));
 
@@ -696,7 +712,8 @@ public class JudgeRepository {
                                   it.get(TIMETABLE_ENTRY.ID),
                                   it.get(VEREIN_PROGRAMM.ID),
                                   it.get(VEREIN.VEREINSNAME),
-                                  Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL)),
+                                  modul,
+                                  getCategories(it, modul),
                                   LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)),
                                   LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)),
                                   minMaxDuration.map(ProgrammVorgabenRepository.MinMaxDuration::minDurationInSeconds).orElse(null),
@@ -706,10 +723,32 @@ public class JudgeRepository {
                                   getJury(it.get(TIMETABLE_ENTRY.ID)),
                                   it.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS),
                                   it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN),
-                                  it.get(VEREIN_PROGRAMM.BONUS)
+                                  it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS),
+                                  it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS),
+                                  it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS)
                           );
                       });
 
+    }
+
+    private List<JudgeReportModulCategory> getCategories(Record it, Modul modul) {
+        if (modul == G) {
+            var result = new ArrayList<JudgeReportModulCategory>();
+            if (it.get(VEREIN.TAMBOUREN_KAT_A)) {
+                result.add(MODUL_G_KAT_A);
+            }
+            if (it.get(VEREIN.TAMBOUREN_KAT_B)) {
+                result.add(MODUL_G_KAT_B);
+            }
+            if (it.get(VEREIN.TAMBOUREN_KAT_C)) {
+                result.add(MODUL_G_KAT_C);
+            }
+
+            return result;
+
+        } else {
+            return List.of();
+        }
     }
 
     private String getJury(long timetableEntryId) {

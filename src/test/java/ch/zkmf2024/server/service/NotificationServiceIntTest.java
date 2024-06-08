@@ -95,7 +95,7 @@ class NotificationServiceIntTest extends AbstractIntegrationTest {
     }
 
     private VereinProgrammPojo createVereinProgramm(Long vereinId) {
-        var programm = new VereinProgrammPojo(null, vereinId, A.name(), KLASSE_1.name(), HARMONIE.name(), null, null, null, null, null, null, null, null, null, false, false, false, false, false, null, null, null, null, null, null, null, null);
+        var programm = new VereinProgrammPojo(null, vereinId, A.name(), KLASSE_1.name(), HARMONIE.name(), null, null, null, null, null, null, null, null, null, false, false, false, false, false, null, null, null, null, null, null, null, null, null, null);
         vereinRepository.insert(programm);
         return programm;
     }

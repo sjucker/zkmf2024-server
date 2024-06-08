@@ -41,8 +41,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
     private LocalDateTime scoresConfirmedAt;
     private String modulDTitelSelection;
     private Integer minutesOverrun;
-    private BigDecimal bonus;
     private Integer actualDurationInSeconds;
+    private BigDecimal modulGKatABonus;
+    private BigDecimal modulGKatBBonus;
+    private BigDecimal modulGKatCBonus;
 
     public VereinProgrammPojo() {
     }
@@ -73,8 +75,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.scoresConfirmedAt = value.getScoresConfirmedAt();
         this.modulDTitelSelection = value.getModulDTitelSelection();
         this.minutesOverrun = value.getMinutesOverrun();
-        this.bonus = value.getBonus();
         this.actualDurationInSeconds = value.getActualDurationInSeconds();
+        this.modulGKatABonus = value.getModulGKatABonus();
+        this.modulGKatBBonus = value.getModulGKatBBonus();
+        this.modulGKatCBonus = value.getModulGKatCBonus();
     }
 
     public VereinProgrammPojo(
@@ -103,8 +107,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
             LocalDateTime scoresConfirmedAt,
             String modulDTitelSelection,
             Integer minutesOverrun,
-            BigDecimal bonus,
-            Integer actualDurationInSeconds
+            Integer actualDurationInSeconds,
+            BigDecimal modulGKatABonus,
+            BigDecimal modulGKatBBonus,
+            BigDecimal modulGKatCBonus
     ) {
         this.id = id;
         this.fkVerein = fkVerein;
@@ -131,8 +137,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
         this.scoresConfirmedAt = scoresConfirmedAt;
         this.modulDTitelSelection = modulDTitelSelection;
         this.minutesOverrun = minutesOverrun;
-        this.bonus = bonus;
         this.actualDurationInSeconds = actualDurationInSeconds;
+        this.modulGKatABonus = modulGKatABonus;
+        this.modulGKatBBonus = modulGKatBBonus;
+        this.modulGKatCBonus = modulGKatCBonus;
     }
 
     /**
@@ -536,22 +544,6 @@ public class VereinProgrammPojo implements IVereinProgramm {
     }
 
     /**
-     * Getter for <code>verein_programm.bonus</code>.
-     */
-    @Override
-    public BigDecimal getBonus() {
-        return this.bonus;
-    }
-
-    /**
-     * Setter for <code>verein_programm.bonus</code>.
-     */
-    @Override
-    public void setBonus(BigDecimal bonus) {
-        this.bonus = bonus;
-    }
-
-    /**
      * Getter for <code>verein_programm.actual_duration_in_seconds</code>.
      */
     @Override
@@ -565,6 +557,54 @@ public class VereinProgrammPojo implements IVereinProgramm {
     @Override
     public void setActualDurationInSeconds(Integer actualDurationInSeconds) {
         this.actualDurationInSeconds = actualDurationInSeconds;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    @Override
+    public BigDecimal getModulGKatABonus() {
+        return this.modulGKatABonus;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    @Override
+    public void setModulGKatABonus(BigDecimal modulGKatABonus) {
+        this.modulGKatABonus = modulGKatABonus;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    @Override
+    public BigDecimal getModulGKatBBonus() {
+        return this.modulGKatBBonus;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    @Override
+    public void setModulGKatBBonus(BigDecimal modulGKatBBonus) {
+        this.modulGKatBBonus = modulGKatBBonus;
+    }
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    @Override
+    public BigDecimal getModulGKatCBonus() {
+        return this.modulGKatCBonus;
+    }
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    @Override
+    public void setModulGKatCBonus(BigDecimal modulGKatCBonus) {
+        this.modulGKatCBonus = modulGKatCBonus;
     }
 
     @Override
@@ -701,15 +741,25 @@ public class VereinProgrammPojo implements IVereinProgramm {
                 return false;
         } else if (!this.minutesOverrun.equals(other.minutesOverrun))
             return false;
-        if (this.bonus == null) {
-            if (other.bonus != null)
-                return false;
-        } else if (!this.bonus.equals(other.bonus))
-            return false;
         if (this.actualDurationInSeconds == null) {
             if (other.actualDurationInSeconds != null)
                 return false;
         } else if (!this.actualDurationInSeconds.equals(other.actualDurationInSeconds))
+            return false;
+        if (this.modulGKatABonus == null) {
+            if (other.modulGKatABonus != null)
+                return false;
+        } else if (!this.modulGKatABonus.equals(other.modulGKatABonus))
+            return false;
+        if (this.modulGKatBBonus == null) {
+            if (other.modulGKatBBonus != null)
+                return false;
+        } else if (!this.modulGKatBBonus.equals(other.modulGKatBBonus))
+            return false;
+        if (this.modulGKatCBonus == null) {
+            if (other.modulGKatCBonus != null)
+                return false;
+        } else if (!this.modulGKatCBonus.equals(other.modulGKatCBonus))
             return false;
         return true;
     }
@@ -743,8 +793,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
         result = prime * result + ((this.scoresConfirmedAt == null) ? 0 : this.scoresConfirmedAt.hashCode());
         result = prime * result + ((this.modulDTitelSelection == null) ? 0 : this.modulDTitelSelection.hashCode());
         result = prime * result + ((this.minutesOverrun == null) ? 0 : this.minutesOverrun.hashCode());
-        result = prime * result + ((this.bonus == null) ? 0 : this.bonus.hashCode());
         result = prime * result + ((this.actualDurationInSeconds == null) ? 0 : this.actualDurationInSeconds.hashCode());
+        result = prime * result + ((this.modulGKatABonus == null) ? 0 : this.modulGKatABonus.hashCode());
+        result = prime * result + ((this.modulGKatBBonus == null) ? 0 : this.modulGKatBBonus.hashCode());
+        result = prime * result + ((this.modulGKatCBonus == null) ? 0 : this.modulGKatCBonus.hashCode());
         return result;
     }
 
@@ -777,8 +829,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
         sb.append(", ").append(scoresConfirmedAt);
         sb.append(", ").append(modulDTitelSelection);
         sb.append(", ").append(minutesOverrun);
-        sb.append(", ").append(bonus);
         sb.append(", ").append(actualDurationInSeconds);
+        sb.append(", ").append(modulGKatABonus);
+        sb.append(", ").append(modulGKatBBonus);
+        sb.append(", ").append(modulGKatCBonus);
 
         sb.append(")");
         return sb.toString();
@@ -815,8 +869,10 @@ public class VereinProgrammPojo implements IVereinProgramm {
         setScoresConfirmedAt(from.getScoresConfirmedAt());
         setModulDTitelSelection(from.getModulDTitelSelection());
         setMinutesOverrun(from.getMinutesOverrun());
-        setBonus(from.getBonus());
         setActualDurationInSeconds(from.getActualDurationInSeconds());
+        setModulGKatABonus(from.getModulGKatABonus());
+        setModulGKatBBonus(from.getModulGKatBBonus());
+        setModulGKatCBonus(from.getModulGKatCBonus());
     }
 
     @Override
