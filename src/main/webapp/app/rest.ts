@@ -495,6 +495,7 @@ export interface VereinPresentationDTO {
     instagram?: string;
     websiteText?: string;
     timetableEntries: VereinTimetableEntryDTO[];
+    rankings: RankingListDTO[];
 }
 
 export interface VereinProgrammDTO extends IsValid {
@@ -1017,7 +1018,7 @@ export enum ModulDSelection {
 
 export enum RankingStatus {
     PENDING = "PENDING",
-    PROVISIONAL = "PROVISIONAL",
+    INTERMEDIATE = "INTERMEDIATE",
     FINAL = "FINAL",
 }
 

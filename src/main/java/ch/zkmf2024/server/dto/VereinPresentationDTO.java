@@ -12,5 +12,6 @@ public record VereinPresentationDTO(@NotNull Long id,
                                     String facebook,
                                     String instagram,
                                     String websiteText,
-                                    @NotNull List<VereinTimetableEntryDTO> timetableEntries) {
+                                    @NotNull List<VereinTimetableEntryDTO> timetableEntries,
+                                    @NotNull List<RankingListDTO> rankings) {
 }

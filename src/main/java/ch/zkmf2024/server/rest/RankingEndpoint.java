@@ -40,9 +40,13 @@ public class RankingEndpoint {
     @GetMapping("/available")
     public ResponseEntity<?> hasRankings() {
         log.info("GET /public/ranking/available");
-        return rankingsService.hasFinalRankings() ? ResponseEntity.ok().build() : ResponseEntity.noContent().build();
+        return rankingsService.hasPublishedRankings() ? ResponseEntity.ok().build() : ResponseEntity.noContent().build();
     }
 
-    // TODO add endpoint to query whether a band has final ranking available
+    @GetMapping("/verein/{vereinIdentifier}")
+    public ResponseEntity<List<RankingListDTO>> rankingPerVerein(@PathVariable("vereinIdentifier") String vereinIdentifier) {
+        log.info("GET /public/ranking/verein/{}", vereinIdentifier);
+        return ResponseEntity.ok(rankingsService.findRankingsByVerein(vereinIdentifier));
+    }
 
 }

@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Predicate;
 
-import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
+import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
@@ -87,13 +87,17 @@ public class RankingRepository {
                       .from(RANKING)
                       .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
                       .orderBy(RANKING.MODUL, RANKING.KLASSE.nullsLast(), RANKING.BESETZUNG.nullsLast(), RANKING.CATEGORY.nullsLast())
-                      .fetch(this::toDTO)
+                      .fetch(it -> toDTO(it, false))
                       .stream()
                       .filter(predicate)
                       .toList();
     }
 
     private RankingListDTO toDTO(Record it) {
+        return toDTO(it, true);
+    }
+
+    private RankingListDTO toDTO(Record it, boolean loadEntries) {
         var modul = Modul.valueOf(it.get(RANKING.MODUL));
         var klasse = Klasse.fromString(it.get(RANKING.KLASSE));
         var besetzung = Besetzung.fromString(it.get(RANKING.BESETZUNG));
@@ -111,7 +115,7 @@ public class RankingRepository {
                 LocationRepository.toDTO(it),
                 getDescription(it),
                 RankingStatus.valueOf(it.get(RANKING.STATUS)),
-                getEntries(it.get(RANKING.ID))
+                loadEntries ? getEntries(it.get(RANKING.ID)) : List.of()
         );
     }
 
@@ -159,8 +163,8 @@ public class RankingRepository {
                                                                    it.get(RANKING_ENTRY.FK_VEREIN)));
     }
 
-    public boolean hasFinalRankings() {
-        return jooqDsl.fetchExists(RANKING, RANKING.STATUS.eq(FINAL.name()));
+    public boolean hasPublishedRankings() {
+        return jooqDsl.fetchExists(RANKING, RANKING.STATUS.ne(PENDING.name()));
     }
 
     public Optional<RankingListDTO> findRankingListById(Long rankingId) {
@@ -168,8 +172,19 @@ public class RankingRepository {
                       .from(RANKING)
                       .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
                       .where(RANKING.ID.eq(rankingId),
-                             RANKING.STATUS.eq(FINAL.name()))
+                             RANKING.STATUS.ne(PENDING.name()))
                       .fetchOptional(this::toDTO);
+    }
+
+    public List<RankingListDTO> findRankingsByVerein(String vereinIdentifier) {
+        return jooqDsl.select()
+                      .from(RANKING)
+                      .join(LOCATION).on(LOCATION.ID.eq(RANKING.FK_LOCATION))
+                      .join(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID))
+                      .join(VEREIN).on(VEREIN.ID.eq(RANKING_ENTRY.FK_VEREIN))
+                      .where(RANKING.STATUS.ne(PENDING.name()),
+                             VEREIN.IDENTIFIER.equalIgnoreCase(vereinIdentifier))
+                      .fetch(it -> toDTO(it, false));
     }
 
     public List<RankingSummaryDTO> getAllRankingsPerVerein() {

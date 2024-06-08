@@ -46,8 +46,8 @@ public class RankingsService {
     }
 
     @Cacheable("rankings-available")
-    public boolean hasFinalRankings() {
-        return rankingRepository.hasFinalRankings();
+    public boolean hasPublishedRankings() {
+        return rankingRepository.hasPublishedRankings();
     }
 
     public List<RankingListDTO> getAllRankingLists() {
@@ -62,6 +62,11 @@ public class RankingsService {
     @Cacheable("ranking")
     public Optional<RankingListDTO> findRankingListById(Long rankingId) {
         return rankingRepository.findRankingListById(rankingId);
+    }
+
+    @Cacheable("rankings-verein")
+    public List<RankingListDTO> findRankingsByVerein(String vereinIdentifier) {
+        return rankingRepository.findRankingsByVerein(vereinIdentifier);
     }
 
     public void confirmScore(String username, Long vereinProgrammId, JudgeReportModulCategory category, BigDecimal score) {

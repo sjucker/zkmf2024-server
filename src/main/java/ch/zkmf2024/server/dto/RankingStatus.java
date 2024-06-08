@@ -2,6 +2,7 @@ package ch.zkmf2024.server.dto;
 
 public enum RankingStatus {
     PENDING,
-    PROVISIONAL,
+    // for rankings that span multiple days (Zwischenrangliste)
+    INTERMEDIATE,
     FINAL
 }

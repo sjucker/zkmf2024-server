@@ -124,11 +124,14 @@ public class VereinRepository {
     private final VereinAnmeldungDetailDao vereinAnmeldungDetailDao;
     private final VereinAnmeldungAdhocOrchesterDao vereinAnmeldungAdhocOrchesterDao;
     private final VereinAnmeldungNichtmitgliederDao vereinAnmeldungNichtmitgliederDao;
+    private final RankingRepository rankingRepository;
 
     public VereinRepository(ProgrammVorgabenRepository programmVorgabenRepository,
+                            RankingRepository rankingRepository,
                             DSLContext jooqDsl,
                             DefaultConfiguration jooqConfig) {
         this.programmVorgabenRepository = programmVorgabenRepository;
+        this.rankingRepository = rankingRepository;
         this.jooqDsl = jooqDsl;
         this.vereinDao = new VereinDao(jooqConfig);
         this.kontaktDao = new KontaktDao(jooqConfig);
@@ -209,7 +212,8 @@ public class VereinRepository {
                               it.get(VEREIN.FACEBOOK),
                               it.get(VEREIN.INSTAGRAM),
                               it.get(VEREIN.WEBSITE_TEXT),
-                              findTimetableEntriesByVereinId(it.get(VEREIN.ID))
+                              findTimetableEntriesByVereinId(it.get(VEREIN.ID)),
+                              rankingRepository.findRankingsByVerein(identifier)
                       ));
     }
 
