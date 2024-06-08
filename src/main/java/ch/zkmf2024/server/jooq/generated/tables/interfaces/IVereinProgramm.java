@@ -264,16 +264,6 @@ public interface IVereinProgramm extends Serializable {
     public Integer getMinutesOverrun();
 
     /**
-     * Setter for <code>verein_programm.bonus</code>.
-     */
-    public void setBonus(BigDecimal value);
-
-    /**
-     * Getter for <code>verein_programm.bonus</code>.
-     */
-    public BigDecimal getBonus();
-
-    /**
      * Setter for <code>verein_programm.actual_duration_in_seconds</code>.
      */
     public void setActualDurationInSeconds(Integer value);
@@ -282,6 +272,36 @@ public interface IVereinProgramm extends Serializable {
      * Getter for <code>verein_programm.actual_duration_in_seconds</code>.
      */
     public Integer getActualDurationInSeconds();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    public void setModulGKatABonus(BigDecimal value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_a_bonus</code>.
+     */
+    public BigDecimal getModulGKatABonus();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    public void setModulGKatBBonus(BigDecimal value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_b_bonus</code>.
+     */
+    public BigDecimal getModulGKatBBonus();
+
+    /**
+     * Setter for <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    public void setModulGKatCBonus(BigDecimal value);
+
+    /**
+     * Getter for <code>verein_programm.modul_g_kat_c_bonus</code>.
+     */
+    public BigDecimal getModulGKatCBonus();
 
     // -------------------------------------------------------------------------
     // FROM and INTO

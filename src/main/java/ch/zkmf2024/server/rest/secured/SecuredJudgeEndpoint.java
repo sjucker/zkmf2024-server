@@ -210,7 +210,7 @@ public class SecuredJudgeEndpoint {
         log.info("POST /secured/judge/helper/bonus {}", dto);
 
         // username -> location-identifier
-        judgeService.setRankingBonus(userDetails.getUsername(), dto.vereinProgrammId(), dto.bonus());
+        judgeService.setRankingBonus(userDetails.getUsername(), dto.vereinProgrammId(), dto.bonus(), dto.category());
 
         return ResponseEntity.ok().build();
     }
