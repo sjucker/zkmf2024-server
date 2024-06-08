@@ -84,7 +84,9 @@ public enum JudgeReportCategory implements HasDescription {
 
     // Modul G
     GRUNDLAGE_1("Grundlage 1 - Technische Ausführung", Set.of(G), Set.of(MODUL_G_KAT_A), true),
+    GRUNDLAGE_1_ABZUG("Grundlage 1 - Abzug", Set.of(G), Set.of(MODUL_G_KAT_A), true),
     GRUNDLAGE_2("Grundlage 2 - Technische Ausführung", Set.of(G), Set.of(MODUL_G_KAT_A), true),
+    GRUNDLAGE_2_ABZUG("Grundlage 2 - Abzug", Set.of(G), Set.of(MODUL_G_KAT_A), true),
     // Kat A & B
     TECHNISCHE_AUSFUEHRUNG("Technische Ausführung", Set.of(G), Set.of(MODUL_G_KAT_A, MODUL_G_KAT_B), false),
     RHYTHMIK("Rhythmik", Set.of(G), Set.of(MODUL_G_KAT_A, MODUL_G_KAT_B), false),
