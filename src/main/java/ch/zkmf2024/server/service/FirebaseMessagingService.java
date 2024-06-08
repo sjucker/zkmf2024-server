@@ -73,7 +73,7 @@ public class FirebaseMessagingService {
 
             log.info("sending notification {}/{} to topic {}", title, body, topic);
             firebaseMessaging.send(message.build());
-            mailService.sendNotificationEmail(title, body, topic);
+            mailService.sendNotificationEmail(title, body, topic, route);
         } catch (FirebaseMessagingException e) {
             log.error("could not send message", e);
         }
@@ -95,7 +95,7 @@ public class FirebaseMessagingService {
             }
             log.info("sending notification {}/{} to token {}", title, body, token);
             firebaseMessaging.send(message.build());
-            mailService.sendNotificationEmail(title, body, token);
+            mailService.sendNotificationEmail(title, body, token, route);
         } catch (FirebaseMessagingException e) {
             log.error("could not send message", e);
         }
