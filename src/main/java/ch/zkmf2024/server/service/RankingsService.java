@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +39,7 @@ public class RankingsService {
     public RankingsService(RankingRepository rankingRepository,
                            VereinRepository vereinRepository,
                            TimetableRepository timetableRepository,
-                           FirebaseMessagingService firebaseMessagingService) {
+                           @Nullable FirebaseMessagingService firebaseMessagingService) {
         this.rankingRepository = rankingRepository;
         this.vereinRepository = vereinRepository;
         this.timetableRepository = timetableRepository;
@@ -117,7 +118,11 @@ public class RankingsService {
         rankingRepository.update(rankingPojo);
 
         for (var entry : rankingRepository.getEntries(rankingId)) {
-            firebaseMessagingService.sendRankingPublished(entry.vereinIdentifier(), entry.vereinsName(), rankingId);
+            if (firebaseMessagingService != null) {
+                firebaseMessagingService.sendRankingPublished(entry.vereinIdentifier(), entry.vereinsName(), rankingId);
+            } else {
+                log.info("firebaseMessagingService not available ('firebase.enabled' is false)");
+            }
         }
     }
 }
