@@ -31,7 +31,6 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -91,11 +90,6 @@ public class Ranking extends TableImpl<RankingRecord> {
      * The column <code>ranking.fk_location</code>.
      */
     public final TableField<RankingRecord, Long> FK_LOCATION = createField(DSL.name("fk_location"), SQLDataType.BIGINT.nullable(false), this, "");
-
-    /**
-     * The column <code>ranking.day</code>.
-     */
-    public final TableField<RankingRecord, LocalDate> DAY = createField(DSL.name("day"), SQLDataType.LOCALDATE, this, "");
 
     private Ranking(Name alias, Table<RankingRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -11,6 +11,7 @@ import org.jooq.Record2;
 import org.jooq.impl.DAOImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -142,5 +143,20 @@ public class RankingEntryDao extends DAOImpl<RankingEntryRecord, RankingEntryPoj
      */
     public List<RankingEntryPojo> fetchByAdditionalInfo(String... values) {
         return fetch(RankingEntry.RANKING_ENTRY.ADDITIONAL_INFO, values);
+    }
+
+    /**
+     * Fetch records that have <code>day BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<RankingEntryPojo> fetchRangeOfDay(LocalDate lowerInclusive, LocalDate upperInclusive) {
+        return fetchRange(RankingEntry.RANKING_ENTRY.DAY, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>day IN (values)</code>
+     */
+    public List<RankingEntryPojo> fetchByDay(LocalDate... values) {
+        return fetch(RankingEntry.RANKING_ENTRY.DAY, values);
     }
 }

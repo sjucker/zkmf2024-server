@@ -71,12 +71,12 @@ public class RankingsService {
         var ranking = rankingRepository.find(vereinProgramm.getModul(), vereinProgramm.getKlasse(), vereinProgramm.getBesetzung(), category, timetableEntry.getFkLocation()).orElse(null);
         if (ranking == null) {
             ranking = new RankingPojo(null, vereinProgramm.getModul(), vereinProgramm.getKlasse(), vereinProgramm.getBesetzung(),
-                                      category != null ? category.name() : null, PENDING.name(), timetableEntry.getFkLocation(), timetableEntry.getDate());
+                                      category != null ? category.name() : null, PENDING.name(), timetableEntry.getFkLocation());
             rankingRepository.insert(ranking);
         }
 
         rankingRepository.insert(new RankingEntryPojo(ranking.getId(), vereinProgramm.getFkVerein(), score, 0, username, DateUtil.now(),
-                                                      getAdditionalInfo(vereinProgramm)));
+                                                      getAdditionalInfo(vereinProgramm), timetableEntry.getDate()));
 
         int rank = 0;
         int sameRank = 0;

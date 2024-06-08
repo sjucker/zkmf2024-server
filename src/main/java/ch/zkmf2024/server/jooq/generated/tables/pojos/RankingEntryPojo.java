@@ -6,6 +6,7 @@ package ch.zkmf2024.server.jooq.generated.tables.pojos;
 import ch.zkmf2024.server.jooq.generated.tables.interfaces.IRankingEntry;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -23,6 +24,7 @@ public class RankingEntryPojo implements IRankingEntry {
     private String confirmedBy;
     private LocalDateTime confirmedAt;
     private String additionalInfo;
+    private LocalDate day;
 
     public RankingEntryPojo() {
     }
@@ -35,6 +37,7 @@ public class RankingEntryPojo implements IRankingEntry {
         this.confirmedBy = value.getConfirmedBy();
         this.confirmedAt = value.getConfirmedAt();
         this.additionalInfo = value.getAdditionalInfo();
+        this.day = value.getDay();
     }
 
     public RankingEntryPojo(
@@ -44,7 +47,8 @@ public class RankingEntryPojo implements IRankingEntry {
             Integer rank,
             String confirmedBy,
             LocalDateTime confirmedAt,
-            String additionalInfo
+            String additionalInfo,
+            LocalDate day
     ) {
         this.fkRanking = fkRanking;
         this.fkVerein = fkVerein;
@@ -53,6 +57,7 @@ public class RankingEntryPojo implements IRankingEntry {
         this.confirmedBy = confirmedBy;
         this.confirmedAt = confirmedAt;
         this.additionalInfo = additionalInfo;
+        this.day = day;
     }
 
     /**
@@ -167,6 +172,22 @@ public class RankingEntryPojo implements IRankingEntry {
         this.additionalInfo = additionalInfo;
     }
 
+    /**
+     * Getter for <code>ranking_entry.day</code>.
+     */
+    @Override
+    public LocalDate getDay() {
+        return this.day;
+    }
+
+    /**
+     * Setter for <code>ranking_entry.day</code>.
+     */
+    @Override
+    public void setDay(LocalDate day) {
+        this.day = day;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -211,6 +232,11 @@ public class RankingEntryPojo implements IRankingEntry {
                 return false;
         } else if (!this.additionalInfo.equals(other.additionalInfo))
             return false;
+        if (this.day == null) {
+            if (other.day != null)
+                return false;
+        } else if (!this.day.equals(other.day))
+            return false;
         return true;
     }
 
@@ -225,6 +251,7 @@ public class RankingEntryPojo implements IRankingEntry {
         result = prime * result + ((this.confirmedBy == null) ? 0 : this.confirmedBy.hashCode());
         result = prime * result + ((this.confirmedAt == null) ? 0 : this.confirmedAt.hashCode());
         result = prime * result + ((this.additionalInfo == null) ? 0 : this.additionalInfo.hashCode());
+        result = prime * result + ((this.day == null) ? 0 : this.day.hashCode());
         return result;
     }
 
@@ -239,6 +266,7 @@ public class RankingEntryPojo implements IRankingEntry {
         sb.append(", ").append(confirmedBy);
         sb.append(", ").append(confirmedAt);
         sb.append(", ").append(additionalInfo);
+        sb.append(", ").append(day);
 
         sb.append(")");
         return sb.toString();
@@ -257,6 +285,7 @@ public class RankingEntryPojo implements IRankingEntry {
         setConfirmedBy(from.getConfirmedBy());
         setConfirmedAt(from.getConfirmedAt());
         setAdditionalInfo(from.getAdditionalInfo());
+        setDay(from.getDay());
     }
 
     @Override

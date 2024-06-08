@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
+import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
 
 public record RankingListDTO(@NotNull Long id,
                              @NotNull Modul modul,
@@ -21,5 +22,9 @@ public record RankingListDTO(@NotNull Long id,
 
     public boolean isFinal() {
         return status == FINAL;
+    }
+
+    public boolean isNotPending() {
+        return status != PENDING;
     }
 }

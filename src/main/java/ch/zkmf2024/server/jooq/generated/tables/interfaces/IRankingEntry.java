@@ -5,6 +5,7 @@ package ch.zkmf2024.server.jooq.generated.tables.interfaces;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -82,6 +83,16 @@ public interface IRankingEntry extends Serializable {
      * Getter for <code>ranking_entry.additional_info</code>.
      */
     public String getAdditionalInfo();
+
+    /**
+     * Setter for <code>ranking_entry.day</code>.
+     */
+    public void setDay(LocalDate value);
+
+    /**
+     * Getter for <code>ranking_entry.day</code>.
+     */
+    public LocalDate getDay();
 
     // -------------------------------------------------------------------------
     // FROM and INTO

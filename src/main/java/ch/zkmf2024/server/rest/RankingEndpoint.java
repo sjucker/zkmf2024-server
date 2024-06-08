@@ -25,7 +25,7 @@ public class RankingEndpoint {
     @GetMapping
     public ResponseEntity<List<RankingListDTO>> rankings() {
         log.info("GET /public/ranking");
-        return ResponseEntity.ok(rankingsService.getAllRankingLists(RankingListDTO::isFinal));
+        return ResponseEntity.ok(rankingsService.getAllRankingLists(RankingListDTO::isNotPending));
 
     }
 

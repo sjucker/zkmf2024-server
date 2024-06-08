@@ -10,6 +10,7 @@ import org.jooq.Record2;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -132,6 +133,22 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
         return (String) get(6);
     }
 
+    /**
+     * Setter for <code>ranking_entry.day</code>.
+     */
+    @Override
+    public void setDay(LocalDate value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>ranking_entry.day</code>.
+     */
+    @Override
+    public LocalDate getDay() {
+        return (LocalDate) get(7);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -154,6 +171,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
         setConfirmedBy(from.getConfirmedBy());
         setConfirmedAt(from.getConfirmedAt());
         setAdditionalInfo(from.getAdditionalInfo());
+        setDay(from.getDay());
         resetChangedOnNotNull();
     }
 
@@ -177,7 +195,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
     /**
      * Create a detached, initialised RankingEntryRecord
      */
-    public RankingEntryRecord(Long fkRanking, Long fkVerein, BigDecimal score, Integer rank, String confirmedBy, LocalDateTime confirmedAt, String additionalInfo) {
+    public RankingEntryRecord(Long fkRanking, Long fkVerein, BigDecimal score, Integer rank, String confirmedBy, LocalDateTime confirmedAt, String additionalInfo, LocalDate day) {
         super(RankingEntry.RANKING_ENTRY);
 
         setFkRanking(fkRanking);
@@ -187,6 +205,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
         setConfirmedBy(confirmedBy);
         setConfirmedAt(confirmedAt);
         setAdditionalInfo(additionalInfo);
+        setDay(day);
         resetChangedOnNotNull();
     }
 
@@ -204,6 +223,7 @@ public class RankingEntryRecord extends UpdatableRecordImpl<RankingEntryRecord> 
             setConfirmedBy(value.getConfirmedBy());
             setConfirmedAt(value.getConfirmedAt());
             setAdditionalInfo(value.getAdditionalInfo());
+            setDay(value.getDay());
             resetChangedOnNotNull();
         }
     }

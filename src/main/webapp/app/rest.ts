@@ -281,6 +281,7 @@ export interface RankingListDTO {
     status: RankingStatus;
     entries: RankingListEntryDTO[];
     final: boolean;
+    notPending: boolean;
 }
 
 export interface RankingListEntryDTO {
