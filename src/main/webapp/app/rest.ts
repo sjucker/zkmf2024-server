@@ -255,6 +255,10 @@ export interface NichtmitgliederDTO {
     instrument?: string;
 }
 
+export interface PublicRankingDTO {
+    intermediate: boolean;
+}
+
 export interface RankingBonusDTO {
     vereinProgrammId: number;
     category: JudgeReportModulCategory;
@@ -286,6 +290,7 @@ export interface RankingListDTO {
 
 export interface RankingListEntryDTO {
     rank: number;
+    vereinIdentifier: string;
     vereinsName: string;
     score: number;
     additionalInfo?: string;

@@ -42,7 +42,18 @@ public class FirebaseMessagingService {
     }
 
     public void send(MessageFavoriteDTO dto) {
-        sendToTopic(VEREIN_TOPIC.formatted(dto.identifier()), dto.title(), dto.body(), "/vereine/%s".formatted(dto.identifier()));
+        sendToVereinTopic(dto.identifier(), dto.title(), dto.body(), "/vereine/%s".formatted(dto.identifier()));
+    }
+
+    public void sendRankingPublished(String vereinIdentifier, String vereinsName, Long rankingId) {
+        sendToVereinTopic(vereinIdentifier,
+                          "Rangliste publiziert",
+                          "Resultate für %s sind verfügbar".formatted(vereinsName),
+                          "/ranglisten/%d".formatted(rankingId));
+    }
+
+    public void sendToVereinTopic(String vereinIdentifier, String title, String body, String route) {
+        sendToTopic(VEREIN_TOPIC.formatted(vereinIdentifier), title, body, route);
     }
 
     public void sendToTopic(String topic, String title, String body, String route) {

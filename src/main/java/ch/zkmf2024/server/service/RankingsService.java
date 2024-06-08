@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static ch.zkmf2024.server.dto.RankingStatus.FINAL;
+import static ch.zkmf2024.server.dto.RankingStatus.INTERMEDIATE;
 import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
 import static ch.zkmf2024.server.util.ValidationUtil.isPositive;
 
@@ -32,13 +33,16 @@ public class RankingsService {
     private final RankingRepository rankingRepository;
     private final VereinRepository vereinRepository;
     private final TimetableRepository timetableRepository;
+    private final FirebaseMessagingService firebaseMessagingService;
 
     public RankingsService(RankingRepository rankingRepository,
                            VereinRepository vereinRepository,
-                           TimetableRepository timetableRepository) {
+                           TimetableRepository timetableRepository,
+                           FirebaseMessagingService firebaseMessagingService) {
         this.rankingRepository = rankingRepository;
         this.vereinRepository = vereinRepository;
         this.timetableRepository = timetableRepository;
+        this.firebaseMessagingService = firebaseMessagingService;
     }
 
     public List<RankingSummaryDTO> getAllRankings() {
@@ -107,9 +111,13 @@ public class RankingsService {
         return isPositive(vereinProgramm.getMinutesOverrun()) ? "Punktabzug %s Punkte (Zeitunter- oder überschreitung)".formatted(vereinProgramm.getMinutesOverrun() * 2) : null;
     }
 
-    public void publishRankingList(Long rankingId) {
+    public void publishRankingList(Long rankingId, boolean intermediate) {
         var rankingPojo = rankingRepository.findById(rankingId).orElseThrow(() -> new NoSuchElementException("no ranking found for id: " + rankingId));
-        rankingPojo.setStatus(FINAL.name());
+        rankingPojo.setStatus(intermediate ? INTERMEDIATE.name() : FINAL.name());
         rankingRepository.update(rankingPojo);
+
+        for (var entry : rankingRepository.getEntries(rankingId)) {
+            firebaseMessagingService.sendRankingPublished(entry.vereinIdentifier(), entry.vereinsName(), rankingId);
+        }
     }
 }

@@ -139,13 +139,14 @@ public class RankingRepository {
                                    it.get(LOCATION.NAME));
     }
 
-    private List<RankingListEntryDTO> getEntries(Long rankingId) {
+    public List<RankingListEntryDTO> getEntries(Long rankingId) {
         return jooqDsl.select()
                       .from(RANKING_ENTRY)
                       .join(VEREIN).on(VEREIN.ID.eq(RANKING_ENTRY.FK_VEREIN))
                       .where(RANKING_ENTRY.FK_RANKING.eq(rankingId))
                       .orderBy(RANKING_ENTRY.RANK)
                       .fetch(it -> new RankingListEntryDTO(it.get(RANKING_ENTRY.RANK),
+                                                           it.get(VEREIN.IDENTIFIER),
                                                            it.get(VEREIN.VEREINSNAME),
                                                            it.get(RANKING_ENTRY.SCORE),
                                                            it.get(RANKING_ENTRY.ADDITIONAL_INFO)));

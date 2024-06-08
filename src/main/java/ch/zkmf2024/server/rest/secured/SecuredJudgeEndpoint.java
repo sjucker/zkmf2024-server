@@ -7,6 +7,7 @@ import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
 import ch.zkmf2024.server.dto.ModulDSelectionDTO;
+import ch.zkmf2024.server.dto.PublicRankingDTO;
 import ch.zkmf2024.server.dto.RankingBonusDTO;
 import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.RankingPenaltyDTO;
@@ -225,10 +226,11 @@ public class SecuredJudgeEndpoint {
 
     @PostMapping("/ranking-list/{rankingId}")
     @Secured({"ADMIN"})
-    public ResponseEntity<?> publishRankingList(@PathVariable("rankingId") Long rankingId) {
-        log.info("POST /secured/judge/ranking-list/{}", rankingId);
+    public ResponseEntity<?> publishRankingList(@PathVariable("rankingId") Long rankingId,
+                                                @RequestBody PublicRankingDTO dto) {
+        log.info("POST /secured/judge/ranking-list/{} {}", rankingId, dto);
 
-        rankingsService.publishRankingList(rankingId);
+        rankingsService.publishRankingList(rankingId, dto.intermediate());
 
         return ResponseEntity.ok().build();
     }
