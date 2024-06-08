@@ -316,7 +316,7 @@ public class MailService {
         }
     }
 
-    public void sendNotificationEmail(String title, String body, String route, String topicOrToken) {
+    public void sendNotificationEmail(String title, String body, String topicOrToken, String route) {
         try {
             var mimeMessage = mailSender.createMimeMessage();
             var helper = new MimeMessageHelper(mimeMessage, MULTIPART_MODE_NO, UTF_8.name());
