@@ -179,6 +179,10 @@ public class VereinRepository {
                       ));
     }
 
+    public Optional<VereinPojo> findByIdentifier(String identifier) {
+        return vereinDao.fetchOptionalByIdentifier(identifier);
+    }
+
     public Optional<VereinPresentationDTO> findPresentationByIdentifier(String identifier) {
         Image vereinLogo = IMAGE.as("i2");
         Image vereinBild = IMAGE.as("i1");

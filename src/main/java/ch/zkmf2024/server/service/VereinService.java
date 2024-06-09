@@ -12,6 +12,7 @@ import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
+import ch.zkmf2024.server.dto.VereinMemberInfoDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinPresentationDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
@@ -227,6 +228,17 @@ public class VereinService {
                 getInstrumentenDepot(timetableEntries).orElse(null),
                 getInstrumentenDepotParademusik(timetableEntries).orElse(null),
                 false
+        );
+    }
+
+    public VereinMemberInfoDTO getVereinMemberInfo(String vereinIdentifier) {
+        var verein = vereinRepository.findByIdentifier(vereinIdentifier).orElseThrow(() -> new NoSuchElementException("unknown vereinIdentifier: " + vereinIdentifier));
+        var timetableEntries = findTimetableEntriesByVereinId(verein.getId());
+        return new VereinMemberInfoDTO(
+                timetableEntries,
+                verein.getLunchTime(),
+                getInstrumentenDepot(timetableEntries).orElse(null),
+                getInstrumentenDepotParademusik(timetableEntries).orElse(null)
         );
     }
 

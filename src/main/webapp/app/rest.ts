@@ -462,6 +462,13 @@ export interface VereinDTO {
     phase4Status: PhaseStatus;
 }
 
+export interface VereinMemberInfoDTO {
+    timetableEntries: TimetableOverviewEntryDTO[];
+    lunchTime: DateAsString;
+    instrumentenDepot?: LocationDTO;
+    instrumentenDepotParademusik?: LocationDTO;
+}
+
 export interface VereinMessageDTO {
     message: string;
     createdAt: DateAsString;
