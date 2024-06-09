@@ -2,6 +2,7 @@ import {Component, OnInit, signal} from '@angular/core';
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {MobileAppCreateComponent} from "../mobile-app-create/mobile-app-create.component";
 import {MobileAppEditComponent} from "../mobile-app-edit/mobile-app-edit.component";
+import {MobileAppMemberMessagingComponent} from "../mobile-app-member-messaging/mobile-app-member-messaging.component";
 import {MobileAppMessagingComponent} from "../mobile-app-messaging/mobile-app-messaging.component";
 import {AppPageDTO} from "../rest";
 import {MobileAppService} from "../service/app.service";
@@ -67,6 +68,12 @@ export class MobileAppComponent implements OnInit {
     openMessaging() {
         this.dialogService.open(MobileAppMessagingComponent, {
             header: 'Notification versenden',
+        });
+    }
+
+    openMemberMessaging() {
+        this.dialogService.open(MobileAppMemberMessagingComponent, {
+            header: 'Vereinsmitglieder informieren',
         });
     }
 }
