@@ -3,6 +3,7 @@ package ch.zkmf2024.server.rest;
 import ch.zkmf2024.server.dto.ForgotPasswordRequestDTO;
 import ch.zkmf2024.server.dto.RegisterVereinRequestDTO;
 import ch.zkmf2024.server.dto.ResetPasswordRequestDTO;
+import ch.zkmf2024.server.dto.VereinMemberInfoDTO;
 import ch.zkmf2024.server.dto.VereinPresentationDTO;
 import ch.zkmf2024.server.dto.VereinTeilnahmeDTO;
 import ch.zkmf2024.server.dto.VerifyEmailRequestDTO;
@@ -83,5 +84,12 @@ public class VereinEndpoint {
         log.info("GET /public/verein/{}", identifier);
 
         return ResponseEntity.of(vereinService.findPresentationByIdentifier(identifier));
+    }
+
+    @GetMapping("/member/{identifier}")
+    public ResponseEntity<VereinMemberInfoDTO> vereinDetailById(@PathVariable String identifier) {
+        log.info("GET /public/verein/member/{}", identifier);
+
+        return ResponseEntity.ok(vereinService.getVereinMemberInfo(identifier));
     }
 }
