@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.dto.admin.MessageFavoriteDTO;
+import ch.zkmf2024.server.dto.admin.MessageMemberDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendDTO;
 import ch.zkmf2024.server.dto.admin.MessageSendTokenDTO;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -19,7 +20,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class FirebaseMessagingService {
     private static final String EMERGENCY_TOPIC = "emergency";
     private static final String GENERAL_TOPIC = "general";
-    private static final String VEREIN_TOPIC = "favorite-%s";
+    private static final String VEREIN_FAVORITE_TOPIC = "favorite-%s";
+    private static final String VEREIN_MEMBER_TOPIC = "member-%s";
 
     private final FirebaseMessaging firebaseMessaging;
     private final MailService mailService;
@@ -45,15 +47,24 @@ public class FirebaseMessagingService {
         sendToVereinTopic(dto.identifier(), dto.title(), dto.body(), "/vereine/%s".formatted(dto.identifier()));
     }
 
+    public void send(MessageMemberDTO dto) {
+        sendToMemberTopic(dto.identifier(), dto.title(), dto.body(), dto.route());
+    }
+
     public void sendRankingPublished(String vereinIdentifier, String vereinsName, Long rankingId) {
-        sendToVereinTopic(vereinIdentifier,
-                          "Rangliste publiziert",
-                          "Resultate für %s sind verfügbar".formatted(vereinsName),
-                          "/ranglisten/%d".formatted(rankingId));
+        var title = "Rangliste publiziert";
+        var body = "Resultate für %s sind verfügbar".formatted(vereinsName);
+        var route = "/ranglisten/%d".formatted(rankingId);
+        sendToVereinTopic(vereinIdentifier, title, body, route);
+        sendToMemberTopic(vereinIdentifier, title, body, route);
     }
 
     public void sendToVereinTopic(String vereinIdentifier, String title, String body, String route) {
-        sendToTopic(VEREIN_TOPIC.formatted(vereinIdentifier), title, body, route);
+        sendToTopic(VEREIN_FAVORITE_TOPIC.formatted(vereinIdentifier), title, body, route);
+    }
+
+    public void sendToMemberTopic(String vereinIdentifier, String title, String body, String route) {
+        sendToTopic(VEREIN_MEMBER_TOPIC.formatted(vereinIdentifier), title, body, route);
     }
 
     public void sendToTopic(String topic, String title, String body, String route) {

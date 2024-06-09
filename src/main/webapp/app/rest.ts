@@ -714,6 +714,13 @@ export interface MessageFavoriteDTO {
     body: string;
 }
 
+export interface MessageMemberDTO {
+    identifier: string;
+    title: string;
+    body: string;
+    route: string;
+}
+
 export interface MessageSendDTO {
     type: MessageType;
     title: string;

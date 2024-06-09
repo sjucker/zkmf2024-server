@@ -2,6 +2,9 @@
     <p-button iconPos="left" icon="pi pi-align-justify" label="App Page erstellen"
               (onClick)="openCreatePage()"></p-button>
 
+    <p-button iconPos="left" icon="pi pi-send" label="Notification Vereinsmitglieder"
+              (onClick)="openMemberMessaging()"></p-button>
+
     <p-button iconPos="left" icon="pi pi-send" label="Notification senden"
               (onClick)="openMessaging()"></p-button>
 </div>
@@ -25,8 +28,8 @@
         <tr>
             <td class="vertical-align-top">{{ dto.id }}</td>
             <td class="vertical-align-top">{{ dto.title }}</td>
-            <td class="vertical-align-top">
-                <pre>{{ dto.markdown }}</pre>
+            <td class="vertical-align-top" style="white-space: pre-line">
+                {{ dto.markdown }}
             </td>
             <td class="vertical-align-top">{{ dto.cloudflareId }}</td>
             <td class="vertical-align-top">{{ dto.news ? 'Ja' : 'Nein' }}</td>
