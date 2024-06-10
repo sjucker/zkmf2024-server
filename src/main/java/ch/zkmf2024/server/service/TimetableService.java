@@ -209,7 +209,6 @@ public class TimetableService {
         timetableRepository.update(entry);
     }
 
-    @Cacheable("timetables-preview")
     public CurrentTimetablePreviewDTO getCurrentPreview(String locationIdentifier) {
         var emergencyMessage = emergencyService.findActiveEmergencyMessage();
         if (emergencyMessage.isPresent()) {
