@@ -46,7 +46,7 @@ public class NotificationService {
         upcomingEntries.stream()
                        .filter(dto -> !sent.contains(dto.getId()))
                        .forEach(dto -> {
-                           var message = "Um %s spielt %s (%s)".formatted(FormatUtil.formatTime(dto.startTime()), dto.vereinName(), dto.location());
+                           var message = "Dein Favorit spielt um %s Uhr%n%s".formatted(FormatUtil.formatTime(dto.startTime()), dto.location());
                            firebaseMessagingService.send(new MessageFavoriteDTO(dto.vereinIdentifier(),
                                                                                 dto.vereinName(),
                                                                                 message));

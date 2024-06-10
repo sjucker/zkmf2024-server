@@ -83,7 +83,7 @@ class NotificationServiceIntTest extends AbstractIntegrationTest {
         assertThat(captor.getValue()).satisfies(dto -> {
             assertThat(dto.identifier()).isEqualTo(verein2.getIdentifier());
             assertThat(dto.title()).isEqualTo(verein2.getVereinsname());
-            assertThat(dto.body()).isEqualTo("Um %s spielt Verein2 (Embrisaal)".formatted(FormatUtil.formatTime(startTime)));
+            assertThat(dto.body()).isEqualToIgnoringNewLines("Dein Favorit spielt um %s Uhr%nEmbrisaal".formatted(FormatUtil.formatTime(startTime)));
         });
     }
 
