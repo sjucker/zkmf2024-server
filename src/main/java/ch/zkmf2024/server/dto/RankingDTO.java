@@ -4,5 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record RankingDTO(@NotNull String modul,
-                         @NotNull BigDecimal score) {
+                         // might be null for Platzkonzerte
+                         BigDecimal score) {
 }

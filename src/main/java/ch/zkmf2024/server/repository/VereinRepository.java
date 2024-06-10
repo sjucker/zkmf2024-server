@@ -982,6 +982,10 @@ public class VereinRepository {
                       ));
     }
 
+    public void deleteAll() {
+        jooqDsl.deleteFrom(VEREIN).execute();
+    }
+
     public record StageSetupExport(String verein,
                                    String location,
                                    String locationIdentifier,

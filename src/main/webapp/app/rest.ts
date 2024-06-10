@@ -797,20 +797,6 @@ export interface UserDTO {
     lastLogin?: DateAsString;
 }
 
-export interface VereinAssignmentDTO {
-    id: number;
-    name: string;
-    programme: VereinAssignmentProgrammDTO[];
-}
-
-export interface VereinAssignmentProgrammDTO {
-    id: number;
-    modul: Modul;
-    modulDescription: string;
-    klasse?: string;
-    besetzung?: string;
-}
-
 export interface VereinCommentCreateDTO {
     comment: string;
 }

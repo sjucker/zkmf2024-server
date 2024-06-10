@@ -64,6 +64,14 @@ public enum Modul implements HasDescription {
         return "%s - %s".formatted(name(), getDescription());
     }
 
+    public String getDiplomDescription(JudgeReportModulCategory category) {
+        var diplomDescription = "Modul %s %s".formatted(name(), getDescription());
+        if (category != null) {
+            diplomDescription += " (%s)".formatted(category.getDescription());
+        }
+        return diplomDescription;
+    }
+
     public boolean isPlatzkonzert() {
         return this == C;
     }

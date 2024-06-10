@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.RankingDTO;
 import ch.zkmf2024.server.dto.RankingListDTO;
 import ch.zkmf2024.server.dto.RankingListEntryDTO;
 import ch.zkmf2024.server.dto.RankingStatus;
@@ -17,6 +18,7 @@ import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +31,8 @@ import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 public class RankingRepository {
@@ -189,19 +193,62 @@ public class RankingRepository {
     }
 
     public List<RankingSummaryDTO> getAllRankingsPerVerein() {
-        return jooqDsl.select()
-                      .from(VEREIN_PROGRAMM)
-                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
-                      .leftJoin(RANKING).on(RANKING.MODUL.eq(VEREIN_PROGRAMM.MODUL),
-                                            RANKING.KLASSE.eq(VEREIN_PROGRAMM.KLASSE),
-                                            RANKING.BESETZUNG.eq(VEREIN_PROGRAMM.BESETZUNG))
-                      .join(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID))
-                      .fetch(it -> new RankingSummaryDTO(it.get(VEREIN.VEREINSNAME),
-                                                         // TODO
-                                                         "TODO", List.of()));
+        try (var stream = jooqDsl.select(VEREIN.ID,
+                                         VEREIN.VEREINSNAME,
+                                         VEREIN_PROGRAMM.MODUL,
+                                         VEREIN_PROGRAMM.KLASSE,
+                                         VEREIN_PROGRAMM.BESETZUNG,
+                                         RANKING.MODUL,
+                                         RANKING.KLASSE,
+                                         RANKING.BESETZUNG,
+                                         RANKING.CATEGORY,
+                                         RANKING_ENTRY.SCORE)
+                                 .from(VEREIN_PROGRAMM)
+                                 .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                                 .leftJoin(RANKING).on(RANKING.MODUL.eq(VEREIN_PROGRAMM.MODUL),
+                                                       (VEREIN_PROGRAMM.KLASSE.isNull().and(RANKING.KLASSE.isNull()).or(RANKING.KLASSE.eq(VEREIN_PROGRAMM.KLASSE))),
+                                                       (VEREIN_PROGRAMM.BESETZUNG.isNull().and(RANKING.BESETZUNG.isNull()).or(RANKING.BESETZUNG.eq(VEREIN_PROGRAMM.BESETZUNG))))
+                                 .leftJoin(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID))
+                                 .stream()) {
 
+            return stream.collect(groupingBy(it -> it.get(VEREIN.ID), toList())).values().stream()
+                         .map(entries -> new RankingSummaryDTO(entries.getFirst().get(VEREIN.VEREINSNAME),
+                                                               getCompetition(entries),
+                                                               entries.stream()
+                                                                      .map(e -> new RankingDTO(Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL))
+                                                                                                    .getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
+                                                                                               e.get(RANKING_ENTRY.SCORE)))
+                                                                      .sorted(Comparator.comparing(RankingDTO::modul))
+                                                                      .toList()))
+                         .toList();
+        }
+    }
+
+    private String getCompetition(List<? extends Record> entries) {
+        Klasse klasse = null;
+        Besetzung besetzung = null;
+        for (var entry : entries) {
+            if (klasse == null) {
+                klasse = Klasse.fromString(entry.get(VEREIN_PROGRAMM.KLASSE)).orElse(null);
+            }
+            if (besetzung == null) {
+                besetzung = Besetzung.fromString(entry.get(VEREIN_PROGRAMM.BESETZUNG)).orElse(null);
+            }
+        }
+        var joiner = new StringJoiner(" ");
+        if (klasse != null) {
+            joiner.add(klasse.getDescription());
+        }
+        if (besetzung != null) {
+            joiner.add(besetzung.getDescription());
+        }
+        return joiner.toString();
     }
 
     public record ConfirmedScoreIdentifier(Modul modul, Klasse klasse, Besetzung besetzung, JudgeReportModulCategory category, Long locationId, Long vereinId) {
+    }
+
+    public void deleteAll() {
+        jooqDsl.deleteFrom(RANKING).execute();
     }
 }

@@ -2,6 +2,7 @@ package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.configuration.ApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,6 +29,7 @@ public class MailchimpService {
         this.webClient = WebClient.create(BASE_URL);
     }
 
+    @Async
     public void addNewsletterMember(String emailAddress, String firstName, String lastName) {
         var body = new AddNewsletterMemberRequest(
                 emailAddress,

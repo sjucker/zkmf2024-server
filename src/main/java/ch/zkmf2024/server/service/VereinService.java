@@ -334,7 +334,6 @@ public class VereinService {
     }
 
     public VereinDTO update(String email, VereinDTO dto) {
-        // TODO verify user is allowed to update
         var verein = vereinRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("no Verein found for email: %s".formatted(email)));
 
         MAPPER.updateVereinsangaben(verein, dto.angaben());

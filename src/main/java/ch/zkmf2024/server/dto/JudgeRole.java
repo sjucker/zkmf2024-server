@@ -4,12 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum JudgeRole implements HasDescription {
-    // modul A, B
+    // modul A, B, G, H
     JUROR_1("Juryvorsitz"),
     JUROR_2("Jurymitglied (ohne Gesprächsführung)"),
     JUROR_3("Jurymitglied (mit Gesprächsführung)"),
-
-    // TODO Modul G: 4 Juroren? Und wer macht Gespräch?
 
     // modul D, E, F
     JUROR_1_OPTISCH("Juror 1 optisch"),

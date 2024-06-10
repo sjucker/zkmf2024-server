@@ -44,7 +44,6 @@ public class NewsletterService {
                 null
         ));
 
-        // TODO make this async?
         mailchimpService.addNewsletterMember(dto.email(), dto.vorname(), dto.name());
 
         return REGISTERED;
