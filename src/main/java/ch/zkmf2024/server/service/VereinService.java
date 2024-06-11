@@ -778,4 +778,11 @@ public class VereinService {
         verein.setPhase2ConfirmedBy(username);
         vereinRepository.update(verein);
     }
+
+    public List<LunchSummary> getLunchSummary() {
+        return vereinRepository.getLunchSummary();
+    }
+
+    public record LunchSummary(String vereinsName, int lunchAmount) {
+    }
 }

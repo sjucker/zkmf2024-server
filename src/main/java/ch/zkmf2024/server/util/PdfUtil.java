@@ -38,8 +38,16 @@ public final class PdfUtil {
         text(stream, x, y, FONT, 12, text);
     }
 
+    public static void textNormal(PDPageContentStream stream, int x, int y, String text, int fontSize) throws IOException {
+        text(stream, x, y, FONT, fontSize, text);
+    }
+
     public static void textBold(PDPageContentStream stream, int x, int y, String text) throws IOException {
         text(stream, x, y, FONT_BOLD, 12, text);
+    }
+
+    public static void textBold(PDPageContentStream stream, int x, int y, int fontSize, String text) throws IOException {
+        text(stream, x, y, FONT_BOLD, fontSize, text);
     }
 
     public static void textHeader(PDPageContentStream stream, int x, int y, String text) throws IOException {

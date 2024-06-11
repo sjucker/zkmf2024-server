@@ -49,6 +49,7 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinProgrammTitelPojo;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
+import ch.zkmf2024.server.service.VereinService.LunchSummary;
 import ch.zkmf2024.server.util.DateUtil;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
@@ -984,6 +985,27 @@ public class VereinRepository {
 
     public void deleteAll() {
         jooqDsl.deleteFrom(VEREIN).execute();
+    }
+
+    public List<LunchSummary> getLunchSummary() {
+        return jooqDsl.select(VEREIN.VEREINSNAME,
+                              VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_MEAT,
+                              VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_VEGAN,
+                              VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_ALLERGIES)
+                      .from(VEREIN)
+                      .join(VEREIN_ANMELDUNG_DETAIL).on(VEREIN_ANMELDUNG_DETAIL.FK_VEREIN.eq(VEREIN.ID))
+                      .fetch(it -> new LunchSummary(it.get(VEREIN.VEREINSNAME),
+                                                    lunchAmount(it.get(VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_MEAT),
+                                                                it.get(VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_VEGAN),
+                                                                it.get(VEREIN_ANMELDUNG_DETAIL.VERPFLEGUNG_ALLERGIES))));
+    }
+
+    private int lunchAmount(Integer meat, Integer vegan, Integer allergies) {
+        return amount(meat) + amount(vegan) + amount(allergies);
+    }
+
+    private int amount(Integer value) {
+        return value != null ? value : 0;
     }
 
     public record StageSetupExport(String verein,

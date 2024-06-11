@@ -145,6 +145,13 @@ public class AdminEndpoint {
         return export(stageService.createPdf(locationIdentifier).orElseThrow());
     }
 
+    @GetMapping(path = {"/download/lunch"})
+    @Secured({"ADMIN", "ADMIN_READ_ONLY"})
+    public ResponseEntity<Resource> exportLunch() {
+        log.info("GET /secured/admin/download/lunch");
+        return export(exportService.exportLunchSummary().orElseThrow());
+    }
+
     private ResponseEntity<Resource> export(File file) {
         try {
             var path = Paths.get(file.getAbsolutePath());
