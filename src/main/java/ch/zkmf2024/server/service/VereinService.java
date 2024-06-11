@@ -234,12 +234,24 @@ public class VereinService {
     public VereinMemberInfoDTO getVereinMemberInfo(String vereinIdentifier) {
         var verein = vereinRepository.findByIdentifier(vereinIdentifier).orElseThrow(() -> new NoSuchElementException("unknown vereinIdentifier: " + vereinIdentifier));
         var timetableEntries = findTimetableEntriesByVereinId(verein.getId());
+        var instrumentenDepot = getInstrumentenDepot(timetableEntries).orElse(null);
+        var instrumentenDepotParademusik = getInstrumentenDepotParademusik(timetableEntries).orElse(null);
         return new VereinMemberInfoDTO(
                 timetableEntries,
                 verein.getLunchTime(),
-                getInstrumentenDepot(timetableEntries).orElse(null),
-                getInstrumentenDepotParademusik(timetableEntries).orElse(null)
+                instrumentenDepot,
+                instrumentenDepotParademusik(instrumentenDepot, instrumentenDepotParademusik)
         );
+    }
+
+    private LocationDTO instrumentenDepotParademusik(LocationDTO instrumentenDepot, LocationDTO instrumentenDepotParademusik) {
+        if (instrumentenDepot != null && instrumentenDepotParademusik != null) {
+            // if the same, return null
+            return instrumentenDepot.id().equals(instrumentenDepotParademusik.id()) ?
+                    null :
+                    instrumentenDepotParademusik;
+        }
+        return instrumentenDepotParademusik;
     }
 
     private Optional<LocationDTO> getInstrumentenDepot(List<TimetableOverviewEntryDTO> timetableEntries) {
