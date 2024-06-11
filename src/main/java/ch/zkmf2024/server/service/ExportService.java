@@ -7,7 +7,9 @@ import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
 import ch.zkmf2024.server.util.FormatUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,9 +28,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static ch.zkmf2024.server.dto.Modul.B;
+import static ch.zkmf2024.server.util.PdfUtil.addPageLandscape;
+import static ch.zkmf2024.server.util.PdfUtil.save;
+import static ch.zkmf2024.server.util.PdfUtil.textBold;
+import static ch.zkmf2024.server.util.PdfUtil.textNormal;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsLast;
@@ -36,6 +43,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Service
 public class ExportService {
 
@@ -609,5 +617,38 @@ public class ExportService {
             }
         }
         return columnIndex;
+    }
+
+    public Optional<File> exportLunchSummary() {
+        try (var document = new PDDocument()) {
+            for (var lunchSummary : vereinService.getLunchSummary()) {
+                try (var contentStream = addPageLandscape(document)) {
+                    var vereinsName = lunchSummary.vereinsName();
+                    var parts = vereinsName.split(" ");
+                    var length = 0;
+                    var row = 0;
+                    var partName = new StringBuilder();
+                    var top = 120;
+                    for (var part : parts) {
+                        if (length + part.length() > 21) {
+                            textBold(contentStream, 20, top - (row * 20), 60, partName.toString());
+                            length = 0;
+                            row++;
+                            partName = new StringBuilder(part).append(" ");
+                        } else {
+                            length += part.length();
+                            partName.append(part).append(" ");
+                        }
+                    }
+                    textBold(contentStream, 20, top - (row * 20), 60, partName.toString());
+
+                    textNormal(contentStream, 20, top - ((row + 1) * 20) - 10, lunchSummary.lunchAmount() + " Personen", 50);
+                }
+            }
+            return Optional.of(save(document));
+        } catch (IOException e) {
+            log.error("error creating pdf", e);
+            return Optional.empty();
+        }
     }
 }

@@ -7,6 +7,8 @@
     <div class="flex gap-2 justify-content-between">
         <p-button iconPos="left" icon="pi pi-download" [loading]="exporting()" label="Export"
                   (onClick)="export()"></p-button>
+        <p-button iconPos="left" icon="pi pi-download" [loading]="exportingLunch()" label="Lunch"
+                  (onClick)="exportLunch()"></p-button>
         <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
         <p-button iconPos="left" icon="pi pi-download" [loading]="exportingStageSetups()" label="Bühnenpläne"
                   (onClick)="menu.toggle($event)"></p-button>

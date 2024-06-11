@@ -20,6 +20,7 @@ export class VereineComponent implements OnInit {
     selected: VereinOverviewDTO[] = [];
     loading = signal(false);
     exporting = signal(false);
+    exportingLunch = signal(false);
     exportingStageSetups = signal(false);
 
     menuItems: MenuItem[] = [];
@@ -206,6 +207,27 @@ export class VereineComponent implements OnInit {
             },
             complete: () => {
                 this.exportingStageSetups.set(false);
+            }
+        });
+    }
+
+    exportLunch() {
+        this.exportingLunch.set(true);
+        this.vereineService.exportLunch().subscribe({
+            next: response => {
+                saveAs(response, `lunch.pdf`);
+            },
+            error: error => {
+                this.exportingLunch.set(false);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exportingLunch.set(false);
             }
         });
     }
