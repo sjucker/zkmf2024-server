@@ -4,6 +4,7 @@ import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.JudgePresentationDTO;
 import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
+import ch.zkmf2024.server.dto.JudgeReportFeedbackDTO;
 import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
@@ -75,7 +76,6 @@ public class JudgeService {
     private final TimetableRepository timetableRepository;
     private final LocationRepository locationRepository;
     private final CurrentlyPlayingRepository currentlyPlayingRepository;
-    private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
     public JudgeService(JudgeRepository judgeRepository,
@@ -84,7 +84,6 @@ public class JudgeService {
                         TimetableRepository timetableRepository,
                         LocationRepository locationRepository,
                         CurrentlyPlayingRepository currentlyPlayingRepository,
-                        MailService mailService,
                         PasswordEncoder passwordEncoder) {
         this.judgeRepository = judgeRepository;
         this.userRepository = userRepository;
@@ -92,7 +91,6 @@ public class JudgeService {
         this.timetableRepository = timetableRepository;
         this.locationRepository = locationRepository;
         this.currentlyPlayingRepository = currentlyPlayingRepository;
-        this.mailService = mailService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -110,6 +108,10 @@ public class JudgeService {
 
     public Optional<JudgeReportViewDTO> getReport(Long reportId) {
         return judgeRepository.getReport(reportId);
+    }
+
+    public Optional<JudgeReportFeedbackDTO> getFeedback(Long programmId, JudgeReportModulCategory category) {
+        return judgeRepository.getFeedback(programmId, category);
     }
 
     public void update(String username, Long reportId, JudgeReportDTO dto) {

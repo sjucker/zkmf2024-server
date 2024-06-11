@@ -3,6 +3,8 @@ package ch.zkmf2024.server.rest.secured;
 import ch.zkmf2024.server.dto.ConfirmScoreDTO;
 import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
+import ch.zkmf2024.server.dto.JudgeReportFeedbackDTO;
+import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportSummaryDTO;
 import ch.zkmf2024.server.dto.JudgeReportViewDTO;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -66,10 +69,20 @@ public class SecuredJudgeEndpoint {
 
     @GetMapping("/view/{id}")
     @Secured({"JUDGE", "ADMIN", "IMPERSONATE"})
-    public ResponseEntity<JudgeReportViewDTO> get(@PathVariable Long id) {
+    public ResponseEntity<JudgeReportViewDTO> view(@PathVariable Long id) {
         log.info("GET /secured/judge/view/{}", id);
 
         return ResponseEntity.of(judgeService.getReport(id));
+    }
+
+    @GetMapping("/feedback/{programmId}")
+    @Secured({"JUDGE", "ADMIN", "IMPERSONATE"})
+    public ResponseEntity<JudgeReportFeedbackDTO> feedback(@PathVariable Long programmId,
+                                                           @RequestParam(required = false) String category) {
+        log.info("GET /secured/judge/feedback/{}", programmId);
+
+        return ResponseEntity.of(judgeService.getFeedback(programmId,
+                                                          JudgeReportModulCategory.fromString(category).orElse(null)));
     }
 
     @PutMapping("/{id}")
