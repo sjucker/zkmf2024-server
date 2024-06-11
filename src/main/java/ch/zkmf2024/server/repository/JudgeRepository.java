@@ -5,6 +5,7 @@ import ch.zkmf2024.server.dto.JudgeRankingEntryDTO;
 import ch.zkmf2024.server.dto.JudgeReportCategory;
 import ch.zkmf2024.server.dto.JudgeReportCategoryRating;
 import ch.zkmf2024.server.dto.JudgeReportDTO;
+import ch.zkmf2024.server.dto.JudgeReportFeedbackDTO;
 import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.JudgeReportOverviewDTO;
 import ch.zkmf2024.server.dto.JudgeReportRatingDTO;
@@ -238,28 +239,82 @@ public class JudgeRepository {
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                       .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
                       .where(JUDGE_REPORT.ID.eq(reportId))
-                      .fetchOptional(it -> {
-                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
-                          var category = JudgeReportModulCategory.fromString(it.get(JUDGE_REPORT.CATEGORY));
-                          var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
-                          var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE));
-                          var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG));
+                      .fetchOptional(this::toJudgeReportViewDTO);
+    }
 
-                          return new JudgeReportViewDTO(
-                                  "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME)),
-                                  modul,
-                                  modul.getFullDescription(),
-                                  klasse.map(Klasse::getDescription).orElse(null),
-                                  besetzung.map(Besetzung::getDescription).orElse(null),
-                                  category.orElse(null),
-                                  category.map(JudgeReportModulCategory::getDescription).orElse(null),
-                                  it.get(VEREIN.VEREINSNAME),
-                                  it.get(JUDGE_REPORT.SCORE),
-                                  JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
-                                  findTitles(reportId, modul, category.orElse(null)),
-                                  findOverallRatings(reportId, modul, category.orElse(null), role)
-                          );
-                      });
+    private JudgeReportViewDTO toJudgeReportViewDTO(Record it) {
+        var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+        var category = JudgeReportModulCategory.fromString(it.get(JUDGE_REPORT.CATEGORY));
+        var role = JudgeRole.valueOf(it.get(JUDGE_REPORT.ROLE));
+        var klasse = Klasse.fromString(it.get(VEREIN_PROGRAMM.KLASSE));
+        var besetzung = Besetzung.fromString(it.get(VEREIN_PROGRAMM.BESETZUNG));
+
+        var reportId = it.get(JUDGE_REPORT.ID);
+        return new JudgeReportViewDTO(
+                "%s %s".formatted(it.get(JUDGE.FIRST_NAME), it.get(JUDGE.NAME)),
+                modul,
+                modul.getFullDescription(),
+                klasse.map(Klasse::getDescription).orElse(null),
+                besetzung.map(Besetzung::getDescription).orElse(null),
+                category.orElse(null),
+                category.map(JudgeReportModulCategory::getDescription).orElse(null),
+                it.get(VEREIN.VEREINSNAME),
+                it.get(JUDGE_REPORT.SCORE),
+                JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
+                findTitles(reportId, modul, category.orElse(null)),
+                findOverallRatings(reportId, modul, category.orElse(null), role)
+        );
+    }
+
+    public Optional<JudgeReportFeedbackDTO> getFeedback(Long programmId, JudgeReportModulCategory category) {
+        var judgesReports = jooqDsl.select()
+                                   .from(JUDGE_REPORT)
+                                   .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
+                                   .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                                   .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                                   .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                                   .where(VEREIN_PROGRAMM.ID.eq(programmId),
+                                          (category == null ? JUDGE_REPORT.CATEGORY.isNull() : JUDGE_REPORT.CATEGORY.eq(category.name())))
+                                   .orderBy(JUDGE_REPORT.ROLE)
+                                   .fetch(this::toJudgeReportViewDTO);
+
+        if (judgesReports.size() == 3) {
+            var judge1 = judgesReports.getFirst();
+            var judge2 = judgesReports.get(1);
+            var judge3 = judgesReports.get(2);
+            return Optional.of(new JudgeReportFeedbackDTO(
+                    judge1.verein(),
+                    judge1.modul(),
+                    judge1.category(),
+                    judge1.modul().getDiplomDescription(judge1.category()),
+                    scoreRange(judge1, judge2, judge3),
+                    judge1,
+                    judge2,
+                    judge3
+            ));
+        }
+
+        return Optional.empty();
+
+    }
+
+    private String scoreRange(JudgeReportViewDTO judge1, JudgeReportViewDTO judge2, JudgeReportViewDTO judge3) {
+        if (judge1.score() == null || judge2.score() == null || judge3.score() == null) {
+            return "?";
+        }
+        var overallScore = (judge1.score().add(judge2.score()).add(judge3.score())).divide(BigDecimal.valueOf(3), 2, HALF_UP);
+
+        if (overallScore.compareTo(new BigDecimal("90")) >= 0) {
+            return "ausgezeichnete Leistungen";
+        } else if (overallScore.compareTo(new BigDecimal("80")) >= 0) {
+            return "sehr gute Leistungen";
+        } else if (overallScore.compareTo(new BigDecimal("70")) >= 0) {
+            return "gute Leistungen";
+        } else if (overallScore.compareTo(new BigDecimal("60")) >= 0) {
+            return "genügende Leistungen";
+        } else {
+            return "ungenügende Leistungen";
+        }
     }
 
     private List<JudgeReportTitleDTO> findTitles(Long reportId, Modul modul, JudgeReportModulCategory category) {
