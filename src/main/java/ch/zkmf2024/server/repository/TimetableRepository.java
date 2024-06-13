@@ -3,6 +3,7 @@ package ch.zkmf2024.server.repository;
 import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.TimetableCurrentDTO;
 import ch.zkmf2024.server.dto.TimetableEntryType;
 import ch.zkmf2024.server.dto.TimetableOverviewEntryDTO;
 import ch.zkmf2024.server.dto.TimetablePreviewDTO;
@@ -28,7 +29,9 @@ import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE_REPORT;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
+import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
+import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM_TITEL;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.MARSCHMUSIK;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.PLATZKONZERT;
 import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
@@ -38,6 +41,7 @@ import static ch.zkmf2024.server.repository.VereinRepository.getCompetition;
 import static ch.zkmf2024.server.util.DateUtil.currentTime;
 import static ch.zkmf2024.server.util.DateUtil.now;
 import static ch.zkmf2024.server.util.DateUtil.today;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 @Repository
@@ -195,8 +199,16 @@ public class TimetableRepository {
         timetableEntryDao.update(entry);
     }
 
-    public Optional<TimetablePreviewDTO> findCurrent(String locationIdentifier) {
-        return jooqDsl.select()
+    public Optional<TimetableCurrentDTO> findCurrent(String locationIdentifier) {
+        return jooqDsl.select(VEREIN.VEREINSNAME,
+                              KONTAKT.VORNAME,
+                              KONTAKT.NACHNAME,
+                              VEREIN_PROGRAMM.MODUL,
+                              VEREIN_PROGRAMM.KLASSE,
+                              VEREIN_PROGRAMM.BESETZUNG,
+                              VEREIN_PROGRAMM.TITEL,
+                              VEREIN_PROGRAMM.ID,
+                              VEREIN_PROGRAMM.MODUL)
                       .from(TIMETABLE_ENTRY)
                       .join(CURRENTLY_PLAYING).on(TIMETABLE_ENTRY.ID.eq(CURRENTLY_PLAYING.FK_TIMETABLE_ENTRY))
                       .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
@@ -206,7 +218,66 @@ public class TimetableRepository {
                       .where(CURRENTLY_PLAYING.STARTED_AT.isNotNull(),
                              CURRENTLY_PLAYING.ENDED_AT.isNull(),
                              LOCATION.IDENTIFIER.eq(locationIdentifier))
-                      .fetchOptional(TimetableRepository::toTimetablePreviewDTO);
+                      .orderBy(CURRENTLY_PLAYING.STARTED_AT.desc())
+                      .limit(1)
+                      .fetchOptional(it -> {
+                          var modul = Modul.valueOf(it.get(VEREIN_PROGRAMM.MODUL));
+                          var titles = getTitles(it.get(VEREIN_PROGRAMM.ID), modul);
+                          return new TimetableCurrentDTO(
+                                  it.get(VEREIN.VEREINSNAME),
+                                  "%s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
+                                  getCompetition(it),
+                                  defaultIfBlank(it.get(VEREIN_PROGRAMM.TITEL), getTitel(titles, modul)),
+                                  titles
+                          );
+                      });
+    }
+
+    private static String getTitel(List<String> titles, Modul modul) {
+        if (titles.isEmpty()) {
+            return "";
+        }
+        if (modul.isTambouren()) {
+            return titles.size() > 1 ? "Kompositionen" : "Komposition";
+        }
+        return "Programm";
+    }
+
+    private List<String> getTitles(Long programmId, Modul modul) {
+        if (modul.isParademusik() || modul.isPlatzkonzert()) {
+            return List.of();
+        } else if (modul.isTambouren()) {
+            return jooqDsl.select(TITEL.TITEL_NAME,
+                                  TITEL.FK_VEREIN,
+                                  TITEL.COMPOSER)
+                          .from(TITEL)
+                          .join(VEREIN_PROGRAMM).on(
+                            DSL.or(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID.eq(TITEL.ID),
+                                   VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID.eq(TITEL.ID),
+                                   VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID.eq(TITEL.ID),
+                                   VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID.eq(TITEL.ID)))
+                          .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                          .where(VEREIN_PROGRAMM.ID.eq(programmId),
+                                 VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
+                          .fetch(it -> "%s%s (%s)".formatted(it.get(TITEL.TITEL_NAME),
+                                                             it.get(TITEL.FK_VEREIN) == null ? "*" : "",
+                                                             it.get(TITEL.COMPOSER)));
+        } else {
+            return jooqDsl.select(TITEL.TITEL_NAME,
+                                  TITEL.FK_VEREIN,
+                                  TITEL.COMPOSER)
+                          .from(TITEL)
+                          .join(VEREIN_PROGRAMM_TITEL).on(VEREIN_PROGRAMM_TITEL.FK_TITEL.eq(TITEL.ID))
+                          .join(VEREIN_PROGRAMM).on(VEREIN_PROGRAMM_TITEL.FK_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                          .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                          .where(VEREIN_PROGRAMM.ID.eq(programmId),
+                                 VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
+                          .orderBy(VEREIN_PROGRAMM_TITEL.POSITION)
+                          .fetch(it -> "%s%s (%s)".formatted(it.get(TITEL.TITEL_NAME),
+                                                             it.get(TITEL.FK_VEREIN) == null ? "*" : "",
+                                                             it.get(TITEL.COMPOSER)));
+        }
+
     }
 
     public Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
@@ -232,7 +303,7 @@ public class TimetableRepository {
         return new TimetablePreviewDTO(
                 it.get(VEREIN.VEREINSNAME),
                 getCompetition(it),
-                "unter der Leitung von %s %s".formatted(defaultString(it.get(KONTAKT.VORNAME)), defaultString(it.get(KONTAKT.NACHNAME))),
+                null,
                 LocationRepository.toDTO(it),
                 it.get(TIMETABLE_ENTRY.DATE),
                 it.get(TIMETABLE_ENTRY.START_TIME),

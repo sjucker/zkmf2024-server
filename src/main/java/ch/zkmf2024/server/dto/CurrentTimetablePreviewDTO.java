@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.List;
 
-public record CurrentTimetablePreviewDTO(TimetablePreviewDTO current,
+public record CurrentTimetablePreviewDTO(TimetableCurrentDTO current,
                                          TimetablePreviewDTO next,
                                          @NotNull List<SponsorDTO> sponsoren,
                                          @NotNull LocalTime currentTime,
@@ -20,7 +20,7 @@ public record CurrentTimetablePreviewDTO(TimetablePreviewDTO current,
                                               emergencyMessage);
     }
 
-    public static CurrentTimetablePreviewDTO of(TimetablePreviewDTO current) {
+    public static CurrentTimetablePreviewDTO of(TimetableCurrentDTO current) {
         return new CurrentTimetablePreviewDTO(current,
                                               null,
                                               List.of(),

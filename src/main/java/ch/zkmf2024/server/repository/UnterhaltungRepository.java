@@ -35,28 +35,6 @@ public class UnterhaltungRepository {
         return unterhaltungEntryDao.fetchByIdentifier(identifier).stream().findFirst();
     }
 
-    public Optional<TimetablePreviewDTO> findCurrent(String locationIdentifier) {
-        var now = DateUtil.currentTime();
-        var today = DateUtil.today();
-        return jooqDsl.select()
-                      .from(UNTERHALTUNG_ENTRY)
-                      .join(LOCATION).on(UNTERHALTUNG_ENTRY.FK_LOCATION.eq(LOCATION.ID))
-                      .where(UNTERHALTUNG_ENTRY.DATE.eq(today),
-                             UNTERHALTUNG_ENTRY.START_TIME.lessOrEqual(now),
-                             UNTERHALTUNG_ENTRY.END_TIME.greaterOrEqual(now),
-                             LOCATION.IDENTIFIER.eq(locationIdentifier))
-                      .fetchOptional(it -> new TimetablePreviewDTO(
-                              it.get(UNTERHALTUNG_ENTRY.TITLE),
-                              it.get(UNTERHALTUNG_ENTRY.SUBTITLE),
-                              null,
-                              LocationRepository.toDTO(it),
-                              it.get(UNTERHALTUNG_ENTRY.DATE),
-                              it.get(UNTERHALTUNG_ENTRY.START_TIME),
-                              it.get(UNTERHALTUNG_ENTRY.END_TIME),
-                              0
-                      ));
-    }
-
     public Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
         var query = jooqDsl.select()
                            .from(UNTERHALTUNG_ENTRY)
