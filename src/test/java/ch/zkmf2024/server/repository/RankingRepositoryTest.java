@@ -54,7 +54,7 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
         createVereinProgramm(bachtel.getId(), D, null, null);
         createVereinProgramm(bachtel.getId(), C, null, null);
 
-        var tambouren = createVerein("Tambourenverein der Stadt Winterthur");
+        var tambouren = createVerein("Tambourenverein der Stadt Winterthur", true, true, true);
         createVereinProgramm(tambouren.getId(), G, null, TAMBOUREN);
 
         var ranking1 = createRanking(A, KLASSE_2, HARMONIE, null, location1);
@@ -129,6 +129,10 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
     }
 
     private VereinPojo createVerein(String vereinsname) {
+        return createVerein(vereinsname, false, false, false);
+    }
+
+    private VereinPojo createVerein(String vereinsname, boolean tambourenKatA, boolean tambourenKatB, boolean tambourenKatC) {
         var kontakt1 = new KontaktPojo();
         vereinRepository.insert(kontakt1);
         var kontakt2 = new KontaktPojo();
@@ -140,6 +144,9 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
         verein.setDirektionKontaktId(kontakt1.getId());
         verein.setPraesidentKontaktId(kontakt2.getId());
         verein.setIdentifier(vereinsname);
+        verein.setTambourenKatA(tambourenKatA);
+        verein.setTambourenKatB(tambourenKatB);
+        verein.setTambourenKatC(tambourenKatC);
         vereinRepository.insert(verein);
         return verein;
     }
