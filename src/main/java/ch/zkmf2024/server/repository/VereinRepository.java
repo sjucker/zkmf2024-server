@@ -451,7 +451,8 @@ public class VereinRepository {
                                     it.get(VEREIN.LUNCH_TIME),
                                     null,
                                     null,
-                                    false
+                                    false,
+                                    List.of()
                             ));
 
         stopWatch.splitInfo("findAllForExport");

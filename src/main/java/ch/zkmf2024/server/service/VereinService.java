@@ -227,7 +227,9 @@ public class VereinService {
                 verein.getLunchTime(),
                 getInstrumentenDepot(timetableEntries).orElse(null),
                 getInstrumentenDepotParademusik(timetableEntries).orElse(null),
-                false
+                false,
+                // TODO
+                List.of()
         );
     }
 

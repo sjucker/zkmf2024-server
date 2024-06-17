@@ -1,9 +1,12 @@
 package ch.zkmf2024.server.rest.secured;
 
+import ch.zkmf2024.server.dto.JudgeReportFeedbackDTO;
+import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinStageSetupDTO;
 import ch.zkmf2024.server.dto.admin.VereinMessageCreateDTO;
+import ch.zkmf2024.server.service.JudgeService;
 import ch.zkmf2024.server.service.VereinService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -32,9 +35,11 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 public class SecuredVereinEndpoint {
 
     private final VereinService vereinService;
+    private final JudgeService judgeService;
 
-    public SecuredVereinEndpoint(VereinService vereinService) {
+    public SecuredVereinEndpoint(VereinService vereinService, JudgeService judgeService) {
         this.vereinService = vereinService;
+        this.judgeService = judgeService;
     }
 
     @GetMapping
@@ -98,7 +103,7 @@ public class SecuredVereinEndpoint {
     }
 
     @GetMapping(value = "/stage/additional", produces = IMAGE_JPEG_VALUE)
-    @Secured({"VEREIN"})
+    @Secured({"VEREIN", "IMPERSONATE"})
     public ResponseEntity<byte[]> getAdditionalStage(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("GET /secured/verein/stage/additional");
 
@@ -145,6 +150,16 @@ public class SecuredVereinEndpoint {
         log.info("POST /secured/verein/messages {}", dto);
 
         return ResponseEntity.ok(vereinService.saveMessage(userDetails.getUsername(), dto.message()));
+    }
+
+    @GetMapping("/feedback/{programmId}")
+    @Secured({"VEREIN", "IMPERSONATE"})
+    public ResponseEntity<JudgeReportFeedbackDTO> feedback(@PathVariable Long programmId,
+                                                           @RequestParam(required = false) String category) {
+        log.info("GET /secured/verein/feedback/{} {}", programmId, category);
+
+        return ResponseEntity.of(judgeService.getFeedback(programmId,
+                                                          JudgeReportModulCategory.fromString(category).orElse(null)));
     }
 
     private static Object getFileDescription(MultipartFile file) {
