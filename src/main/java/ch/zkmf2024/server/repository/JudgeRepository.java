@@ -552,7 +552,7 @@ public class JudgeRepository {
                                                         JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)) == DONE
                                                 ))
                                                 .toList(),
-                                         isDone(record1, record2, record3, record4),
+                                         isDone(record1, record2, record3, record4, modul),
                                          confirmedScores.contains(new ConfirmedScoreIdentifier(modul, klasse.orElse(null), besetzung.orElse(null), modulCategory.orElse(null),
                                                                                                record1.get(LOCATION.ID), record1.get(VEREIN.ID)))
                                  ));
@@ -594,9 +594,9 @@ public class JudgeRepository {
                                        .orElse(modul.getFullDescription());
     }
 
-    private boolean isDone(Record record1, Record record2, Record record3, Record record4) {
-        if (record1.get(VEREIN_PROGRAMM.TOTAL_DURATION_IN_SECONDS) != null &&
-                record1.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS) == null) {
+    private boolean isDone(Record record1, Record record2, Record record3, Record record4, Modul modul) {
+        if (modul.hasZeitvorgabe() &&
+                (record1.get(VEREIN_PROGRAMM.TOTAL_DURATION_IN_SECONDS) == null || record1.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS) == null)) {
             // if judge helper has not yet entered actual duration not yet done
             return false;
         }
