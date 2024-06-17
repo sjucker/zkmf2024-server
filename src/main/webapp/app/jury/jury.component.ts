@@ -20,6 +20,7 @@ export class JuryComponent implements OnInit {
 
     exporting = signal(false);
     exportingRankings = signal(false);
+    exportingParademusik = signal(false);
 
     constructor(private dialogService: DialogService,
                 private authenticationService: AuthenticationService,
@@ -115,6 +116,27 @@ export class JuryComponent implements OnInit {
             },
             complete: () => {
                 this.exportingRankings.set(false);
+            }
+        });
+    }
+
+    exportParademusik() {
+        this.exportingParademusik.set(true);
+        this.service.exportParademusik().subscribe({
+            next: response => {
+                saveAs(response, "parademusik.xlsx");
+            },
+            error: error => {
+                this.exportingParademusik.set(false);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Fehler',
+                    detail: error.statusText,
+                    life: 3000
+                });
+            },
+            complete: () => {
+                this.exportingParademusik.set(false);
             }
         });
     }
