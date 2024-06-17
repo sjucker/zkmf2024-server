@@ -195,6 +195,9 @@ public class RankingRepository {
     public List<RankingSummaryDTO> getAllRankingsPerVerein() {
         try (var stream = jooqDsl.select(VEREIN.ID,
                                          VEREIN.VEREINSNAME,
+                                         VEREIN.TAMBOUREN_KAT_A,
+                                         VEREIN.TAMBOUREN_KAT_B,
+                                         VEREIN.TAMBOUREN_KAT_C,
                                          VEREIN_PROGRAMM.MODUL,
                                          VEREIN_PROGRAMM.KLASSE,
                                          VEREIN_PROGRAMM.BESETZUNG,
@@ -208,13 +211,25 @@ public class RankingRepository {
                                  .leftJoin(RANKING).on(RANKING.MODUL.eq(VEREIN_PROGRAMM.MODUL),
                                                        (VEREIN_PROGRAMM.KLASSE.isNull().and(RANKING.KLASSE.isNull()).or(RANKING.KLASSE.eq(VEREIN_PROGRAMM.KLASSE))),
                                                        (VEREIN_PROGRAMM.BESETZUNG.isNull().and(RANKING.BESETZUNG.isNull()).or(RANKING.BESETZUNG.eq(VEREIN_PROGRAMM.BESETZUNG))))
-                                 .leftJoin(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID))
+                                 .leftJoin(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID),
+                                                             RANKING_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                                  .stream()) {
 
             return stream.collect(groupingBy(it -> it.get(VEREIN.ID), toList())).values().stream()
                          .map(entries -> new RankingSummaryDTO(entries.getFirst().get(VEREIN.VEREINSNAME),
                                                                getCompetition(entries),
                                                                entries.stream()
+                                                                      .filter(e -> {
+                                                                          if (e.get(RANKING.CATEGORY) == null) {
+                                                                              return true;
+                                                                          } else {
+                                                                              return switch (JudgeReportModulCategory.valueOf(e.get(RANKING.CATEGORY))) {
+                                                                                  case MODUL_G_KAT_A -> e.get(VEREIN.TAMBOUREN_KAT_A);
+                                                                                  case MODUL_G_KAT_B -> e.get(VEREIN.TAMBOUREN_KAT_B);
+                                                                                  case MODUL_G_KAT_C -> e.get(VEREIN.TAMBOUREN_KAT_C);
+                                                                              };
+                                                                          }
+                                                                      })
                                                                       .map(e -> new RankingDTO(Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL))
                                                                                                     .getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
                                                                                                e.get(RANKING_ENTRY.SCORE)))
