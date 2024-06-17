@@ -7,6 +7,8 @@
     <div class="flex gap-2 justify-content-between">
         <p-button iconPos="left" icon="pi pi-download" [loading]="exportingRankings()" label="Export Ranglisten"
                   (onClick)="exportRankings()"></p-button>
+        <p-button iconPos="left" icon="pi pi-download" [loading]="exportingParademusik()" label="Export Parademusik"
+                  (onClick)="exportParademusik()"></p-button>
         <p-button iconPos="left" icon="pi pi-download" [loading]="exporting()" label="Backup Export"
                   (onClick)="export()"></p-button>
     </div>

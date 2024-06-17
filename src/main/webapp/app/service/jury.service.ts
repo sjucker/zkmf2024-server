@@ -45,4 +45,10 @@ export class JuryService {
             responseType: 'blob'
         });
     }
+
+    exportParademusik(): Observable<Blob> {
+        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/parademusik`, {
+            responseType: 'blob'
+        });
+    }
 }

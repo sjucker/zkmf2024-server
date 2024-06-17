@@ -3,6 +3,7 @@ package ch.zkmf2024.server.service;
 import ch.zkmf2024.server.dto.HasDescription;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.Modul;
+import ch.zkmf2024.server.dto.ModulDSelection;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinProgrammDTO;
@@ -36,9 +37,11 @@ import static ch.zkmf2024.server.util.PdfUtil.addPageLandscape;
 import static ch.zkmf2024.server.util.PdfUtil.save;
 import static ch.zkmf2024.server.util.PdfUtil.textBold;
 import static ch.zkmf2024.server.util.PdfUtil.textNormal;
+import static java.time.format.TextStyle.FULL;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsLast;
+import static java.util.Locale.GERMAN;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
@@ -49,11 +52,50 @@ public class ExportService {
 
     private final VereinService vereinService;
     private final RankingsService rankingsService;
+    private final JudgeService judgeService;
 
     public ExportService(VereinService vereinService,
-                         RankingsService rankingsService) {
+                         RankingsService rankingsService,
+                         JudgeService judgeService) {
         this.vereinService = vereinService;
         this.rankingsService = rankingsService;
+        this.judgeService = judgeService;
+    }
+
+    public File exportParademusik() throws IOException {
+        try (var wb = new XSSFWorkbook()) {
+            var sheet = wb.createSheet();
+            wb.setSheetName(wb.getSheetIndex(sheet), "Parademusik");
+
+            var rowIndex = 0;
+            var headerRow = sheet.createRow(rowIndex++);
+            var columnIndex = 0;
+            columnIndex = setCellValue(columnIndex, headerRow, "Verein", wb);
+            columnIndex = setCellValue(columnIndex, headerRow, "Tag", wb);
+            columnIndex = setCellValue(columnIndex, headerRow, "Uhrzeit", wb);
+            columnIndex = setCellValue(columnIndex, headerRow, "Komposition", wb);
+
+            for (var selection : judgeService.getModulDSelection()) {
+                var row = sheet.createRow(rowIndex++);
+
+                columnIndex = 0;
+                columnIndex = setCellValue(columnIndex, row, selection.verein(), wb);
+                columnIndex = setCellValue(columnIndex, row, selection.start().toLocalDate().getDayOfWeek().getDisplayName(FULL, GERMAN), wb);
+                columnIndex = setCellValue(columnIndex, row, selection.start().toLocalTime(), wb);
+                columnIndex = setCellValue(columnIndex, row, selection.selection() == ModulDSelection.TITEL_1 ? selection.titel1() : selection.titel2(), wb);
+            }
+
+            for (int i = 0; i < columnIndex; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            var temp = Files.createTempFile(null, ".xlsx");
+            try (var fileOut = new FileOutputStream(temp.toFile())) {
+                wb.write(fileOut);
+
+                return temp.toFile();
+            }
+        }
     }
 
     public File exportRankings() throws IOException {
