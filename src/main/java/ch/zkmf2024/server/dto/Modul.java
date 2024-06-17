@@ -2,6 +2,7 @@ package ch.zkmf2024.server.dto;
 
 import lombok.Getter;
 
+import java.util.EnumSet;
 import java.util.Optional;
 
 import static ch.zkmf2024.server.dto.Besetzung.BRASS_BAND;
@@ -78,5 +79,9 @@ public enum Modul implements HasDescription {
 
     public boolean isTambouren() {
         return this == G;
+    }
+
+    public boolean hasZeitvorgabe() {
+        return EnumSet.of(A, B, H).contains(this);
     }
 }

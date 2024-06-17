@@ -18,7 +18,6 @@ import org.jooq.Record;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,6 +30,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -218,7 +218,7 @@ public class RankingRepository {
                                                                       .map(e -> new RankingDTO(Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL))
                                                                                                     .getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
                                                                                                e.get(RANKING_ENTRY.SCORE)))
-                                                                      .sorted(Comparator.comparing(RankingDTO::modul))
+                                                                      .sorted(comparing(RankingDTO::modul))
                                                                       .toList()))
                          .toList();
         }
