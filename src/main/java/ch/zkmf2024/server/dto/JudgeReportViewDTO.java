@@ -14,6 +14,8 @@ public record JudgeReportViewDTO(
         String categoryDescription,
         @NotNull String verein,
         BigDecimal score,
+        BigDecimal penalty,
+        BigDecimal bonus,
         @NotNull JudgeReportStatus status,
         @NotNull List<JudgeReportTitleDTO> titles,
         @NotNull List<JudgeReportRatingDTO> overallRatings
