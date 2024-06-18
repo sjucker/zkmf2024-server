@@ -2,10 +2,13 @@ package ch.zkmf2024.server.repository;
 
 import ch.zkmf2024.server.dto.Besetzung;
 import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
+import ch.zkmf2024.server.dto.JudgeReportFeedbackSelectionDTO;
+import ch.zkmf2024.server.dto.JudgeReportModulCategory;
 import ch.zkmf2024.server.dto.Klasse;
 import ch.zkmf2024.server.dto.KontaktDTO;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.PhaseStatus;
+import ch.zkmf2024.server.dto.RankingStatus;
 import ch.zkmf2024.server.dto.TambourenGrundlage;
 import ch.zkmf2024.server.dto.TitelDTO;
 import ch.zkmf2024.server.dto.VereinDTO;
@@ -50,7 +53,6 @@ import ch.zkmf2024.server.jooq.generated.tables.pojos.VereinStatusPojo;
 import ch.zkmf2024.server.mapper.VereinMapper;
 import ch.zkmf2024.server.repository.ProgrammVorgabenRepository.MinMaxDuration;
 import ch.zkmf2024.server.service.VereinService.LunchSummary;
-import ch.zkmf2024.server.util.DateUtil;
 import ch.zkmf2024.server.util.FormatUtil;
 import org.jooq.DSLContext;
 import org.jooq.JSONB;
@@ -81,6 +83,8 @@ import static ch.zkmf2024.server.dto.PhaseStatus.DONE;
 import static ch.zkmf2024.server.jooq.generated.Tables.IMAGE;
 import static ch.zkmf2024.server.jooq.generated.Tables.KONTAKT;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
+import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
+import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.TITEL;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_ANMELDUNG_DETAIL;
@@ -872,22 +876,6 @@ public class VereinRepository {
                       ));
     }
 
-    public void confirmScores(String username, Long programmId) {
-        jooqDsl.update(VEREIN_PROGRAMM)
-               .set(VEREIN_PROGRAMM.SCORES_CONFIRMED_AT, DateUtil.now())
-               .set(VEREIN_PROGRAMM.SCORES_CONFIRMED_BY, username)
-               .where(VEREIN_PROGRAMM.ID.eq(programmId))
-               .execute();
-    }
-
-    public Optional<String> getEmailByProgrammId(Long programmId) {
-        return jooqDsl.select()
-                      .from(VEREIN_PROGRAMM)
-                      .join(VEREIN).on(VEREIN_PROGRAMM.FK_VEREIN.eq(VEREIN.ID))
-                      .where(VEREIN_PROGRAMM.ID.eq(programmId))
-                      .fetchOptional(VEREIN.EMAIL);
-    }
-
     public Optional<VereinAnmeldungDetailPojo> findAnmeldungDetail(Long vereinId) {
         return vereinAnmeldungDetailDao.fetchByFkVerein(vereinId).stream().findFirst();
     }
@@ -1007,6 +995,21 @@ public class VereinRepository {
 
     private int amount(Integer value) {
         return value != null ? value : 0;
+    }
+
+    public List<JudgeReportFeedbackSelectionDTO> findAvailableFeedbacks(Long vereinId) {
+        return jooqDsl.select(RANKING.MODUL,
+                              RANKING.CATEGORY)
+                      .from(RANKING)
+                      .join(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID).and(RANKING_ENTRY.FK_VEREIN.eq(vereinId)))
+                      .where(RANKING.STATUS.eq(RankingStatus.FINAL.name()))
+                      .fetch(it -> {
+                          var modul = Modul.valueOf(it.get(RANKING.MODUL));
+                          var category = JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY)).orElse(null);
+                          return new JudgeReportFeedbackSelectionDTO(modul,
+                                                                     modul.getDiplomDescription(category),
+                                                                     category);
+                      });
     }
 
     public record StageSetupExport(String verein,

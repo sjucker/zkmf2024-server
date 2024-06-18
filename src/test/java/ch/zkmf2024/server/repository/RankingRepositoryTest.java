@@ -123,7 +123,7 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
     }
 
     private VereinProgrammPojo createVereinProgramm(Long vereinId, Modul modul, Klasse klasse, Besetzung besetzung) {
-        var programm = new VereinProgrammPojo(null, vereinId, modul.name(), klasse != null ? klasse.name() : null, besetzung != null ? besetzung.name() : null, null, null, null, null, null, null, null, null, null, false, false, false, false, false, null, null, null, null, null, null, null, null, null, null);
+        var programm = new VereinProgrammPojo(null, vereinId, modul.name(), klasse != null ? klasse.name() : null, besetzung != null ? besetzung.name() : null, null, null, null, null, null, null, null, null, null, false, false, false, false, false, null, null, null, null, null, null, null, null);
         vereinRepository.insert(programm);
         return programm;
     }

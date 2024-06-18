@@ -35,7 +35,6 @@ import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -165,16 +164,6 @@ public class VereinProgramm extends TableImpl<VereinProgrammRecord> {
      * The column <code>verein_programm.modul_d_titel_2_id</code>.
      */
     public final TableField<VereinProgrammRecord, Long> MODUL_D_TITEL_2_ID = createField(DSL.name("modul_d_titel_2_id"), SQLDataType.BIGINT, this, "");
-
-    /**
-     * The column <code>verein_programm.scores_confirmed_by</code>.
-     */
-    public final TableField<VereinProgrammRecord, String> SCORES_CONFIRMED_BY = createField(DSL.name("scores_confirmed_by"), SQLDataType.VARCHAR(255), this, "");
-
-    /**
-     * The column <code>verein_programm.scores_confirmed_at</code>.
-     */
-    public final TableField<VereinProgrammRecord, LocalDateTime> SCORES_CONFIRMED_AT = createField(DSL.name("scores_confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     /**
      * The column <code>verein_programm.modul_d_titel_selection</code>.

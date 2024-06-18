@@ -110,6 +110,11 @@ public class JudgeService {
         return judgeRepository.getReport(reportId);
     }
 
+    public Optional<JudgeReportFeedbackDTO> getFeedback(String email, Modul modul, JudgeReportModulCategory category) {
+        var verein = vereinRepository.findByEmail(email).orElseThrow();
+        return judgeRepository.getFeedback(verein.getId(), modul, category);
+    }
+
     public Optional<JudgeReportFeedbackDTO> getFeedback(Long programmId, JudgeReportModulCategory category) {
         return judgeRepository.getFeedback(programmId, category);
     }

@@ -31,6 +31,7 @@ import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
+import static java.math.BigDecimal.ZERO;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -233,18 +234,23 @@ public class RankingRepository {
                                                                       })
                                                                       .map(e -> {
                                                                           var modul = Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL));
-                                                                          return new RankingDTO(modul.getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
+                                                                          return new RankingDTO(modul,
+                                                                                                modul.getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
                                                                                                 getScore(e, modul));
                                                                       })
                                                                       .sorted(comparing(RankingDTO::modul))
                                                                       .toList()))
+                         // Platzkonzert-only can be ignored
+                         .filter(dto -> !dto.rankings().stream().allMatch(r -> r.modul().isPlatzkonzert()))
+                         // score null for Platzkonzerte, otherwise always a score > 0 needed
+                         .filter(dto -> dto.rankings().stream().allMatch(r -> r.score() == null || r.score().compareTo(ZERO) > 0))
                          .sorted(comparing(RankingSummaryDTO::competition).thenComparing(RankingSummaryDTO::vereinsName))
                          .toList();
         }
     }
 
     private static BigDecimal getScore(Record e, Modul modul) {
-        return Optional.ofNullable(e.get(RANKING_ENTRY.SCORE)).orElseGet(() -> modul.isPlatzkonzert() ? null : BigDecimal.ZERO);
+        return Optional.ofNullable(e.get(RANKING_ENTRY.SCORE)).orElseGet(() -> modul.isPlatzkonzert() ? null : ZERO);
     }
 
     private String getCompetition(List<? extends Record> entries) {

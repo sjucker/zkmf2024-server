@@ -3,6 +3,7 @@ package ch.zkmf2024.server.service;
 import ch.zkmf2024.server.dto.AdhocOrchesterTeilnehmerDTO;
 import ch.zkmf2024.server.dto.DoppelEinsatzDTO;
 import ch.zkmf2024.server.dto.ImageType;
+import ch.zkmf2024.server.dto.JudgeReportFeedbackSelectionDTO;
 import ch.zkmf2024.server.dto.LocationDTO;
 import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.NichtmitgliederDTO;
@@ -228,9 +229,12 @@ public class VereinService {
                 getInstrumentenDepot(timetableEntries).orElse(null),
                 getInstrumentenDepotParademusik(timetableEntries).orElse(null),
                 false,
-                // TODO
-                List.of()
+                findAvailableFeedbacks(verein.getId())
         );
+    }
+
+    private List<JudgeReportFeedbackSelectionDTO> findAvailableFeedbacks(Long vereinId) {
+        return vereinRepository.findAvailableFeedbacks(vereinId);
     }
 
     public VereinMemberInfoDTO getVereinMemberInfo(String vereinIdentifier) {
