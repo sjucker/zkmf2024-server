@@ -83,7 +83,6 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void getAllRankingsPerVerein() {
-
         var allRankingsPerVerein = rankingRepository.getAllRankingsPerVerein();
         assertThat(allRankingsPerVerein).hasSize(2)
                                         .anySatisfy(dto -> {
@@ -91,15 +90,15 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
                                             assertThat(dto.competition()).isEqualTo("2. Klasse Harmonie");
                                             assertThat(dto.rankings()).hasSize(3)
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modul()).isEqualTo("Modul A Konzertmusik");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul A Konzertmusik");
                                                                           assertThat(r.score()).isEqualByComparingTo("76.54");
                                                                       }, atIndex(0))
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modul()).isEqualTo("Modul C Platzkonzerte");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul C Platzkonzerte");
                                                                           assertThat(r.score()).isNull();
                                                                       }, atIndex(1))
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modul()).isEqualTo("Modul D Parademusik traditionell");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul D Parademusik traditionell");
                                                                           assertThat(r.score()).isEqualTo("66.66");
                                                                       }, atIndex(2));
                                         })
@@ -108,15 +107,15 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
                                             assertThat(dto.competition()).isEqualTo("Tambouren");
                                             assertThat(dto.rankings()).hasSize(3)
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modul()).isEqualTo("Modul G Tambouren (Kategorie A)");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kategorie A)");
                                                                           assertThat(r.score()).isEqualByComparingTo("100.00");
                                                                       }, atIndex(0))
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modul()).isEqualTo("Modul G Tambouren (Kategorie B)");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kategorie B)");
                                                                           assertThat(r.score()).isEqualByComparingTo("91.23");
                                                                       }, atIndex(1))
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modul()).isEqualTo("Modul G Tambouren (Kategorie C)");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kategorie C)");
                                                                           assertThat(r.score()).isEqualTo("55.55");
                                                                       }, atIndex(2));
                                         });
