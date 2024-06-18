@@ -1,6 +1,7 @@
 package ch.zkmf2024.server.service;
 
 import ch.zkmf2024.server.AbstractIntegrationTest;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.RankingDTO;
 import ch.zkmf2024.server.dto.admin.RankingSummaryDTO;
 import org.junit.jupiter.api.Test;
@@ -27,9 +28,9 @@ class RankingsServiceTest extends AbstractIntegrationTest {
     }
 
     private List<RankingSummaryDTO> generateTestData() {
-        var rankingDto = new RankingDTO("Unterhaltungsmusik", new BigDecimal("123.2"));
-        var rankingDto2 = new RankingDTO("Tambouren", new BigDecimal("187.9"));
-        var rankingDto3 = new RankingDTO("Perkussionsensembles", new BigDecimal("150.0"));
+        var rankingDto = new RankingDTO(Modul.B, "Unterhaltungsmusik", new BigDecimal("123.2"));
+        var rankingDto2 = new RankingDTO(Modul.G, "Tambouren", new BigDecimal("187.9"));
+        var rankingDto3 = new RankingDTO(Modul.H, "Perkussionsensembles", new BigDecimal("150.0"));
         var rankingSummaryDTO = new RankingSummaryDTO("Musikverein Zürich-Seebach", "3. Klasse Singvogel", List.of(rankingDto, rankingDto2));
         var rankingSummaryDTO2 = new RankingSummaryDTO("Musikverein Harmonie Zürich Schwamendingen", "2. Klasse Harmonie", List.of(rankingDto, rankingDto2, rankingDto3));
         return List.of(rankingSummaryDTO, rankingSummaryDTO2);

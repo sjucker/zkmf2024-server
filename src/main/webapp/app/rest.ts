@@ -284,7 +284,8 @@ export interface RankingBonusDTO {
 }
 
 export interface RankingDTO {
-    modul: string;
+    modul: Modul;
+    modulDescription: string;
     score?: number;
 }
 
