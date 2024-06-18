@@ -2,6 +2,7 @@ package ch.zkmf2024.server.rest.secured;
 
 import ch.zkmf2024.server.dto.JudgeReportFeedbackDTO;
 import ch.zkmf2024.server.dto.JudgeReportModulCategory;
+import ch.zkmf2024.server.dto.Modul;
 import ch.zkmf2024.server.dto.VereinDTO;
 import ch.zkmf2024.server.dto.VereinMessageDTO;
 import ch.zkmf2024.server.dto.VereinStageSetupDTO;
@@ -152,13 +153,15 @@ public class SecuredVereinEndpoint {
         return ResponseEntity.ok(vereinService.saveMessage(userDetails.getUsername(), dto.message()));
     }
 
-    @GetMapping("/feedback/{programmId}")
+    @GetMapping("/feedback/{modul}")
     @Secured({"VEREIN", "IMPERSONATE"})
-    public ResponseEntity<JudgeReportFeedbackDTO> feedback(@PathVariable Long programmId,
+    public ResponseEntity<JudgeReportFeedbackDTO> feedback(@AuthenticationPrincipal UserDetails userDetails,
+                                                           @PathVariable String modul,
                                                            @RequestParam(required = false) String category) {
-        log.info("GET /secured/verein/feedback/{} {}", programmId, category);
+        log.info("GET /secured/verein/feedback/{} {}", modul, category);
 
-        return ResponseEntity.of(judgeService.getFeedback(programmId,
+        return ResponseEntity.of(judgeService.getFeedback(userDetails.getUsername(),
+                                                          Modul.valueOf(modul),
                                                           JudgeReportModulCategory.fromString(category).orElse(null)));
     }
 

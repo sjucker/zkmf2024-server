@@ -119,7 +119,6 @@ export interface JudgeReportFeedbackDTO {
 }
 
 export interface JudgeReportFeedbackSelectionDTO {
-    programmId: number;
     modul: Modul;
     modulDescription: string;
     category?: JudgeReportModulCategory;
@@ -491,7 +490,7 @@ export interface VereinDTO {
     instrumentenDepot?: LocationDTO;
     instrumentenDepotParademusik?: LocationDTO;
     programmUpdated: boolean;
-    availableFeedbacks?: JudgeReportFeedbackSelectionDTO[];
+    availableFeedbacks: JudgeReportFeedbackSelectionDTO[];
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
     phase4Status: PhaseStatus;

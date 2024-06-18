@@ -266,6 +266,7 @@ public class JudgeRepository {
         );
     }
 
+    // used by jury-app
     public Optional<JudgeReportFeedbackDTO> getFeedback(Long programmId, JudgeReportModulCategory category) {
         var judgesReports = jooqDsl.select()
                                    .from(JUDGE_REPORT)
@@ -295,7 +296,40 @@ public class JudgeRepository {
         }
 
         return Optional.empty();
+    }
 
+    // used by verein-app
+    public Optional<JudgeReportFeedbackDTO> getFeedback(Long vereinId, Modul modul, JudgeReportModulCategory category) {
+        var judgesReports = jooqDsl.select()
+                                   .from(JUDGE_REPORT)
+                                   .join(JUDGE).on(JUDGE_REPORT.FK_JUDGE.eq(JUDGE.ID))
+                                   .join(TIMETABLE_ENTRY).on(JUDGE_REPORT.FK_TIMETABLE_ENTRY.eq(TIMETABLE_ENTRY.ID))
+                                   .join(VEREIN).on(TIMETABLE_ENTRY.FK_VEREIN.eq(VEREIN.ID))
+                                   .join(VEREIN_PROGRAMM).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID))
+                                   .where(VEREIN.ID.eq(vereinId),
+                                          VEREIN_PROGRAMM.MODUL.eq(modul.name()),
+                                          (category == null ? JUDGE_REPORT.CATEGORY.isNull() : JUDGE_REPORT.CATEGORY.eq(category.name())),
+                                          JUDGE_REPORT.STATUS.eq(DONE.name()))
+                                   .orderBy(JUDGE_REPORT.ROLE)
+                                   .fetch(this::toJudgeReportViewDTO);
+
+        if (judgesReports.size() == 3) {
+            var judge1 = judgesReports.getFirst();
+            var judge2 = judgesReports.get(1);
+            var judge3 = judgesReports.get(2);
+            return Optional.of(new JudgeReportFeedbackDTO(
+                    judge1.verein(),
+                    judge1.modul(),
+                    judge1.category(),
+                    judge1.modul().getDiplomDescription(judge1.category()),
+                    scoreRange(judge1, judge2, judge3),
+                    judge1,
+                    judge2,
+                    judge3
+            ));
+        }
+
+        return Optional.empty();
     }
 
     private String scoreRange(JudgeReportViewDTO judge1, JudgeReportViewDTO judge2, JudgeReportViewDTO judge3) {

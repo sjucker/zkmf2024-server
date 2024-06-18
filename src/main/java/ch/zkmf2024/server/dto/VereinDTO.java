@@ -35,7 +35,7 @@ public record VereinDTO(
         LocationDTO instrumentenDepotParademusik,
         // used for client to signal that programm was updated
         boolean programmUpdated,
-        List<JudgeReportFeedbackSelectionDTO> availableFeedbacks
+        @NotNull List<JudgeReportFeedbackSelectionDTO> availableFeedbacks
 ) {
 
     @NotNull

@@ -126,7 +126,7 @@
 
         .page {
             margin-top: 9.60cm;
-            margin-left: 1.55cm;
+            margin-left: 1.0cm;
             width: 13.50cm;
             height: 10.50cm;
             padding-bottom: 0;
@@ -136,24 +136,24 @@
         }
 
         .headline-verein {
-            font-size: 36px;
-            line-height: 40px;
+            font-size: 38px;
+            line-height: 42px;
             margin-top: 0;
             color: #f25d21;
             text-wrap: balance;
         }
 
         .headline-competition {
-            font-size: 28px;
-            line-height: 32px;
-            margin-top: 0;
+            font-size: 26px;
+            line-height: 30px;
+            margin-top: 0.5cm;
             color: #000;
         }
 
         .ranking-title {
             font-size: 28px;
             line-height: 32px;
-            margin-top: 0.5cm;
+            margin-top: 1cm;
             color: #f25d21;
         }
 
@@ -163,11 +163,7 @@
             margin-top: 0;
             display: flex;
             flex-direction: row;
-            gap: 1cm;
-        }
-
-        .ranking-section {
-            padding-top: 0.5cm;
+            gap: 1.5cm;
         }
     </style>
 </head>
@@ -176,15 +172,16 @@
     <div class="page">
         <div class="headline-verein poppins-extrabold"><span th:text="${ranking.vereinsName}"></span></div>
         <div class="headline-competition poppins-bold"><span th:text="${ranking.competition}"></span></div>
-        <div class="ranking-section poppins-bold">
-            <th:block th:each="rankingEntry : ${ranking.rankings}">
-                <div class="ranking-title poppins-bold"><span th:text="${rankingEntry.modul}"></span></div>
-                <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null}">
-                    <div>Total</div>
-                    <div><span th:text="${#numbers.formatDecimal(rankingEntry.score, 1, 2, 'POINT')}"></span> Punkte</div>
-                </div>
-            </th:block>
-        </div>
+        <th:block th:each="rankingEntry : ${ranking.rankings}">
+            <div class="ranking-title poppins-bold"><span th:text="${rankingEntry.modulDescription}"></span></div>
+            <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null}">
+                <div>Total</div>
+                <div><span th:text="${#numbers.formatDecimal(rankingEntry.score, 1, 2, 'POINT')}"></span> Punkte</div>
+            </div>
+            <div class="ranking-score poppins-bold" th:unless="${rankingEntry.score != null}">
+                Teilnahme ohne Bewertung
+            </div>
+        </th:block>
     </div>
 </th:block>
 </body>
