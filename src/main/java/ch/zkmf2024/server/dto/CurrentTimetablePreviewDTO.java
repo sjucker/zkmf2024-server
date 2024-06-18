@@ -10,14 +10,16 @@ public record CurrentTimetablePreviewDTO(TimetableCurrentDTO current,
                                          TimetablePreviewDTO next,
                                          @NotNull List<SponsorDTO> sponsoren,
                                          @NotNull LocalTime currentTime,
-                                         EmergencyMessageDTO emergencyMessage) {
+                                         EmergencyMessageDTO emergencyMessage,
+                                         ScreenDTO screen) {
 
     public static CurrentTimetablePreviewDTO of(EmergencyMessageDTO emergencyMessage) {
         return new CurrentTimetablePreviewDTO(null,
                                               null,
                                               List.of(),
                                               DateUtil.currentTime(),
-                                              emergencyMessage);
+                                              emergencyMessage,
+                                              null);
     }
 
     public static CurrentTimetablePreviewDTO of(TimetableCurrentDTO current) {
@@ -25,6 +27,7 @@ public record CurrentTimetablePreviewDTO(TimetableCurrentDTO current,
                                               null,
                                               List.of(),
                                               DateUtil.currentTime(),
+                                              null,
                                               null);
     }
 }

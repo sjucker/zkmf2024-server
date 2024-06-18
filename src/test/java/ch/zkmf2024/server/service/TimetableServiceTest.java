@@ -34,12 +34,14 @@ class TimetableServiceTest {
     private SponsoringService sponsoringService;
     @Mock
     private EmergencyService emergencyService;
+    @Mock
+    private ScreenService screenService;
 
     private TimetableService service;
 
     @BeforeEach
     void setUp() {
-        service = new TimetableService(timetableRepository, locationRepository, vereinRepository, unterhaltungRepository, sponsoringService, emergencyService);
+        service = new TimetableService(timetableRepository, locationRepository, vereinRepository, unterhaltungRepository, sponsoringService, emergencyService, screenService);
     }
 
     @Test

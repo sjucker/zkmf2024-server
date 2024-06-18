@@ -32,6 +32,7 @@ export interface CurrentTimetablePreviewDTO {
     sponsoren: SponsorDTO[];
     currentTime: DateAsString;
     emergencyMessage?: EmergencyMessageDTO;
+    screen?: ScreenDTO;
 }
 
 export interface DoppelEinsatzDTO {
@@ -354,6 +355,13 @@ export interface ResetPasswordRequestDTO {
     email: string;
     token: string;
     newPassword: string;
+}
+
+export interface ScreenDTO {
+    locationIdentifier?: string;
+    header?: string;
+    message?: string;
+    cloudflareId?: string;
 }
 
 export interface SponsorDTO {
