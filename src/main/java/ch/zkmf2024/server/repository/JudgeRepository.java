@@ -329,7 +329,9 @@ public class JudgeRepository {
             var judge2 = judgesReports.get(1);
             var judge3 = judgesReports.get(2);
             var judge4 = modul.isParademusik() ? judgesReports.get(3) : null;
-            var overallScore = overallScore(judge1.score(), judge2.score(), judge3.score(), modul.isParademusik() ? judge4.score() : null, modul, judge1.penalty(), judge1.bonus()).orElse(null);
+            var overallScore = overallScore(judge1.score(), judge2.score(), judge3.score(),
+                                            judge4 != null ? judge4.score() : null,
+                                            modul, judge1.penalty(), judge1.bonus()).orElse(null);
             return Optional.of(new JudgeReportFeedbackDTO(
                     judge1.verein(),
                     judge1.modul(),

@@ -135,7 +135,7 @@ public class RankingsService {
         return generateDiplomas(getAllRankings());
     }
 
-    byte[] generateDiplomas(List<RankingSummaryDTO> rankings) {
+    protected byte[] generateDiplomas(List<RankingSummaryDTO> rankings) {
         var context = new Context();
         context.setVariable("rankings", rankings);
         return pdfGenerationService.generatePdf(DIPLOMA_TEMPLATE, context);
