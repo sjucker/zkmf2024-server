@@ -110,12 +110,16 @@ export interface JudgeReportDTO {
 export interface JudgeReportFeedbackDTO {
     verein: string;
     modul: Modul;
-    category?: JudgeReportModulCategory;
     modulDescription: string;
+    category?: JudgeReportModulCategory;
+    score?: number;
     scoreRange: string;
+    penalty?: number;
+    bonus?: number;
     judge1: JudgeReportViewDTO;
     judge2: JudgeReportViewDTO;
     judge3: JudgeReportViewDTO;
+    judge4?: JudgeReportViewDTO;
 }
 
 export interface JudgeReportFeedbackSelectionDTO {
@@ -199,6 +203,8 @@ export interface JudgeReportViewDTO {
     categoryDescription?: string;
     verein: string;
     score?: number;
+    penalty?: number;
+    bonus?: number;
     status: JudgeReportStatus;
     titles: JudgeReportTitleDTO[];
     overallRatings: JudgeReportRatingDTO[];

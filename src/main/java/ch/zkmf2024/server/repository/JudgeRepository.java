@@ -260,6 +260,11 @@ public class JudgeRepository {
                 category.map(JudgeReportModulCategory::getDescription).orElse(null),
                 it.get(VEREIN.VEREINSNAME),
                 it.get(JUDGE_REPORT.SCORE),
+                getPenalty(it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)).orElse(null),
+                getBonus(category.orElse(null),
+                         it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS),
+                         it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS),
+                         it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS)).orElse(null),
                 JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
                 findTitles(reportId, modul, category.orElse(null)),
                 findOverallRatings(reportId, modul, category.orElse(null), role)
@@ -283,15 +288,21 @@ public class JudgeRepository {
             var judge1 = judgesReports.getFirst();
             var judge2 = judgesReports.get(1);
             var judge3 = judgesReports.get(2);
+            // Parademusik has no feedback for jury, so judge 4 is never relevant
+            var overallScore = overallScore(judge1.score(), judge2.score(), judge3.score(), null, judge1.modul(), judge1.penalty(), judge1.bonus()).orElse(null);
             return Optional.of(new JudgeReportFeedbackDTO(
                     judge1.verein(),
                     judge1.modul(),
-                    judge1.category(),
                     judge1.modul().getDiplomDescription(judge1.category()),
-                    scoreRange(judge1, judge2, judge3),
+                    judge1.category(),
+                    overallScore,
+                    scoreRange(overallScore),
+                    judge1.penalty(),
+                    judge1.bonus(),
                     judge1,
                     judge2,
-                    judge3
+                    judge3,
+                    null
             ));
         }
 
@@ -313,38 +324,43 @@ public class JudgeRepository {
                                    .orderBy(JUDGE_REPORT.ROLE)
                                    .fetch(this::toJudgeReportViewDTO);
 
-        if (judgesReports.size() == 3) {
+        if (judgesReports.size() == 3 || judgesReports.size() == 4) {
             var judge1 = judgesReports.getFirst();
             var judge2 = judgesReports.get(1);
             var judge3 = judgesReports.get(2);
+            var judge4 = modul.isParademusik() ? judgesReports.get(3) : null;
+            var overallScore = overallScore(judge1.score(), judge2.score(), judge3.score(), modul.isParademusik() ? judge4.score() : null, modul, judge1.penalty(), judge1.bonus()).orElse(null);
             return Optional.of(new JudgeReportFeedbackDTO(
                     judge1.verein(),
                     judge1.modul(),
-                    judge1.category(),
                     judge1.modul().getDiplomDescription(judge1.category()),
-                    scoreRange(judge1, judge2, judge3),
+                    judge1.category(),
+                    overallScore,
+                    scoreRange(overallScore),
+                    judge1.penalty(),
+                    judge1.bonus(),
                     judge1,
                     judge2,
-                    judge3
+                    judge3,
+                    judge4
             ));
         }
 
         return Optional.empty();
     }
 
-    private String scoreRange(JudgeReportViewDTO judge1, JudgeReportViewDTO judge2, JudgeReportViewDTO judge3) {
-        if (judge1.score() == null || judge2.score() == null || judge3.score() == null) {
+    private String scoreRange(BigDecimal score) {
+        if (score == null) {
             return "?";
         }
-        var overallScore = (judge1.score().add(judge2.score()).add(judge3.score())).divide(BigDecimal.valueOf(3), 2, HALF_UP);
 
-        if (overallScore.compareTo(new BigDecimal("90")) >= 0) {
+        if (score.compareTo(new BigDecimal("90")) >= 0) {
             return "ausgezeichnete Leistungen";
-        } else if (overallScore.compareTo(new BigDecimal("80")) >= 0) {
+        } else if (score.compareTo(new BigDecimal("80")) >= 0) {
             return "sehr gute Leistungen";
-        } else if (overallScore.compareTo(new BigDecimal("70")) >= 0) {
+        } else if (score.compareTo(new BigDecimal("70")) >= 0) {
             return "gute Leistungen";
-        } else if (overallScore.compareTo(new BigDecimal("60")) >= 0) {
+        } else if (score.compareTo(new BigDecimal("60")) >= 0) {
             return "genügende Leistungen";
         } else {
             return "ungenügende Leistungen";
@@ -555,8 +571,11 @@ public class JudgeRepository {
                                  var besetzung = Besetzung.fromString(record1.get(VEREIN_PROGRAMM.BESETZUNG));
                                  var modulCategory = JudgeReportModulCategory.fromString(category);
 
-                                 var penalty = penalty(record1);
-                                 var bonus = getBonus(modulCategory.orElse(null), record1).orElse(null);
+                                 var penalty = getPenalty(record1.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)).orElse(null);
+                                 var bonus = getBonus(modulCategory.orElse(null),
+                                                      record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS),
+                                                      record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS),
+                                                      record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS)).orElse(null);
 
                                  consumer.accept(new JudgeReportSummaryDTO(
                                          record1.get(VEREIN_PROGRAMM.ID),
@@ -571,7 +590,8 @@ public class JudgeRepository {
                                          modulCategory.orElse(null),
                                          modulCategory.map(JudgeReportModulCategory::getDescription).orElse(null),
                                          record1.get(VEREIN.VEREINSNAME),
-                                         overallScore(record1, record2, record3, record4, modul, penalty, bonus).orElse(null),
+                                         overallScore(record1.get(JUDGE_REPORT.SCORE), record2.get(JUDGE_REPORT.SCORE), record3.get(JUDGE_REPORT.SCORE),
+                                                      record4 != null ? record4.get(JUDGE_REPORT.SCORE) : null, modul, penalty, bonus).orElse(null),
                                          penalty,
                                          bonus,
                                          records.stream()
@@ -601,24 +621,23 @@ public class JudgeRepository {
         }
     }
 
-    private Optional<BigDecimal> getBonus(JudgeReportModulCategory modulCategory, Record it) {
+    private Optional<BigDecimal> getBonus(JudgeReportModulCategory modulCategory, BigDecimal katA, BigDecimal katB, BigDecimal katC) {
         if (modulCategory != null) {
             return switch (modulCategory) {
-                case MODUL_G_KAT_A -> Optional.ofNullable(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS));
-                case MODUL_G_KAT_B -> Optional.ofNullable(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS));
-                case MODUL_G_KAT_C -> Optional.ofNullable(it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS));
+                case MODUL_G_KAT_A -> Optional.ofNullable(katA);
+                case MODUL_G_KAT_B -> Optional.ofNullable(katB);
+                case MODUL_G_KAT_C -> Optional.ofNullable(katC);
             };
         }
         return Optional.empty();
     }
 
-    private BigDecimal penalty(Record it) {
-        BigDecimal penalty = null;
-        if (it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN) != null) {
+    private Optional<BigDecimal> getPenalty(Integer minutesOverrun) {
+        if (minutesOverrun != null) {
             // for each minute overrun -2 points
-            penalty = TWO.multiply(new BigDecimal(it.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)));
+            return Optional.of(TWO.multiply(new BigDecimal(minutesOverrun)));
         }
-        return penalty;
+        return Optional.empty();
     }
 
     private String getFullDescription(Modul modul, String category) {
@@ -641,20 +660,16 @@ public class JudgeRepository {
                 (record4 == null || record4.get(JUDGE_REPORT.RATING_FIXED));
     }
 
-    private Optional<BigDecimal> overallScore(Record record1, Record record2, Record record3, Record record4, Modul modul, BigDecimal penalty, BigDecimal bonus) {
-        var score1 = record1.get(JUDGE_REPORT.SCORE);
-        var score2 = record2.get(JUDGE_REPORT.SCORE);
-        var score3 = record3.get(JUDGE_REPORT.SCORE);
+    private Optional<BigDecimal> overallScore(BigDecimal judge1Score, BigDecimal judge2Score, BigDecimal judge3Score, BigDecimal judge4Score, Modul modul, BigDecimal penalty, BigDecimal bonus) {
         if (modul.isParademusik()) {
-            var score4 = record4.get(JUDGE_REPORT.SCORE);
-            if (score1 != null && score2 != null && score3 != null && score4 != null) {
-                return Optional.of(score1.add(score2).add(score3).add(score4)
-                                         .divide(BigDecimal.valueOf(4), 2, HALF_UP));
+            if (judge1Score != null && judge2Score != null && judge3Score != null && judge4Score != null) {
+                return Optional.of(judge1Score.add(judge2Score).add(judge3Score).add(judge4Score)
+                                              .divide(BigDecimal.valueOf(4), 2, HALF_UP));
             }
         } else {
-            if (score1 != null && score2 != null && score3 != null) {
-                var score = score1.add(score2).add(score3)
-                                  .divide(BigDecimal.valueOf(3), 2, HALF_UP);
+            if (judge1Score != null && judge2Score != null && judge3Score != null) {
+                var score = judge1Score.add(judge2Score).add(judge3Score)
+                                       .divide(BigDecimal.valueOf(3), 2, HALF_UP);
 
                 if (penalty != null) {
                     score = score.subtract(penalty);
@@ -728,7 +743,14 @@ public class JudgeRepository {
                                  var record3 = values.get(2);
                                  var modul = Modul.valueOf(record1.get(VEREIN_PROGRAMM.MODUL));
                                  var record4 = modul.isParademusik() ? values.get(3) : null;
-                                 var overallScore = overallScore(record1, record2, record3, record4, modul, penalty(record1), getBonus(category, record1).orElse(null));
+                                 var overallScore = overallScore(record1.get(JUDGE_REPORT.SCORE), record2.get(JUDGE_REPORT.SCORE), record3.get(JUDGE_REPORT.SCORE),
+                                                                 record4 != null ? record4.get(JUDGE_REPORT.SCORE) : null,
+                                                                 modul,
+                                                                 getPenalty(record1.get(VEREIN_PROGRAMM.MINUTES_OVERRUN)).orElse(null),
+                                                                 getBonus(category,
+                                                                          record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS),
+                                                                          record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS),
+                                                                          record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS)).orElse(null));
                                  return new JudgeRankingEntryDTO(record1.get(VEREIN.VEREINSNAME), overallScore.orElse(null));
                              }
                          })
