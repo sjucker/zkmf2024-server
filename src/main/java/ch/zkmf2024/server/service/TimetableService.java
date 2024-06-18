@@ -48,19 +48,22 @@ public class TimetableService {
     private final UnterhaltungRepository unterhaltungRepository;
     private final SponsoringService sponsoringService;
     private final EmergencyService emergencyService;
+    private final ScreenService screenService;
 
     public TimetableService(TimetableRepository timetableRepository,
                             LocationRepository locationRepository,
                             VereinRepository vereinRepository,
                             UnterhaltungRepository unterhaltungRepository,
                             SponsoringService sponsoringService,
-                            EmergencyService emergencyService) {
+                            EmergencyService emergencyService,
+                            ScreenService screenService) {
         this.timetableRepository = timetableRepository;
         this.locationRepository = locationRepository;
         this.vereinRepository = vereinRepository;
         this.unterhaltungRepository = unterhaltungRepository;
         this.sponsoringService = sponsoringService;
         this.emergencyService = emergencyService;
+        this.screenService = screenService;
     }
 
     public List<TimetableEntryDTO> findAll() {
@@ -228,7 +231,8 @@ public class TimetableService {
                                               next.orElse(null),
                                               sponsoringService.getRandom(6),
                                               currentTime(),
-                                              null);
+                                              null,
+                                              screenService.findActive(locationIdentifier).orElse(null));
     }
 
     private Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
