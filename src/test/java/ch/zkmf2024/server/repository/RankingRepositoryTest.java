@@ -107,15 +107,15 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
                                             assertThat(dto.competition()).isEqualTo("Tambouren");
                                             assertThat(dto.rankings()).hasSize(3)
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kategorie A)");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kat. A)");
                                                                           assertThat(r.score()).isEqualByComparingTo("100.00");
                                                                       }, atIndex(0))
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kategorie B)");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kat. B)");
                                                                           assertThat(r.score()).isEqualByComparingTo("91.23");
                                                                       }, atIndex(1))
                                                                       .satisfies(r -> {
-                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kategorie C)");
+                                                                          assertThat(r.modulDescription()).isEqualTo("Modul G Tambouren (Kat. C)");
                                                                           assertThat(r.score()).isEqualTo("55.55");
                                                                       }, atIndex(2));
                                         });
