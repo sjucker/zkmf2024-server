@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalUnit;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -172,7 +173,7 @@ public class TimetableRepository {
 
     public Optional<TimetableEntryPojo> findWettspielByProgrammId(Long programmId) {
         return timetableEntryDao.fetchByFkVereinProgramm(programmId).stream()
-                                .filter(pojo -> pojo.getEntryType().equals(WETTSPIEL))
+                                .filter(pojo -> EnumSet.of(WETTSPIEL, MARSCHMUSIK).contains(pojo.getEntryType()))
                                 .findFirst();
     }
 
