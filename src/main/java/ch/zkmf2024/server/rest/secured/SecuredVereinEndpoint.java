@@ -120,7 +120,7 @@ public class SecuredVereinEndpoint {
     }
 
     @PostMapping("/bilder-upload")
-    @Secured({"VEREIN"})
+    @Secured({"VEREIN", "IMPERSONATE"})
     public ResponseEntity<Void> bildUpload(@AuthenticationPrincipal UserDetails userDetails,
                                            @RequestParam(required = false) MultipartFile logo,
                                            @RequestParam(required = false) MultipartFile bild) {
@@ -135,7 +135,7 @@ public class SecuredVereinEndpoint {
     }
 
     @DeleteMapping("/bilder-upload/{id}")
-    @Secured({"VEREIN"})
+    @Secured({"VEREIN", "IMPERSONATE"})
     public ResponseEntity<Void> deleteBild(@AuthenticationPrincipal UserDetails userDetails,
                                            @PathVariable Long id) {
         log.info("DELETE /secured/verein/bilder-upload/{}", id);
