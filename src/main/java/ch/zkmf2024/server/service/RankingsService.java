@@ -114,7 +114,7 @@ public class RankingsService {
     }
 
     private String getAdditionalInfo(VereinProgrammPojo vereinProgramm) {
-        return isPositive(vereinProgramm.getMinutesOverrun()) ? "Punktabzug %s Punkte (Zeitunter- oder überschreitung)".formatted(vereinProgramm.getMinutesOverrun() * 2) : null;
+        return isPositive(vereinProgramm.getMinutesOverrun()) ? "%s Punkte Abzug (Zeitunter- oder überschreitung)".formatted(vereinProgramm.getMinutesOverrun() * 2) : null;
     }
 
     public void publishRankingList(Long rankingId, boolean intermediate) {
