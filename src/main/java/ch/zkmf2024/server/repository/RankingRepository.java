@@ -238,7 +238,7 @@ public class RankingRepository {
                                                                                                 modul.getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
                                                                                                 getScore(e, modul));
                                                                       })
-                                                                      .sorted(comparing(RankingDTO::modul))
+                                                                      .sorted(comparing(RankingDTO::modulDescription))
                                                                       .toList()))
                          // Platzkonzert-only can be ignored
                          .filter(dto -> !dto.rankings().stream().allMatch(r -> r.modul().isPlatzkonzert()))
