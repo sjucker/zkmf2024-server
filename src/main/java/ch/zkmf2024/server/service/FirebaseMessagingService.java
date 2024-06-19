@@ -52,11 +52,10 @@ public class FirebaseMessagingService {
     }
 
     public void sendRankingPublished(String vereinIdentifier, String vereinsName, Long rankingId) {
-        var title = "Rangliste publiziert";
-        var body = "Resultate für %s sind verfügbar".formatted(vereinsName);
+        var body = "Es sind Resultate für %s verfügbar.".formatted(vereinsName);
         var route = "/ranglisten/%d".formatted(rankingId);
-        sendToVereinTopic(vereinIdentifier, title, body, route);
-        sendToMemberTopic(vereinIdentifier, title, body, route);
+        sendToVereinTopic(vereinIdentifier, "Neuigkeiten zu Deinen Favoriten", body, route);
+        sendToMemberTopic(vereinIdentifier, "Neuigkeiten zu Deinem Verein", body, route);
     }
 
     public void sendToVereinTopic(String vereinIdentifier, String title, String body, String route) {
