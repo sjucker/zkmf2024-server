@@ -240,7 +240,7 @@ public class TimetableService {
         var nextUnterhaltung = unterhaltungRepository.findNext(locationIdentifier);
 
         if (nextTimetable.isPresent() && nextUnterhaltung.isPresent()) {
-            return nextTimetable.get().startTime().isBefore(nextUnterhaltung.get().startTime())
+            return nextTimetable.get().getStartDateTime().isBefore(nextUnterhaltung.get().getStartDateTime())
                     ? nextTimetable
                     : nextUnterhaltung;
         } else {

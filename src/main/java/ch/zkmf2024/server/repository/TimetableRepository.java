@@ -289,7 +289,7 @@ public class TimetableRepository {
                            .join(KONTAKT).on(VEREIN.DIREKTION_KONTAKT_ID.eq(KONTAKT.ID))
                            .where(TIMETABLE_ENTRY.DATE.greaterOrEqual(today()),
                                   LOCATION.IDENTIFIER.eq(locationIdentifier),
-                                  TIMETABLE_ENTRY.ENTRY_TYPE.eq(WETTSPIEL))
+                                  TIMETABLE_ENTRY.ENTRY_TYPE.in(WETTSPIEL, PLATZKONZERT))
                            .orderBy(TIMETABLE_ENTRY.DATE, TIMETABLE_ENTRY.START_TIME);
         try (var stream = query.stream()) {
             return stream.filter(it -> LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.START_TIME)).isAfter(now()))
