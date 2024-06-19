@@ -11,8 +11,11 @@ import ch.zkmf2024.server.dto.UpcomingVereinDTO;
 import ch.zkmf2024.server.dto.admin.TimetableEntryDTO;
 import ch.zkmf2024.server.jooq.generated.tables.daos.TimetableEntryDao;
 import ch.zkmf2024.server.jooq.generated.tables.pojos.TimetableEntryPojo;
+import ch.zkmf2024.server.jooq.generated.tables.records.VereinProgrammRecord;
 import ch.zkmf2024.server.util.FormatUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
+import org.jooq.TableField;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
@@ -24,6 +27,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static ch.zkmf2024.server.jooq.generated.Tables.CURRENTLY_PLAYING;
 import static ch.zkmf2024.server.jooq.generated.Tables.JUDGE;
@@ -248,21 +252,12 @@ public class TimetableRepository {
         if (modul.isParademusik() || modul.isPlatzkonzert()) {
             return List.of();
         } else if (modul.isTambouren()) {
-            return jooqDsl.select(TITEL.TITEL_NAME,
-                                  TITEL.FK_VEREIN,
-                                  TITEL.COMPOSER)
-                          .from(TITEL)
-                          .join(VEREIN_PROGRAMM).on(
-                            DSL.or(VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID.eq(TITEL.ID),
-                                   VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID.eq(TITEL.ID),
-                                   VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID.eq(TITEL.ID),
-                                   VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID.eq(TITEL.ID)))
-                          .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
-                          .where(VEREIN_PROGRAMM.ID.eq(programmId),
-                                 VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
-                          .fetch(it -> "%s%s (%s)".formatted(it.get(TITEL.TITEL_NAME),
-                                                             it.get(TITEL.FK_VEREIN) == null ? "*" : "",
-                                                             it.get(TITEL.COMPOSER)));
+            return Stream.of(fetchTambourenTitel(programmId, VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_1_ID),
+                             fetchTambourenTitel(programmId, VEREIN_PROGRAMM.MODUL_G_KAT_A_TITEL_2_ID),
+                             fetchTambourenTitel(programmId, VEREIN_PROGRAMM.MODUL_G_KAT_B_TITEL_ID),
+                             fetchTambourenTitel(programmId, VEREIN_PROGRAMM.MODUL_G_KAT_C_TITEL_ID))
+                         .filter(StringUtils::isNotBlank)
+                         .toList();
         } else {
             return jooqDsl.select(TITEL.TITEL_NAME,
                                   TITEL.FK_VEREIN,
@@ -279,6 +274,21 @@ public class TimetableRepository {
                                                              it.get(TITEL.COMPOSER)));
         }
 
+    }
+
+    private String fetchTambourenTitel(Long programmId, TableField<VereinProgrammRecord, Long> titelId) {
+        return jooqDsl.select(TITEL.TITEL_NAME,
+                              TITEL.FK_VEREIN,
+                              TITEL.COMPOSER)
+                      .from(TITEL)
+                      .join(VEREIN_PROGRAMM).on(titelId.eq(TITEL.ID))
+                      .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                      .where(VEREIN_PROGRAMM.ID.eq(programmId),
+                             VEREIN.PHASE2_CONFIRMED_AT.isNotNull())
+                      .fetchOptional(it -> "%s%s (%s)".formatted(it.get(TITEL.TITEL_NAME),
+                                                                 it.get(TITEL.FK_VEREIN) == null ? "*" : "",
+                                                                 it.get(TITEL.COMPOSER)))
+                      .orElse(null);
     }
 
     public Optional<TimetablePreviewDTO> findNext(String locationIdentifier) {
