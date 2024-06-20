@@ -608,7 +608,7 @@ public class JudgeRepository {
                                                         JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)) == DONE
                                                 ))
                                                 .toList(),
-                                         isDone(record1, record2, record3, record4, modul),
+                                         isDone(record1, record2, record3, record4, modul, modulCategory.orElse(null)),
                                          confirmedScores.contains(new ConfirmedScoreIdentifier(modul, klasse.orElse(null), besetzung.orElse(null), modulCategory.orElse(null),
                                                                                                record1.get(LOCATION.ID), record1.get(VEREIN.ID)))
                                  ));
@@ -649,11 +649,24 @@ public class JudgeRepository {
                                        .orElse(modul.getFullDescription());
     }
 
-    private boolean isDone(Record record1, Record record2, Record record3, Record record4, Modul modul) {
+    private boolean isDone(Record record1, Record record2, Record record3, Record record4, Modul modul, JudgeReportModulCategory category) {
         if (modul.hasZeitvorgabe() &&
                 (record1.get(VEREIN_PROGRAMM.TOTAL_DURATION_IN_SECONDS) == null || record1.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS) == null)) {
             // if judge helper has not yet entered actual duration not yet done
             return false;
+        }
+
+        if (modul.isTambouren() && category != null) {
+            // judge helper needs to add Teilnehmerzuschlag first
+            if (category == MODUL_G_KAT_A && record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS) == null) {
+                return false;
+            }
+            if (category == MODUL_G_KAT_B && record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS) == null) {
+                return false;
+            }
+            if (category == MODUL_G_KAT_C && record1.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS) == null) {
+                return false;
+            }
         }
 
         return record1.get(JUDGE_REPORT.RATING_FIXED) &&
