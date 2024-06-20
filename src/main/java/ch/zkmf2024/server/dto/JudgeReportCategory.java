@@ -98,8 +98,7 @@ public enum JudgeReportCategory implements HasDescription {
     RHYTHMUS_UND_ZUSAMMENSPIEL("Rhythmus und Zusammenspiel", Set.of(G), Set.of(MODUL_G_KAT_C), false),
     DYNAMIK_UND_AUSGEWOGENHEIT("Dynamik und Ausgewogenheit", Set.of(G), Set.of(MODUL_G_KAT_C), false),
     STIMMUNG_KLANG_UND_WAHL_INSTRUMENTE("Stimmung, Klang und Wahl der Instrumente", Set.of(G), Set.of(MODUL_G_KAT_C), false),
-    MUSIKALISCHE_UMSETZUNG_VISUELLE_SCHLEGEL_EFFEKTE("Musikalische Umsetzung, visuelle Schlegel-Effekte", Set.of(G), Set.of(MODUL_G_KAT_C), false),
-    SCHWIERIGKEITSBONUS("Schwierigkeitsbonus", Set.of(G), Set.of(MODUL_G_KAT_C), false);
+    MUSIKALISCHE_UMSETZUNG_VISUELLE_SCHLEGEL_EFFEKTE("Musikalische Umsetzung, visuelle Schlegel-Effekte", Set.of(G), Set.of(MODUL_G_KAT_C), false);
 
     private final String description;
     private final Set<Modul> modules;
