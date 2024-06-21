@@ -44,4 +44,11 @@ public class TimetableEndpoint {
         return ResponseEntity.ok(timetableService.getCurrentPreview(locationIdentifier));
     }
 
+    @GetMapping("/welcome")
+    public ResponseEntity<String> getWelcome() {
+        log.info("GET /public/timetable/welcome");
+
+        return ResponseEntity.of(timetableService.getWelcomeScreen());
+    }
+
 }

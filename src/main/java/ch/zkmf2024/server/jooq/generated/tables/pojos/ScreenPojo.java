@@ -19,6 +19,7 @@ public class ScreenPojo implements IScreen {
     private String message;
     private String cloudflareId;
     private Boolean active;
+    private Boolean welcome;
 
     public ScreenPojo() {
     }
@@ -30,6 +31,7 @@ public class ScreenPojo implements IScreen {
         this.message = value.getMessage();
         this.cloudflareId = value.getCloudflareId();
         this.active = value.getActive();
+        this.welcome = value.getWelcome();
     }
 
     public ScreenPojo(
@@ -38,7 +40,8 @@ public class ScreenPojo implements IScreen {
             String header,
             String message,
             String cloudflareId,
-            Boolean active
+            Boolean active,
+            Boolean welcome
     ) {
         this.id = id;
         this.locationIdentifier = locationIdentifier;
@@ -46,6 +49,7 @@ public class ScreenPojo implements IScreen {
         this.message = message;
         this.cloudflareId = cloudflareId;
         this.active = active;
+        this.welcome = welcome;
     }
 
     /**
@@ -144,6 +148,22 @@ public class ScreenPojo implements IScreen {
         this.active = active;
     }
 
+    /**
+     * Getter for <code>screen.welcome</code>.
+     */
+    @Override
+    public Boolean getWelcome() {
+        return this.welcome;
+    }
+
+    /**
+     * Setter for <code>screen.welcome</code>.
+     */
+    @Override
+    public void setWelcome(Boolean welcome) {
+        this.welcome = welcome;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -183,6 +203,11 @@ public class ScreenPojo implements IScreen {
                 return false;
         } else if (!this.active.equals(other.active))
             return false;
+        if (this.welcome == null) {
+            if (other.welcome != null)
+                return false;
+        } else if (!this.welcome.equals(other.welcome))
+            return false;
         return true;
     }
 
@@ -196,6 +221,7 @@ public class ScreenPojo implements IScreen {
         result = prime * result + ((this.message == null) ? 0 : this.message.hashCode());
         result = prime * result + ((this.cloudflareId == null) ? 0 : this.cloudflareId.hashCode());
         result = prime * result + ((this.active == null) ? 0 : this.active.hashCode());
+        result = prime * result + ((this.welcome == null) ? 0 : this.welcome.hashCode());
         return result;
     }
 
@@ -209,6 +235,7 @@ public class ScreenPojo implements IScreen {
         sb.append(", ").append(message);
         sb.append(", ").append(cloudflareId);
         sb.append(", ").append(active);
+        sb.append(", ").append(welcome);
 
         sb.append(")");
         return sb.toString();
@@ -226,6 +253,7 @@ public class ScreenPojo implements IScreen {
         setMessage(from.getMessage());
         setCloudflareId(from.getCloudflareId());
         setActive(from.getActive());
+        setWelcome(from.getWelcome());
     }
 
     @Override

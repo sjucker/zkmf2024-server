@@ -140,4 +140,19 @@ public class ScreenDao extends DAOImpl<ScreenRecord, ScreenPojo, Long> {
     public List<ScreenPojo> fetchByActive(Boolean... values) {
         return fetch(Screen.SCREEN.ACTIVE, values);
     }
+
+    /**
+     * Fetch records that have <code>welcome BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<ScreenPojo> fetchRangeOfWelcome(Boolean lowerInclusive, Boolean upperInclusive) {
+        return fetchRange(Screen.SCREEN.WELCOME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>welcome IN (values)</code>
+     */
+    public List<ScreenPojo> fetchByWelcome(Boolean... values) {
+        return fetch(Screen.SCREEN.WELCOME, values);
+    }
 }

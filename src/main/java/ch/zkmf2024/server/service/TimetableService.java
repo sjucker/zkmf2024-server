@@ -247,4 +247,8 @@ public class TimetableService {
             return nextTimetable.or(() -> nextUnterhaltung);
         }
     }
+
+    public Optional<String> getWelcomeScreen() {
+        return screenService.getWelcomeScreen();
+    }
 }

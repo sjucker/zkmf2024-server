@@ -77,6 +77,11 @@ public class Screen extends TableImpl<ScreenRecord> {
      */
     public final TableField<ScreenRecord, Boolean> ACTIVE = createField(DSL.name("active"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
 
+    /**
+     * The column <code>screen.welcome</code>.
+     */
+    public final TableField<ScreenRecord, Boolean> WELCOME = createField(DSL.name("welcome"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "");
+
     private Screen(Name alias, Table<ScreenRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
