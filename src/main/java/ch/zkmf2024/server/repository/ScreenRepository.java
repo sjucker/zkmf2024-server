@@ -31,6 +31,7 @@ public class ScreenRepository {
                       .where(SCREEN.ACTIVE.isTrue(),
                              SCREEN.WELCOME.isTrue(),
                              SCREEN.CLOUDFLARE_ID.isNotNull())
+                      .orderBy(rand())
                       .limit(1)
                       .fetchOptional(SCREEN.CLOUDFLARE_ID);
     }
