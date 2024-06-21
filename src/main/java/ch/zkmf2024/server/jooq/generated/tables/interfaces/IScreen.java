@@ -71,6 +71,16 @@ public interface IScreen extends Serializable {
      */
     public Boolean getActive();
 
+    /**
+     * Setter for <code>screen.welcome</code>.
+     */
+    public void setWelcome(Boolean value);
+
+    /**
+     * Getter for <code>screen.welcome</code>.
+     */
+    public Boolean getWelcome();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

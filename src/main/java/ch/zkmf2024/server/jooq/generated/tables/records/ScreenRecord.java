@@ -113,6 +113,22 @@ public class ScreenRecord extends UpdatableRecordImpl<ScreenRecord> implements I
         return (Boolean) get(5);
     }
 
+    /**
+     * Setter for <code>screen.welcome</code>.
+     */
+    @Override
+    public void setWelcome(Boolean value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>screen.welcome</code>.
+     */
+    @Override
+    public Boolean getWelcome() {
+        return (Boolean) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -134,6 +150,7 @@ public class ScreenRecord extends UpdatableRecordImpl<ScreenRecord> implements I
         setMessage(from.getMessage());
         setCloudflareId(from.getCloudflareId());
         setActive(from.getActive());
+        setWelcome(from.getWelcome());
         resetChangedOnNotNull();
     }
 
@@ -157,7 +174,7 @@ public class ScreenRecord extends UpdatableRecordImpl<ScreenRecord> implements I
     /**
      * Create a detached, initialised ScreenRecord
      */
-    public ScreenRecord(Long id, String locationIdentifier, String header, String message, String cloudflareId, Boolean active) {
+    public ScreenRecord(Long id, String locationIdentifier, String header, String message, String cloudflareId, Boolean active, Boolean welcome) {
         super(Screen.SCREEN);
 
         setId(id);
@@ -166,6 +183,7 @@ public class ScreenRecord extends UpdatableRecordImpl<ScreenRecord> implements I
         setMessage(message);
         setCloudflareId(cloudflareId);
         setActive(active);
+        setWelcome(welcome);
         resetChangedOnNotNull();
     }
 
@@ -182,6 +200,7 @@ public class ScreenRecord extends UpdatableRecordImpl<ScreenRecord> implements I
             setMessage(value.getMessage());
             setCloudflareId(value.getCloudflareId());
             setActive(value.getActive());
+            setWelcome(value.getWelcome());
             resetChangedOnNotNull();
         }
     }

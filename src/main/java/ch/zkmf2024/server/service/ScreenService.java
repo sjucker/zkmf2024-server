@@ -28,4 +28,8 @@ public class ScreenService {
                                                 .filter(dto -> dto.locationIdentifier() == null)
                                                 .findFirst());
     }
+
+    public Optional<String> getWelcomeScreen() {
+        return screenRepository.getWelcomeScreen();
+    }
 }
