@@ -28,8 +28,7 @@ public class ScreenRepository {
 
     public Optional<String> getWelcomeScreen() {
         return jooqDsl.selectFrom(SCREEN)
-                      .where(SCREEN.ACTIVE.isTrue(),
-                             SCREEN.WELCOME.isTrue(),
+                      .where(SCREEN.WELCOME.isTrue(),
                              SCREEN.CLOUDFLARE_ID.isNotNull())
                       .orderBy(rand())
                       .limit(1)
