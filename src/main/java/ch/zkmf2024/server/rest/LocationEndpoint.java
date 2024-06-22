@@ -67,7 +67,9 @@ public class LocationEndpoint {
                                                                            "name", location.name(),
                                                                            "identifier", defaultString(location.identifier()),
                                                                            "type", location.type().name(),
-                                                                           "info", getInfo(location))
+                                                                           "info", getInfo(location),
+                                                                           "address", location.googleMapsAddress(),
+                                                                           "coordinates", location.googleMapsCoordinates())
                                                             ))
                                                             .toList()));
     }
