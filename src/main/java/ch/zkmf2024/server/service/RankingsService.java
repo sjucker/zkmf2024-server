@@ -124,7 +124,7 @@ public class RankingsService {
 
         for (var entry : rankingRepository.getEntries(rankingId)) {
             if (firebaseMessagingService != null) {
-                firebaseMessagingService.sendRankingPublished(entry.vereinIdentifier(), entry.vereinsName(), rankingId);
+//                firebaseMessagingService.sendRankingPublished(entry.vereinIdentifier(), entry.vereinsName(), rankingId);
             } else {
                 log.info("firebaseMessagingService not available ('firebase.enabled' is false)");
             }
