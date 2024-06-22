@@ -186,11 +186,11 @@
             <th:block th:each="rankingEntry : ${ranking.rankings}">
                 <div>
                     <div class="ranking-title poppins-bold"><span th:text="${rankingEntry.modulDescription}"></span></div>
-                    <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null && ranking.score > 0}">
+                    <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null and ranking.score > 0}">
                         <div>Total</div>
                         <div><span th:text="${#numbers.formatDecimal(rankingEntry.score, 1, 2, 'POINT')}"></span> Punkte</div>
                     </div>
-                    <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null && ranking.score < 0}">
+                    <div class="ranking-score poppins-bold" th:if="${rankingEntry.score != null and ranking.score < 0}">
                         <div>Aufgrund Wetter abgesagt</div>
                     </div>
                     <div class="ranking-score poppins-bold" th:unless="${rankingEntry.score != null}">
