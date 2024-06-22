@@ -243,7 +243,7 @@ public class RankingRepository {
                          // Platzkonzert-only can be ignored
                          .filter(dto -> !dto.rankings().stream().allMatch(r -> r.modul().isPlatzkonzert()))
                          // score null for Platzkonzerte, otherwise always a score > 0 needed
-                         .filter(dto -> dto.rankings().stream().allMatch(r -> r.score() == null || r.score().compareTo(ZERO) > 0))
+                         .filter(dto -> dto.rankings().stream().allMatch(r -> r.score() == null || r.score().compareTo(ZERO) != 0))
                          .sorted(comparing(RankingSummaryDTO::competition).thenComparing(RankingSummaryDTO::vereinsName))
                          .toList();
         }
