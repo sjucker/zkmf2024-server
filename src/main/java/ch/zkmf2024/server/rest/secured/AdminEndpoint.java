@@ -128,8 +128,8 @@ public class AdminEndpoint {
 
     @GetMapping(path = "/download/diplomas/{date}")
     @Secured({"ADMIN", "ADMIN_READ_ONLY"})
-    public ResponseEntity<Resource> diplomas(LocalDate date) throws IOException {
-        log.info("GET /secured/admin/download/diplomas");
+    public ResponseEntity<Resource> diplomas(@PathVariable LocalDate date) throws IOException {
+        log.info("GET /secured/admin/download/diplomas/{}", date);
         return export(exportService.generateDiplomas(date), APPLICATION_PDF_VALUE);
     }
 
