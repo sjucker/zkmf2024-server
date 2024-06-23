@@ -30,8 +30,12 @@ import static ch.zkmf2024.server.dto.RankingStatus.PENDING;
 import static ch.zkmf2024.server.jooq.generated.Tables.LOCATION;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING;
 import static ch.zkmf2024.server.jooq.generated.Tables.RANKING_ENTRY;
+import static ch.zkmf2024.server.jooq.generated.Tables.TIMETABLE_ENTRY;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN;
 import static ch.zkmf2024.server.jooq.generated.Tables.VEREIN_PROGRAMM;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.MARSCHMUSIK;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.PLATZKONZERT;
+import static ch.zkmf2024.server.jooq.generated.enums.TimetableEntryType.WETTSPIEL;
 import static java.math.BigDecimal.ZERO;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
@@ -212,9 +216,12 @@ public class RankingRepository {
                                          RANKING_ENTRY.DAY)
                                  .from(VEREIN_PROGRAMM)
                                  .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
+                                 .join(TIMETABLE_ENTRY).on(TIMETABLE_ENTRY.FK_VEREIN_PROGRAMM.eq(VEREIN_PROGRAMM.ID),
+                                                           TIMETABLE_ENTRY.ENTRY_TYPE.in(WETTSPIEL, PLATZKONZERT, MARSCHMUSIK))
                                  .leftJoin(RANKING).on(RANKING.MODUL.eq(VEREIN_PROGRAMM.MODUL),
                                                        (VEREIN_PROGRAMM.KLASSE.isNull().and(RANKING.KLASSE.isNull()).or(RANKING.KLASSE.eq(VEREIN_PROGRAMM.KLASSE))),
-                                                       (VEREIN_PROGRAMM.BESETZUNG.isNull().and(RANKING.BESETZUNG.isNull()).or(RANKING.BESETZUNG.eq(VEREIN_PROGRAMM.BESETZUNG))))
+                                                       (VEREIN_PROGRAMM.BESETZUNG.isNull().and(RANKING.BESETZUNG.isNull()).or(RANKING.BESETZUNG.eq(VEREIN_PROGRAMM.BESETZUNG))),
+                                                       RANKING.FK_LOCATION.eq(TIMETABLE_ENTRY.FK_LOCATION))
                                  .leftJoin(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID),
                                                              RANKING_ENTRY.FK_VEREIN.eq(VEREIN.ID))
                                  .stream()) {
