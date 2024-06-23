@@ -694,7 +694,7 @@ public class ExportService {
         }
     }
 
-    public byte[] generateDiplomas() {
-        return rankingsService.generateDiplomas();
+    public byte[] generateDiplomas(LocalDate date) {
+        return rankingsService.generateDiplomas(date);
     }
 }

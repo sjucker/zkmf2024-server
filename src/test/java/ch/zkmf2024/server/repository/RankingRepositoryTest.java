@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static ch.zkmf2024.server.dto.Besetzung.HARMONIE;
 import static ch.zkmf2024.server.dto.Besetzung.TAMBOUREN;
@@ -83,7 +84,7 @@ class RankingRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void getAllRankingsPerVerein() {
-        var allRankingsPerVerein = rankingRepository.getAllRankingsPerVerein();
+        var allRankingsPerVerein = rankingRepository.getAllRankingsPerVerein(LocalDate.now());
         assertThat(allRankingsPerVerein).hasSize(2)
                                         .anySatisfy(dto -> {
                                             assertThat(dto.vereinsName()).isEqualTo("Harmonie am Bachtel");

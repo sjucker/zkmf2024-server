@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 class RankingsServiceTest extends AbstractIntegrationTest {
@@ -28,9 +29,9 @@ class RankingsServiceTest extends AbstractIntegrationTest {
     }
 
     private List<RankingSummaryDTO> generateTestData() {
-        var rankingDto = new RankingDTO(Modul.B, "Unterhaltungsmusik", new BigDecimal("123.2"));
-        var rankingDto2 = new RankingDTO(Modul.G, "Tambouren", new BigDecimal("187.9"));
-        var rankingDto3 = new RankingDTO(Modul.H, "Perkussionsensembles", new BigDecimal("150.0"));
+        var rankingDto = new RankingDTO(Modul.B, "Unterhaltungsmusik", new BigDecimal("123.2"), LocalDate.now());
+        var rankingDto2 = new RankingDTO(Modul.G, "Tambouren", new BigDecimal("187.9"), LocalDate.now());
+        var rankingDto3 = new RankingDTO(Modul.H, "Perkussionsensembles", new BigDecimal("150.0"), LocalDate.now());
         var rankingSummaryDTO = new RankingSummaryDTO("Musikverein Zürich-Seebach", "3. Klasse Singvogel", List.of(rankingDto, rankingDto2));
         var rankingSummaryDTO2 = new RankingSummaryDTO("Musikverein Harmonie Zürich Schwamendingen", "2. Klasse Harmonie", List.of(rankingDto, rankingDto2, rankingDto3));
         return List.of(rankingSummaryDTO, rankingSummaryDTO2);

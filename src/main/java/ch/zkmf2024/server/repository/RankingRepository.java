@@ -19,6 +19,7 @@ import org.jooq.impl.DefaultConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -194,7 +195,7 @@ public class RankingRepository {
                       .fetch(it -> toDTO(it, false));
     }
 
-    public List<RankingSummaryDTO> getAllRankingsPerVerein() {
+    public List<RankingSummaryDTO> getAllRankingsPerVerein(LocalDate date) {
         try (var stream = jooqDsl.select(VEREIN.ID,
                                          VEREIN.VEREINSNAME,
                                          VEREIN.TAMBOUREN_KAT_A,
@@ -207,7 +208,8 @@ public class RankingRepository {
                                          RANKING.KLASSE,
                                          RANKING.BESETZUNG,
                                          RANKING.CATEGORY,
-                                         RANKING_ENTRY.SCORE)
+                                         RANKING_ENTRY.SCORE,
+                                         RANKING_ENTRY.DAY)
                                  .from(VEREIN_PROGRAMM)
                                  .join(VEREIN).on(VEREIN.ID.eq(VEREIN_PROGRAMM.FK_VEREIN))
                                  .leftJoin(RANKING).on(RANKING.MODUL.eq(VEREIN_PROGRAMM.MODUL),
@@ -236,10 +238,12 @@ public class RankingRepository {
                                                                           var modul = Modul.valueOf(e.get(VEREIN_PROGRAMM.MODUL));
                                                                           return new RankingDTO(modul,
                                                                                                 modul.getDiplomDescription(JudgeReportModulCategory.fromString(e.get(RANKING.CATEGORY)).orElse(null)),
-                                                                                                getScore(e, modul));
+                                                                                                getScore(e, modul),
+                                                                                                e.get(RANKING_ENTRY.DAY));
                                                                       })
                                                                       .sorted(comparing(RankingDTO::modulDescription))
                                                                       .toList()))
+                         .filter(dto -> dto.rankings().stream().anyMatch(r -> r.day().equals(date)))
                          // Platzkonzert-only can be ignored
                          .filter(dto -> !dto.rankings().stream().allMatch(r -> r.modul().isPlatzkonzert()))
                          // score null for Platzkonzerte, otherwise always a score > 0 needed

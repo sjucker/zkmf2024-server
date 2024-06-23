@@ -17,6 +17,7 @@ import org.thymeleaf.context.Context;
 
 import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,8 +52,8 @@ public class RankingsService {
         this.pdfGenerationService = pdfGenerationService;
     }
 
-    public List<RankingSummaryDTO> getAllRankings() {
-        return rankingRepository.getAllRankingsPerVerein();
+    public List<RankingSummaryDTO> getAllRankings(LocalDate date) {
+        return rankingRepository.getAllRankingsPerVerein(date);
     }
 
     @Cacheable("rankings-available")
@@ -131,8 +132,8 @@ public class RankingsService {
         }
     }
 
-    public byte[] generateDiplomas() {
-        return generateDiplomas(getAllRankings());
+    public byte[] generateDiplomas(LocalDate date) {
+        return generateDiplomas(getAllRankings(date));
     }
 
     protected byte[] generateDiplomas(List<RankingSummaryDTO> rankings) {

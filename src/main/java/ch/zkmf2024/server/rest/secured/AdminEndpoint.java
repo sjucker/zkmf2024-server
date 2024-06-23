@@ -60,6 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -125,11 +126,11 @@ public class AdminEndpoint {
         return export(helperRegistrationService.exportForImport());
     }
 
-    @GetMapping(path = "/download/diplomas")
+    @GetMapping(path = "/download/diplomas/{date}")
     @Secured({"ADMIN", "ADMIN_READ_ONLY"})
-    public ResponseEntity<Resource> diplomas() throws IOException {
+    public ResponseEntity<Resource> diplomas(LocalDate date) throws IOException {
         log.info("GET /secured/admin/download/diplomas");
-        return export(exportService.generateDiplomas(), APPLICATION_PDF_VALUE);
+        return export(exportService.generateDiplomas(date), APPLICATION_PDF_VALUE);
     }
 
     @GetMapping(path = "/download/vereine")

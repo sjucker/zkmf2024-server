@@ -1,6 +1,6 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {saveAs} from "file-saver";
-import {MessageService} from "primeng/api";
+import {MenuItem, MessageService} from "primeng/api";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {JuryLoginCreateComponent} from "../jury-login-create/jury-login-create.component";
 import {JudgeDTO, JuryLoginCreateDTO} from "../rest";
@@ -17,6 +17,16 @@ export class JuryComponent implements OnInit {
     ref?: DynamicDialogRef;
 
     jury: JudgeDTO[] = [];
+
+    days: MenuItem[] = [
+        {
+            label: "Samstag",
+            command: () => this.exportDiplomas("2024-06-22"),
+        },
+        {
+            label: "Sonntag",
+            command: () => this.exportDiplomas("2024-06-23"),
+        }];
 
     exporting = signal(false);
     exportingRankings = signal(false);
@@ -142,9 +152,9 @@ export class JuryComponent implements OnInit {
         });
     }
 
-    exportDiplomas() {
+    exportDiplomas(date: string) {
         this.exportingDiplomas.set(true);
-        this.service.exportDiplomas().subscribe({
+        this.service.exportDiplomas(date).subscribe({
             next: response => {
                 saveAs(response, "diplome.pdf");
             },
