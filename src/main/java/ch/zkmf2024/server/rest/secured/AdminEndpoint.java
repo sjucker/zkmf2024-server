@@ -126,7 +126,7 @@ public class AdminEndpoint {
         return export(helperRegistrationService.exportForImport());
     }
 
-    @GetMapping(path = {"/download/diplomas/{date}", "/download/diplomas/"})
+    @GetMapping(path = {"/download/diplomas/{date}", "/download/diplomas"})
     @Secured({"ADMIN", "ADMIN_READ_ONLY"})
     public ResponseEntity<Resource> diplomas(@PathVariable(required = false) LocalDate date) throws IOException {
         log.info("GET /secured/admin/download/diplomas/{}", date);
