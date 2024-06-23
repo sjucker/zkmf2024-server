@@ -243,7 +243,7 @@ public class RankingRepository {
                                                                       })
                                                                       .sorted(comparing(RankingDTO::modulDescription))
                                                                       .toList()))
-                         .filter(dto -> dto.rankings().stream().anyMatch(r -> date.equals(r.day())))
+                         .filter(dto -> date == null || dto.rankings().stream().anyMatch(r -> date.equals(r.day())))
                          // Platzkonzert-only can be ignored
                          .filter(dto -> !dto.rankings().stream().allMatch(r -> r.modul().isPlatzkonzert()))
                          // score null for Platzkonzerte, otherwise always a score > 0 needed

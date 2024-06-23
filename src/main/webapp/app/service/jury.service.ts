@@ -52,9 +52,15 @@ export class JuryService {
         });
     }
 
-    exportDiplomas(date: string): Observable<Blob> {
-        return this.httpClient.get(`${this.baseUrl}/secured/admin/download/diplomas/${date}`, {
-            responseType: 'blob'
-        });
+    exportDiplomas(date?: string): Observable<Blob> {
+        if (date) {
+            return this.httpClient.get(`${this.baseUrl}/secured/admin/download/diplomas/${date}`, {
+                responseType: 'blob'
+            });
+        } else {
+            return this.httpClient.get(`${this.baseUrl}/secured/admin/download/diplomas`, {
+                responseType: 'blob'
+            });
+        }
     }
 }

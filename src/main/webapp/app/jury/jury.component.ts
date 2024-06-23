@@ -26,6 +26,10 @@ export class JuryComponent implements OnInit {
         {
             label: "Sonntag",
             command: () => this.exportDiplomas("2024-06-23"),
+        },
+        {
+            label: "Alles",
+            command: () => this.exportDiplomas(),
         }];
 
     exporting = signal(false);
@@ -152,7 +156,7 @@ export class JuryComponent implements OnInit {
         });
     }
 
-    exportDiplomas(date: string) {
+    exportDiplomas(date?: string) {
         this.exportingDiplomas.set(true);
         this.service.exportDiplomas(date).subscribe({
             next: response => {
