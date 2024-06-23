@@ -102,7 +102,7 @@ public class ExportService {
         try (var wb = new XSSFWorkbook()) {
             for (var ranking : rankingsService.getAllRankingLists()) {
                 var sheet = wb.createSheet();
-                wb.setSheetName(wb.getSheetIndex(sheet), ranking.description());
+                wb.setSheetName(wb.getSheetIndex(sheet), ranking.description() + "-" + ranking.location().id());
 
                 var rowIndex = 0;
                 var headerRow = sheet.createRow(rowIndex++);
