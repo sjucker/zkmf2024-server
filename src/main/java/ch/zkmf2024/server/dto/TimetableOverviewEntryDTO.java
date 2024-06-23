@@ -19,4 +19,23 @@ public record TimetableOverviewEntryDTO(@NotNull Long vereinId,
                                         @NotNull LocalTime end,
                                         @NotNull String time,
                                         boolean inPast) {
+
+    public TimetableOverviewEntryDTO notInPast() {
+        return new TimetableOverviewEntryDTO(vereinId,
+                                             vereinIdentifier,
+                                             vereinsname,
+                                             modul,
+                                             klasse,
+                                             besetzung,
+                                             competition,
+                                             type,
+                                             typeDescription,
+                                             location,
+                                             date,
+                                             start,
+                                             end,
+                                             time,
+                                             false);
+    }
+
 }

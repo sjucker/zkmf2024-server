@@ -239,7 +239,9 @@ public class VereinService {
 
     public VereinMemberInfoDTO getVereinMemberInfo(String vereinIdentifier) {
         var verein = vereinRepository.findByIdentifier(vereinIdentifier).orElseThrow(() -> new NoSuchElementException("unknown vereinIdentifier: " + vereinIdentifier));
-        var timetableEntries = findTimetableEntriesByVereinId(verein.getId());
+        var timetableEntries = findTimetableEntriesByVereinId(verein.getId()).stream()
+                                                                             .map(TimetableOverviewEntryDTO::notInPast)
+                                                                             .toList();
         return new VereinMemberInfoDTO(
                 timetableEntries,
                 verein.getLunchTime(),
