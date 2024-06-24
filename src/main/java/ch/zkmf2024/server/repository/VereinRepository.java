@@ -1003,6 +1003,7 @@ public class VereinRepository {
                       .from(RANKING)
                       .join(RANKING_ENTRY).on(RANKING_ENTRY.FK_RANKING.eq(RANKING.ID).and(RANKING_ENTRY.FK_VEREIN.eq(vereinId)))
                       .where(RANKING.STATUS.eq(RankingStatus.FINAL.name()))
+                      .orderBy(RANKING.MODUL, RANKING.CATEGORY)
                       .fetch(it -> {
                           var modul = Modul.valueOf(it.get(RANKING.MODUL));
                           var category = JudgeReportModulCategory.fromString(it.get(RANKING.CATEGORY)).orElse(null);
