@@ -16,6 +16,7 @@ public record JudgeReportViewDTO(
         BigDecimal score,
         BigDecimal penalty,
         BigDecimal bonus,
+        Integer actualDurationInSeconds,
         @NotNull JudgeReportStatus status,
         @NotNull List<JudgeReportTitleDTO> titles,
         @NotNull List<JudgeReportRatingDTO> overallRatings

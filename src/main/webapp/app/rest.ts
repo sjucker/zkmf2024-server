@@ -116,6 +116,7 @@ export interface JudgeReportFeedbackDTO {
     scoreRange: string;
     penalty?: number;
     bonus?: number;
+    actualDurationInSeconds?: number;
     judge1: JudgeReportViewDTO;
     judge2: JudgeReportViewDTO;
     judge3: JudgeReportViewDTO;
@@ -205,6 +206,7 @@ export interface JudgeReportViewDTO {
     score?: number;
     penalty?: number;
     bonus?: number;
+    actualDurationInSeconds?: number;
     status: JudgeReportStatus;
     titles: JudgeReportTitleDTO[];
     overallRatings: JudgeReportRatingDTO[];
@@ -293,6 +295,7 @@ export interface RankingDTO {
     modul: Modul;
     modulDescription: string;
     score?: number;
+    day: DateAsString;
 }
 
 export interface RankingListDTO {

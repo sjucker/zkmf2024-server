@@ -265,6 +265,7 @@ public class JudgeRepository {
                          it.get(VEREIN_PROGRAMM.MODUL_G_KAT_A_BONUS),
                          it.get(VEREIN_PROGRAMM.MODUL_G_KAT_B_BONUS),
                          it.get(VEREIN_PROGRAMM.MODUL_G_KAT_C_BONUS)).orElse(null),
+                it.get(VEREIN_PROGRAMM.ACTUAL_DURATION_IN_SECONDS),
                 JudgeReportStatus.valueOf(it.get(JUDGE_REPORT.STATUS)),
                 findTitles(reportId, modul, category.orElse(null)),
                 findOverallRatings(reportId, modul, category.orElse(null), role)
@@ -299,6 +300,7 @@ public class JudgeRepository {
                     scoreRange(overallScore),
                     judge1.penalty(),
                     judge1.bonus(),
+                    judge1.actualDurationInSeconds(),
                     judge1,
                     judge2,
                     judge3,
@@ -341,6 +343,7 @@ public class JudgeRepository {
                     scoreRange(overallScore),
                     judge1.penalty(),
                     judge1.bonus(),
+                    judge1.actualDurationInSeconds(),
                     judge1,
                     judge2,
                     judge3,
