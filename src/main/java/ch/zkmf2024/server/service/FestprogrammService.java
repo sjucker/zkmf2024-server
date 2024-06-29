@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ch.zkmf2024.server.util.DateUtil.today;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -46,7 +45,10 @@ public class FestprogrammService {
 
         return perDay.keySet().stream()
                      .sorted()
-                     .map(day -> new FestprogrammDayDTO(FormatUtil.formatDateWritten(day), day.isBefore(today()), perDay.get(day)))
+                     .map(day -> new FestprogrammDayDTO(FormatUtil.formatDateWritten(day),
+                                                        // day.isBefore(today()),
+                                                        false,
+                                                        perDay.get(day)))
                      .toList();
     }
 

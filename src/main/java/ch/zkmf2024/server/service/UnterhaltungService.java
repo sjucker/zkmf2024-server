@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +75,8 @@ public class UnterhaltungService {
                     null,
                     platzkonzert.vereinIdentifier(),
                     null,
-                    now.isAfter(LocalDateTime.of(platzkonzert.date(), platzkonzert.end()))
+                    false
+                    //now.isAfter(LocalDateTime.of(platzkonzert.date(), platzkonzert.end()))
             );
             perType.get(dto.type()).add(dto);
         }
@@ -99,7 +99,8 @@ public class UnterhaltungService {
                     null,
                     verein.vereinIdentifier(),
                     null,
-                    now.isAfter(LocalDateTime.of(verein.date(), verein.end()))
+                    false
+                    // now.isAfter(LocalDateTime.of(verein.date(), verein.end()))
             );
             perType.get(dto.type()).add(dto);
         }
@@ -108,7 +109,8 @@ public class UnterhaltungService {
                       .map(type -> {
                           var entries = perType.get(type);
                           return new UnterhaltungTypeDTO(type,
-                                                         entries.stream().allMatch(e -> now.isAfter(LocalDateTime.of(e.date(), e.end()))),
+                                                         false,
+                                                         // entries.stream().allMatch(e -> now.isAfter(LocalDateTime.of(e.date(), e.end()))),
                                                          entries.stream()
                                                                 .sorted(comparing(UnterhaltungsEntryDTO::date)
                                                                                 .thenComparing(UnterhaltungsEntryDTO::start)
@@ -131,7 +133,8 @@ public class UnterhaltungService {
                 pojo.getCloudflareId(),
                 null,
                 pojo.getIdentifier(),
-                now().isAfter(LocalDateTime.of(pojo.getDate(), pojo.getEndTime()))
+                false
+                // now().isAfter(LocalDateTime.of(pojo.getDate(), pojo.getEndTime()))
         );
     }
 

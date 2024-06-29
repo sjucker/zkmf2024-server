@@ -163,7 +163,8 @@ public class TimetableRepository {
                 "%s - %s".formatted(
                         FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.START_TIME)),
                         FormatUtil.formatTime(it.get(TIMETABLE_ENTRY.END_TIME))),
-                now().isAfter(LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)))
+                false
+                // now().isAfter(LocalDateTime.of(it.get(TIMETABLE_ENTRY.DATE), it.get(TIMETABLE_ENTRY.END_TIME)))
         );
     }
 

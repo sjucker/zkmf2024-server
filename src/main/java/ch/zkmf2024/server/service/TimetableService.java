@@ -189,7 +189,8 @@ public class TimetableService {
                                            .toList()) {
             var entries = entriesPerDate.get(localDate);
             result.add(new TimetableDayOverviewDTO(formatDate(localDate, true),
-                                                   entries.stream().allMatch(TimetableOverviewEntryDTO::inPast),
+                                                   // entries.stream().allMatch(TimetableOverviewEntryDTO::inPast),
+                                                   false,
                                                    entries.stream()
                                                           .sorted(comparing(TimetableOverviewEntryDTO::start)
                                                                           .thenComparing(TimetableOverviewEntryDTO::end))
