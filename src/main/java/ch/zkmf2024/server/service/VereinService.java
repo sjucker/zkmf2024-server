@@ -229,7 +229,8 @@ public class VereinService {
                 getInstrumentenDepot(timetableEntries).orElse(null),
                 getInstrumentenDepotParademusik(timetableEntries).orElse(null),
                 false,
-                findAvailableFeedbacks(verein.getId())
+                findAvailableFeedbacks(verein.getId()),
+                verein.getAudioUrl()
         );
     }
 

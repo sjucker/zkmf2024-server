@@ -502,6 +502,7 @@ export interface VereinDTO {
     instrumentenDepotParademusik?: LocationDTO;
     programmUpdated: boolean;
     availableFeedbacks: JudgeReportFeedbackSelectionDTO[];
+    audioUrl?: string;
     phase1Status: PhaseStatus;
     phase2Status: PhaseStatus;
     phase4Status: PhaseStatus;

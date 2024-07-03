@@ -456,7 +456,8 @@ public class VereinRepository {
                                     null,
                                     null,
                                     false,
-                                    List.of()
+                                    List.of(),
+                                    it.get(VEREIN.AUDIO_URL)
                             ));
 
         stopWatch.splitInfo("findAllForExport");
