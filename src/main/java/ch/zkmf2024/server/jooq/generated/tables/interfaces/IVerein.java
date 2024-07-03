@@ -473,6 +473,16 @@ public interface IVerein extends Serializable {
      */
     public LocalDateTime getStageSetupConfirmedAt();
 
+    /**
+     * Setter for <code>verein.audio_url</code>.
+     */
+    public void setAudioUrl(String value);
+
+    /**
+     * Getter for <code>verein.audio_url</code>.
+     */
+    public String getAudioUrl();
+
     // -------------------------------------------------------------------------
     // FROM and INTO
     // -------------------------------------------------------------------------

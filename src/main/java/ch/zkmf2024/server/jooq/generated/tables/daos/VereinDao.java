@@ -757,4 +757,19 @@ public class VereinDao extends DAOImpl<VereinRecord, VereinPojo, Long> {
     public List<VereinPojo> fetchByStageSetupConfirmedAt(LocalDateTime... values) {
         return fetch(Verein.VEREIN.STAGE_SETUP_CONFIRMED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>audio_url BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<VereinPojo> fetchRangeOfAudioUrl(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Verein.VEREIN.AUDIO_URL, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>audio_url IN (values)</code>
+     */
+    public List<VereinPojo> fetchByAudioUrl(String... values) {
+        return fetch(Verein.VEREIN.AUDIO_URL, values);
+    }
 }

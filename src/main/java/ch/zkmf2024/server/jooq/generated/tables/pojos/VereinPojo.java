@@ -62,6 +62,7 @@ public class VereinPojo implements IVerein {
     private LocalTime lunchTime;
     private LocalDateTime phase4ConfirmedAt;
     private LocalDateTime stageSetupConfirmedAt;
+    private String audioUrl;
 
     public VereinPojo() {
     }
@@ -113,6 +114,7 @@ public class VereinPojo implements IVerein {
         this.lunchTime = value.getLunchTime();
         this.phase4ConfirmedAt = value.getPhase4ConfirmedAt();
         this.stageSetupConfirmedAt = value.getStageSetupConfirmedAt();
+        this.audioUrl = value.getAudioUrl();
     }
 
     public VereinPojo(
@@ -161,7 +163,8 @@ public class VereinPojo implements IVerein {
             String identifier,
             LocalTime lunchTime,
             LocalDateTime phase4ConfirmedAt,
-            LocalDateTime stageSetupConfirmedAt
+            LocalDateTime stageSetupConfirmedAt,
+            String audioUrl
     ) {
         this.id = id;
         this.email = email;
@@ -209,6 +212,7 @@ public class VereinPojo implements IVerein {
         this.lunchTime = lunchTime;
         this.phase4ConfirmedAt = phase4ConfirmedAt;
         this.stageSetupConfirmedAt = stageSetupConfirmedAt;
+        this.audioUrl = audioUrl;
     }
 
     /**
@@ -947,6 +951,22 @@ public class VereinPojo implements IVerein {
         this.stageSetupConfirmedAt = stageSetupConfirmedAt;
     }
 
+    /**
+     * Getter for <code>verein.audio_url</code>.
+     */
+    @Override
+    public String getAudioUrl() {
+        return this.audioUrl;
+    }
+
+    /**
+     * Setter for <code>verein.audio_url</code>.
+     */
+    @Override
+    public void setAudioUrl(String audioUrl) {
+        this.audioUrl = audioUrl;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -1186,6 +1206,11 @@ public class VereinPojo implements IVerein {
                 return false;
         } else if (!this.stageSetupConfirmedAt.equals(other.stageSetupConfirmedAt))
             return false;
+        if (this.audioUrl == null) {
+            if (other.audioUrl != null)
+                return false;
+        } else if (!this.audioUrl.equals(other.audioUrl))
+            return false;
         return true;
     }
 
@@ -1239,6 +1264,7 @@ public class VereinPojo implements IVerein {
         result = prime * result + ((this.lunchTime == null) ? 0 : this.lunchTime.hashCode());
         result = prime * result + ((this.phase4ConfirmedAt == null) ? 0 : this.phase4ConfirmedAt.hashCode());
         result = prime * result + ((this.stageSetupConfirmedAt == null) ? 0 : this.stageSetupConfirmedAt.hashCode());
+        result = prime * result + ((this.audioUrl == null) ? 0 : this.audioUrl.hashCode());
         return result;
     }
 
@@ -1292,6 +1318,7 @@ public class VereinPojo implements IVerein {
         sb.append(", ").append(lunchTime);
         sb.append(", ").append(phase4ConfirmedAt);
         sb.append(", ").append(stageSetupConfirmedAt);
+        sb.append(", ").append(audioUrl);
 
         sb.append(")");
         return sb.toString();
@@ -1349,6 +1376,7 @@ public class VereinPojo implements IVerein {
         setLunchTime(from.getLunchTime());
         setPhase4ConfirmedAt(from.getPhase4ConfirmedAt());
         setStageSetupConfirmedAt(from.getStageSetupConfirmedAt());
+        setAudioUrl(from.getAudioUrl());
     }
 
     @Override

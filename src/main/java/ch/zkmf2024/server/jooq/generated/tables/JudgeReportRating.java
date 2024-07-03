@@ -86,7 +86,7 @@ public class JudgeReportRating extends TableImpl<JudgeReportRatingRecord> {
     /**
      * The column <code>judge_report_rating.comment</code>.
      */
-    public final TableField<JudgeReportRatingRecord, String> COMMENT = createField(DSL.name("comment"), SQLDataType.VARCHAR(1024), this, "");
+    public final TableField<JudgeReportRatingRecord, String> COMMENT = createField(DSL.name("comment"), SQLDataType.VARCHAR(4096), this, "");
 
     /**
      * The column <code>judge_report_rating.score</code>.

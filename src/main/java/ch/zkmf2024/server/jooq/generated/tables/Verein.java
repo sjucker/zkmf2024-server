@@ -300,6 +300,11 @@ public class Verein extends TableImpl<VereinRecord> {
      */
     public final TableField<VereinRecord, LocalDateTime> STAGE_SETUP_CONFIRMED_AT = createField(DSL.name("stage_setup_confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
+    /**
+     * The column <code>verein.audio_url</code>.
+     */
+    public final TableField<VereinRecord, String> AUDIO_URL = createField(DSL.name("audio_url"), SQLDataType.VARCHAR(1024), this, "");
+
     private Verein(Name alias, Table<VereinRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
