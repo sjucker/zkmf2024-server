@@ -256,7 +256,7 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>target/webapp</directory>
+                <directory>target/webapp/browser</directory>
                 <targetPath>static</targetPath>
             </resource>
         </resources>
