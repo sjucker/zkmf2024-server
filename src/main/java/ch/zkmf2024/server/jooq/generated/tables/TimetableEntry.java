@@ -189,19 +189,19 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
 
     @Override
     public List<ForeignKey<TimetableEntryRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION);
+        return Arrays.asList(Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_PROGRAMM, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN);
     }
 
-    private transient VereinPath _verein;
+    private transient LocationPath _location;
 
     /**
-     * Get the implicit join path to the <code>public.verein</code> table.
+     * Get the implicit join path to the <code>public.location</code> table.
      */
-    public VereinPath verein() {
-        if (_verein == null)
-            _verein = new VereinPath(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN, null);
+    public LocationPath location() {
+        if (_location == null)
+            _location = new LocationPath(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION, null);
 
-        return _verein;
+        return _location;
     }
 
     private transient VereinProgrammPath _vereinProgramm;
@@ -217,16 +217,16 @@ public class TimetableEntry extends TableImpl<TimetableEntryRecord> {
         return _vereinProgramm;
     }
 
-    private transient LocationPath _location;
+    private transient VereinPath _verein;
 
     /**
-     * Get the implicit join path to the <code>public.location</code> table.
+     * Get the implicit join path to the <code>public.verein</code> table.
      */
-    public LocationPath location() {
-        if (_location == null)
-            _location = new LocationPath(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_LOCATION, null);
+    public VereinPath verein() {
+        if (_verein == null)
+            _verein = new VereinPath(this, Keys.TIMETABLE_ENTRY__FK_TIMETABLE_VEREIN, null);
 
-        return _location;
+        return _verein;
     }
 
     private transient CurrentlyPlayingPath _currentlyPlaying;

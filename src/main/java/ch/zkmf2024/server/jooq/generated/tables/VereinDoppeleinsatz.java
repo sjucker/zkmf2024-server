@@ -162,20 +162,7 @@ public class VereinDoppeleinsatz extends TableImpl<VereinDoppeleinsatzRecord> {
 
     @Override
     public List<ForeignKey<VereinDoppeleinsatzRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN);
-    }
-
-    private transient VereinPath _fkVereinDoppeleinsatzVerein;
-
-    /**
-     * Get the implicit join path to the <code>public.verein</code> table, via
-     * the <code>fk_verein_doppeleinsatz_verein</code> key.
-     */
-    public VereinPath fkVereinDoppeleinsatzVerein() {
-        if (_fkVereinDoppeleinsatzVerein == null)
-            _fkVereinDoppeleinsatzVerein = new VereinPath(this, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN, null);
-
-        return _fkVereinDoppeleinsatzVerein;
+        return Arrays.asList(Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN);
     }
 
     private transient VereinPath _fkVereinDoppeleinsatzOtherVerein;
@@ -189,6 +176,19 @@ public class VereinDoppeleinsatz extends TableImpl<VereinDoppeleinsatzRecord> {
             _fkVereinDoppeleinsatzOtherVerein = new VereinPath(this, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_OTHER_VEREIN, null);
 
         return _fkVereinDoppeleinsatzOtherVerein;
+    }
+
+    private transient VereinPath _fkVereinDoppeleinsatzVerein;
+
+    /**
+     * Get the implicit join path to the <code>public.verein</code> table, via
+     * the <code>fk_verein_doppeleinsatz_verein</code> key.
+     */
+    public VereinPath fkVereinDoppeleinsatzVerein() {
+        if (_fkVereinDoppeleinsatzVerein == null)
+            _fkVereinDoppeleinsatzVerein = new VereinPath(this, Keys.VEREIN_DOPPELEINSATZ__FK_VEREIN_DOPPELEINSATZ_VEREIN, null);
+
+        return _fkVereinDoppeleinsatzVerein;
     }
 
     @Override
