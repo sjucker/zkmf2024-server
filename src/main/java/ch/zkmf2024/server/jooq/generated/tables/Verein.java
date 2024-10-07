@@ -396,20 +396,7 @@ public class Verein extends TableImpl<VereinRecord> {
 
     @Override
     public List<ForeignKey<VereinRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT);
-    }
-
-    private transient KontaktPath _fkVereinPraesidentKontakt;
-
-    /**
-     * Get the implicit join path to the <code>public.kontakt</code> table, via
-     * the <code>fk_verein_praesident_kontakt</code> key.
-     */
-    public KontaktPath fkVereinPraesidentKontakt() {
-        if (_fkVereinPraesidentKontakt == null)
-            _fkVereinPraesidentKontakt = new KontaktPath(this, Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, null);
-
-        return _fkVereinPraesidentKontakt;
+        return Arrays.asList(Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT, Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT);
     }
 
     private transient KontaktPath _fkVereinDirektionKontakt;
@@ -423,6 +410,19 @@ public class Verein extends TableImpl<VereinRecord> {
             _fkVereinDirektionKontakt = new KontaktPath(this, Keys.VEREIN__FK_VEREIN_DIREKTION_KONTAKT, null);
 
         return _fkVereinDirektionKontakt;
+    }
+
+    private transient KontaktPath _fkVereinPraesidentKontakt;
+
+    /**
+     * Get the implicit join path to the <code>public.kontakt</code> table, via
+     * the <code>fk_verein_praesident_kontakt</code> key.
+     */
+    public KontaktPath fkVereinPraesidentKontakt() {
+        if (_fkVereinPraesidentKontakt == null)
+            _fkVereinPraesidentKontakt = new KontaktPath(this, Keys.VEREIN__FK_VEREIN_PRAESIDENT_KONTAKT, null);
+
+        return _fkVereinPraesidentKontakt;
     }
 
     private transient RankingEntryPath _rankingEntry;

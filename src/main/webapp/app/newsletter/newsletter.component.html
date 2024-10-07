@@ -28,11 +28,11 @@
     </ng-template>
     <ng-template pTemplate="body" let-dto>
         <tr>
-            <td>{{dto.vorname}}</td>
-            <td>{{dto.name}}</td>
-            <td>{{dto.email}}</td>
-            <td>{{dto.subscribedAt | date: 'dd.MM.yyyy HH:mm'}}</td>
-            <td>{{dto.unsubscribedAt | date: 'dd.MM.yyyy HH:mm'}}</td>
+            <td>{{ dto.vorname }}</td>
+            <td>{{ dto.name }}</td>
+            <td>{{ dto.email }}</td>
+            <td>{{ dto.subscribedAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+            <td>{{ dto.unsubscribedAt | date: 'dd.MM.yyyy HH:mm' }}</td>
             <td>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded mr-2"
                         (click)="delete(dto)"></button>
@@ -43,6 +43,6 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-        Total Angemeldete: {{subscribeCount()}}
+        Total Angemeldete: {{ subscribeCount() }}
     </ng-template>
 </p-table>
