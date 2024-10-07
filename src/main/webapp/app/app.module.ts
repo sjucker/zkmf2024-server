@@ -1,5 +1,5 @@
 import {registerLocaleData} from "@angular/common";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {LOCALE_ID, NgModule} from '@angular/core';
@@ -87,7 +87,6 @@ import {VereineComponent} from './vereine/vereine.component';
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        HttpClientModule,
         FormsModule,
         MenubarModule,
         TableModule,
@@ -116,7 +115,8 @@ import {VereineComponent} from './vereine/vereine.component';
         ConfirmationService,
         DialogService,
         {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
-        {provide: LOCALE_ID, useValue: 'de-DE'}
+        {provide: LOCALE_ID, useValue: 'de-DE'},
+        provideHttpClient(withInterceptorsFromDi())
     ],
     bootstrap: [AppComponent]
 })

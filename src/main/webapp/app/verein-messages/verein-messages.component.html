@@ -8,7 +8,7 @@
 
 <div class="messages-container">
     <div *ngFor="let msg of messages" class="message" [ngClass]="{'own': msg.ownMessage}">
-        <p><strong>{{msg.createdAt | date: 'dd.MM.yyyy HH:mm'}}, {{msg.createdBy}}</strong></p>
-        <p style="white-space: pre-wrap;" [ngClass]="">{{msg.message}}</p>
+        <p><strong>{{ msg.createdAt | date: 'dd.MM.yyyy HH:mm' }}, {{ msg.createdBy }}</strong></p>
+        <p style="white-space: pre-wrap;" [ngClass]="">{{ msg.message }}</p>
     </div>
 </div>

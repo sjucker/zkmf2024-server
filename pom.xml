@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.1</version>
+        <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.zkmf2024</groupId>
@@ -16,24 +16,24 @@
     <properties>
         <java.version>21</java.version>
 
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct.version>1.6.2</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jjwt.version>0.11.5</jjwt.version>
         <poi.version>5.3.0</poi.version>
-        <playwright.version>1.45.0</playwright.version>
-        <pdfbox.version>3.0.2</pdfbox.version>
+        <playwright.version>1.47.0</playwright.version>
+        <pdfbox.version>3.0.3</pdfbox.version>
         <commons-text.version>1.12.0</commons-text.version>
         <firebase-admin.version>9.3.0</firebase-admin.version>
 
-        <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
         <typescript-generator-maven-plugin.version>3.2.1263</typescript-generator-maven-plugin.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-        <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
 
-        <nodeVersion>v20.15.0</nodeVersion>
-        <npmVersion>10.7.0</npmVersion>
+        <nodeVersion>v20.18.0</nodeVersion>
+        <npmVersion>10.8.2</npmVersion>
 
         <!-- start local DB using src/main/docker/postgres.yml  -->
         <db.url>jdbc:postgresql://localhost:5432/zkmf2024</db.url>
